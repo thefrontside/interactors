@@ -18,7 +18,8 @@
     "prepack": "tsc --outdir dist --declaration --sourcemap"
   },
   "dependencies": {
-    "@bigtest/performance": "^0.5.0"
+    "@bigtest/performance": "^0.5.0",
+    "@bigtest/globals": "^0.5.1"
   },
   "devDependencies": {
     "@frontside/tsconfig": "*",
