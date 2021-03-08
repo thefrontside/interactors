@@ -1,0 +1,33 @@
+{
+  "name": "material-ui-interactors",
+  "version": "1.0.0",
+  "description": "BigTest interactors for material-ui.com components.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "bigtest ci",
+    "prepack": "tsc",
+    "start": "parcel serve test/harness.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thefrontside/material-ui-interactors.git"
+  },
+  "keywords": [
+    "material-ui",
+    "interactors"
+  ],
+  "author": "Frontside Engineering <engineering@frontside.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thefrontside/material-ui-interactors/issues"
+  },
+  "homepage": "https://github.com/thefrontside/material-ui-interactors#readme",
+  "devDependencies": {
+    "@frontside/typescript": "^1.1.1",
+    "bigtest": "^0.13.3",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@bigtest/interactor": "^0.28.2"
+  }
+}
