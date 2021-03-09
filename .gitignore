@@ -1,3 +1,4 @@
 .bigtest
+.cache
 dist
 node_modules
