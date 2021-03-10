@@ -2,5 +2,6 @@
   "extends": "@frontside/tsconfig",
   "compilerOptions": {
     "outDir": "dist",
+    "jsx": "react-jsx",
   },
 }
