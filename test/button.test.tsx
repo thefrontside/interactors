@@ -8,4 +8,4 @@ export default test("Button")
  .step("rendering a button", async() => {
    render(<MyButton>Click me</MyButton>)
  })
- .assertion(btButton("Click me").exists())
+ .assertion(btButton("CLICK ME").exists())
