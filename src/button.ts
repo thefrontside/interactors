@@ -4,3 +4,5 @@ import { Button as BaseButton } from "@bigtest/interactor";
 export const Button = BaseButton.extend("MUI Button").filters({
   label: (element) => element.getAttribute("aria-label") ?? "",
 });
+
+export const MaterialButton = Button.extend("material-ui button")

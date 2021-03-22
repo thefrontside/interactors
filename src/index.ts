@@ -5,13 +5,18 @@ export { HTML, including, matching, and, or, not, some, every } from "@bigtest/i
 
 export * from "./types";
 
+export { Body } from "./body";
+export * from "./body";
+export { MaterialButton as Button } from './button';
+
+export * from "./calendar";
+export * from "./checkbox";
+
 export * from "./date-field";
 export * from "./time-field";
 export * from "./datetime-field";
 
-export * from "./checkbox";
 export * from "./body";
-export * from "./calendar";
 export * from "./accordion";
 export * from "./menu";
 export * from "./switch";
@@ -27,4 +32,5 @@ export * from "./snackbar";
 export * from "./form-control";
 export * from "./dialog";
 export { default as Fab } from "./fab";
-export { default as Radio } from "./radio";
+export { default as Radio } from './radio';
+
