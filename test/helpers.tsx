@@ -150,6 +150,3 @@ export const buttonClasses = generateUtilityClasses('MuiButton', [
   'iconSizeMedium',
   'iconSizeLarge',
 ]);
-
-
-
