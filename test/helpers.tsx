@@ -2,6 +2,7 @@ import "date-fns";
 import { render as rtlRender } from "@testing-library/react";
 import { ComponentProps, ComponentType, ReactElement, useState } from "react";
 import { StylesProvider, jssPreset } from "@material-ui/core/styles";
+import { generateUtilityClass, generateUtilityClasses } from '@material-ui/unstyled';
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -106,3 +107,49 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
       | ((onChange?: (date: Date) => void) => Partial<ComponentProps<typeof PickerComponent>>)
   ) => renderComponent(typeof getProps == "function" ? ({ onChange } = {}) => getProps(onChange) : getProps);
 }
+
+export function getButtonUtilityClass(slot: string) {
+  return generateUtilityClass('MuiButton', slot);
+}
+
+export const buttonClasses = generateUtilityClasses('MuiButton', [
+  'root',
+  'label',
+  'text',
+  'textInherit',
+  'textPrimary',
+  'textSecondary',
+  'outlined',
+  'outlinedInherit',
+  'outlinedPrimary',
+  'outlinedSecondary',
+  'contained',
+  'containedInherit',
+  'containedPrimary',
+  'containedSecondary',
+  'disableElevation',
+  'focusVisible',
+  'disabled',
+  'colorInherit',
+  'textSizeSmall',
+  'textSizeMedium',
+  'textSizeLarge',
+  'outlinedSizeSmall',
+  'outlinedSizeMedium',
+  'outlinedSizeLarge',
+  'containedSizeSmall',
+  'containedSizeMedium',
+  'containedSizeLarge',
+  'sizeMedium',
+  'sizeSmall',
+  'sizeLarge',
+  'fullWidth',
+  'startIcon',
+  'endIcon',
+  'iconSizeSmall',
+  'iconSizeMedium',
+  'iconSizeLarge',
+]);
+
+
+
