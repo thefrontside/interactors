@@ -6,3 +6,4 @@ export const Button = BaseButton.extend("MUI Button").filters({
 });
 
 export const MaterialButton = Button.extend("material-ui button")
+// export default Button.extend('button')
