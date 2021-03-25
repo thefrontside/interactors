@@ -1,5 +1,5 @@
 import { test, Page, HTML, Link } from "bigtest";
-import { Button as Interactor, including, not } from "../src/index";
+import { Button as Interactor, including, not, or } from "../src/index";
 import { Button as MuiButton } from "@material-ui/core";
 import { containing } from './matchers';
 import { render, buttonClasses } from "./helpers";
@@ -259,14 +259,11 @@ export default test("Button")
     .step('render button', async() => {
       await render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }}>Disabled Button</MuiButton>)
     })
-    .step('button is disabled and styles passed to BaseButton', async() => {
-      const { container } = render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }} />)
-      console.log(container.querySelector('button'))
-      await container.querySelector('button')?.classList.contains('disabledClassName')
-    })
+    // .step('button is disabled and styles passed to BaseButton', async() => {
+    //   const { container } = render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }} />)
+    //   console.log(container.querySelector('button'))
+    //   await container.querySelector('button')?.classList.contains('disabledClassName')
+    // })
     //TODO: fix this assertion to use bigTest methods
-    // .assertion(button.has({ className: including('disabledClassName'), disabled: false }))
+    .assertion(button.has({ className: including('disabledClassName') }))
   )
-
-  // TODO: server-side render test if needed.
-
