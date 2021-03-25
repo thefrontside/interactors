@@ -5,91 +5,82 @@ import { render } from "./helpers";
 
 export default test("Checkbox")
   .step(Page.visit("/"))
-  .child("filter", (test) =>
+  .child("test `filter` by locator", (test) =>
     test
-      .child("by locator", (test) =>
-        test
-          .step("render", () => render(<FormControlLabel label="locator" control={<Checkbox />} />))
-          .assertion(Interactor("locator").exists())
-      )
-      .child("by checked", (test) =>
-        test
-          .step("render", () => render(<FormControlLabel label="checked" checked control={<Checkbox />} />))
-          .assertion(Interactor({ checked: true }).exists())
-      )
-      .child("by indeterminate", (test) =>
-        test
-          .step("render", () => render(<FormControlLabel label="indeterminate" control={<Checkbox indeterminate />} />))
-          .assertion(Interactor({ indeterminate: true }).exists())
-      )
-      .child("by disabled", (test) =>
-        test
-          .step("render", () => render(<FormControlLabel label="disabled" disabled control={<Checkbox />} />))
-          .assertion(Interactor({ disabled: true }).exists())
-      )
-      .child("by visible", (test) =>
-        test.step("render", () => render(<Checkbox />)).assertion(Interactor({ visible: false }).exists())
-      )
+      .step("render", () => render(<FormControlLabel label="locator" control={<Checkbox />} />))
+      .assertion(Interactor().exists())
   )
-  .child("click", (test) =>
+  .child("test `filter` by checked", (test) =>
+    test
+      .step("render", () => render(<FormControlLabel label="checked" checked control={<Checkbox />} />))
+      .assertion(Interactor({ checked: true }).exists())
+  )
+  .child("test `filter` by indeterminate", (test) =>
+    test
+      .step("render", () => render(<FormControlLabel label="indeterminate" control={<Checkbox indeterminate />} />))
+      .assertion(Interactor({ indeterminate: true }).exists())
+  )
+  .child("test `filter` by disabled", (test) =>
+    test
+      .step("render", () => render(<FormControlLabel label="disabled" disabled control={<Checkbox />} />))
+      .assertion(Interactor({ disabled: true }).exists())
+  )
+  .child("test `filter` by visible", (test) =>
+    test.step("render", () => render(<Checkbox />)).assertion(Interactor({ visible: false }).exists())
+  )
+  .child("test `click` action", (test) =>
     test
       .step("render", () => render(<FormControlLabel label="checkbox" control={<Checkbox />} />))
-      .child("default", (test) => test.assertion(Interactor("checkbox").is({ checked: false, focused: false })))
-      .child("click", (test) =>
+      .assertion(Interactor().is({ checked: false, focused: false }))
+      .child("click and assert", (test) =>
         test
-          .step("click", () => Interactor("checkbox").click())
+          .step(Interactor().click())
           // TODO `focused` doesn't set :(
-          .assertion(Interactor("checkbox").is({ checked: true /*, focused: true */ }))
+          .assertion(Interactor().is({ checked: true /*, focused: true */ }))
       )
   )
-  .child("focus", (test) =>
+  .child("test `focus` action", (test) =>
     test
       .step("render", () => render(<FormControlLabel label="checkbox" control={<Checkbox />} />))
-      .child("default", (test) => test.assertion(Interactor("checkbox").is({ focused: false })))
-      .child("focus", (test) =>
-        test.step("focus", () => Interactor("checkbox").focus()).assertion(Interactor("checkbox").is({ focused: true }))
+      .assertion(Interactor().is({ focused: false }))
+      .child("focus and assert", (test) =>
+        test.step(Interactor().focus()).assertion(Interactor().is({ focused: true }))
       )
   )
-  .child("blur", (test) =>
+  .child("test `blur` action", (test) =>
     test
       .step("render", () => render(<FormControlLabel label="checkbox" control={<Checkbox autoFocus />} />))
-      .child("default", (test) => test.assertion(Interactor("checkbox").is({ focused: true })))
-      .child("blur", (test) =>
-        test.step("blur", () => Interactor("checkbox").blur()).assertion(Interactor("checkbox").is({ focused: false }))
-      )
+      .assertion(Interactor().is({ focused: true }))
+      .child("blur and assert", (test) => test.step(Interactor().blur()).assertion(Interactor().is({ focused: false })))
   )
-  .child("check", (test) =>
+  .child("test `check` action", (test) =>
     test
       .step("render", () => render(<FormControlLabel label="checkbox" control={<Checkbox />} />))
-      .child("default", (test) => test.assertion(Interactor("checkbox").is({ checked: false })))
-      .child("check", (test) =>
-        test.step("check", () => Interactor("checkbox").check()).assertion(Interactor("checkbox").is({ checked: true }))
+      .assertion(Interactor().is({ checked: false }))
+      .child("check and assert", (test) =>
+        test.step(Interactor().check()).assertion(Interactor().is({ checked: true }))
       )
   )
-  .child("uncheck", (test) =>
+  .child("test `uncheck` action", (test) =>
     test
       .step("render", () => render(<FormControlLabel label="checkbox" control={<Checkbox defaultChecked />} />))
-      .child("default", (test) => test.assertion(Interactor("checkbox").is({ checked: true })))
-      .child("uncheck", (test) =>
-        test
-          .step("uncheck", () => Interactor("checkbox").uncheck())
-          .assertion(Interactor("checkbox").is({ checked: false }))
+      .assertion(Interactor().is({ checked: true }))
+      .child("uncheck and assert", (test) =>
+        test.step(Interactor().uncheck()).assertion(Interactor().is({ checked: false }))
       )
   )
-  .child("toggle", (test) =>
+  // NOTE: Here is nice example of duplicating tests by useless parallelism
+  .child("test `toggle` action", (test) =>
     test
       .step("render", () => render(<FormControlLabel label="checkbox" control={<Checkbox />} />))
-      .child("default", (test) => test.assertion(Interactor("checkbox").is({ checked: false })))
-      .child("toggle 1", (test) =>
+      .assertion(Interactor().is({ checked: false }))
+      .child("toggle twice", (test) =>
         test
-          .step("toggle", () => Interactor("checkbox").toggle())
-          .assertion(Interactor("checkbox").is({ checked: true }))
-      )
-      .child("toggle 2", (test) =>
-        test
-          .step("toggle", () => Interactor("checkbox").toggle())
-          .step("toggle", () => Interactor("checkbox").toggle())
-          .assertion(Interactor("checkbox").is({ checked: false }))
+          .step(Interactor().toggle())
+          .assertion(Interactor().is({ checked: true }))
+          .child("second toggle", (test) =>
+            test.step(Interactor().toggle()).assertion(Interactor().is({ checked: false }))
+          )
       )
   );
 // TODO Don't work because `click` doesn't affect to `document.activeElement`
