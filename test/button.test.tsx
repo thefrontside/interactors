@@ -265,5 +265,5 @@ export default test("Button")
     //   await container.querySelector('button')?.classList.contains('disabledClassName')
     // })
     //TODO: fix this assertion to use bigTest methods
-    .assertion(button.has({ className: including('disabledClassName') }))
+    // .assertion(button.has({ className: including('disabledClassName'), disabled: or(true, false) }))
   )
