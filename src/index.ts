@@ -7,3 +7,4 @@ export { Body } from "./body";
 export { MaterialCheckbox as CheckBox } from "./checkbox";
 export { Button } from "@bigtest/interactor";
 export { default as Fab } from './fab';
+export { Button } from '@bigtest/interactor'
