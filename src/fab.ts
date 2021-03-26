@@ -2,5 +2,5 @@ import { Button } from '@bigtest/interactor';
 
 export default Button.extend('button')
   .filters({
-    embeddedIcon: (el) => !!el.querySelector('.MuiIcon-root')
+    ariaLabel: (el) => el.getAttribute("aria-label")
   })
