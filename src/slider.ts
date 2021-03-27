@@ -21,8 +21,9 @@ export default HTML.extend('slider')
   })
   .actions({
     keyThumb: ({ perform }, key) => perform((el) => {
+      const keyCodes: { [key: string]: number; }= { "ArrowRight": 39, "ArrowLeft": 37}
       el.dispatchEvent(new KeyboardEvent('keydown', {
-        keyCode: 39,
+        keyCode: keyCodes[key],
         key: `${key}`,
         code: `${key}`,
         bubbles: true,
