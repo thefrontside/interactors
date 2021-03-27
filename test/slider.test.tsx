@@ -5,10 +5,6 @@ import { render } from './helpers';
 
 const slider = Interactor;
 
-function handleChange() : any {
-  console.log('Handle change that is going to be awesome')
-}
-
 export default test("slider")
   .step(Page.visit("/"))
   // .child("render Slider", (test) => test
@@ -68,7 +64,7 @@ export default test("slider")
           />
         </div>)
       })
-      .child("key thumb right", (test) => test
+      .child("can control slider thumb with keyboard", (test) => test
         .step('key thumb right', async() => {
           const thumb1 = slider({ dataIndex: "0"})
           await thumb1.keyThumb("ArrowRight");
