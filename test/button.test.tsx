@@ -1,12 +1,10 @@
-import { test, Page, HTML, Link } from "bigtest";
+import { test, Page, Link } from "bigtest";
 import { Button as Interactor, including, not, or } from "../src/index";
 import { Button as MuiButton } from "@material-ui/core";
 import { containing } from './matchers';
-import { render, buttonClasses } from "./helpers";
+import { render } from "./helpers";
 
 const button = Interactor();
-
-const Span = HTML.extend('span').selector('span');
 
 export default test("Button")
   .step(Page.visit("/"))
@@ -194,7 +192,7 @@ export default test("Button")
       await render(<MuiButton TouchRippleProps={{ className: 'touch-ripple'}}>Ripple Button</MuiButton>)
     })
     .step('has root span with custom css ripple', async() => {
-      await button.find(Span({ className: including('touch-ripple')})).exists()
+      await button.has({ customRippleClass: including('touch-ripple')})
     })
   )
   .child('can disable ripple effect', (test) => test
@@ -202,7 +200,7 @@ export default test("Button")
       await render(<MuiButton disableRipple TouchRippleProps={{ className: 'touch-ripple'}}>Ripple Button</MuiButton>)
     })
     .step('span with custom ripple class', async() => {
-      await button.find(Span({ className: including('touch-ripple')})).absent()
+      await button.has({ rippleEnabled: false})
     })
   )
   .child('can disable elevation', (test) => test
@@ -219,7 +217,7 @@ export default test("Button")
       await button.focus()
     })
     .step('has span with css ripple', async() => {
-      await button.find(Span({ className: including('pulstat-focus-visible')})).exists()
+      await button.has({ customRippleClass: including('pulstat-focus-visible')})
     })
   )
   .child('can disable focusRipple', (test) => test
@@ -237,11 +235,11 @@ export default test("Button")
       await button.focus()
     })
     .step('should not have visible css ripple', async() => {
-      await button.find(Span({ className: including('pulstat-focus-visible')})).absent();
+      await button.has({ rippleVisible: false })
     })
   )
   .child('should automatically change button to an anchor when href is provided', (test) => test
-    .step('render button with href', async() => {
+    .step('render as Link', async() => {
       await render(<MuiButton href="https://google.com">Href Button</MuiButton>)
     })
     /**
@@ -259,11 +257,9 @@ export default test("Button")
     .step('render button', async() => {
       await render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }}>Disabled Button</MuiButton>)
     })
-    // .step('button is disabled and styles passed to BaseButton', async() => {
-    //   const { container } = render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }} />)
-    //   console.log(container.querySelector('button'))
-    //   await container.querySelector('button')?.classList.contains('disabledClassName')
-    // })
-    //TODO: fix this assertion to use bigTest methods
-    // .assertion(button.has({ className: including('disabledClassName'), disabled: or(true, false) }))
+    .step('button is disabled and styles passed to BaseButton', async() => {
+      const { container } = render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }} />)
+      await container.querySelector('button')?.classList.contains('disabledClassName')
+    })
+
   )
