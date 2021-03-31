@@ -1,4 +1,4 @@
-import { HTML, Button as BaseButton } from "@bigtest/interactor";
+import { Button as BaseButton } from "@bigtest/interactor";
 
 // TODO Merge with #4
 export const Button = BaseButton.extend("MUI Button").filters({
@@ -7,3 +7,7 @@ export const Button = BaseButton.extend("MUI Button").filters({
 
 export const MaterialButton = Button.extend("material-ui button")
 // export default Button.extend('button')
+export default Button.extend('button')
+  .filters({
+    iconLabel: (el) => el.querySelector(".MuiButton-label")?.firstElementChild?.classList.value,
+  })
