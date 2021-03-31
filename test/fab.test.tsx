@@ -5,7 +5,6 @@ import AddIcon from '@material-ui/icons/Add';
 import { render } from './helpers';
 
 const Span = HTML.extend('span').selector('span')
-const SvgIcon = HTML.extend('svg').selector('svg')
 
 const fab = Interactor();
 
@@ -42,6 +41,4 @@ export default test("Fab")
     })
     .assertion(fab.has({ ariaLabel: including('add')}))
     .assertion(fab.has({ svgIcon: true}))
-    // TODO: Fix this assertion fails with:: "ERROR actual.includes is not a function"
-    // .assertion(fab.find(SvgIcon({ className: including('MuiSvgIcon-root') })).exists())
   )
