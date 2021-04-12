@@ -1,4 +1,4 @@
-import { HTML } from 'bigtest';
+import { HTML, createInteractor } from 'bigtest';
 
 export default HTML.extend('slider')
   .selector('span[role="slider"]')
@@ -6,21 +6,10 @@ export default HTML.extend('slider')
     ariaValueNow: (el) => {
       return el.getAttribute('aria-valuenow')
     },
-    dataIndex: (el) => el.getAttribute('data-index'),
-    index: (el) => {
-      const parent = el.parentNode;
-      const sliderNodes = parent?.querySelectorAll('span[role="slider"]') || [];
-
-      for (let i = 0; i < sliderNodes?.length; i++) {
-        if (el === sliderNodes[i]) {
-          return i;
-        }
-      }
-      return undefined;
-    }
+    index: (el) => el.getAttribute('data-index'),
   })
   .actions({
-    keyThumb: ({ perform }, key) => perform((el) => {
+    keyboard: ({ perform }, key) => perform((el) => {
       const keyCodes: { [key: string]: number; }= { "ArrowRight": 39, "ArrowLeft": 37}
       el.dispatchEvent(new KeyboardEvent('keydown', {
         keyCode: keyCodes[key],
@@ -29,5 +18,12 @@ export default HTML.extend('slider')
         bubbles: true,
         cancelable: true
       }))
+    }),
+    mouseDown: ({ perform }, clientX: number) => perform((el) => {
+      console.log('Parent parentElement', el.parentElement)
+      el.dispatchEvent(new MouseEvent('mousedown', { clientX: clientX, bubbles: true, cancelable: true }))
+    }),
+    mouseUp: ({ perform }, clientX: number) => perform((el) => {
+      el.dispatchEvent(new MouseEvent('mouseup', { clientX: clientX, cancelable: true, bubbles: true }))
     })
   })
