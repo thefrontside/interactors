@@ -1,28 +1,21 @@
 import { Page, test } from 'bigtest';
-import { Slider as Interactor, including } from '../src/index';
+import { SliderThumb as Interactor, including } from '../src/index';
 import { Slider as MuiSlider, Typography } from '@material-ui/core'
 import { render } from './helpers';
 
-const slider = Interactor;
+const sliderThumb = Interactor;
 
 export default test("slider")
   .step(Page.visit("/"))
-  // .child("render Slider", (test) => test
-  //   .step("render Slider", async() => {
-  //     await render(<MuiSlider defaultValue={[20, 30]}/>)
-
-  //     const slider1 = slider({ index: 1 })
-  //     const slider2 = slider({ index: 2 });
-
-
-  //     console.log('these are the sliders', slider1, slider2);
-  //   })
-  //   .assertion("we have a slider", async() => {
-  //     console.log('this is the slider returned', slider);
-  //     slider().exists()
-  //   })
-  //   .assertion(slider({ index: 1}).exists())
-  // )
+  .child("render Slider", (test) => test
+    .step("render Slider", async() => {
+      await render(<MuiSlider defaultValue={20}/>)
+    })
+    .assertion("we have a slider", async() => {
+      sliderThumb().exists()
+    })
+    .assertion(sliderThumb({ index: "0"}).exists())
+  )
   .child("another test", (test) => test
     .step("render", async() => {
       const marks = [
@@ -56,26 +49,42 @@ export default test("slider")
           </Typography>
           <MuiSlider
             defaultValue={[80, 20]}
-            // getAriaValueText={valuetext}
-            // aria-labelledby="discrete-slider-always"
+            getAriaValueText={valuetext}
+            aria-labelledby="discrete-slider-always"
             step={10}
             marks={marks}
-            // valueLabelDisplay="on"
+            valueLabelDisplay="on"
           />
         </div>)
       })
       .child("can control slider thumb with keyboard", (test) => test
         .step('key thumb right', async() => {
-          const thumb1 = slider({ dataIndex: "0"})
-          await thumb1.keyThumb("ArrowRight");
+          const thumb1 = sliderThumb({ index: "0"})
+          await thumb1.keyboard("ArrowRight");
         })
-        .assertion(slider({ dataIndex: "0"}).has({ ariaValueNow: including('30')}))
+        .assertion(sliderThumb({ index: "0"}).has({ ariaValueNow: including('30')}))
         .child("key thumb left", (test) => test
-          .step('key thumb left', async() => {
-            const thumb1 = slider({ dataIndex: "0"})
-            await thumb1.keyThumb("ArrowLeft");
+        .step('key thumb left', async() => {
+          const thumb1 = sliderThumb({ index: "0"})
+          await thumb1.keyboard("ArrowLeft");
           })
-          .assertion(slider({ dataIndex: "0"}).has({ ariaValueNow: including('20')}))
+          .assertion(sliderThumb({ index: "0"}).has({ ariaValueNow: including('20')}))
+        )
+      )
+      .child("can control slider thumb with mouse", (test) => test
+        .step('Mouse click right', async() => {
+          const thumb1 = sliderThumb({ index: "0"})
+          await thumb1.mouseDown(127)
+          await thumb1.mouseUp(127)
+        })
+        .assertion(sliderThumb({ index: "0"}).has({ ariaValueNow: including('10')}))
+        .child("mouse click left", (test) => test
+        .step('click mouse', async() => {
+          const thumb1 = sliderThumb({ index: "0"})
+          await thumb1.mouseDown(200)
+          await thumb1.mouseUp(200)
+          })
+          .assertion(sliderThumb({ index: "0"}).has({ ariaValueNow: including('20')}))
         )
       )
   )
