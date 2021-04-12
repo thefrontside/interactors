@@ -43,7 +43,7 @@ export default test("slider")
       }
 
       await render(
-        <div style={{ width: '80%', padding: '1em'}}>
+        <div style={{ width: '50em', padding: '1em'}}>
           <Typography id="discrete-slider-always" gutterBottom>
             Always visible
           </Typography>
