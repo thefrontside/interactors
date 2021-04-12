@@ -6,4 +6,4 @@ export { HTML, including, matching, and, or, not, some, every } from '@bigtest/i
 export { MaterialCheckbox as CheckBox } from "./checkbox";
 export { Body } from "./body";
 export { Button } from '@bigtest/interactor'
-export { default as SliderThumb } from './slider';
+export { default as Slider } from './slider';
