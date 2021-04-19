@@ -114,14 +114,11 @@ async function goToMonth(
 async function goToDay(interactor: Interactor<HTMLElement, any>, day: number) {
   // NOTE: We can't find day if user has custom day render
   const dayInteractor = interactor.find(HTML.selector(".MuiPickersCalendar-week > [role='presentation']")(String(day)));
-  // TODO We need better message for that
-  await dayInteractor.has({ className: not(including("MuiPickersDay-dayDisabled")) });
-  // Instead of
-  /*
-      │ ╒═ Filter:   className
-      │ ├─ Expected: not including "MuiPickersDay-dayDisabled"
-      │ └─ Received: "MuiButtonBase-root MuiIconButton-root MuiPickersDay-day MuiPickersDay-dayDisabled"
-    */
+  try {
+    await dayInteractor.has({ className: not(including("MuiPickersDay-dayDisabled")) });
+  } catch (_) {
+    throw new Error(`Can't select ${day} day because it's disabled`);
+  }
   return dayInteractor.click();
 }
 
