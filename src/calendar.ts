@@ -127,12 +127,16 @@ export const getCalendar = (utils: ReturnType<typeof useUtils>) =>
     date: (element) => {
       const header = getTitleElement(element)?.innerText;
       const selectedDay = getSelectedElement(element)?.innerText;
-      const monthAndYear = header ? utils.parse(header, "MMMM yyyy") : new Date();
-      return new Date(
-        (selectedDay ? utils.addDays(monthAndYear, parseInt(selectedDay)) : monthAndYear)
-          ?.toISOString()
-          .replace(/T.*$/, "") ?? new Date()
-      );
+      const monthAndYear = header ? utils.parse(header, "MMMM yyyy") ?? new Date() : new Date();
+      const day = selectedDay ? parseInt(selectedDay) : NaN;
+      const month = monthAndYear.getMonth() + 1;
+      const year = monthAndYear.getFullYear();
+      // NOTE: Date.toISOString() depends on local timezone and returns different results of local machine and CI
+      return Number.isNaN(day)
+        ? new Date()
+        : new Date(
+            `${year}-${String(month).replace(/^(\d)$/, "0$1")}-${String(day).replace(/^(\d)$/, "0$1")}T00:00:00.000Z`
+          );
     },
   }).actions({
     setMonth: async (interactor: Interactor<HTMLElement, any>, targetMonth: string) => {

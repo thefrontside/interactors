@@ -19,8 +19,7 @@ export default test("Calendar")
       .assertion(calendar.has({ year: "2014" }))
       .assertion(calendar.has({ day: 18 }))
       .assertion(calendar.has({ weekDay: "Mo" }))
-      // TODO Don't work well on different environments
-      // .assertion(CalendarWithUtils({ date: new Date("2014-08-18") }).exists())
+      .assertion(CalendarWithUtils({ date: new Date("2014-08-18T00:00:00.000Z") }).exists())
       .child("nextMonth action", (test) =>
         test.step(calendar.nextMonth()).assertion(Calendar().has({ title: "September 2014" }))
       )
@@ -50,23 +49,6 @@ export default test("Calendar")
   )
   .child("custom renders", (test) =>
     test
-      // TODO What should do if user want to click on the disabled `nextMonth` button? Raise exception? Do nothing?
-      // TODO How to test an exception with BigTest?
-      // TODO The same for `prevMonth` and `setDay` and `shouldDisableDate`
-      // TODO Props to test `disableFuture`, `disablePast`, `maxDate`, `minDate`
-      // .child("nextMonth action with disableFuture", (test) =>
-      //   test
-      //     .step(renderComponent({ date: new Date(), disableFuture: true }))
-      //     .step(Calendar().nextMonth())
-      //     .assertion(Calendar().has({ title: "???" }))
-      // )
-      // TODO Test exception message?
-      // .child("setDay action on disabled day", (test) =>
-      //   test
-      //     .step(renderComponent({ maxDate: new Date("2014-08-18") }))
-      //     .step(calendar.setDay(20))
-      //     .assertion(calendar.exists())
-      // )
       .child("setDay action with fully custom day render", (test) =>
         test
           .step(
@@ -81,25 +63,6 @@ export default test("Calendar")
           // But we still be able do day clicks, just can't test it ¯\_(ツ)_/¯
           .assertion(Calendar("August 2014").exists())
       )
-      // TODO But 4th day appears twice :(
-      // .child(
-      //   "setDay action with 'semi-transparent' days",
-      //   (test) =>
-      //     test.step(
-      //       // NOTE: Another `cool` thing we can render days from prev/next months and they are clickable
-      //       renderComponent((onChange) => ({
-      //         renderDay: (day, _selectedDate, dayInCurrentMonth, dayComponent) =>
-      //           cloneElement(dayComponent, {
-      //             hidden: false,
-      //             ...(dayInCurrentMonth
-      //               ? undefined
-      //               : { style: { opacity: "0.5" }, onClick: () => onChange?.(day as Date) }),
-      //           }),
-      //       }))
-      //     )
-      //   // .step(Calendar().setDay(4))
-      //   // .assertion(Calendar("4 September 2014").exists())
-      // )
       .child("nextMonth action with custom icon", (test) =>
         test
           .step(renderComponent({ rightArrowIcon: <span /> }))
