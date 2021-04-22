@@ -1,7 +1,7 @@
-import type { useUtils } from "@material-ui/pickers";
 import { createInteractor, HTML, including, Interaction, Interactor, not } from "bigtest";
 import { isHTMLElement } from "../test/helpers";
 import { delay } from "./helpers";
+import { DatePickerUtils } from "./types";
 
 function getHeaderElement(element: HTMLElement) {
   const header = element.parentElement?.querySelector(".MuiPickersCalendarHeader-switchHeader");
@@ -122,7 +122,7 @@ async function goToDay(interactor: Interactor<HTMLElement, any>, day: number) {
   return dayInteractor.click();
 }
 
-export const getCalendar = (utils: ReturnType<typeof useUtils>) =>
+export const createCalendar = (utils: DatePickerUtils) =>
   Calendar.filters({
     date: (element) => {
       const header = getTitleElement(element)?.innerText;

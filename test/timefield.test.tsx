@@ -1,9 +1,9 @@
 import { Page, test } from "bigtest";
 import { TextField as Component } from "@material-ui/core";
 import { TimeField } from "../src";
-import { getComponentRenderer } from "./helpers";
+import { createRenderStep } from "./helpers";
 
-const renderComponent = getComponentRenderer(Component, { id: "timefield", label: "timefield", type: "time" });
+const renderComponent = createRenderStep(Component, { id: "timefield", label: "timefield", type: "time" });
 const timefield = TimeField("timefield");
 
 export default test("TimeField")

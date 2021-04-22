@@ -7,9 +7,20 @@ import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-export function render(element: ReactElement) {
+interface StepImplementation {
+  description: string;
+  action: () => void;
+}
+
+export function renderStep(description: ReactElement): StepImplementation;
+export function renderStep(description: string, element: ReactElement): StepImplementation;
+export function renderStep(description: string | ReactElement, element?: ReactElement): StepImplementation {
+  if (typeof description != "string") {
+    element = description;
+    description = typeof element.type == "string" ? element.type : element.type.name || element.type.toString();
+  }
   return {
-    description: "render",
+    description,
     action: () => {
       let insertion = document.createComment("mui-jss-insertion");
       let insertionPoint = document.head.insertBefore(insertion, document.head.firstChild);
@@ -44,27 +55,32 @@ export function isHTMLElement<T extends HTMLElementTypes = "">(
   return typeof Constructor == "function" && element instanceof Constructor;
 }
 
+function getDisplayName(Component: ComponentType | string) {
+  return (typeof Component === "string" ? Component : Component.displayName || Component.name) || "Unknown";
+}
+
 export interface WrapperProps<CT extends ComponentType<any>> {
   getProps?: Partial<ComponentProps<CT>> | ((props?: Partial<ComponentProps<CT>>) => Partial<ComponentProps<CT>>);
   props?: Partial<ComponentProps<CT>>;
   children: (props?: Partial<ComponentProps<CT>>) => ReactElement<ComponentProps<CT>, CT>;
 }
 
-export function getComponentRenderer<CT extends ComponentType<any>>(
+export function createRenderStep<CT extends ComponentType<any>>(
   Component: CT,
   defaultProps: Partial<ComponentProps<CT>> = {},
   Wrapper: ComponentType<WrapperProps<CT>> = ({ getProps, children }) =>
     children(typeof getProps == "function" ? getProps() : getProps)
 ) {
   return (getProps?: WrapperProps<CT>["getProps"]) =>
-    render(
+    renderStep(
+      getDisplayName(Component),
       <Wrapper getProps={getProps} props={typeof getProps == "function" ? getProps() : getProps}>
         {(props) => <Component {...({ ...defaultProps, ...props } as ComponentProps<CT>)} />}
       </Wrapper>
     );
 }
 
-export function getPickerRenderer<T extends ComponentType<any>>(PickerComponent: T) {
+export function createPickerRenderStep<T extends ComponentType<any>>(PickerComponent: T) {
   const Wrapper = ({ getProps, children }: WrapperProps<T>) => {
     const props = typeof getProps == "function" ? getProps() : getProps;
     const initialDate = (props?.date ?? new Date("2014-08-18")) as Date;
@@ -93,7 +109,7 @@ export function getPickerRenderer<T extends ComponentType<any>>(PickerComponent:
     );
   };
 
-  const renderComponent = getComponentRenderer(PickerComponent, {}, Wrapper);
+  const renderComponent = createRenderStep(PickerComponent, {}, Wrapper);
   return (
     getProps?:
       | Partial<ComponentProps<typeof PickerComponent>>

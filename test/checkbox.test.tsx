@@ -1,9 +1,9 @@
 import { test, Page } from "bigtest";
 import { Body, Checkbox } from "../src/index";
 import { Checkbox as Component, FormControlLabel } from "@material-ui/core";
-import { getComponentRenderer, render } from "./helpers";
+import { createRenderStep, renderStep } from "./helpers";
 
-const renderComponent = getComponentRenderer(Component, {}, ({ props, children }) => (
+const renderComponent = createRenderStep(Component, {}, ({ props, children }) => (
   <FormControlLabel label="checkbox" control={children(props)} />
 ));
 const checkbox = Checkbox("checkbox");
@@ -34,16 +34,16 @@ export default test("Checkbox")
   )
   .child("test `filter` by checked", (test) =>
     test
-      .step(render(<FormControlLabel label="checkbox" checked control={<Component />} />))
+      .step(renderStep(<FormControlLabel label="checkbox" checked control={<Component />} />))
       .assertion(checkbox.is({ checked: true }))
   )
   .child("test `filter` by disabled", (test) =>
     test
-      .step(render(<FormControlLabel label="checkbox" disabled control={<Component />} />))
+      .step(renderStep(<FormControlLabel label="checkbox" disabled control={<Component />} />))
       .assertion(Checkbox({ disabled: true }).exists())
   )
   .child("test `filter` by visible", (test) =>
-    test.step(render(<Component />)).assertion(Checkbox({ visible: false }).exists())
+    test.step(renderStep(<Component />)).assertion(Checkbox({ visible: false }).exists())
   )
 
   .child("test `uncheck` action", (test) =>
