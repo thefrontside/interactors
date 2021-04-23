@@ -56,7 +56,11 @@ export function isHTMLElement<T extends HTMLElementTypes = "">(
 }
 
 function getDisplayName(Component: ComponentType | string) {
-  return (typeof Component === "string" ? Component : Component.displayName || Component.name) || "Unknown";
+  return (
+    (typeof Component === "string"
+      ? Component
+      : Component.displayName || Component.name || (Component as any).muiName) || "Unknown"
+  );
 }
 
 export interface WrapperProps<CT extends ComponentType<any>> {
