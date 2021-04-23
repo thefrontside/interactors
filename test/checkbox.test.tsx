@@ -1,9 +1,9 @@
 import { test, Page } from "bigtest";
 import { Body, Checkbox } from "../src/index";
 import { Checkbox as Component, FormControlLabel } from "@material-ui/core";
-import { createRenderStep, renderStep } from "./helpers";
+import { createRenderStep, render } from "./helpers";
 
-const renderComponent = createRenderStep(Component, {}, ({ props, children }) => (
+const renderCheckbox = createRenderStep(Component, {}, ({ props, children }) => (
   <FormControlLabel label="checkbox" control={children(props)} />
 ));
 const checkbox = Checkbox("checkbox");
@@ -12,7 +12,7 @@ export default test("Checkbox")
   .step(Page.visit("/"))
   .child("default render", (test) =>
     test
-      .step(renderComponent())
+      .step(renderCheckbox())
       .assertion(checkbox.exists())
       .assertion(Checkbox().is({ checked: false }))
       .assertion(Checkbox().is({ focused: false }))
@@ -30,31 +30,31 @@ export default test("Checkbox")
       )
   )
   .child("test `filter` by indeterminate", (test) =>
-    test.step(renderComponent({ indeterminate: true })).assertion(checkbox.is({ indeterminate: true }))
+    test.step(renderCheckbox({ indeterminate: true })).assertion(checkbox.is({ indeterminate: true }))
   )
   .child("test `filter` by checked", (test) =>
     test
-      .step(renderStep(<FormControlLabel label="checkbox" checked control={<Component />} />))
+      .step(render(<FormControlLabel label="checkbox" checked control={<Component />} />))
       .assertion(checkbox.is({ checked: true }))
   )
   .child("test `filter` by disabled", (test) =>
     test
-      .step(renderStep(<FormControlLabel label="checkbox" disabled control={<Component />} />))
+      .step(render(<FormControlLabel label="checkbox" disabled control={<Component />} />))
       .assertion(Checkbox({ disabled: true }).exists())
   )
   .child("test `filter` by visible", (test) =>
-    test.step(renderStep(<Component />)).assertion(Checkbox({ visible: false }).exists())
+    test.step(render(<Component />)).assertion(Checkbox({ visible: false }).exists())
   )
 
   .child("test `uncheck` action", (test) =>
     test
-      .step(renderComponent({ defaultChecked: true }))
+      .step(renderCheckbox({ defaultChecked: true }))
       .step(checkbox.uncheck())
       .assertion(checkbox.is({ checked: false }))
   )
   .child("autoFocus", (test) =>
     test
-      .step(renderComponent({ autoFocus: true }))
+      .step(renderCheckbox({ autoFocus: true }))
       .assertion(checkbox.is({ focused: true }))
       .child("test `blur` action", (test) => test.step(checkbox.blur()).assertion(checkbox.is({ focused: false })))
       .child("test click outside", (test) =>

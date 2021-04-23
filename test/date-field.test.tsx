@@ -3,14 +3,14 @@ import { TextField as Component } from "@material-ui/core";
 import { DateField } from "../src";
 import { createRenderStep } from "./helpers";
 
-const renderComponent = createRenderStep(Component, { id: "datefield", label: "datefield", type: "date" });
+const renderDateField = createRenderStep(Component, { id: "datefield", label: "datefield", type: "date" });
 const datefield = DateField("datefield");
 
 export default test("DateField")
   .step(Page.visit("/"))
   .child("default", (test) =>
     test
-      .step(renderComponent())
+      .step(renderDateField())
       .assertion(datefield.has({ value: "" }))
       .child("fillIn string", (test) =>
         test
@@ -25,7 +25,7 @@ export default test("DateField")
   )
   .child("min/max", (test) =>
     test
-      .step(renderComponent({ inputProps: { min: "2013-07-15", max: "2015-09-21" } }))
+      .step(renderDateField({ inputProps: { min: "2013-07-15", max: "2015-09-21" } }))
       .step(datefield.fillIn("2014-08-18"))
       .assertion(datefield.has({ value: "2014-08-18" }))
       .child("before min", (test) =>

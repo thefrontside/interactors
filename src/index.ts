@@ -5,9 +5,9 @@ export { HTML, including, matching, and, or, not, some, every } from "@bigtest/i
 
 export * from "./types";
 
-export * from "./datefield";
-export * from "./timefield";
-export * from "./datetimefield";
+export * from "./date-field";
+export * from "./time-field";
+export * from "./datetime-field";
 
 export * from "./checkbox";
 export * from "./body";

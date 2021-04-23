@@ -3,14 +3,14 @@ import { TextField as Component } from "@material-ui/core";
 import { TimeField } from "../src";
 import { createRenderStep } from "./helpers";
 
-const renderComponent = createRenderStep(Component, { id: "timefield", label: "timefield", type: "time" });
+const renderTimeField = createRenderStep(Component, { id: "timefield", label: "timefield", type: "time" });
 const timefield = TimeField("timefield");
 
 export default test("TimeField")
   .step(Page.visit("/"))
   .child("default", (test) =>
     test
-      .step(renderComponent())
+      .step(renderTimeField())
       .assertion(timefield.has({ value: "" }))
       .child("fillIn string", (test) =>
         test

@@ -2,7 +2,7 @@ import { test, Page, HTML } from "bigtest";
 import { Fab as Interactor, including } from "../src/index";
 import { Fab as MuiFab, Icon as MuiIcon } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import { renderStep } from "./helpers";
+import { render } from "./helpers";
 
 const Span = HTML.extend("span").selector("span");
 
@@ -12,19 +12,19 @@ export default test("Fab")
   .step(Page.visit("/"))
   .child("can render a floating action button", (test) =>
     test
-      .step(renderStep(<MuiFab>My Fab</MuiFab>))
+      .step(render(<MuiFab>My Fab</MuiFab>))
       .assertion(fab.exists())
       .assertion(fab.has({ text: "My Fab".toUpperCase() }))
   )
   .child("renders extended floating action button", (test) =>
     test
-      .step(renderStep(<MuiFab variant="extended">My Fab</MuiFab>))
+      .step(render(<MuiFab variant="extended">My Fab</MuiFab>))
       .assertion(fab.has({ className: including("MuiFab-extended") }))
   )
   .child("render Icon with children with right classes", (test) =>
     test
       .step(
-        renderStep(
+        render(
           <MuiFab>
             <MuiIcon data-testid="icon" className={"child-woof"} />
           </MuiFab>
@@ -35,7 +35,7 @@ export default test("Fab")
   .child("render Fab with only icon and aria-label", (test) =>
     test
       .step(
-        renderStep(
+        render(
           <MuiFab color="primary" aria-label="add">
             <AddIcon />
           </MuiFab>

@@ -3,7 +3,7 @@ import { TextField as Component } from "@material-ui/core";
 import { DateTimeField } from "../src";
 import { createRenderStep } from "./helpers";
 
-const renderComponent = createRenderStep(Component, {
+const renderDateTimeField = createRenderStep(Component, {
   id: "datetimefield",
   label: "datetimefield",
   type: "datetime-local",
@@ -14,7 +14,7 @@ export default test("DateTimeField")
   .step(Page.visit("/"))
   .child("default", (test) =>
     test
-      .step(renderComponent())
+      .step(renderDateTimeField())
       .assertion(datetimefield.has({ value: "" }))
       .child("fillIn string", (test) =>
         test

@@ -4,7 +4,7 @@ import { Calendar, createCalendar } from "../src";
 import { createPickerRenderStep } from "./helpers";
 import DateFnsUtils from "@date-io/date-fns";
 
-const renderComponent = createPickerRenderStep(Component);
+const renderCalendar = createPickerRenderStep(Component);
 const CalendarWithUtils = createCalendar(new DateFnsUtils());
 const calendar = Calendar("18 August 2014");
 
@@ -12,7 +12,7 @@ export default test("Calendar")
   .step(Page.visit("/"))
   .child("default render", (test) =>
     test
-      .step(renderComponent())
+      .step(renderCalendar())
       .assertion(calendar.exists())
       .assertion(calendar.has({ title: "August 2014" }))
       .assertion(calendar.has({ month: "August" }))
@@ -52,7 +52,7 @@ export default test("Calendar")
       .child("setDay action with fully custom day render", (test) =>
         test
           .step(
-            renderComponent({
+            renderCalendar({
               renderDay: (day, _selectedDate, dayInCurrentMonth, _dayComponent) => (
                 <button hidden={!dayInCurrentMonth}>{day?.getDate()}</button>
               ),
@@ -65,13 +65,13 @@ export default test("Calendar")
       )
       .child("nextMonth action with custom icon", (test) =>
         test
-          .step(renderComponent({ rightArrowIcon: <span /> }))
+          .step(renderCalendar({ rightArrowIcon: <span /> }))
           .step(calendar.nextMonth())
           .assertion(Calendar().has({ title: "September 2014" }))
       )
       .child("prevMonth action with custom icon", (test) =>
         test
-          .step(renderComponent({ leftArrowIcon: <span /> }))
+          .step(renderCalendar({ leftArrowIcon: <span /> }))
           .step(calendar.prevMonth())
           .assertion(Calendar().has({ title: "July 2014" }))
       )

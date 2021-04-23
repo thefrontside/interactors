@@ -12,9 +12,9 @@ interface StepImplementation {
   action: () => void;
 }
 
-export function renderStep(description: ReactElement): StepImplementation;
-export function renderStep(description: string, element: ReactElement): StepImplementation;
-export function renderStep(description: string | ReactElement, element?: ReactElement): StepImplementation {
+export function render(description: ReactElement): StepImplementation;
+export function render(description: string, element: ReactElement): StepImplementation;
+export function render(description: string | ReactElement, element?: ReactElement): StepImplementation {
   if (typeof description != "string") {
     element = description;
     description = typeof element.type == "string" ? element.type : element.type.name || element.type.toString();
@@ -72,7 +72,7 @@ export function createRenderStep<CT extends ComponentType<any>>(
     children(typeof getProps == "function" ? getProps() : getProps)
 ) {
   return (getProps?: WrapperProps<CT>["getProps"]) =>
-    renderStep(
+    render(
       getDisplayName(Component),
       <Wrapper getProps={getProps} props={typeof getProps == "function" ? getProps() : getProps}>
         {(props) => <Component {...({ ...defaultProps, ...props } as ComponentProps<CT>)} />}
