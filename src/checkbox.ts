@@ -1,6 +1,6 @@
-import { CheckBox } from "@bigtest/interactor";
+import { CheckBox as BaseCheckbox } from "@bigtest/interactor";
 
-export const MaterialCheckbox = CheckBox.extend("MUI Checkbox")
+export const Checkbox = BaseCheckbox.extend("MUI Checkbox")
   .filters({
     /**
      * Checkbox component does not set the native input element to indeterminate due to inconsistent behavior across browsers.
