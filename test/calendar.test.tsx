@@ -21,31 +21,51 @@ export default test("Calendar")
       .assertion(calendar.has({ weekDay: "Mo" }))
       .assertion(CalendarWithUtils({ date: new Date("2014-08-18T00:00:00.000Z") }).exists())
       .child("nextMonth action", (test) =>
-        test.step(calendar.nextMonth()).assertion(Calendar().has({ title: "September 2014" }))
+        test
+          .step(calendar.nextMonth())
+          .assertion(Calendar().has({ title: "September 2014" }))
       )
       .child("prevMonth action", (test) =>
-        test.step(calendar.prevMonth()).assertion(Calendar().has({ title: "July 2014" }))
+        test
+          .step(calendar.prevMonth())
+          .assertion(Calendar().has({ title: "July 2014" }))
       )
       // NOTE: Using here `Calendar("18 August 2014")` leads to issue where the second nextMonth step throws NoSuchElementError
       .child("setYear action in future", (test) =>
-        test.step(Calendar().setYear(2015)).assertion(Calendar().has({ title: "August 2015" }))
+        test
+          .step(Calendar().setYear(2015))
+          .assertion(Calendar().has({ title: "August 2015" }))
       )
       .child("setYear action in past", (test) =>
-        test.step(Calendar().setYear(2013)).assertion(Calendar().has({ title: "August 2013" }))
+        test
+          .step(Calendar().setYear(2013))
+          .assertion(Calendar().has({ title: "August 2013" }))
       )
       .child("setMonth action in future", (test) =>
-        test.step(Calendar().setMonth("September")).assertion(Calendar().has({ title: "September 2014" }))
+        test
+          .step(Calendar().setMonth("September"))
+          .assertion(Calendar().has({ title: "September 2014" }))
       )
       .child("setMonth action in past", (test) =>
-        test.step(Calendar().setMonth("July")).assertion(Calendar().has({ title: "July 2014" }))
+        test
+          .step(Calendar().setMonth("July"))
+          .assertion(Calendar().has({ title: "July 2014" }))
       )
       .child("setMonth action with utils in future", (test) =>
-        test.step(CalendarWithUtils().setMonth("September")).assertion(Calendar().has({ title: "September 2014" }))
+        test
+          .step(CalendarWithUtils().setMonth("September"))
+          .assertion(Calendar().has({ title: "September 2014" }))
       )
       .child("setMonth action with utils in past", (test) =>
-        test.step(CalendarWithUtils().setMonth("July")).assertion(Calendar().has({ title: "July 2014" }))
+        test
+          .step(CalendarWithUtils().setMonth("July"))
+          .assertion(Calendar().has({ title: "July 2014" }))
       )
-      .child("setDay action", (test) => test.step(calendar.setDay(15)).assertion(Calendar("15 August 2014").exists()))
+      .child("setDay action", (test) =>
+        test
+          .step(calendar.setDay(15))
+          .assertion(Calendar("15 August 2014").exists())
+      )
   )
   .child("custom renders", (test) =>
     test

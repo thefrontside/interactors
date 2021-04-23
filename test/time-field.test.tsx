@@ -25,9 +25,13 @@ export default test("TimeField")
           .assertion(timefield.has({ value: "09:13:37.512" }))
       )
       .child("fillIn hh:mm", (test) =>
-        test.step(timefield.fillIn("09:13")).assertion(timefield.has({ value: "09:13" }))
+        test
+        .step(timefield.fillIn("09:13"))
+        .assertion(timefield.has({ value: "09:13" }))
       )
       .child("fillIn hh:mm:ss", (test) =>
-        test.step(timefield.fillIn("09:13:37")).assertion(timefield.has({ value: "09:13:37" }))
+        test
+        .step(timefield.fillIn("09:13:37"))
+        .assertion(timefield.has({ value: "09:13:37" }))
       )
   );

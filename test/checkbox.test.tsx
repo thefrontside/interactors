@@ -18,19 +18,35 @@ export default test("Checkbox")
       .assertion(Checkbox().is({ focused: false }))
       .assertion(Checkbox({ disabled: false }).exists())
       .child("test `click` action", (test) =>
-        test.step(checkbox.click()).assertion(checkbox.is({ checked: true, focused: true }))
+        test
+          .step(checkbox.click())
+          .assertion(checkbox.is({ checked: true, focused: true }))
       )
-      .child("test `focus` action", (test) => test.step(checkbox.focus()).assertion(checkbox.is({ focused: true })))
-      .child("test `check` action", (test) => test.step(checkbox.check()).assertion(checkbox.is({ checked: true })))
+      .child("test `focus` action", (test) =>
+        test
+          .step(checkbox.focus())
+          .assertion(checkbox.is({ focused: true }))
+      )
+      .child("test `check` action", (test) =>
+        test
+          .step(checkbox.check())
+          .assertion(checkbox.is({ checked: true }))
+      )
       .child("test `toggle` action", (test) =>
         test
           .step(checkbox.toggle())
           .assertion(checkbox.is({ checked: true }))
-          .child("toggle twice", (test) => test.step(checkbox.toggle()).assertion(checkbox.is({ checked: false })))
+          .child("toggle twice", (test) =>
+            test
+              .step(checkbox.toggle())
+              .assertion(checkbox.is({ checked: false }))
+          )
       )
   )
   .child("test `filter` by indeterminate", (test) =>
-    test.step(renderCheckbox({ indeterminate: true })).assertion(checkbox.is({ indeterminate: true }))
+    test
+      .step(renderCheckbox({ indeterminate: true }))
+      .assertion(checkbox.is({ indeterminate: true }))
   )
   .child("test `filter` by checked", (test) =>
     test
@@ -43,7 +59,9 @@ export default test("Checkbox")
       .assertion(Checkbox({ disabled: true }).exists())
   )
   .child("test `filter` by visible", (test) =>
-    test.step(render(<Component />)).assertion(Checkbox({ visible: false }).exists())
+    test
+      .step(render(<Component />))
+      .assertion(Checkbox({ visible: false }).exists())
   )
 
   .child("test `uncheck` action", (test) =>
@@ -56,8 +74,14 @@ export default test("Checkbox")
     test
       .step(renderCheckbox({ autoFocus: true }))
       .assertion(checkbox.is({ focused: true }))
-      .child("test `blur` action", (test) => test.step(checkbox.blur()).assertion(checkbox.is({ focused: false })))
+      .child("test `blur` action", (test) =>
+        test
+          .step(checkbox.blur())
+          .assertion(checkbox.is({ focused: false }))
+      )
       .child("test click outside", (test) =>
-        test.step("click to the body", () => Body().click()).assertion(checkbox.is({ focused: false }))
+        test
+          .step("click to the body", () => Body().click())
+          .assertion(checkbox.is({ focused: false }))
       )
   );

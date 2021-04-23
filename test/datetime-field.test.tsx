@@ -28,7 +28,9 @@ export default test("DateTimeField")
           .assertion(datetimefield.has({ value: "2014-08-18T09:13:37.512" }))
       )
       .child("fillIn yyyy-MM-ddThh:mm", (test) =>
-        test.step(datetimefield.fillIn("2014-08-18T09:13")).assertion(datetimefield.has({ value: "2014-08-18T09:13" }))
+        test
+          .step(datetimefield.fillIn("2014-08-18T09:13"))
+          .assertion(datetimefield.has({ value: "2014-08-18T09:13" }))
       )
       .child("fillIn yyyy-MM-ddThh:mm:ss", (test) =>
         test
