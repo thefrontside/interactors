@@ -4,7 +4,8 @@
     "javascript": {
       "version": true,
       "getPublishedVersion": "npm view ${ pkgFile.pkg.name } version",
-      "publish": "npm publish --access public"
+      "publish": "npm publish --access public",
+      "errorOnVersionRange": "4.0.0-alpha.100 - 99.x || ^4.4.0-0 || ^5.0.0-0"
     }
   },
   "packages": {
