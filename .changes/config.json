@@ -3,13 +3,8 @@
   "pkgManagers": {
     "javascript": {
       "version": true,
-      "getPublishedVersion": "npm view ${ pkg.pkg } version",
-      "publish": [
-        {
-          "command": "npm publish --access public",
-          "dryRunCommand": "echo publish here"
-        }
-      ]
+      "getPublishedVersion": "npm view ${ pkgFile.pkg.name } version",
+      "publish": "npm publish --access public"
     }
   },
   "packages": {
