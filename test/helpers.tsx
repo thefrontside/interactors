@@ -98,4 +98,11 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
       </MuiPickersUtilsProvider>
     );
   };
+
+  const renderComponent = createRenderStep(PickerComponent, {}, Wrapper);
+  return (
+    getProps?:
+      | Partial<ComponentProps<typeof PickerComponent>>
+      | ((onChange?: (date: Date) => void) => Partial<ComponentProps<typeof PickerComponent>>)
+  ) => renderComponent(typeof getProps == "function" ? ({ onChange } = {}) => getProps(onChange) : getProps);
 }
