@@ -1,5 +1,4 @@
-import { Button, Button as BaseButton } from "@bigtest/interactor";
-// import { Button } from '@bigtest/interactor';
+import { HTML, Button, Button as BaseButton } from "@bigtest/interactor";
 
 // // TODO Merge with #4
 // export const Button = BaseButton.extend("MUI Button").filters({
@@ -8,7 +7,14 @@ import { Button, Button as BaseButton } from "@bigtest/interactor";
 
 export const MaterialButton = Button.extend("material-ui button")
 // export default Button.extend('button')
-export default Button.extend('button')
+// export default Button.extend('button')
+
+function isButtonElement(element: HTMLButtonElement | HTMLLinkElement): element is HTMLButtonElement {
+  return element.tagName.toUpperCase() === 'BUTTON';
+}
+
+export default HTML.extend<HTMLButtonElement | HTMLLinkElement>('MUI Button')
+  .selector('.MuiButton-root')
   .filters({
     iconLabel: (el) => el.querySelector(".MuiButton-label")?.firstElementChild?.classList.value,
     customRippleClass: (el) => {
@@ -20,7 +26,10 @@ export default Button.extend('button')
 
       return classes.join(" ")
     },
+    href: (el) => el.getAttribute('href'),
+    disabled: (el) => el.disabled,
     rippleEnabled: (el) => !!el.querySelector(".MuiTouchRipple-root"),
     touchRipple: (el) => !!(el).querySelector(".MuiTouchRipple-ripple"),
     rippleVisible: (el) => !!(el).querySelector(".MuiTouchRipple-rippleVisible")
   })
+
