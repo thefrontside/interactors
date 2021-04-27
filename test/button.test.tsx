@@ -199,7 +199,7 @@ export default test("Button")
     })
   )
   .child('should automatically change button to an anchor when href is provided', (test) => test
-    .step( render(<MuiButton href="https://google.com">Href Button</MuiButton>))
+    .step(render(<MuiButton href="https://google.com">Href Button</MuiButton>))
     /**
      * When a href is passed to the Material Button it will render <a> tag so
      * we will switch to use a built-in Link Interactor.
@@ -214,14 +214,10 @@ export default test("Button")
   .child('should forward classes to BaseButton', (test) => test
     .step(
       render(
-        <MuiButton disabled classes={{ disabled: 'disabledClassName' }}>
+        <MuiButton disabled classes={{ disabled: "disabledClassName" }}>
           Disabled Button
         </MuiButton>
       )
     )
-    .step('button is disabled and styles passed to BaseButton', async() => {
-      // const { container } = render(<MuiButton disabled classes={{ disabled: 'disabledClassName' }} />)
-      // await container.querySelector('button')?.classList.contains('disabledClassName')
-    })
-
+    .assertion(button.has({ className: including("disabledClassName") }))
   )
