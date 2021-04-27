@@ -9,9 +9,6 @@ export const MaterialButton = Button.extend("material-ui button")
 // export default Button.extend('button')
 // export default Button.extend('button')
 
-function isButtonElement(element: HTMLButtonElement | HTMLLinkElement): element is HTMLButtonElement {
-  return element.tagName.toUpperCase() === 'BUTTON';
-}
 
 export default HTML.extend<HTMLButtonElement | HTMLLinkElement>('MUI Button')
   .selector('.MuiButton-root')
