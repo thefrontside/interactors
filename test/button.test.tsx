@@ -194,17 +194,12 @@ export default test("Button")
     .step('focus button', async() => {
       await button.focus()
     })
-    .step('should not have visible css ripple', async() => {
-      await button.has({ rippleVisible: false })
-    })
+    .assertion(button.has({ rippleVisible: false })
+    )
   )
   .child('should automatically change button to an anchor when href is provided', (test) => test
     .step(render(<MuiButton href="https://google.com">Href Button</MuiButton>))
-    /**
-     * When a href is passed to the Material Button it will render <a> tag so
-     * we will switch to use a built-in Link Interactor.
-     */
-    .assertion(Link().has(
+    .assertion(button.has(
      {
         className: including("MuiButton-root"),
         href: including("https://google.com")
@@ -219,5 +214,5 @@ export default test("Button")
         </MuiButton>
       )
     )
-    .assertion(button.has({ className: including("disabledClassName") }))
+    .assertion(button.has({ className: including("disabledClassName"), disabled: true }))
   )
