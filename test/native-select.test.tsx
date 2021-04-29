@@ -3,20 +3,22 @@ import { NativeSelect, NativeMultiSelect } from "../src/index";
 import { Select as Component, FormControl, InputLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 
+const plainOptions = (
+  <>
+    <option aria-label="None" value="" />
+    <option value={1}>one</option>
+    <option value={2}>two</option>
+    <option value={3}>three</option>
+  </>
+)
+
 const renderSelect = createRenderStep(
   Component,
   {
     native: true,
     defaultValue: '',
     inputProps: { id: 'select-id' },
-    children: (
-      <>
-        <option aria-label="None" value="" />
-        <option value={1}>one</option>
-        <option value={2}>two</option>
-        <option value={3}>three</option>
-      </>
-    )
+    children: plainOptions
   },
   ({ props, children }) => (
     <FormControl>

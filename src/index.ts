@@ -12,6 +12,7 @@ export * from "./datetime-field";
 export * from "./checkbox";
 export * from "./body";
 export * from "./calendar";
+export * from "./select";
 export * from "./native-select";
 export { default as Fab } from "./fab";
 export { Button } from "@bigtest/interactor";
