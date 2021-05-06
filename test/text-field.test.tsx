@@ -1,4 +1,4 @@
-import { test, Page } from "bigtest";
+import { test, Page, matching } from "bigtest";
 import { TextField } from "../src/index";
 import { TextField as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
@@ -32,8 +32,7 @@ export default test("TextField")
   .child("required={true}", (test) =>
     test
       .step(renderTextField({ required: true }))
-      // NOTE Be aware this is not a regular `space` character
-      .assertion(TextField('textfield *').is({ required: true }))
+      .assertion(TextField(matching(/textfield\s\*/)).is({ required: true }))
   )
   .child("error={true}", (test) =>
     test
