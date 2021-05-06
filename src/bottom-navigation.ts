@@ -18,5 +18,5 @@ export const BottomNavigation = createInteractor<HTMLElement>("MUI BottomNavigat
     },
   })
   .actions({
-    choose: (interactor, value: string) => interactor.find(BottomNavigationAction(value)).click(),
+    navigate: (interactor, value: string) => interactor.find(BottomNavigationAction(value)).click(),
   });

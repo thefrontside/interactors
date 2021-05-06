@@ -28,6 +28,6 @@ export default test('BottomNavigation')
   .assertion(bottomNavigation.has({ value: 'Recents'}))
   .child('test `choose` action', (test) =>
     test
-      .step(bottomNavigation.choose('Favorites'))
+      .step(bottomNavigation.navigate('Favorites'))
       .assertion(bottomNavigation.has({ value: 'Favorites'}))
   )
