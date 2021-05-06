@@ -1,9 +1,10 @@
-import { createInteractor, HTML, isVisible, or } from "bigtest";
+import { HTML } from "bigtest";
 import { isHTMLElement } from "../test/helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector(".MuiAccordionSummary-root");
+const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
 
-export const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
+const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
   .selector(".MuiAccordionSummary-root")
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
@@ -14,35 +15,14 @@ export const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary"
     },
   });
 
-export const AccordionDetails = createInteractor<HTMLElement>("MUI Accordion Details")
-  .selector(".MuiAccordionDetails-root")
-  .filters({
-    id: (element) => element.id,
-    visible: { apply: isVisible, default: true },
-    className: (element) => element.className,
-    classList: (element) => Array.from(element.classList),
-  });
-
-export const AccordionActions = createInteractor<HTMLElement>("MUI Accordion Actions")
-  .selector(".MuiAccordionActions-root")
-  .filters({
-    id: (element) => element.id,
-    visible: { apply: isVisible, default: true },
-    className: (element) => element.className,
-    classList: (element) => Array.from(element.classList),
-  });
-
-export const Accordion = createInteractor<HTMLElement>("MUI Accordion")
+export const Accordion = HTML.extend<HTMLElement>("MUI Accordion")
   .selector(".MuiAccordion-root")
   .locator((element) => {
     const summary = getSummary(element);
     return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? summary.innerText : "";
   })
   .filters({
-    id: (element) => element.id,
-    className: (element) => element.className,
-    classList: (element) => Array.from(element.classList),
-    expanded: (element) => getSummary(element)?.getAttribute("aria-expanded") == "true",
+    expanded: isExpanded,
     disabled: {
       apply: (element) => getSummary(element)?.getAttribute("aria-disabled") == "true",
       default: false,
@@ -50,18 +30,22 @@ export const Accordion = createInteractor<HTMLElement>("MUI Accordion")
   })
   .actions({
     expand: async (interactor) => {
-      try {
-        await interactor.is({ expanded: true, disabled: or(true, false) });
-      } catch (_) {
-        await interactor.find(AccordionSummary()).click();
-      }
+      let expanded = false;
+
+      await interactor.perform((element) => (expanded = isExpanded(element)));
+
+      if (expanded) return;
+
+      await interactor.find(AccordionSummary()).click();
     },
     collapse: async (interactor) => {
-      try {
-        await interactor.is({ expanded: false, disabled: or(true, false) });
-      } catch (_) {
-        await interactor.find(AccordionSummary()).click();
-      }
+      let collapsed = false;
+
+      await interactor.perform((element) => (collapsed = !isExpanded(element)));
+
+      if (collapsed) return;
+
+      await interactor.find(AccordionSummary()).click();
     },
     toggle: (interactor) => interactor.find(AccordionSummary()).click(),
   });

@@ -1,10 +1,10 @@
 import { test, Page } from "bigtest";
-import { Accordion, AccordionDetails, AccordionActions } from "../src/index";
+import { Accordion } from "../src/index";
 import {
   Accordion as Component,
-  AccordionSummary as ComponentSummary,
-  AccordionDetails as ComponentDetails,
-  AccordionActions as ComponentActions,
+  AccordionSummary,
+  AccordionDetails,
+  AccordionActions,
   Button
 } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
@@ -14,14 +14,14 @@ const renderAccordion = createRenderStep(Component, {}, ({ props, children }) =>
   cloneElement(
     children(props),
     {},
-    <ComponentSummary aria-label="accordion">Expand</ComponentSummary>,
-    <ComponentDetails>
+    <AccordionSummary aria-label="accordion">Expand</AccordionSummary>,
+    <AccordionDetails>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-    </ComponentDetails>,
-    <ComponentActions>
+    </AccordionDetails>,
+    <AccordionActions>
       <Button>Ok</Button>
-    </ComponentActions>
+    </AccordionActions>
   )
 ));
 const accordion = Accordion("accordion");
@@ -34,16 +34,10 @@ export default test("Accordion")
       .assertion(accordion.exists())
       .assertion(accordion.is({ expanded: false }))
       .assertion(Accordion({ disabled: false }).exists())
-      .assertion(accordion.find(AccordionDetails()).absent())
-      .assertion(accordion.find(AccordionActions()).absent())
-      .assertion(accordion.find(AccordionDetails({ visible: false })).exists())
-      .assertion(accordion.find(AccordionActions({ visible: false })).exists())
       .child('test `expand` action', (test) =>
         test
           .step(accordion.expand())
           .assertion(accordion.is({ expanded: true }))
-          .assertion(accordion.find(AccordionDetails()).exists())
-          .assertion(accordion.find(AccordionActions()).exists())
       )
       .child('test `collapse` action', (test) =>
         test
