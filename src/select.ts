@@ -1,9 +1,8 @@
-import { createInteractor, including, Interactor, not } from "bigtest";
+import { createInteractor, HTML, Interactor } from "bigtest";
 import { isDefined, isHTMLElement, innerText, delay, dispatchMouseDown } from "./helpers";
 
-const Option = createInteractor<HTMLLIElement>("MUI Option")
+const Option = HTML.extend<HTMLLIElement>("MUI Option")
   .selector('li[role="option"]')
-  .locator((element) => element.innerText)
   .filters({
     selected: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
@@ -19,18 +18,14 @@ const SelectOptionsList = createInteractor<HTMLElement>("MUI OptionsList")
   .selector("ul")
   .locator((element) => element.getAttribute("aria-labelledby") ?? "");
 
-async function closeOptionsList(labelId: string) {
-  try {
-    await SelectOptionsList(labelId).perform((element) => {
-      const popover = element.parentElement?.parentElement;
-      if (popover?.getAttribute("role") == "presentation" && popover.classList.contains("MuiPopover-root")) {
-        const popoverTrap = popover.firstElementChild;
-        if (isHTMLElement(popoverTrap)) popoverTrap.click();
-      }
-    });
-  } catch (_) {
-    /* noop */
-  }
+async function closeSelectOptionsList(labelId: string) {
+  await SelectOptionsList(labelId).perform((element) => {
+    const popover = element.parentElement?.parentElement;
+    if (popover?.getAttribute("role") == "presentation" && popover.classList.contains("MuiPopover-root")) {
+      const popoverTrap = popover.firstElementChild;
+      if (isHTMLElement(popoverTrap)) popoverTrap.click();
+    }
+  });
 }
 
 function getInputLabel(element: HTMLElement) {
@@ -38,32 +33,32 @@ function getInputLabel(element: HTMLElement) {
   return isHTMLElement(input, "Input") ? input.labels?.[0] : undefined;
 }
 
-async function toggleOption(
-  interactor: Interactor<HTMLElement, any>,
-  value: string,
-  { clearSelection = false }: { clearSelection?: boolean } = {}
-) {
-  let labelId = "";
+function getSelectValues(element: HTMLElement) {
+  return Array.from(element.querySelectorAll(".MuiChip-root > .MuiChip-label") ?? [])
+    .map((chip) => (isHTMLElement(chip) ? chip.innerText : null))
+    .filter(isDefined);
+}
+
+async function clearSelection(labelId: string) {
   let selected: string[] = [];
+
+  await SelectOptionsList(labelId).perform(
+    (element) =>
+      (selected = Array.from(element.querySelectorAll("li"))
+        .filter((option) => option.getAttribute("aria-selected") == "true")
+        .map((option) => option.innerText))
+  );
+  for (const option of selected) {
+    await SelectOptionsList(labelId).find(Option(option)).choose();
+  }
+}
+
+async function openSelectOptionsList(interactor: Interactor<HTMLElement, any>) {
+  let labelId = "";
   await interactor.perform((element) => (labelId = getInputLabel(element)?.id ?? ""));
   await interactor.perform((element) => dispatchMouseDown(element));
   await delay(100);
-  try {
-    if (clearSelection) {
-      await SelectOptionsList(labelId).perform(
-        (element) =>
-          (selected = Array.from(element.querySelectorAll("li"))
-            .filter((option) => option.getAttribute("aria-selected") == "true")
-            .map((option) => option.innerText))
-      );
-      for (const option of selected) {
-        await SelectOptionsList(labelId).find(Option(option)).choose();
-      }
-    }
-    await SelectOptionsList(labelId).find(Option(value)).choose();
-  } finally {
-    await closeOptionsList(labelId);
-  }
+  return labelId;
 }
 
 const BaseSelect = createInteractor<HTMLElement>("MUI BaseSelect")
@@ -89,41 +84,54 @@ export const Select = BaseSelect.extend("MUI Select")
   })
   .actions({
     choose: async (interactor, value: string) => {
-      try {
-        await interactor.has({ value });
-      } catch (_) {
-        await toggleOption(interactor, value, { clearSelection: true });
-      }
+      let selected: null | string = null;
+
+      await interactor.perform((element) => (selected = element.innerText));
+
+      if (selected == value) return;
+
+      const labelId = await openSelectOptionsList(interactor);
+      await SelectOptionsList(labelId).find(Option(value)).choose();
     },
   });
 
 export const MultiSelect = BaseSelect.extend("MUI MultiSelect")
   .filters({
-    values: (element) =>
-      Array.from(element.querySelectorAll(".MuiChip-root > .MuiChip-label") ?? [])
-        .map((chip) => (isHTMLElement(chip) ? chip.innerText : null))
-        .filter(isDefined),
+    values: getSelectValues,
   })
   .actions({
     choose: async (interactor, value: string) => {
-      try {
-        await interactor.has({ values: [value] });
-      } catch (_) {
-        await toggleOption(interactor, value, { clearSelection: true });
-      }
+      let selected: string[] = [];
+
+      await interactor.perform((element) => (selected = getSelectValues(element)));
+
+      if (selected.length == 1 && selected[0] == value) return;
+
+      const labelId = await openSelectOptionsList(interactor);
+      await clearSelection(labelId);
+      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await closeSelectOptionsList(labelId);
     },
     select: async (interactor, value: string) => {
-      try {
-        await interactor.has({ values: including(value) });
-      } catch (_) {
-        await toggleOption(interactor, value);
-      }
+      let selected: string[] = [];
+
+      await interactor.perform((element) => (selected = getSelectValues(element)));
+
+      if (selected.includes(value)) return;
+
+      const labelId = await openSelectOptionsList(interactor);
+      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await closeSelectOptionsList(labelId);
     },
     deselect: async (interactor, value: string) => {
-      try {
-        await interactor.has({ values: not(including(value)) });
-      } catch (_) {
-        await toggleOption(interactor, value);
-      }
+      let selected: string[] = [];
+
+      await interactor.perform((element) => (selected = getSelectValues(element)));
+
+      if (!selected.includes(value)) return;
+
+      const labelId = await openSelectOptionsList(interactor);
+      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await closeSelectOptionsList(labelId);
     },
   });
