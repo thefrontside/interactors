@@ -13,5 +13,7 @@ export * from "./checkbox";
 export * from "./body";
 export * from "./calendar";
 export * from "./bottom-navigation";
+export * from "./switch";
+export * from "./bottom-navigation";
 export { default as Fab } from "./fab";
 export { Button } from "@bigtest/interactor";
