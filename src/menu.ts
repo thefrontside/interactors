@@ -1,7 +1,7 @@
 import { Button, createInteractor } from "bigtest";
 
 export const MenuItem = createInteractor<HTMLElement>("MUI MenuItem")
-  .selector('li.MuiMenuItem-root[role="menuitem"]')
+  .selector('.MuiMenuItem-root[role="menuitem"]')
   .locator((element) => element.innerText)
   .filters({
     disabled: {
@@ -12,7 +12,7 @@ export const MenuItem = createInteractor<HTMLElement>("MUI MenuItem")
   .actions({ click: ({ perform }) => perform((element) => element.click()) });
 
 export const MenuList = createInteractor<HTMLElement>("MUI MenuList")
-  .selector('.MuiPopover-root[role="presentation"] > .MuiMenu-paper > ul.MuiMenu-list[role="menu"]')
+  .selector('.MuiPopover-root[role="presentation"] > .MuiMenu-paper > .MuiMenu-list[role="menu"]')
   .locator((element) => element.parentElement?.parentElement?.id ?? "");
 
 export const Menu = Button.extend("MUI Menu")
