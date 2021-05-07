@@ -17,6 +17,7 @@ export * from "./switch";
 export * from "./bottom-navigation";
 export * from "./link";
 export * from "./menu";
+export * from "./tabs";
 export * from "./select";
 export * from "./native-select";
 export { default as Fab } from "./fab";
