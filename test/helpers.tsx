@@ -1,5 +1,4 @@
 import "date-fns";
-import { bigtestGlobals } from "@bigtest/globals";
 import { render as rtlRender } from "@testing-library/react";
 import { ComponentProps, ComponentType, ReactElement, useState } from "react";
 import { StylesProvider, jssPreset } from "@material-ui/core/styles";
@@ -42,21 +41,12 @@ export function render(description: string | ReactElement, element?: ReactElemen
   };
 }
 
-type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
-
-type HTMLElementTypes = HTMLTypes<keyof typeof window>;
-
-export function isHTMLElement<T extends HTMLElementTypes = "">(
-  element: unknown | null | undefined,
-  type: T = "" as T
-): element is InstanceType<typeof window[`HTML${T}Element`]> {
-  const { defaultView } = bigtestGlobals.document;
-  const Constructor = (defaultView as any)?.[`HTML${type}Element`];
-  return typeof Constructor == "function" && element instanceof Constructor;
-}
-
 function getDisplayName(Component: ComponentType | string) {
-  return (typeof Component === "string" ? Component : Component.displayName || Component.name) || "Unknown";
+  return (
+    (typeof Component === "string"
+      ? Component
+      : Component.displayName || Component.name || (Component as any).muiName) || "Unknown"
+  );
 }
 
 export interface WrapperProps<CT extends ComponentType<any>> {
