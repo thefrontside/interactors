@@ -1,6 +1,6 @@
 import { test, Page } from "bigtest";
 import { Select, MultiSelect } from "../src/index";
-import { Select as Component, FormControl, InputLabel, MenuItem, Chip } from "@material-ui/core";
+import { Select as Component, FormControl, InputLabel, MenuItem, Chip, FormHelperText } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement } from "react";
 
@@ -14,9 +14,10 @@ const plainOptions = [
 const renderSelect = createRenderStep(
   Component,
   {
+    id: 'select-id',
     labelId: "label-id",
     defaultValue: '',
-    inputProps: { id: 'select-id' },
+    inputProps: { id: 'input-id' },
     renderValue: (selected) => (
       <>
         {(typeof selected == 'string' ? [selected] : selected as string[]).map((value) => (
@@ -27,8 +28,9 @@ const renderSelect = createRenderStep(
   },
   ({ props, children }) => (
     <FormControl>
-      <InputLabel id="label-id" htmlFor="select-id">select</InputLabel>
+      <InputLabel id="label-id" htmlFor="input-id">select</InputLabel>
       {cloneElement(children(props), {}, ...plainOptions)}
+      <FormHelperText>SelectField</FormHelperText>
     </FormControl>
   )
 );
@@ -46,6 +48,7 @@ export default test("Select")
           .assertion(select.has({ required: false }))
           .assertion(select.has({ valid: true }))
           .assertion(select.has({ value: "\u200B" }))
+          .assertion(select.has({ description: 'SelectField' }))
           .assertion(Select({ disabled: false}).exists())
           .child("test `choose` action", (test) =>
             test
@@ -58,6 +61,12 @@ export default test("Select")
           .step(renderSelect({ multiple: false, required: true }))
           .assertion(select.has({ required: true }))
       )
+      .child("inputProps={undefined}", (test) =>
+        test
+          .step(renderSelect({ inputProps: undefined }))
+          .assertion(select.exists())
+          .assertion(select.has({ description: 'SelectField' }))
+      )
   )
   .child('multiple', (test) =>
     test
@@ -68,6 +77,7 @@ export default test("Select")
           .assertion(multiSelect.has({ required: false }))
           .assertion(multiSelect.has({ valid: true }))
           .assertion(multiSelect.has({ values: [] }))
+          .assertion(select.has({ description: 'SelectField' }))
           .assertion(MultiSelect({ disabled: false}).exists())
           .child("test `select` action", (test) =>
             test

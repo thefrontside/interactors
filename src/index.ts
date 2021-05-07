@@ -21,5 +21,6 @@ export * from "./menu";
 export * from "./tabs";
 export * from "./select";
 export * from "./native-select";
+export * from "./text-field";
 export { default as Fab } from "./fab";
 export { Button } from "@bigtest/interactor";
