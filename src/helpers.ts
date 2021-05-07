@@ -18,6 +18,18 @@ export function isDefined<T>(value: T | null | undefined): value is T {
   return value !== null && value !== undefined;
 }
 
+export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) {
+  return (
+    input.labels?.[0] ??
+    input.previousElementSibling
+      ?.getAttribute("aria-labelledby")
+      ?.split(" ")
+      .map((labelId) => input.ownerDocument.getElementById(labelId))
+      .map((element) => (isHTMLElement(element, "Label") ? element : null))
+      .find(isDefined)
+  );
+}
+
 // NOTE: Copy-paste from https://github.com/thefrontside/bigtest/blob/v0/packages/interactor/src/fill-in.ts
 export function setValue(element: HTMLInputElement, value: string): void {
   let property = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(element), "value");
@@ -40,9 +52,4 @@ export function dispatchMouseDown(element: HTMLElement, options: MouseEventInit 
   return element.dispatchEvent(
     new MouseEvent("mousedown", Object.assign({ bubbles: true, cancelable: true }, options))
   );
-}
-
-// NOTE: Copy-paste from https://github.com/thefrontside/bigtest/blob/v0/packages/interactor/src/definitions/html.ts
-export function innerText(element?: HTMLElement): string {
-  return (element?.innerText != null ? element?.innerText : element?.textContent) || "";
 }
