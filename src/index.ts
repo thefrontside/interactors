@@ -12,6 +12,7 @@ export * from "./datetime-field";
 export * from "./checkbox";
 export * from "./body";
 export * from "./calendar";
+export * from "./accordion";
 export * from "./menu";
 export * from "./switch";
 export * from "./bottom-navigation";

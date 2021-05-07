@@ -1,4 +1,5 @@
 import { bigtestGlobals } from "@bigtest/globals";
+import { Interactor } from "bigtest";
 
 type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
 
@@ -28,6 +29,17 @@ export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTML
       .map((element) => (isHTMLElement(element, "Label") ? element : null))
       .find(isDefined)
   );
+}
+
+export async function applyGetter<E extends Element, R>(
+  interactor: Interactor<E, any>,
+  getter: (element: E) => R
+): Promise<R> {
+  let value: unknown;
+
+  await interactor.perform((element) => (value = getter(element)));
+
+  return value as R;
 }
 
 // NOTE: Copy-paste from https://github.com/thefrontside/bigtest/blob/v0/packages/interactor/src/fill-in.ts
