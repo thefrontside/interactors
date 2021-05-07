@@ -14,8 +14,8 @@ export default test("Checkbox")
     test
       .step(renderCheckbox())
       .assertion(checkbox.exists())
-      .assertion(Checkbox().is({ checked: false }))
-      .assertion(Checkbox().is({ focused: false }))
+      .assertion(checkbox.is({ checked: false }))
+      .assertion(checkbox.is({ focused: false }))
       .assertion(Checkbox({ disabled: false }).exists())
       .child("test `click` action", (test) =>
         test

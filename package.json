@@ -1,6 +1,6 @@
 {
   "name": "material-ui-interactors",
-  "version": "1.0.0",
+  "version": "4.0.0-alpha.0",
   "description": "BigTest interactors for material-ui.com components.",
   "main": "dist/index.js",
   "scripts": {
