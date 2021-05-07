@@ -1,0 +1,17 @@
+{
+  "gitSiteUrl": "https://github.com/thefrontside/material-ui-interactors/",
+  "pkgManagers": {
+    "javascript": {
+      "version": true,
+      "getPublishedVersion": "npm view ${ pkgFile.pkg.name } version",
+      "publish": "npm publish --access public",
+      "errorOnVersionRange": "4.0.0-alpha.100 - 99.x || ^4.4.0-0 || ^5.0.0-0"
+    }
+  },
+  "packages": {
+    "material-ui-interactors": {
+      "path": ".",
+      "manager": "javascript"
+    }
+  }
+}
