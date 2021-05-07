@@ -1,5 +1,5 @@
 import { createInteractor, HTML, including, Interaction, Interactor, not } from "bigtest";
-import { delay, isHTMLElement } from "./helpers";
+import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
 function getHeaderElement(element: HTMLElement) {
@@ -34,23 +34,12 @@ export const getDay = (element: HTMLElement) => {
   return Number.isNaN(day) ? undefined : day;
 };
 export const getMonth = (element: HTMLElement) => getTitleElement(element)?.innerText.replace(/\s[0-9]{4}$/, "");
-export const getYear = (element: HTMLElement) => getTitleElement(element)?.innerText.replace(/.*\s([0-9]{4})$/, "$1");
+export const getYear = (element: HTMLElement) => {
+  const yearString = getTitleElement(element)?.innerText.replace(/.*\s([0-9]{4})$/, "$1");
+  const year = yearString ? parseInt(yearString) : NaN;
+  return Number.isNaN(year) ? undefined : year;
+};
 
-function getCurrentMonth(interactor: Interactor<HTMLElement, any>) {
-  return new Promise<string | undefined>(
-    async (resolve) => await interactor.perform((element) => resolve(getMonth(element)))
-  );
-}
-function getCurrentYear(interactor: Interactor<HTMLElement, any>) {
-  return new Promise<number | undefined>(
-    async (resolve) =>
-      await interactor.perform((element) => {
-        const yearString = getYear(element);
-        const year = yearString ? parseInt(yearString) : NaN;
-        resolve(Number.isNaN(year) ? undefined : year);
-      })
-  );
-}
 function goToNextMonth({ perform }: Interactor<HTMLElement, any>) {
   return perform((element) => {
     // NOTE: We can't go upwards by using `Interactor().find(...)`
@@ -67,8 +56,8 @@ function goToPrevMonth({ perform }: Interactor<HTMLElement, any>) {
 }
 
 async function goToYear(interactor: Interactor<HTMLElement, any>, targetYear: number) {
-  let currentMonth = await getCurrentMonth(interactor);
-  let currentYear = await getCurrentYear(interactor);
+  let currentMonth = await applyGetter(interactor, getMonth);
+  let currentYear = await applyGetter(interactor, getYear);
 
   if (!currentMonth || !currentYear) throw new Error("Can't get current month and year");
   if (currentYear == targetYear) return;
@@ -78,8 +67,8 @@ async function goToYear(interactor: Interactor<HTMLElement, any>, targetYear: nu
     await step();
     await delay(1000);
     const prevMonth: string | undefined = currentMonth;
-    currentMonth = await getCurrentMonth(interactor);
-    currentYear = await getCurrentYear(interactor);
+    currentMonth = await applyGetter(interactor, getMonth);
+    currentYear = await applyGetter(interactor, getYear);
     if (prevMonth == currentMonth)
       throw new Error(
         `Can't set '${targetYear}' year. It might happened because of 'minDate/maxDate' or 'disableFuture/disablePast' props`
@@ -92,7 +81,7 @@ async function goToMonth(
   directionStep: () => Interaction<void>,
   currentYear?: number
 ) {
-  let currentMonth = await getCurrentMonth(interactor);
+  let currentMonth = await applyGetter(interactor, getMonth);
 
   if (!currentMonth || !currentYear) throw new Error("Can't get current month and year");
   if (currentMonth == targetMonth) return;
@@ -102,8 +91,8 @@ async function goToMonth(
     await directionStep();
     await delay(1000);
     const prevMonth: string | undefined = currentMonth;
-    currentMonth = await getCurrentMonth(interactor);
-    currentYear = await getCurrentYear(interactor);
+    currentMonth = await applyGetter(interactor, getMonth);
+    currentYear = await applyGetter(interactor, getYear);
     if (currentYear != targetYear || currentMonth == prevMonth)
       throw new Error(
         `Can't set '${targetMonth}' month. It might happened because of 'minDate/maxDate' or 'disableFuture/disablePast' props`
@@ -139,7 +128,7 @@ export const createCalendar = (utils: DatePickerUtils) =>
     },
   }).actions({
     setMonth: async (interactor: Interactor<HTMLElement, any>, targetMonth: string) => {
-      let currentMonth = await getCurrentMonth(interactor);
+      let currentMonth = await applyGetter(interactor, getMonth);
       if (!currentMonth) throw new Error("Can't get current month");
       const currentMonthNumber = utils.getMonth(utils.parse(currentMonth, "MMMM"));
       const targetMonthNumber = utils.getMonth(utils.parse(targetMonth, "MMMM"));
@@ -148,7 +137,7 @@ export const createCalendar = (utils: DatePickerUtils) =>
         interactor,
         targetMonth,
         currentMonthNumber < targetMonthNumber ? () => goToNextMonth(interactor) : () => goToPrevMonth(interactor),
-        await getCurrentYear(interactor)
+        await applyGetter(interactor, getYear)
       );
     },
   });
@@ -175,7 +164,7 @@ export const Calendar = createInteractor<HTMLElement>("MUI Calendar")
     prevMonth: goToPrevMonth,
     setYear: goToYear,
     setMonth: async (interactor: Interactor<HTMLElement, any>, targetMonth: string) => {
-      const currentYear = await getCurrentYear(interactor);
+      const currentYear = await applyGetter(interactor, getYear);
 
       let directions = [() => goToPrevMonth(interactor), () => goToNextMonth(interactor)];
       directions = Math.round(Math.random()) ? directions : directions.reverse();
