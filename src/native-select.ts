@@ -1,10 +1,10 @@
 import { Select, MultiSelect } from "bigtest";
+import { createFormFieldFilters } from "./form-field-filters";
+import { GetElementType } from "./types";
 
-export const NativeSelect = Select.extend("MUI Native Select").filters({
-  valid: (element) => !element.labels?.[0].classList.contains("Mui-error"),
-  required: (element) => element.required,
-});
-export const NativeMultiSelect = MultiSelect.extend("MUI Native MultiSelect").filters({
-  valid: (element) => !element.labels?.[0].classList.contains("Mui-error"),
-  required: (element) => element.required,
-});
+export const NativeSelect = Select.extend("MUI Native Select").filters(
+  createFormFieldFilters<GetElementType<typeof Select>>()
+);
+export const NativeMultiSelect = MultiSelect.extend("MUI Native MultiSelect").filters(
+  createFormFieldFilters<GetElementType<typeof Select>>()
+);

@@ -41,8 +41,3 @@ export function dispatchMouseDown(element: HTMLElement, options: MouseEventInit 
     new MouseEvent("mousedown", Object.assign({ bubbles: true, cancelable: true }, options))
   );
 }
-
-// NOTE: Copy-paste from https://github.com/thefrontside/bigtest/blob/v0/packages/interactor/src/definitions/html.ts
-export function innerText(element?: HTMLElement): string {
-  return (element?.innerText != null ? element?.innerText : element?.textContent) || "";
-}
