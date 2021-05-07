@@ -1,4 +1,5 @@
 import { Button, createInteractor } from "bigtest";
+import { applyGetter } from "./helpers";
 
 export const MenuItem = createInteractor<HTMLElement>("MUI MenuItem")
   .selector('.MuiMenuItem-root[role="menuitem"]')
@@ -20,9 +21,10 @@ export const Menu = Button.extend("MUI Menu")
   .actions({
     open: async ({ perform }) => perform((element) => element.click()),
     click: async (interactor, value: string) => {
-      let menuId = "";
       await interactor.perform((element) => element.click());
-      await interactor.perform((element) => (menuId = element.getAttribute("aria-controls") ?? ""));
+
+      const menuId = await applyGetter(interactor, (element) => element.getAttribute("aria-controls") ?? "");
+
       await MenuList(menuId).find(MenuItem(value)).click();
     },
   });

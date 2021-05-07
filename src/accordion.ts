@@ -1,5 +1,5 @@
 import { HTML } from "bigtest";
-import { isHTMLElement } from "../test/helpers";
+import { applyGetter, isHTMLElement } from "./helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector(".MuiAccordionSummary-root");
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
@@ -30,20 +30,12 @@ export const Accordion = HTML.extend<HTMLElement>("MUI Accordion")
   })
   .actions({
     expand: async (interactor) => {
-      let expanded = false;
-
-      await interactor.perform((element) => (expanded = isExpanded(element)));
-
-      if (expanded) return;
+      if (await applyGetter(interactor, isExpanded)) return;
 
       await interactor.find(AccordionSummary()).click();
     },
     collapse: async (interactor) => {
-      let collapsed = false;
-
-      await interactor.perform((element) => (collapsed = !isExpanded(element)));
-
-      if (collapsed) return;
+      if (!(await applyGetter(interactor, isExpanded))) return;
 
       await interactor.find(AccordionSummary()).click();
     },
