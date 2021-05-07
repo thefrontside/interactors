@@ -1,4 +1,4 @@
-import { isHTMLElement } from "./helpers";
+import { getInputLabel, isHTMLElement } from "./helpers";
 
 export const createFormFieldFilters = <E extends HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>() => ({
   valid: (element: E) => !element.labels?.[0].classList.contains("Mui-error"),
@@ -7,7 +7,7 @@ export const createFormFieldFilters = <E extends HTMLInputElement | HTMLSelectEl
     const descriptionId = element.getAttribute("aria-describedby");
     const descriptionElement = descriptionId
       ? element.ownerDocument.getElementById(descriptionId)
-      : element.labels?.[0]?.parentElement?.lastElementChild;
+      : getInputLabel(element)?.parentElement?.lastElementChild;
     return isHTMLElement(descriptionElement) ? descriptionElement.innerText : "";
   },
 });

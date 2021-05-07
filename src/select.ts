@@ -1,6 +1,6 @@
 import { createInteractor, HTML, Interactor, matching } from "bigtest";
 import { createFormFieldFilters } from "./form-field-filters";
-import { isDefined, isHTMLElement, delay, dispatchMouseDown } from "./helpers";
+import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel } from "./helpers";
 
 const wrap = (label: string) => matching(new RegExp(`\\s?${label}\\s?`));
 
@@ -29,18 +29,6 @@ async function closeSelectOptionsList(labelId: string) {
       if (isHTMLElement(popoverTrap)) popoverTrap.click();
     }
   });
-}
-
-function getInputLabel(input: HTMLInputElement) {
-  return (
-    input.labels?.[0] ??
-    input.previousElementSibling
-      ?.getAttribute("aria-labelledby")
-      ?.split(" ")
-      .map((labelId) => input.ownerDocument.getElementById(labelId))
-      .map((element) => (isHTMLElement(element, "Label") ? element : null))
-      .find(isDefined)
-  );
 }
 
 function getValueText(element: HTMLInputElement) {
