@@ -1,6 +1,5 @@
 import { createInteractor, HTML, including, Interaction, Interactor, not } from "bigtest";
-import { isHTMLElement } from "../test/helpers";
-import { delay } from "./helpers";
+import { delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
 function getHeaderElement(element: HTMLElement) {
