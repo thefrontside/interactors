@@ -1,4 +1,4 @@
-import { Button, createInteractor } from "bigtest";
+import { Button, createInteractor } from "@bigtest/interactor";
 import { applyGetter } from "./helpers";
 
 export const MenuItem = createInteractor<HTMLElement>("MUI MenuItem")

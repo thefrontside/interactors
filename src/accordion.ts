@@ -1,4 +1,4 @@
-import { HTML } from "bigtest";
+import { HTML } from "@bigtest/interactor";
 import { applyGetter, isHTMLElement } from "./helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector(".MuiAccordionSummary-root");

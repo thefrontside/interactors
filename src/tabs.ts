@@ -1,4 +1,4 @@
-import { Button, HTML } from "bigtest";
+import { Button, HTML } from "@bigtest/interactor";
 import { isHTMLElement } from "./helpers";
 
 export const Tab = Button.extend<HTMLButtonElement>("MUI Tab")

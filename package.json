@@ -33,6 +33,7 @@
     "@material-ui/styles": "^4.11.3",
     "@testing-library/react": "^11.2.5",
     "@types/react": "^17.0.3",
+    "bigtest": "^0.13.3",
     "date-fns": "^2.19.0",
     "parcel-bundler": "^1.12.4",
     "react": "^17.0.1",
@@ -41,7 +42,6 @@
   },
   "dependencies": {
     "@bigtest/globals": "^0.7.5",
-    "@bigtest/interactor": "^0.28.2",
-    "bigtest": "^0.13.3"
+    "@bigtest/interactor": "^0.28.2"
   }
 }

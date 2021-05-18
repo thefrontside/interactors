@@ -1,4 +1,4 @@
-import { createInteractor, HTML, including, Interaction, Interactor, not } from "bigtest";
+import { createInteractor, HTML, including, Interaction, Interactor, not } from "@bigtest/interactor";
 import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
