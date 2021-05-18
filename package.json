@@ -5,6 +5,11 @@
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
   "scripts": {
     "test": "bigtest ci",
     "build:cjs": "tsc --outdir dist/cjs --module commonjs --project tsconfig.build.json",

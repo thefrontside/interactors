@@ -1,9 +1,14 @@
 {
   "extends": "@frontside/tsconfig",
   "compilerOptions": {
-    "outDir": "dist",
+    "baseUrl": ".",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist/cjs",
     "rootDir": "./src",
-    "jsx": "react-jsx",
+    "declarationDir": "dist"
   },
   "include": [
     "src/**/*.ts"
