@@ -16,7 +16,7 @@ export function render(description: string, element: ReactElement): StepImplemen
 export function render(description: string | ReactElement, element?: ReactElement): StepImplementation {
   if (typeof description != "string") {
     element = description;
-    description = typeof element.type == "string" ? element.type : element.type.name || element.type.toString();
+    description = typeof element.type == "string" ? element.type : element.type.name || "render unknown element";
   }
   return {
     description,

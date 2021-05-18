@@ -1,4 +1,4 @@
-import { test, Page, Link } from "bigtest";
+import { test, Page, HTML } from "bigtest";
 import { Button as Interactor, including, not, or } from "../src/index";
 import { Button as MuiButton } from "@material-ui/core";
 import { containing } from './matchers';
@@ -9,7 +9,7 @@ const button = Interactor();
 export default test("Button")
   .step(Page.visit("/"))
   .child("rendering a button", (test) => test
-    .step(render(<MuiButton>My Button</MuiButton>))
+    .step(render("render button", <MuiButton>My Button</MuiButton>))
     .assertion(button.exists())
     .assertion(button.has({ text: "My Button".toUpperCase()}))
 
@@ -155,13 +155,11 @@ export default test("Button")
   )
   .child('button renders with ripple by default', (test) => test
     .step(render(<MuiButton TouchRippleProps={{ className: 'touch-ripple'}}>Ripple Button</MuiButton>))
-    .step('has root span with custom css ripple', async() => {
-      await button.has({ customRippleClass: including('touch-ripple')})
-    })
+    .assertion(button.find(HTML({ className: including('touch-ripple')})).exists())
   )
   .child('can disable ripple effect', (test) => test
     .step(render(<MuiButton disableRipple TouchRippleProps={{ className: 'touch-ripple'}}>Ripple Button</MuiButton>))
-    .assertion(button.has({ rippleEnabled: false}))
+    .assertion(button.find(HTML({ className: including('touch-ripple')} )).absent())
   )
   .child('can disable elevation', (test) => test
     .step(render(<MuiButton disableElevation>Disabled Elevation Button</MuiButton>))
@@ -175,10 +173,8 @@ export default test("Button")
         Focus ripple default button
       </MuiButton>)
     )
-    .step('focus button', async() => {
-      await button.focus()
-    })
-    .assertion(button.has({ customRippleClass: including('pulstat-focus-visible')}))
+    .step(button.focus())
+    .assertion(button.find(HTML({ className: including("pulstat-focus-visible")} )).exists())
   )
   .child('can disable focusRipple', (test) => test
     .step(
@@ -191,11 +187,8 @@ export default test("Button")
         </MuiButton>
       )
     )
-    .step('focus button', async() => {
-      await button.focus()
-    })
-    .assertion(button.has({ rippleVisible: false })
-    )
+    .step( button.focus())
+    .assertion(button.find(HTML({ className: including("MuiTouchRipple-rippleVisible") })).absent())
   )
   .child('should automatically change button to an anchor when href is provided', (test) => test
     .step(render(<MuiButton href="https://google.com">Href Button</MuiButton>))

@@ -14,19 +14,9 @@ export default HTML.extend<HTMLButtonElement | HTMLLinkElement>('MUI Button')
   .selector('.MuiButton-root')
   .filters({
     iconLabel: (el) => el.querySelector(".MuiButton-label")?.firstElementChild?.classList.value,
-    customRippleClass: (el) => {
-      const classes: string[] = []
-      const spans = el.querySelectorAll('span');
-      spans.forEach((span) => {
-        classes.push(span.classList.value)
-      });
 
-      return classes.join(" ")
-    },
     href: (el) => el.getAttribute('href'),
     disabled: (el) => el.disabled,
-    rippleEnabled: (el) => !!el.querySelector(".MuiTouchRipple-root"),
-    touchRipple: (el) => !!(el).querySelector(".MuiTouchRipple-ripple"),
-    rippleVisible: (el) => !!(el).querySelector(".MuiTouchRipple-rippleVisible")
+
   })
 
