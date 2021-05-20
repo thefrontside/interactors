@@ -1,4 +1,4 @@
-import { TextField } from "bigtest";
+import { TextField } from "@bigtest/interactor";
 import { dispatchChange, setValue } from "./helpers";
 
 export const DateTimeField = TextField.extend<HTMLInputElement>("datetime field")

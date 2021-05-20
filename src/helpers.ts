@@ -1,5 +1,5 @@
 import { bigtestGlobals } from "@bigtest/globals";
-import { Interactor } from "bigtest";
+import { Interactor } from "@bigtest/interactor";
 
 type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
 
