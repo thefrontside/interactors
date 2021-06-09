@@ -1,11 +1,15 @@
 import { Button, HTML } from "@bigtest/interactor";
 import { isHTMLElement } from "./helpers";
 
-export const Tab = Button.extend<HTMLButtonElement>("MUI Tab")
+export const Tab = HTML.extend<HTMLElement>("MUI Tab")
   .selector('.MuiTab-root[role="tab"]')
   .locator((element) => (element.innerText || element.getAttribute("aria-label")) ?? "")
   .filters({
     active: (element) => element.getAttribute("aria-selected") == "true",
+    disabled: {
+      apply: (element) => element.getAttribute("aria-disabled") == "true",
+      default: false,
+    },
   });
 
 export const Tabs = HTML.extend<HTMLElement>("MUI Tabs")
