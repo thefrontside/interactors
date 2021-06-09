@@ -26,3 +26,4 @@ export { default as Fab } from "./fab";
 export * from "./button";
 export * from "./snackbar";
 export * from "./form-control";
+export { default as Radio } from './radio';
