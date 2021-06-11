@@ -7,7 +7,8 @@ export const Tab = HTML.extend<HTMLElement>("MUI Tab")
   .filters({
     active: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
-      apply: (element) => element.getAttribute("aria-disabled") == "true",
+      apply: (element) =>
+        element.getAttribute("aria-disabled") == "true" || (isHTMLElement(element, "Button") && element.disabled),
       default: false,
     },
   });
