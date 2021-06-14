@@ -63,7 +63,7 @@ export function createRenderStep<CT extends ComponentType<any>>(
 ) {
   return (getProps?: WrapperProps<CT>["getProps"]) =>
     render(
-      getDisplayName(Component),
+      `render component '${getDisplayName(Component)}'`,
       <Wrapper getProps={getProps} props={typeof getProps == "function" ? getProps() : getProps}>
         {(props) => <Component {...({ ...defaultProps, ...props } as ComponentProps<CT>)} />}
       </Wrapper>

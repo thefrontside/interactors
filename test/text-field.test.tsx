@@ -49,5 +49,3 @@ export default test("TextField")
       .step(renderTextField({ multiline: true }))
       .assertion(textfield.exists())
   )
-
-// TODO Test label without htmlFor attribute
