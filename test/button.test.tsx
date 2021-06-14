@@ -12,9 +12,9 @@ export default test("Button")
     .step(render("render button", <MuiButton>My Button</MuiButton>))
     .assertion(button.exists())
     .assertion(button.has({ text: "My Button".toUpperCase()}))
-
+    .assertion(button.has({ className: including("MuiButton-root")}))
+    .assertion(button.has({ className: including("MuiButton-text")}))
     .assertion("should render with the root, text and textPrimary classes but no others", async() => {
-    await button.has({ classList: containing(["MuiButton-root", "MuiButton-text"]) })
     await button.has({ classList: not(containing(["MuiButton-textSecondary", "MuiButton-outlined", "MuiButton-contained"])) })
     })
   )

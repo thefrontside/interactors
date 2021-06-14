@@ -14,9 +14,7 @@ export default HTML.extend<HTMLButtonElement | HTMLLinkElement>('MUI Button')
   .selector('.MuiButton-root')
   .filters({
     iconLabel: (el) => el.querySelector(".MuiButton-label")?.firstElementChild?.classList.value,
-
     href: (el) => el.getAttribute('href'),
     disabled: (el) => el.disabled,
-
   })
 
