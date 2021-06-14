@@ -1,7 +1,7 @@
-import { Button, createInteractor } from "@bigtest/interactor";
+import { Button, createInteractor, HTML } from "@bigtest/interactor";
 import { applyGetter } from "./helpers";
 
-export const MenuItem = createInteractor<HTMLElement>("MUI MenuItem")
+export const MenuItem = HTML.extend<HTMLElement>("MUI MenuItem")
   .selector('.MuiMenuItem-root[role="menuitem"]')
   .locator((element) => element.innerText)
   .filters({

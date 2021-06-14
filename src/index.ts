@@ -22,7 +22,9 @@ export * from "./tabs";
 export * from "./select";
 export * from "./native-select";
 export * from "./text-field";
+export * from "./button";
+export * from "./snackbar";
+export * from "./form-control";
+export * from "./dialog";
 export { default as Fab } from "./fab";
-export { Button } from "@bigtest/interactor";
-export { default as Radio } from './radio';
-
+export { default as Radio } from "./radio";

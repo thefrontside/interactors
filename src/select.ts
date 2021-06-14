@@ -1,8 +1,6 @@
-import { createInteractor, HTML, Interactor, matching } from "@bigtest/interactor";
+import { createInteractor, HTML, Interactor } from "@bigtest/interactor";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter } from "./helpers";
-
-const wrap = (label: string) => matching(new RegExp(`\\s?${label}\\s?`));
 
 const Option = HTML.extend<HTMLLIElement>("MUI Option")
   .selector('li[role="option"]')
