@@ -3,22 +3,22 @@ import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
 function getHeaderElement(element: HTMLElement) {
-  const header = element.parentElement?.querySelector(".MuiPickersCalendarHeader-switchHeader");
+  const header = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-switchHeader"]');
   return isHTMLElement(header) ? header : null;
 }
 
 function getTitleElement(element: HTMLElement) {
-  const header = element.parentElement?.querySelector(".MuiPickersCalendarHeader-transitionContainer");
+  const header = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-transitionContainer"]');
   return isHTMLElement(header) ? header : null;
 }
 
 function getWeekDaysElement(element: HTMLElement) {
-  const daysHeader = element.parentElement?.querySelector(".MuiPickersCalendarHeader-daysHeader");
+  const daysHeader = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-daysHeader"]');
   return isHTMLElement(daysHeader) ? daysHeader : null;
 }
 
 function getSelectedElement(element: HTMLElement) {
-  const dayButton = element.querySelector(".MuiPickersDay-daySelected");
+  const dayButton = element.querySelector('[class*="MuiPickersDay-daySelected"]');
   return isHTMLElement(dayButton) ? dayButton : null;
 }
 
@@ -101,7 +101,9 @@ async function goToMonth(
 }
 async function goToDay(interactor: Interactor<HTMLElement, any>, day: number) {
   // NOTE: We can't find day if user has custom day render
-  const dayInteractor = interactor.find(HTML.selector(".MuiPickersCalendar-week > [role='presentation']")(String(day)));
+  const dayInteractor = interactor.find(
+    HTML.selector('[class*="MuiPickersCalendar-week"] > [role="presentation"]')(String(day))
+  );
   try {
     await dayInteractor.has({ className: not(including("MuiPickersDay-dayDisabled")) });
   } catch (_) {
@@ -143,7 +145,7 @@ export const createCalendar = (utils: DatePickerUtils) =>
   });
 
 export const Calendar = createInteractor<HTMLElement>("MUI Calendar")
-  .selector(".MuiPickersCalendar-transitionContainer")
+  .selector('[class*="MuiPickersCalendar-transitionContainer"]')
   .locator(calendarLocator)
   .filters({
     year: getYear,

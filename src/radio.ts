@@ -1,10 +1,10 @@
-import { RadioButton, isVisible } from '@bigtest/interactor';
+import { RadioButton, isVisible } from "@bigtest/interactor";
 
-export default RadioButton.extend('radio')
-  .selector('.MuiRadio-root input[type=radio]')
+export default RadioButton.extend("radio")
+  .selector('[class*="MuiRadio-root"] input[type=radio]')
   .filters({
     visible: {
-      apply: (el) => isVisible(el.closest('.MuiRadio-root')!),
-      default: true
-    }
-  })
+      apply: (el) => isVisible(el.closest('[class*="MuiRadio-root"]')!),
+      default: true,
+    },
+  });

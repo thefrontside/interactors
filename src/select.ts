@@ -22,7 +22,7 @@ const SelectOptionsList = createInteractor<HTMLElement>("MUI OptionsList")
 async function closeSelectOptionsList(labelId: string) {
   await SelectOptionsList(labelId).perform((element) => {
     const popover = element.parentElement?.parentElement;
-    if (popover?.getAttribute("role") == "presentation" && popover.classList.contains("MuiPopover-root")) {
+    if (popover?.getAttribute("role") == "presentation" && popover.classList.toString().includes("MuiPopover-root")) {
       const popoverTrap = popover.firstElementChild;
       if (isHTMLElement(popoverTrap)) popoverTrap.click();
     }
@@ -35,7 +35,9 @@ function getValueText(element: HTMLInputElement) {
 }
 
 function getChipLabels(element: HTMLInputElement) {
-  return Array.from(element.previousElementSibling?.querySelectorAll(".MuiChip-root > .MuiChip-label") ?? [])
+  return Array.from(
+    element.previousElementSibling?.querySelectorAll('[class*="MuiChip-root"] > [class*="MuiChip-label"]') ?? []
+  )
     .map((chip) => (isHTMLElement(chip) ? chip.innerText : null))
     .filter(isDefined);
 }
@@ -66,14 +68,14 @@ async function openSelectOptionsList(interactor: Interactor<HTMLInputElement, an
 }
 
 const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
-  .selector(".MuiSelect-root + input.MuiSelect-nativeInput")
+  .selector('[class*="MuiSelect-root"] + input[class*="MuiSelect-nativeInput"]')
   .locator((element) => getInputLabel(element)?.innerText ?? "")
   .filters({
     ...createFormFieldFilters<HTMLInputElement>(),
     id: (element) => element.previousElementSibling?.id,
     className: (element) => element.parentElement?.className ?? "",
     classList: (element) => Array.from(element.parentElement?.classList ?? []),
-    valid: (element) => !element.previousElementSibling?.classList.contains("Mui-error"),
+    valid: (element) => !element.previousElementSibling?.classList.toString().includes("Mui-error"),
     disabled: {
       apply: (element) => element.previousElementSibling?.getAttribute("aria-disabled") == "true",
       default: false,

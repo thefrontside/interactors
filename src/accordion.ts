@@ -1,11 +1,11 @@
 import { HTML } from "@bigtest/interactor";
 import { applyGetter, isHTMLElement } from "./helpers";
 
-const getSummary = (element: HTMLElement) => element.querySelector(".MuiAccordionSummary-root");
+const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
 
 const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
-  .selector(".MuiAccordionSummary-root")
+  .selector('[class*="MuiAccordionSummary-root"]')
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
     expanded: (element) => element.getAttribute("aria-expanded") == "true",
@@ -16,7 +16,7 @@ const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
   });
 
 export const Accordion = HTML.extend<HTMLElement>("MUI Accordion")
-  .selector(".MuiAccordion-root")
+  .selector('[class*="MuiAccordion-root"]')
   .locator((element) => {
     const summary = getSummary(element);
     return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? summary.innerText : "";

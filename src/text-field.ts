@@ -4,7 +4,7 @@ import { isHTMLElement } from "./helpers";
 import { GetElementType } from "./types";
 
 export const TextField = BaseTextField.extend("MUI TextField")
-  .selector(["input", "textarea"].map((tag) => `${tag}.MuiInputBase-input`).join(", "))
+  .selector(["input", "textarea"].map((tag) => `${tag}[class*="MuiInputBase-input"]`).join(", "))
   .locator((element) => {
     const label = element.labels?.[0] ?? element.parentElement?.parentElement?.firstElementChild;
     return isHTMLElement(label) ? label.innerText : element.placeholder;
