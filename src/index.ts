@@ -7,7 +7,6 @@ export * from "./types";
 
 export { Body } from "./body";
 export * from "./body";
-export { default as Button } from './button';
 
 export * from "./calendar";
 export * from "./checkbox";
