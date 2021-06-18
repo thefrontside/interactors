@@ -1,6 +1,6 @@
 import { Page, test } from "bigtest";
 import { TextField as Component } from "@material-ui/core";
-import { TimeField } from "../src";
+import { matching, some, TimeField } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderTimeField = createRenderStep(Component, { id: "timefield", label: "timefield", type: "time" });
@@ -12,6 +12,7 @@ export default test("TimeField")
     test
       .step(renderTimeField())
       .assertion(timefield.has({ value: "" }))
+      .assertion(timefield.has({ classList: some(matching(/MuiInputBase-input-\d+/)) }))
       .child("fillIn string", (test) =>
         test
           .step(timefield.fillIn("09:13:37.512"))

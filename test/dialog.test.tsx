@@ -1,5 +1,5 @@
 import { test, Page, including } from "bigtest";
-import { Button, Dialog } from "../src/index";
+import { Button, Dialog, matching, some } from "../src/index";
 import { Button as ButtonComponent, Dialog as Component, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";
@@ -29,6 +29,7 @@ export default test("Dialog")
   .step(renderDialog())
   .assertion(dialog.exists())
   .assertion(dialog.has({ text: including('Content') }))
+  .assertion(dialog.has({ classList: some(matching(/MuiDialog-root-\d+/)) }))
   .assertion(dialog.find(Button('Save'.toUpperCase())).exists())
   .child('test `close` action', (test) =>
     test

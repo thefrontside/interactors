@@ -1,5 +1,5 @@
 import { test, Page, HTML } from "bigtest";
-import { Menu, MenuItem, MenuList } from "../src/index";
+import { matching, Menu, MenuItem, MenuList, some } from "../src/index";
 import { Menu as Component, Button, MenuItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, MouseEvent, useState } from "react";
@@ -41,6 +41,7 @@ export default test("Menu")
     test
       .step(menu.open())
       .assertion(MenuList('menu-id').find(MenuItem('Logout')).exists())
+      .assertion(MenuList('menu-id').find(MenuItem('Logout')).has({ classList: some(matching(/MuiMenuItem-root-\d+/))}))
   )
   .child('test `click` action', (test) =>
     test

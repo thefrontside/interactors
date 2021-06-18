@@ -1,5 +1,5 @@
 import { test, Page } from "bigtest";
-import { FormControl, Switch } from "../src/index";
+import { FormControl, matching, some, Switch } from "../src/index";
 import { FormControl as Component, InputLabel, FormHelperText, Switch as SwitchComponent, FormControlLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";
@@ -34,6 +34,7 @@ export default test("FormControl")
   .step(renderFormControl())
   .assertion(formControl.exists())
   .assertion(formControl.is({ valid: true }))
+  .assertion(formControl.has({ classList: some(matching(/MuiFormControl-root-\d+/)) }))
   .assertion(formControl.has({ description: 'Toggle error' }))
   .assertion(formControl.find(Switch('Switch')).exists())
   .child('test invalid form', (test) =>

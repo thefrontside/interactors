@@ -1,5 +1,5 @@
 import { test, Page } from "bigtest";
-import { Select, MultiSelect } from "../src/index";
+import { Select, MultiSelect, some, matching } from "../src/index";
 import { Select as Component, FormControl, InputLabel, MenuItem, Chip, FormHelperText } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement } from "react";
@@ -49,6 +49,7 @@ export default test("Select")
           .assertion(select.has({ valid: true }))
           .assertion(select.has({ value: "\u200B" }))
           .assertion(select.has({ description: 'SelectField' }))
+          .assertion(select.has({ classList: some(matching(/MuiInputBase-root-\d+/)) }))
           .assertion(Select({ disabled: false}).exists())
           .child("test `choose` action", (test) =>
             test
@@ -77,7 +78,8 @@ export default test("Select")
           .assertion(multiSelect.has({ required: false }))
           .assertion(multiSelect.has({ valid: true }))
           .assertion(multiSelect.has({ values: [] }))
-          .assertion(select.has({ description: 'SelectField' }))
+          .assertion(multiSelect.has({ classList: some(matching(/MuiInputBase-root-\d+/)) }))
+          .assertion(multiSelect.has({ description: 'SelectField' }))
           .assertion(MultiSelect({ disabled: false}).exists())
           .child("test `select` action", (test) =>
             test

@@ -1,5 +1,5 @@
 import { test, Page } from "bigtest";
-import { Tab, Tabs } from "../src/index";
+import { matching, some, Tab, Tabs } from "../src/index";
 import { Tabs as Component, Tab as TabComponent } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { ChangeEvent, cloneElement, useState } from "react";
@@ -26,6 +26,7 @@ export default test("Tabs")
   .step(renderTabs())
   .assertion(tabs.exists())
   .assertion(tabs.has({ value: 'THREE' }))
+  .assertion(tabs.has({ classList: some(matching(/MuiTabs-root-\d+/)) }))
   .assertion(tabs.find(Tab({ disabled: true })).exists())
   .child('test `click` action', (test) =>
     test

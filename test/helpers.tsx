@@ -1,7 +1,7 @@
 import "date-fns";
 import { render as rtlRender } from "@testing-library/react";
 import { ComponentProps, ComponentType, ReactElement, useState } from "react";
-import { StylesProvider, jssPreset } from "@material-ui/core/styles";
+import { ThemeProvider, jssPreset, StylesProvider, createMuiTheme } from "@material-ui/core";
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -18,6 +18,8 @@ export function render(description: string | ReactElement, element?: ReactElemen
     element = description;
     description = typeof element.type == "string" ? element.type : element.type.name || element.type.toString();
   }
+  const purple = createMuiTheme({ palette: { primary: { main: "#800080" } } });
+  const green = createMuiTheme({ palette: { primary: { main: "#008000" } } });
   return {
     description,
     action: () => {
@@ -30,9 +32,14 @@ export function render(description: string | ReactElement, element?: ReactElemen
       });
 
       rtlRender(
-        <StylesProvider jss={jss} injectFirst>
-          {element}
-        </StylesProvider>,
+        // NOTE We have to use nested themes to make material-ui generates classnames with ids
+        <ThemeProvider theme={purple}>
+          <ThemeProvider theme={green}>
+            <StylesProvider jss={jss} injectFirst>
+              {element}
+            </StylesProvider>
+          </ThemeProvider>
+        </ThemeProvider>,
         {
           container: document.body,
         }

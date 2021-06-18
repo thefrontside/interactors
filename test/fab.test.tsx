@@ -1,5 +1,5 @@
 import { test, Page, HTML } from "bigtest";
-import { Fab as Interactor, including } from "../src/index";
+import { Fab as Interactor, including, matching, some } from "../src/index";
 import { Fab as MuiFab, Icon as MuiIcon } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { render } from "./helpers";
@@ -14,6 +14,7 @@ export default test("Fab")
     test
       .step(render(<MuiFab>My Fab</MuiFab>))
       .assertion(fab.exists())
+      .assertion(fab.has({ classList: some(matching(/MuiFab-root-\d+/)) }))
       .assertion(fab.has({ text: "My Fab".toUpperCase() }))
   )
   .child("renders extended floating action button", (test) =>

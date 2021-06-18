@@ -1,5 +1,5 @@
 import { test, Page } from "bigtest";
-import { Accordion } from "../src/index";
+import { Accordion, matching, some } from "../src/index";
 import {
   Accordion as Component,
   AccordionSummary,
@@ -33,6 +33,7 @@ export default test("Accordion")
       .step(renderAccordion())
       .assertion(accordion.exists())
       .assertion(accordion.is({ expanded: false }))
+      .assertion(accordion.has({ classList: some(matching(/MuiAccordion-root-\d+/)) }))
       .assertion(Accordion({ disabled: false }).exists())
       .child('test `expand` action', (test) =>
         test
