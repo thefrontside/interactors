@@ -1,7 +1,7 @@
 import * as Bigtest from "@bigtest/interactor";
 
 export { Bigtest };
-export { HTML, including, matching, and, or, not, some, every } from "@bigtest/interactor";
+export { HTML, Heading, Page, including, matching, and, or, not, some, every } from "@bigtest/interactor";
 
 export * from "./types";
 
@@ -22,6 +22,7 @@ export * from "./menu";
 export * from "./tabs";
 export * from "./select";
 export * from "./native-select";
+export * from "./popover";
 export * from "./text-field";
 export * from "./button";
 export * from "./snackbar";
