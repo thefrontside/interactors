@@ -16,10 +16,10 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run prepack
       - name: covector preview
-        uses: ./packages/action
+        uses: jbolda/covector/packages/action@main
         id: covector
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
           command: preview
