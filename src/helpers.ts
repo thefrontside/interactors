@@ -27,6 +27,9 @@ export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTML
       ?.split(" ")
       .map((labelId) => input.ownerDocument.getElementById(labelId))
       .map((element) => (isHTMLElement(element, "Label") ? element : null))
+      .find(isDefined) ??
+    [input.parentElement?.previousElementSibling]
+      .map((element) => (isHTMLElement(element, "Label") ? element : null))
       .find(isDefined)
   );
 }

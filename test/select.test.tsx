@@ -68,6 +68,11 @@ export default test("Select")
           .assertion(select.exists())
           .assertion(select.has({ description: 'SelectField' }))
       )
+      .child("labelId={undefined} inputProps={undefined}", (test) =>
+        test
+          .step(renderSelect({ labelId: undefined, inputProps: undefined }))
+          .assertion(select.exists())
+      )
   )
   .child('multiple', (test) =>
     test

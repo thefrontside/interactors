@@ -1,6 +1,8 @@
 import { HTML } from "@bigtest/interactor";
 
-export const List = HTML.extend<HTMLElement>("MUI List").selector('[class*="MuiList-root"]');
+export const List = HTML.extend<HTMLElement>("MUI List")
+  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .selector('[class*="MuiList-root"]');
 
 export const ListItem = HTML.extend<HTMLElement>("MUI ListItem")
   .selector('[class*="MuiListItem-root"]')
