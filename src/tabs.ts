@@ -3,7 +3,7 @@ import { isHTMLElement } from "./helpers";
 
 export const Tab = HTML.extend<HTMLElement>("MUI Tab")
   .selector('[class*="MuiTab-root"][role="tab"]')
-  .locator((element) => (element.innerText || element.getAttribute("aria-label")) ?? "")
+  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
     active: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
@@ -22,7 +22,7 @@ export const Tabs = HTML.extend<HTMLElement>("MUI Tabs")
   .filters({
     value: (element) => {
       const active = element.querySelector('[class*="MuiTab-root"][role="tab"][aria-selected="true"]');
-      return isHTMLElement(active) ? (active.innerText || active.getAttribute("aria-label")) ?? "" : "";
+      return isHTMLElement(active) ? active.getAttribute("aria-label") ?? active.innerText : "";
     },
   })
   .actions({ click: (interactor, value: string) => interactor.find(Tab(value)).click() });
