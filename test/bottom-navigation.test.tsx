@@ -2,9 +2,7 @@ import { cloneElement, useState } from "react";
 import { test, Page } from "bigtest";
 import { BottomNavigation } from '../src'
 import { BottomNavigation as Component, BottomNavigationAction } from '@material-ui/core'
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { Restore, Favorite, LocationOn } from '@material-ui/icons';
 import { createRenderStep } from "./helpers";
 
 const renderBottomNavigation = createRenderStep(Component, {}, ({ props, children }) => {
@@ -14,9 +12,9 @@ const renderBottomNavigation = createRenderStep(Component, {}, ({ props, childre
     children(props),
     { value, onChange: (_: any, newValue: number) => setValue(newValue) },
     ...[
-      <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />,
-      <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />,
-      <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />,
+      <BottomNavigationAction label="Recents" icon={<Restore />} />,
+      <BottomNavigationAction label="Favorites" icon={<Favorite />} />,
+      <BottomNavigationAction label="Nearby" icon={<LocationOn />} />,
     ]
   );
 })
