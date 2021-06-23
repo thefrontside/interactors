@@ -48,4 +48,4 @@ export default test("TextField")
     test
       .step(renderTextField({ multiline: true }))
       .assertion(textfield.exists())
-  )
+  );

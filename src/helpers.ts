@@ -9,8 +9,8 @@ export function isHTMLElement<T extends HTMLElementTypes = "">(
   element: unknown | null | undefined,
   type: T = "" as T
 ): element is InstanceType<typeof window[`HTML${T}Element`]> {
-  const { defaultView } = bigtestGlobals.document;
-  const Constructor = (defaultView as any)?.[`HTML${type}Element`];
+  let { defaultView } = bigtestGlobals.document;
+  let Constructor = (defaultView as any)?.[`HTML${type}Element`];
   return typeof Constructor == "function" && element instanceof Constructor;
 }
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

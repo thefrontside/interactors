@@ -20,7 +20,7 @@ export const Tabs = HTML.extend<HTMLElement>("MUI Tabs")
   )
   .filters({
     value: (element) => {
-      const active = element.querySelector('.MuiTab-root[role="tab"][aria-selected="true"]');
+      let active = element.querySelector('.MuiTab-root[role="tab"][aria-selected="true"]');
       return isHTMLElement(active) ? (active.innerText || active.getAttribute("aria-label")) ?? "" : "";
     },
   })

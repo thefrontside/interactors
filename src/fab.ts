@@ -5,4 +5,4 @@ export default Button.extend('button')
   .filters({
     ariaLabel: (el) => el.getAttribute("aria-label"),
     svgIcon: (el) => el.querySelector('svg')?.classList.contains('MuiSvgIcon-root')
-  })
+  });

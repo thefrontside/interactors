@@ -18,7 +18,7 @@ const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
 export const Accordion = HTML.extend<HTMLElement>("MUI Accordion")
   .selector(".MuiAccordion-root")
   .locator((element) => {
-    const summary = getSummary(element);
+    let summary = getSummary(element);
     return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? summary.innerText : "";
   })
   .filters({

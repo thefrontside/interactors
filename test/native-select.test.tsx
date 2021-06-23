@@ -10,7 +10,7 @@ const plainOptions = (
     <option value={2}>two</option>
     <option value={3}>three</option>
   </>
-)
+);
 
 const renderSelect = createRenderStep(
   Component,
@@ -42,7 +42,7 @@ export default test("Native Select")
           .assertion(select.has({ focused: false }))
           .assertion(select.has({ valid: true }))
           .assertion(select.has({ value: "" }))
-          .assertion(NativeSelect({ disabled: false}).exists())
+          .assertion(NativeSelect({ disabled: false }).exists())
           .child("test `focus` action", (test) =>
             test
               .step(select.focus())
@@ -70,7 +70,7 @@ export default test("Native Select")
         .assertion(multiSelect.has({ focused: false }))
         .assertion(multiSelect.has({ valid: true }))
         .assertion(multiSelect.has({ values: [] }))
-        .assertion(NativeMultiSelect({ disabled: false}).exists())
+        .assertion(NativeMultiSelect({ disabled: false }).exists())
         .child("test `focus` action", (test) =>
           test
             .step(multiSelect.focus())
@@ -89,7 +89,7 @@ export default test("Native Select")
             .child("test `deselect` action", (test) =>
               test
                 .step(multiSelect.deselect('one'))
-                .assertion(multiSelect.has({  values: ['two'] }))
+                .assertion(multiSelect.has({ values: ['two'] }))
             )
         )
     )

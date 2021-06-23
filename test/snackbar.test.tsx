@@ -9,4 +9,4 @@ const snackbar = Snackbar("Snackbar");
 export default test("Snackbar")
   .step(Page.visit("/"))
   .step(renderSnackbar())
-  .assertion(snackbar.exists())
+  .assertion(snackbar.exists());

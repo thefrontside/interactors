@@ -7,4 +7,4 @@ export default RadioButton.extend('radio')
       apply: (el) => isVisible(el.closest('.MuiRadio-root')!),
       default: true
     }
-  })
+  });
