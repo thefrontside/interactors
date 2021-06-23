@@ -1,47 +1,35 @@
-import { test, Page, HTML } from "bigtest";
-import { Fab as Interactor, including, matching, some } from "../src/index";
-import { Fab as MuiFab, Icon as MuiIcon } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import { render } from "./helpers";
+import { test, Page, HTML, some, matching } from "bigtest";
+import { Fab, including } from "../src/index";
+import { Fab as Component, Icon } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
+import { createRenderStep } from "./helpers";
 
-const Span = HTML.extend("span").selector("span");
+const renderFab = createRenderStep(Component, { children: 'My Fab' });
+const fab = Fab('My Fab'.toUpperCase());
 
-const fab = Interactor();
+const Span = HTML.selector("span");
 
 export default test("Fab")
   .step(Page.visit("/"))
   .child("can render a floating action button", (test) =>
     test
-      .step(render(<MuiFab>My Fab</MuiFab>))
+      .step(renderFab())
       .assertion(fab.exists())
       .assertion(fab.has({ classList: some(matching(/MuiFab-root-\d+/)) }))
       .assertion(fab.has({ text: "My Fab".toUpperCase() }))
   )
   .child("renders extended floating action button", (test) =>
     test
-      .step(render(<MuiFab variant="extended">My Fab</MuiFab>))
+      .step(renderFab({ variant: "extended" }))
       .assertion(fab.has({ className: including("MuiFab-extended") }))
   )
   .child("render Icon with children with right classes", (test) =>
     test
-      .step(
-        render(
-          <MuiFab>
-            <MuiIcon data-testid="icon" className={"child-woof"} />
-          </MuiFab>
-        )
-      )
-      .assertion(fab.find(Span({ className: including("child-woof") })).exists())
+      .step(renderFab({ children: <Icon data-testid="icon" className={"child-woof"} /> }))
+      .assertion(Fab().find(Span({ className: including("child-woof") })).exists())
   )
   .child("render Fab with only icon and aria-label", (test) =>
     test
-      .step(
-        render(
-          <MuiFab color="primary" aria-label="add">
-            <AddIcon />
-          </MuiFab>
-        )
-      )
-      .assertion(fab.has({ ariaLabel: including("add") }))
-      .assertion(fab.has({ svgIcon: true }))
+      .step(renderFab({ color: 'primary', 'aria-label': "add", children: <Add /> }))
+      .assertion(Fab('add').has({ svgIcon: true }))
   );
