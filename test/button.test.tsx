@@ -1,48 +1,49 @@
 import { test, Page, HTML } from "bigtest";
-import { Button as Interactor, including, not, or } from "../src/index";
-import { Button as MuiButton } from "@material-ui/core";
-import { containing } from './matchers';
-import { render } from "./helpers";
+import { Button, including, not } from "../src/index";
+import { Button as Component } from "@material-ui/core";
+import { createRenderStep } from "./helpers";
+import { ComponentProps } from "react";
 
-const button = Interactor();
+const renderButton = createRenderStep(Component, { children: 'My Button' });
+const button = Button(including("My Button".toUpperCase()));
 
 export default test("Button")
   .step(Page.visit("/"))
   .child("rendering a button", (test) => test
-    .step(render("render button", <MuiButton>My Button</MuiButton>))
+    .step(renderButton())
     .assertion(button.exists())
     .assertion(button.has({ text: "My Button".toUpperCase()}))
     .assertion(button.has({ className: including("MuiButton-root")}))
     .assertion(button.has({ className: including("MuiButton-text")}))
-    .assertion("should render with the root, text and textPrimary classes but no others", async() => {
-    await button.has({ classList: not(containing(["MuiButton-textSecondary", "MuiButton-outlined", "MuiButton-contained"])) })
-    })
+    .assertion(button.has({ className: not(including("MuiButton-textSecondary"))}))
+    .assertion(button.has({ className: not(including("MuiButton-outlined"))}))
+    .assertion(button.has({ className: not(including("MuiButton-contained"))}))
   )
   .child('render a text secondary button', (test) => test
-    .step(render(<MuiButton color="secondary">Secondary Button</MuiButton>))
+    .step(renderButton({ color: 'secondary' }))
     .assertion(button.has({ className: including("MuiButton-root")}))
     .assertion(button.has({ className: including("MuiButton-text")}))
     .assertion(button.has({ className: not(including("MuiButton-contained"))}))
     .assertion(button.has({ className: not(including("MuiButton-textPrimary"))}))
   )
   .child('render outline button', (test) => test
-    .step(render(<MuiButton variant="outlined">Outlined Button</MuiButton>))
+    .step(renderButton({ variant: "outlined" }))
     .assertion(button.has({ className: including("MuiButton-outlined") }))
     .assertion(button.has({ className: not(including("MuiButton-text")) }))
     .assertion(button.has({ className: not(including("MuiButton-contained")) }))
   )
   .child('render primary outlined variant', (test) => test
-    .step(render(<MuiButton variant="outlined" color="primary">Primary Outlined</MuiButton>))
+    .step(renderButton({ variant: "outlined", color: "primary" }))
     .assertion(button.has({ className: including("MuiButton-outlined")}))
     .assertion(button.has({ className: including("MuiButton-outlinedPrimary")}))
   )
   .child('render secondary outlined variant', (test) => test
-    .step(render(<MuiButton variant="outlined" color="secondary">Secondary Outlined</MuiButton>))
+    .step(renderButton({ variant: "outlined", color: "secondary" }))
     .assertion(button.has({ className: including("MuiButton-outlined")}))
     .assertion(button.has({ className: including("MuiButton-outlinedSecondary")}))
   )
   .child('render inherit outlined variant', (test) => test
-    .step(render(<MuiButton variant="outlined" color="inherit">Inherit Outline</MuiButton>))
+    .step(renderButton({ variant: "outlined", color: "inherit" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-outlined") }))
     .assertion(button.has({ className: including("MuiButton-colorInherit") }))
@@ -52,14 +53,14 @@ export default test("Button")
   )
 
   .child('renders a contained button', (test) => test
-    .step(render(<MuiButton variant="contained">Contained Button</MuiButton>))
+    .step(renderButton({ variant: "contained" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-contained") }))
     .assertion(button.has({ className: not(including("MuiButton-textPrimary")) }))
     .assertion(button.has({ className: not(including("MuiButton-textSecondary")) }))
   )
   .child('renders a contained primary button', (test) => test
-    .step(render(<MuiButton variant="contained" color="primary">Contained Primary Button</MuiButton>))
+    .step(renderButton({ variant: "contained", color: "primary" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-contained") }))
     .assertion(button.has({ className: including("MuiButton-containedPrimary") }))
@@ -67,7 +68,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSecondary")) }))
   )
   .child('renders a contained secondary button', (test) => test
-    .step(render(<MuiButton variant="contained" color="secondary">Contained Secondary Button</MuiButton>))
+    .step(renderButton({ variant: "contained", color: "secondary" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-contained") }))
     .assertion(button.has({ className: including("MuiButton-containedSecondary") }))
@@ -75,7 +76,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedPrimary")) }))
   )
   .child('renders a small text button', (test) => test
-    .step(render(<MuiButton size="small">Small Text Button</MuiButton>))
+    .step(renderButton({ size: "small" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-text") }))
     .assertion(button.has({ className: including("MuiButton-textSizeSmall") }))
@@ -86,7 +87,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSizeLarge")) }))
   )
   .child('renders a large text button', (test) => test
-    .step(render(<MuiButton size="large">Large Text Button</MuiButton>))
+    .step(renderButton({ size: "large" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-text") }))
     .assertion(button.has({ className: including("MuiButton-textSizeLarge") }))
@@ -97,7 +98,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSizeLarge")) }))
   )
   .child('renders a small outlined button', (test) => test
-    .step(render(<MuiButton variant="outlined" size="small">Small outlined Button</MuiButton>))
+    .step(renderButton({ variant: "outlined", size: "small" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-outlined") }))
     .assertion(button.has({ className: including("MuiButton-outlinedSizeSmall") }))
@@ -107,7 +108,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSizeLarge")) }))
   )
   .child('renders a large outlined button', (test) => test
-    .step(render(<MuiButton variant="outlined" size="large">Large outlined Button</MuiButton>))
+    .step(renderButton({ variant: "outlined", size: "large" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-outlined") }))
     .assertion(button.has({ className: including("MuiButton-outlinedSizeLarge") }))
@@ -118,7 +119,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSizeSmall")) }))
   )
   .child('renders a small contained button', (test) => test
-    .step(render(<MuiButton variant="contained" size="small">Small contained Button</MuiButton>))
+    .step(renderButton({ variant: "contained", size: "small" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-contained") }))
     .assertion(button.has({ className: including("MuiButton-containedSizeSmall") }))
@@ -129,7 +130,7 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSizeLarge")) }))
   )
   .child('renders a large contained button', (test) => test
-    .step(render(<MuiButton variant="contained" size="small">Large contained Button</MuiButton>))
+    .step(renderButton({ variant: "contained", size: "small" }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-contained") }))
     .assertion(button.has({ className: including("MuiButton-containedSizeSmall") }))
@@ -140,58 +141,48 @@ export default test("Button")
     .assertion(button.has({ className: not(including("MuiButton-containedSizeLarge")) }))
   )
   .child('renders button with startIcon', (test) => test
-    .step(render(<MuiButton startIcon={<span>icon</span>}>StartIcon Button</MuiButton>))
+    .step(renderButton({ startIcon: <span>icon</span> }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-text") }))
-    .assertion(button.has({ iconLabel: including("MuiButton-startIcon") }))
-    .assertion(button.has({ iconLabel: not(including("MuiButton-endIcon")) }))
+    .assertion(button.find(HTML({ className: including("MuiButton-startIcon") })).exists())
+    .assertion(button.find(HTML({ className: not(including("MuiButton-endIcon")) })).exists())
   )
   .child('renders button with endIcon', (test) => test
-    .step(render(<MuiButton endIcon={<span>icon</span>}>EndIcon Button</MuiButton>))
+    .step(renderButton({ endIcon: <span>icon</span> }))
     .assertion(button.has({ className: including("MuiButton-root") }))
     .assertion(button.has({ className: including("MuiButton-text") }))
-    .assertion(button.has({ iconLabel: including("MuiButton-endIcon") }))
-    .assertion(button.has({ iconLabel: not(including("MuiButton-startIcon")) }))
+    .assertion(button.find(HTML({ className: including("MuiButton-endIcon") })).exists())
+    .assertion(button.find(HTML({ className: not(including("MuiButton-startIcon")) })).exists())
   )
   .child('button renders with ripple by default', (test) => test
-    .step(render(<MuiButton TouchRippleProps={{ className: 'touch-ripple'}}>Ripple Button</MuiButton>))
+    .step(renderButton({ TouchRippleProps: { className: 'touch-ripple'} }))
     .assertion(button.find(HTML({ className: including('touch-ripple')})).exists())
   )
   .child('can disable ripple effect', (test) => test
-    .step(render(<MuiButton disableRipple TouchRippleProps={{ className: 'touch-ripple'}}>Ripple Button</MuiButton>))
+    .step(renderButton({ disableRipple: true, TouchRippleProps: { className: 'touch-ripple'} }))
     .assertion(button.find(HTML({ className: including('touch-ripple')} )).absent())
   )
   .child('can disable elevation', (test) => test
-    .step(render(<MuiButton disableElevation>Disabled Elevation Button</MuiButton>))
+    .step(renderButton({ disableElevation: true }))
     .assertion(button.has({ className: including("MuiButton-disableElevation") }))
   )
   .child('have a focusRipple by default', (test) => test
-    .step(render(
-      <MuiButton
-        TouchRippleProps={{ classes: { ripplePulsate: 'pulstat-focus-visible'} }}
-      >
-        Focus ripple default button
-      </MuiButton>)
-    )
+    .step(renderButton({ TouchRippleProps: { classes: { ripplePulsate: 'pulstat-focus-visible'} } }))
     .step(button.focus())
     .assertion(button.find(HTML({ className: including("pulstat-focus-visible")} )).exists())
   )
   .child('can disable focusRipple', (test) => test
     .step(
-      render(
-        <MuiButton
-          disableFocusRipple
-          TouchRippleProps={{ classes: { ripplePulsate: 'pulstat-focus-visible'} }}
-        >
-          Focus ripple disabled button
-        </MuiButton>
-      )
+      renderButton({
+        disableFocusRipple: true,
+        TouchRippleProps: { classes: { ripplePulsate: 'pulstat-focus-visible'} }
+      })
     )
-    .step( button.focus())
+    .step(button.focus())
     .assertion(button.find(HTML({ className: including("MuiTouchRipple-rippleVisible") })).absent())
   )
   .child('should automatically change button to an anchor when href is provided', (test) => test
-    .step(render(<MuiButton href="https://google.com">Href Button</MuiButton>))
+    .step(renderButton({ href: "https://google.com" }))
     .assertion(button.has(
      {
         className: including("MuiButton-root"),
@@ -200,12 +191,11 @@ export default test("Button")
     ))
   )
   .child('should forward classes to BaseButton', (test) => test
-    .step(
-      render(
-        <MuiButton disabled classes={{ disabled: "disabledClassName" }}>
-          Disabled Button
-        </MuiButton>
-      )
-    )
-    .assertion(button.has({ className: including("disabledClassName"), disabled: true }))
+    .step(renderButton({ disabled: true, classes: { disabled: "disabledClassName" } }))
+    .assertion(Button({ disabled: true }).has({ className: including("disabledClassName"), disabled: true }))
+  )
+  .child('renders button as a span with [role="button"]', (test) => test
+    .step(renderButton({ component: 'span' } as ComponentProps<typeof Component>))
+    .assertion(button.exists())
+    .assertion(HTML.selector('span')({ className: including('MuiButton-root') }).exists())
   )

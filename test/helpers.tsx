@@ -41,6 +41,7 @@ export function render(description: string | ReactElement, element?: ReactElemen
   };
 }
 
+// FIXME There is issue with getting name from component that is wrapped in `withStyles`
 function getDisplayName(Component: ComponentType | string) {
   return (
     (typeof Component === "string"

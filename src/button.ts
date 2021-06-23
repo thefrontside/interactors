@@ -1,15 +1,16 @@
 import { HTML } from "@bigtest/interactor";
 
-// // TODO Merge with #4
-// export const Button = BaseButton.extend("MUI Button").filters({
-//   label: (element) => element.getAttribute("aria-label") ?? "",
-// });
-
-export const Button = HTML.extend<HTMLButtonElement | HTMLLinkElement>('MUI Button')
-  .selector('.MuiButton-root')
+export const Button = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUI Button")
+  .selector(
+    ["button", "a[href]", '[role="button"]']
+      .map((selector) => `${selector}[class*="MuiButton-root"], ${selector}[class*="MuiIconButton-root"]`)
+      .join(", ")
+  )
+  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
-    iconLabel: (el) => el.querySelector(".MuiButton-label")?.firstElementChild?.classList.value,
-    href: (el) => el.getAttribute('href'),
-    disabled: (el) => el.disabled,
-  })
-
+    href: (element) => element.getAttribute("href"),
+    disabled: {
+      apply: (element) => element.disabled || element.getAttribute("aria-disabled") == "true",
+      default: false,
+    },
+  });

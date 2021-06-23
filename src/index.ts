@@ -5,17 +5,13 @@ export { HTML, including, matching, and, or, not, some, every } from "@bigtest/i
 
 export * from "./types";
 
-export { Body } from "./body";
-export * from "./body";
-
-export * from "./calendar";
-export * from "./checkbox";
-
 export * from "./date-field";
 export * from "./time-field";
 export * from "./datetime-field";
 
+export * from "./checkbox";
 export * from "./body";
+export * from "./calendar";
 export * from "./accordion";
 export * from "./menu";
 export * from "./switch";
