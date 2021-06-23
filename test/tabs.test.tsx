@@ -7,9 +7,9 @@ import { ChangeEvent, cloneElement, useState } from "react";
 const renderTabs = createRenderStep(Component, {
   'aria-label': 'tabs'
 }, ({ props, children }) => {
-  const [value, setValue] = useState(2);
+  let [value, setValue] = useState(2);
 
-  const handleChange = (_event: ChangeEvent<{}>, newValue: number) => setValue(newValue);
+  let handleChange = (_event: ChangeEvent<{}>, newValue: number) => setValue(newValue);
 
   return cloneElement(
     children(props),
@@ -31,4 +31,4 @@ export default test("Tabs")
     test
       .step(tabs.click('ONE'))
       .assertion(tabs.has({ value: 'ONE' }))
-  )
+  );

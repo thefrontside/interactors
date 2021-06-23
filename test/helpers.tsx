@@ -23,7 +23,7 @@ export function render(description: string | ReactElement, element?: ReactElemen
     action: () => {
       let insertion = document.createComment("mui-jss-insertion");
       let insertionPoint = document.head.insertBefore(insertion, document.head.firstChild);
-      const jss = create({
+      let jss = create({
         ...jssPreset(),
         // Define a custom insertion point that JSS will look for when injecting the styles into the DOM.
         insertionPoint,
@@ -71,14 +71,14 @@ export function createRenderStep<CT extends ComponentType<any>>(
 }
 
 export function createPickerRenderStep<T extends ComponentType<any>>(PickerComponent: T) {
-  const Wrapper = ({ getProps, children }: WrapperProps<T>) => {
-    const props = typeof getProps == "function" ? getProps() : getProps;
-    const initialDate = (props?.date ?? new Date("2014-08-18")) as Date;
-    const [dateValue, _timeValue] = initialDate
+  let Wrapper = ({ getProps, children }: WrapperProps<T>) => {
+    let props = typeof getProps == "function" ? getProps() : getProps;
+    let initialDate = (props?.date ?? new Date("2014-08-18")) as Date;
+    let [dateValue, _timeValue] = initialDate
       .toISOString()
       .replace(/\.\d{3}Z$/, "")
       .split("T");
-    const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
+    let [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {/* @ts-expect-error just ignore it */}
@@ -99,7 +99,7 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
     );
   };
 
-  const renderComponent = createRenderStep(PickerComponent, {}, Wrapper);
+  let renderComponent = createRenderStep(PickerComponent, {}, Wrapper);
   return (
     getProps?:
       | Partial<ComponentProps<typeof PickerComponent>>

@@ -7,8 +7,8 @@ import { cloneElement, useCallback, useState } from "react";
 const renderDialog = createRenderStep(Component, {
   'aria-labelledby': 'dialog-title'
 }, ({ props, children }) => {
-  const [open, setOpen] = useState(true)
-  const onClose = useCallback(() => setOpen(false), [])
+  let [open, setOpen] = useState(true);
+  let onClose = useCallback(() => setOpen(false), []);
 
   return cloneElement(
     children(props),
@@ -20,7 +20,7 @@ const renderDialog = createRenderStep(Component, {
         Save
       </ButtonComponent>
     </DialogActions>,
-  )
+  );
 });
 const dialog = Dialog("dialog");
 
@@ -34,4 +34,4 @@ export default test("Dialog")
     test
       .step(dialog.close())
       .assertion(Dialog("dialog").absent())
-  )
+  );

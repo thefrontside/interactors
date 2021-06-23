@@ -60,4 +60,4 @@ export default test("Accordion")
     test
       .step(renderAccordion({ disabled: true }))
       .assertion(Accordion({ disabled: true }).exists())
-  )
+  );
