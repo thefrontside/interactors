@@ -54,4 +54,4 @@ export default test("TextField")
     test
       .step(renderTextField({ id: undefined }))
       .assertion(textfield.exists())
-  )
+  );

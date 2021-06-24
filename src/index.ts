@@ -28,5 +28,5 @@ export * from "./button";
 export * from "./snackbar";
 export * from "./form-control";
 export * from "./dialog";
-export { default as Fab } from "./fab";
+export * from "./fab";
 export { default as Radio } from "./radio";

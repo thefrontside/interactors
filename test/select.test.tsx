@@ -9,7 +9,7 @@ const plainOptions = [
   <MenuItem value="one">one</MenuItem>,
   <MenuItem value="two">two</MenuItem>,
   <MenuItem value="three">three</MenuItem>,
-]
+];
 
 const renderSelect = createRenderStep(
   Component,
@@ -50,7 +50,7 @@ export default test("Select")
           .assertion(select.has({ value: "\u200B" }))
           .assertion(select.has({ description: 'SelectField' }))
           .assertion(select.has({ classList: some(matching(/MuiInputBase-root-\d+/)) }))
-          .assertion(Select({ disabled: false}).exists())
+          .assertion(Select({ disabled: false }).exists())
           .child("test `choose` action", (test) =>
             test
               .step(select.choose('one'))
@@ -85,7 +85,7 @@ export default test("Select")
           .assertion(multiSelect.has({ values: [] }))
           .assertion(multiSelect.has({ classList: some(matching(/MuiInputBase-root-\d+/)) }))
           .assertion(multiSelect.has({ description: 'SelectField' }))
-          .assertion(MultiSelect({ disabled: false}).exists())
+          .assertion(MultiSelect({ disabled: false }).exists())
           .child("test `select` action", (test) =>
             test
               .step(multiSelect.select('one'))
@@ -94,12 +94,12 @@ export default test("Select")
               .child("test `deselect` action", (test) =>
                 test
                   .step(multiSelect.deselect('one'))
-                  .assertion(multiSelect.has({  values: ['two'] }))
+                  .assertion(multiSelect.has({ values: ['two'] }))
               )
               .child("test `choose` action", (test) =>
                 test
                   .step(multiSelect.choose('three'))
-                  .assertion(multiSelect.has({  values: ['three'] }))
+                  .assertion(multiSelect.has({ values: ['three'] }))
               )
           )
       )

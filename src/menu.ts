@@ -25,7 +25,7 @@ export const Menu = Button.extend("MUI Menu")
     click: async (interactor, value: string) => {
       await interactor.perform((element) => element.click());
 
-      const menuId = await applyGetter(interactor, (element) => element.getAttribute("aria-controls") ?? "");
+      let menuId = await applyGetter(interactor, (element) => element.getAttribute("aria-controls") ?? "");
 
       await MenuList(menuId).find(MenuItem(value)).click();
     },

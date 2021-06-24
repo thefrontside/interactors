@@ -2,14 +2,14 @@ import { test, Page } from "bigtest";
 import { matching, some, Tab, Tabs } from "../src/index";
 import { Tabs as Component, Tab as TabComponent } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
-import { ChangeEvent, cloneElement, useState } from "react";
+import { cloneElement, useState } from "react";
 
 const renderTabs = createRenderStep(Component, {
   'aria-label': 'tabs'
 }, ({ props, children }) => {
-  const [value, setValue] = useState(2);
+  let [value, setValue] = useState(2);
 
-  const handleChange = (_event: ChangeEvent<{}>, newValue: number) => setValue(newValue);
+  let handleChange = (_event: unknown, newValue: number) => setValue(newValue);
 
   return cloneElement(
     children(props),
@@ -32,4 +32,4 @@ export default test("Tabs")
     test
       .step(tabs.click('ONE'))
       .assertion(tabs.has({ value: 'ONE' }))
-  )
+  );

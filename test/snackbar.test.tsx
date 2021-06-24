@@ -10,4 +10,4 @@ export default test("Snackbar")
   .step(Page.visit("/"))
   .step(renderSnackbar())
   .assertion(snackbar.exists())
-  .assertion(snackbar.has({ classList: some(matching(/MuiSnackbar-root-\d+/)) }))
+  .assertion(snackbar.has({ classList: some(matching(/MuiSnackbar-root-\d+/)) }));
