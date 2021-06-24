@@ -16,16 +16,16 @@ export function render(description: string, element: ReactElement): StepImplemen
 export function render(description: string | ReactElement, element?: ReactElement): StepImplementation {
   if (typeof description != "string") {
     element = description;
-    description = typeof element.type == "string" ? element.type : element.type.name || element.type.toString();
+    description = typeof element.type == "string" ? element.type : element.type.name || "render unknown element";
   }
-  const purple = createMuiTheme({ palette: { primary: { main: "#800080" } } });
-  const green = createMuiTheme({ palette: { primary: { main: "#008000" } } });
+  let purple = createMuiTheme({ palette: { primary: { main: "#800080" } } });
+  let green = createMuiTheme({ palette: { primary: { main: "#008000" } } });
   return {
     description,
     action: () => {
       let insertion = document.createComment("mui-jss-insertion");
       let insertionPoint = document.head.insertBefore(insertion, document.head.firstChild);
-      const jss = create({
+      let jss = create({
         ...jssPreset(),
         // Define a custom insertion point that JSS will look for when injecting the styles into the DOM.
         insertionPoint,
@@ -48,27 +48,30 @@ export function render(description: string | ReactElement, element?: ReactElemen
   };
 }
 
+// FIXME There is issue with getting name from component that is wrapped in `withStyles`
 function getDisplayName(Component: ComponentType | string) {
   return (
     (typeof Component === "string"
       ? Component
-      : Component.displayName || Component.name || (Component as any).muiName) || "Unknown"
+      : Component.displayName || Component.name || (Component as { muiName?: string }).muiName) || "Unknown"
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface WrapperProps<CT extends ComponentType<any>> {
   getProps?: Partial<ComponentProps<CT>> | ((props?: Partial<ComponentProps<CT>>) => Partial<ComponentProps<CT>>);
   props?: Partial<ComponentProps<CT>>;
   children: (props?: Partial<ComponentProps<CT>>) => ReactElement<ComponentProps<CT>, CT>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createRenderStep<CT extends ComponentType<any>>(
   Component: CT,
   defaultProps: Partial<ComponentProps<CT>> = {},
   Wrapper: ComponentType<WrapperProps<CT>> = ({ getProps, children }) =>
     children(typeof getProps == "function" ? getProps() : getProps)
 ) {
-  return (getProps?: WrapperProps<CT>["getProps"]) =>
+  return (getProps?: WrapperProps<CT>["getProps"]): StepImplementation =>
     render(
       `render component '${getDisplayName(Component)}'`,
       <Wrapper getProps={getProps} props={typeof getProps == "function" ? getProps() : getProps}>
@@ -77,18 +80,19 @@ export function createRenderStep<CT extends ComponentType<any>>(
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function createPickerRenderStep<T extends ComponentType<any>>(PickerComponent: T) {
-  const Wrapper = ({ getProps, children }: WrapperProps<T>) => {
-    const props = typeof getProps == "function" ? getProps() : getProps;
-    const initialDate = (props?.date ?? new Date("2014-08-18")) as Date;
-    const [dateValue, _timeValue] = initialDate
+  let Wrapper = ({ getProps, children }: WrapperProps<T>) => {
+    let props = typeof getProps == "function" ? getProps() : getProps;
+    let initialDate = (props?.date ?? new Date("2014-08-18")) as Date;
+    let [dateValue] = initialDate
       .toISOString()
       .replace(/\.\d{3}Z$/, "")
       .split("T");
-    const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
+    let [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        {/* @ts-expect-error just ignore it */}
+        {/* @ts-expect-error the component generic doesn't fit properly */}
         {children({
           onChange: setSelectedDate,
           date: selectedDate,
@@ -97,7 +101,7 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
           label: dateValue,
           ...(typeof getProps == "function"
             ? getProps(
-                // @ts-expect-error
+                // @ts-expect-error the component generic doesn't fit properly
                 { onChange: setSelectedDate }
               )
             : getProps),
@@ -106,7 +110,7 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
     );
   };
 
-  const renderComponent = createRenderStep(PickerComponent, {}, Wrapper);
+  let renderComponent = createRenderStep(PickerComponent, {}, Wrapper);
   return (
     getProps?:
       | Partial<ComponentProps<typeof PickerComponent>>

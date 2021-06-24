@@ -1,5 +1,5 @@
 import { Page, test } from "bigtest";
-import { Link as Component } from '@material-ui/core'
+import { Link as Component } from '@material-ui/core';
 import { Link, matching, some } from "../src";
 import { createRenderStep } from "./helpers";
 
@@ -12,4 +12,4 @@ export default test("Link")
   .step(renderLink())
   .assertion(link.exists())
   .assertion(link.has({ classList: some(matching(/MuiLink-root-\d+/)) }))
-  .assertion(link.has({ href: 'https://material-ui.com/components/links/' }))
+  .assertion(link.has({ href: 'https://material-ui.com/components/links/' }));

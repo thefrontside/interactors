@@ -9,17 +9,17 @@ export function isHTMLElement<T extends HTMLElementTypes = "">(
   element: unknown | null | undefined,
   type: T = "" as T
 ): element is InstanceType<typeof window[`HTML${T}Element`]> {
-  const { defaultView } = bigtestGlobals.document;
-  const Constructor = (defaultView as any)?.[`HTML${type}Element`];
+  let { defaultView } = bigtestGlobals.document;
+  let Constructor = (defaultView as unknown as Record<string, unknown>)?.[`HTML${type}Element`];
   return typeof Constructor == "function" && element instanceof Constructor;
 }
-export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function isDefined<T>(value: T | null | undefined): value is T {
   return value !== null && value !== undefined;
 }
 
-export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) {
+export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): HTMLLabelElement | undefined {
   return (
     input.labels?.[0] ??
     input.previousElementSibling
@@ -31,8 +31,8 @@ export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTML
   );
 }
 
-export async function applyGetter<E extends Element, R>(
-  interactor: Interactor<E, any>,
+export async function applyGetter<E extends Element, I, R>(
+  interactor: Interactor<E, I>,
   getter: (element: E) => R
 ): Promise<R> {
   let value: unknown;

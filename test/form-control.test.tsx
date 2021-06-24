@@ -5,8 +5,8 @@ import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";
 
 const renderFormControl = createRenderStep(Component, {}, ({ props, children }) => {
-  const [error, setError] = useState(false)
-  const onChange = useCallback((_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => setError(checked), [])
+  let [error, setError] = useState(false);
+  let onChange = useCallback((_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => setError(checked), []);
 
   return cloneElement(
     children(props),
@@ -25,7 +25,7 @@ const renderFormControl = createRenderStep(Component, {}, ({ props, children }) 
         label="Switch"
     />,
     <FormHelperText id="form-description">{error ? 'Error' : 'Toggle error'}</FormHelperText>,
-  )
+  );
 });
 const formControl = FormControl("Toggler");
 
@@ -42,4 +42,4 @@ export default test("FormControl")
       .step(formControl.find(Switch('Switch')).toggle())
       .assertion(formControl.is({ valid: false }))
       .assertion(formControl.has({ description: 'Error' }))
-  )
+  );

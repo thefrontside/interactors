@@ -4,6 +4,6 @@ import { isHTMLElement } from "./helpers";
 export const Snackbar = HTML.extend("MUI Snackbar")
   .selector('[class*="MuiSnackbar-root"]')
   .locator((element) => {
-    const messageElement = element.querySelector('[class*="MuiSnackbarContent-message"]');
+    let messageElement = element.querySelector('[class*="MuiSnackbarContent-message"]');
     return isHTMLElement(messageElement) ? messageElement.innerText : "";
   });

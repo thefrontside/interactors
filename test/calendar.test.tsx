@@ -73,7 +73,7 @@ export default test("Calendar")
         test
           .step(
             renderCalendar({
-              renderDay: (day, _selectedDate, dayInCurrentMonth, _dayComponent) => (
+              renderDay: (day, _selectedDate, dayInCurrentMonth) => (
                 <button hidden={!dayInCurrentMonth}>{day?.getDate()}</button>
               ),
             })

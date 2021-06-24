@@ -5,11 +5,11 @@ import { createRenderStep } from "./helpers";
 import { cloneElement, MouseEvent, useState } from "react";
 
 const renderMenu = createRenderStep(Component, { id: 'menu-id' }, ({ props, children }) => {
-  const [menuItem, setMenuItem] = useState('Empty');
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  let [menuItem, setMenuItem] = useState('Empty');
+  let [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
-  const handleClose = (event: MouseEvent<HTMLLIElement>) => {
+  let handleClick = (event: MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
+  let handleClose = (event: MouseEvent<HTMLLIElement>) => {
     setMenuItem(event.currentTarget.innerText);
     setAnchorEl(null);
   };
@@ -28,7 +28,7 @@ const renderMenu = createRenderStep(Component, { id: 'menu-id' }, ({ props, chil
         <ComponentItem onClick={handleClose}>Logout</ComponentItem>
       )}
     </>
-  )
+  );
 });
 const menu = Menu("OPEN MENU");
 
@@ -41,10 +41,10 @@ export default test("Menu")
     test
       .step(menu.open())
       .assertion(MenuList('menu-id').find(MenuItem('Logout')).exists())
-      .assertion(MenuList('menu-id').find(MenuItem('Logout')).has({ classList: some(matching(/MuiMenuItem-root-\d+/))}))
+      .assertion(MenuList('menu-id').find(MenuItem('Logout')).has({ classList: some(matching(/MuiMenuItem-root-\d+/)) }))
   )
   .child('test `click` action', (test) =>
     test
       .step(menu.click('Profile'))
       .assertion(HTML({ id: 'menu-item' }).has({ text: 'Profile' }))
-  )
+  );
