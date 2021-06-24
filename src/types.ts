@@ -8,9 +8,12 @@ export interface DatePickerUtils {
   getMonth(value: Date | null): number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type GetElementType<I extends InteractorConstructor<any, any, any>> = I extends InteractorConstructor<
   infer E,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   any
 >
   ? E

@@ -1,5 +1,5 @@
 import { test, Page } from "bigtest";
-import { NativeSelect, NativeMultiSelect } from "../src/index";
+import { NativeSelect, NativeMultiSelect, some, matching } from "../src/index";
 import { Select as Component, FormControl, InputLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 
@@ -42,6 +42,7 @@ export default test("Native Select")
           .assertion(select.has({ focused: false }))
           .assertion(select.has({ valid: true }))
           .assertion(select.has({ value: "" }))
+          .assertion(select.has({ classList: some(matching(/MuiSelect-root-\d+/)) }))
           .assertion(NativeSelect({ disabled: false }).exists())
           .child("test `focus` action", (test) =>
             test
@@ -70,6 +71,7 @@ export default test("Native Select")
         .assertion(multiSelect.has({ focused: false }))
         .assertion(multiSelect.has({ valid: true }))
         .assertion(multiSelect.has({ values: [] }))
+        .assertion(multiSelect.has({ classList: some(matching(/MuiSelect-root-\d+/)) }))
         .assertion(NativeMultiSelect({ disabled: false }).exists())
         .child("test `focus` action", (test) =>
           test

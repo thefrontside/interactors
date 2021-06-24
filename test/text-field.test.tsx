@@ -1,5 +1,5 @@
 import { test, Page, matching } from "bigtest";
-import { TextField } from "../src/index";
+import { some, TextField } from "../src/index";
 import { TextField as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 
@@ -15,6 +15,7 @@ export default test("TextField")
       .assertion(textfield.has({ value: '' }))
       .assertion(textfield.has({ placeholder: '' }))
       .assertion(textfield.has({ description: 'TextField' }))
+      .assertion(textfield.has({ classList: some(matching(/MuiInputBase-input-\d+/)) }))
       .assertion(textfield.is({ valid: true }))
       .assertion(textfield.is({ focused: false }))
       .assertion(TextField({ disabled: false }).exists())

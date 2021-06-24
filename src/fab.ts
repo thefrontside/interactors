@@ -1,8 +1,8 @@
-import { Button } from '@bigtest/interactor';
+import { Button } from "@bigtest/interactor";
 
-export default Button.extend('button')
-  .selector('button.MuiFab-root')
+export const Fab = Button.extend("MUI Fab Button")
+  .selector('button[class*="MuiFab-root"]')
+  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
-    ariaLabel: (el) => el.getAttribute("aria-label"),
-    svgIcon: (el) => el.querySelector('svg')?.classList.contains('MuiSvgIcon-root')
+    svgIcon: (element) => element.querySelector("svg")?.classList.toString().includes("MuiSvgIcon-root") ?? false,
   });

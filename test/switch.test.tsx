@@ -1,5 +1,5 @@
 import { test, Page } from "bigtest";
-import { Body, Switch } from "../src/index";
+import { Body, matching, some, Switch } from "../src/index";
 import { Switch as Component, FormControlLabel } from "@material-ui/core";
 import { createRenderStep, render } from "./helpers";
 
@@ -16,6 +16,7 @@ export default test("Switch")
       .assertion(switcher.exists())
       .assertion(switcher.is({ checked: false }))
       .assertion(switcher.is({ focused: false }))
+      .assertion(switcher.has({ classList: some(matching(/MuiSwitch-input-\d+/)) }))
       .assertion(Switch({ disabled: false }).exists())
       .child("test `click` action", (test) =>
         test

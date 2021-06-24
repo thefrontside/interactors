@@ -3,22 +3,22 @@ import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
 function getHeaderElement(element: HTMLElement) {
-  let header = element.parentElement?.querySelector(".MuiPickersCalendarHeader-switchHeader");
+  let header = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-switchHeader"]');
   return isHTMLElement(header) ? header : null;
 }
 
 function getTitleElement(element: HTMLElement) {
-  let header = element.parentElement?.querySelector(".MuiPickersCalendarHeader-transitionContainer");
+  let header = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-transitionContainer"]');
   return isHTMLElement(header) ? header : null;
 }
 
 function getWeekDaysElement(element: HTMLElement) {
-  let daysHeader = element.parentElement?.querySelector(".MuiPickersCalendarHeader-daysHeader");
+  let daysHeader = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-daysHeader"]');
   return isHTMLElement(daysHeader) ? daysHeader : null;
 }
 
 function getSelectedElement(element: HTMLElement) {
-  let dayButton = element.querySelector(".MuiPickersDay-daySelected");
+  let dayButton = element.querySelector('[class*="MuiPickersDay-daySelected"]');
   return isHTMLElement(dayButton) ? dayButton : null;
 }
 
@@ -28,26 +28,27 @@ function calendarLocator(element: HTMLElement) {
   return [selectedDay, header].filter(Boolean).join(" ");
 }
 
-export const getDay = (element: HTMLElement) => {
+export const getDay = (element: HTMLElement): number | undefined => {
   let text = getSelectedElement(element)?.innerText;
   let day = text ? parseInt(text) : NaN;
   return Number.isNaN(day) ? undefined : day;
 };
-export const getMonth = (element: HTMLElement) => getTitleElement(element)?.innerText.replace(/\s[0-9]{4}$/, "");
-export const getYear = (element: HTMLElement) => {
+export const getMonth = (element: HTMLElement): string | undefined =>
+  getTitleElement(element)?.innerText.replace(/\s[0-9]{4}$/, "");
+export const getYear = (element: HTMLElement): number | undefined => {
   let yearString = getTitleElement(element)?.innerText.replace(/.*\s([0-9]{4})$/, "$1");
   let year = yearString ? parseInt(yearString) : NaN;
   return Number.isNaN(year) ? undefined : year;
 };
 
-function goToNextMonth({ perform }: Interactor<HTMLElement, any>) {
+function goToNextMonth<T>({ perform }: Interactor<HTMLElement, T>) {
   return perform((element) => {
     // NOTE: We can't go upwards by using `Interactor().find(...)`
     let nextMonthElement = getHeaderElement(element)?.lastElementChild;
     if (isHTMLElement(nextMonthElement)) nextMonthElement.click();
   });
 }
-function goToPrevMonth({ perform }: Interactor<HTMLElement, any>) {
+function goToPrevMonth<T>({ perform }: Interactor<HTMLElement, T>) {
   return perform((element) => {
     // NOTE: We can't go upwards by using `Interactor().find(...)`
     let prevMonthElement = getHeaderElement(element)?.firstElementChild;
@@ -55,7 +56,7 @@ function goToPrevMonth({ perform }: Interactor<HTMLElement, any>) {
   });
 }
 
-async function goToYear(interactor: Interactor<HTMLElement, any>, targetYear: number) {
+async function goToYear<T>(interactor: Interactor<HTMLElement, T>, targetYear: number) {
   let currentMonth = await applyGetter(interactor, getMonth);
   let currentYear = await applyGetter(interactor, getYear);
 
@@ -75,8 +76,8 @@ async function goToYear(interactor: Interactor<HTMLElement, any>, targetYear: nu
       );
   }
 }
-async function goToMonth(
-  interactor: Interactor<HTMLElement, any>,
+async function goToMonth<T>(
+  interactor: Interactor<HTMLElement, T>,
   targetMonth: string,
   directionStep: () => Interaction<void>,
   currentYear?: number
@@ -99,9 +100,11 @@ async function goToMonth(
       );
   }
 }
-async function goToDay(interactor: Interactor<HTMLElement, any>, day: number) {
+async function goToDay<T>(interactor: Interactor<HTMLElement, T>, day: number) {
   // NOTE: We can't find day if user has custom day render
-  let dayInteractor = interactor.find(HTML.selector(".MuiPickersCalendar-week > [role='presentation']")(String(day)));
+  let dayInteractor = interactor.find(
+    HTML.selector('[class*="MuiPickersCalendar-week"] > [role="presentation"]')(String(day))
+  );
   try {
     await dayInteractor.has({ className: not(including("MuiPickersDay-dayDisabled")) });
   } catch (_) {
@@ -110,8 +113,9 @@ async function goToDay(interactor: Interactor<HTMLElement, any>, day: number) {
   return dayInteractor.click();
 }
 
-export const createCalendar = (utils: DatePickerUtils) =>
-  Calendar.filters({
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function createCalendar(utils: DatePickerUtils) {
+  return Calendar.filters({
     date: (element) => {
       let header = getTitleElement(element)?.innerText;
       let selectedDay = getSelectedElement(element)?.innerText;
@@ -127,7 +131,7 @@ export const createCalendar = (utils: DatePickerUtils) =>
           );
     },
   }).actions({
-    setMonth: async (interactor: Interactor<HTMLElement, any>, targetMonth: string) => {
+    setMonth: async <T>(interactor: Interactor<HTMLElement, T>, targetMonth: string) => {
       let currentMonth = await applyGetter(interactor, getMonth);
       if (!currentMonth) throw new Error("Can't get current month");
       let currentMonthNumber = utils.getMonth(utils.parse(currentMonth, "MMMM"));
@@ -141,9 +145,10 @@ export const createCalendar = (utils: DatePickerUtils) =>
       );
     },
   });
+}
 
 export const Calendar = createInteractor<HTMLElement>("MUI Calendar")
-  .selector(".MuiPickersCalendar-transitionContainer")
+  .selector('[class*="MuiPickersCalendar-transitionContainer"]')
   .locator(calendarLocator)
   .filters({
     year: getYear,
@@ -163,7 +168,7 @@ export const Calendar = createInteractor<HTMLElement>("MUI Calendar")
     nextMonth: goToNextMonth,
     prevMonth: goToPrevMonth,
     setYear: goToYear,
-    setMonth: async (interactor: Interactor<HTMLElement, any>, targetMonth: string) => {
+    setMonth: async <T>(interactor: Interactor<HTMLElement, T>, targetMonth: string) => {
       let currentYear = await applyGetter(interactor, getYear);
 
       let directions = [() => goToPrevMonth(interactor), () => goToNextMonth(interactor)];

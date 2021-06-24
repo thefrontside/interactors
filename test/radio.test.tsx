@@ -1,7 +1,7 @@
 import { test, Page } from 'bigtest';
-import { Radio as Interactor, or } from '../src/index';
+import { Radio as Interactor } from '../src/index';
 import { Radio as MuiRadio } from '@material-ui/core';
-import { render, createRenderStep } from './helpers';
+import { createRenderStep } from './helpers';
 
 const radio = Interactor();
 const renderRadioButton = createRenderStep(MuiRadio);

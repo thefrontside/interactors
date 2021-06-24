@@ -1,8 +1,9 @@
-import { Button, createInteractor, HTML } from "@bigtest/interactor";
+import { createInteractor, HTML } from "@bigtest/interactor";
+import { Button } from "./button";
 import { applyGetter } from "./helpers";
 
 export const MenuItem = HTML.extend<HTMLElement>("MUI MenuItem")
-  .selector('.MuiMenuItem-root[role="menuitem"]')
+  .selector('[class*="MuiMenuItem-root"][role="menuitem"]')
   .locator((element) => element.innerText)
   .filters({
     disabled: {
@@ -13,7 +14,9 @@ export const MenuItem = HTML.extend<HTMLElement>("MUI MenuItem")
   .actions({ click: ({ perform }) => perform((element) => element.click()) });
 
 export const MenuList = createInteractor<HTMLElement>("MUI MenuList")
-  .selector('.MuiPopover-root[role="presentation"] > .MuiMenu-paper > .MuiMenu-list[role="menu"]')
+  .selector(
+    '[class*="MuiPopover-root"][role="presentation"] > [class*="MuiMenu-paper"] > [class*="MuiMenu-list"][role="menu"]'
+  )
   .locator((element) => element.parentElement?.parentElement?.id ?? "");
 
 export const Menu = Button.extend("MUI Menu")

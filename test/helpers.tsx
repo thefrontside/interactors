@@ -1,7 +1,7 @@
 import "date-fns";
 import { render as rtlRender } from "@testing-library/react";
 import { ComponentProps, ComponentType, ReactElement, useState } from "react";
-import { StylesProvider, jssPreset } from "@material-ui/core/styles";
+import { ThemeProvider, jssPreset, StylesProvider, createMuiTheme } from "@material-ui/core";
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -18,6 +18,8 @@ export function render(description: string | ReactElement, element?: ReactElemen
     element = description;
     description = typeof element.type == "string" ? element.type : element.type.name || "render unknown element";
   }
+  let purple = createMuiTheme({ palette: { primary: { main: "#800080" } } });
+  let green = createMuiTheme({ palette: { primary: { main: "#008000" } } });
   return {
     description,
     action: () => {
@@ -30,9 +32,14 @@ export function render(description: string | ReactElement, element?: ReactElemen
       });
 
       rtlRender(
-        <StylesProvider jss={jss} injectFirst>
-          {element}
-        </StylesProvider>,
+        // NOTE We have to use nested themes to make material-ui generates classnames with ids
+        <ThemeProvider theme={purple}>
+          <ThemeProvider theme={green}>
+            <StylesProvider jss={jss} injectFirst>
+              {element}
+            </StylesProvider>
+          </ThemeProvider>
+        </ThemeProvider>,
         {
           container: document.body,
         }
@@ -46,23 +53,25 @@ function getDisplayName(Component: ComponentType | string) {
   return (
     (typeof Component === "string"
       ? Component
-      : Component.displayName || Component.name || (Component as any).muiName) || "Unknown"
+      : Component.displayName || Component.name || (Component as { muiName?: string }).muiName) || "Unknown"
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface WrapperProps<CT extends ComponentType<any>> {
   getProps?: Partial<ComponentProps<CT>> | ((props?: Partial<ComponentProps<CT>>) => Partial<ComponentProps<CT>>);
   props?: Partial<ComponentProps<CT>>;
   children: (props?: Partial<ComponentProps<CT>>) => ReactElement<ComponentProps<CT>, CT>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createRenderStep<CT extends ComponentType<any>>(
   Component: CT,
   defaultProps: Partial<ComponentProps<CT>> = {},
   Wrapper: ComponentType<WrapperProps<CT>> = ({ getProps, children }) =>
     children(typeof getProps == "function" ? getProps() : getProps)
 ) {
-  return (getProps?: WrapperProps<CT>["getProps"]) =>
+  return (getProps?: WrapperProps<CT>["getProps"]): StepImplementation =>
     render(
       `render component '${getDisplayName(Component)}'`,
       <Wrapper getProps={getProps} props={typeof getProps == "function" ? getProps() : getProps}>
@@ -71,18 +80,19 @@ export function createRenderStep<CT extends ComponentType<any>>(
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function createPickerRenderStep<T extends ComponentType<any>>(PickerComponent: T) {
   let Wrapper = ({ getProps, children }: WrapperProps<T>) => {
     let props = typeof getProps == "function" ? getProps() : getProps;
     let initialDate = (props?.date ?? new Date("2014-08-18")) as Date;
-    let [dateValue, _timeValue] = initialDate
+    let [dateValue] = initialDate
       .toISOString()
       .replace(/\.\d{3}Z$/, "")
       .split("T");
     let [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        {/* @ts-expect-error just ignore it */}
+        {/* @ts-expect-error the component generic doesn't fit properly */}
         {children({
           onChange: setSelectedDate,
           date: selectedDate,
@@ -91,7 +101,7 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
           label: dateValue,
           ...(typeof getProps == "function"
             ? getProps(
-                // @ts-expect-error
+                // @ts-expect-error the component generic doesn't fit properly
                 { onChange: setSelectedDate }
               )
             : getProps),

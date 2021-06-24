@@ -12,19 +12,19 @@ export default test("Button")
   .child("rendering a button", (test) => test
     .step(renderButton())
     .assertion(button.exists())
-    .assertion(button.has({ text: "My Button".toUpperCase()}))
-    .assertion(button.has({ className: including("MuiButton-root")}))
-    .assertion(button.has({ className: including("MuiButton-text")}))
-    .assertion(button.has({ className: not(including("MuiButton-textSecondary"))}))
-    .assertion(button.has({ className: not(including("MuiButton-outlined"))}))
-    .assertion(button.has({ className: not(including("MuiButton-contained"))}))
+    .assertion(button.has({ text: "My Button".toUpperCase() }))
+    .assertion(button.has({ className: including("MuiButton-root") }))
+    .assertion(button.has({ className: including("MuiButton-text") }))
+    .assertion(button.has({ className: not(including("MuiButton-textSecondary")) }))
+    .assertion(button.has({ className: not(including("MuiButton-outlined")) }))
+    .assertion(button.has({ className: not(including("MuiButton-contained")) }))
   )
   .child('render a text secondary button', (test) => test
     .step(renderButton({ color: 'secondary' }))
-    .assertion(button.has({ className: including("MuiButton-root")}))
-    .assertion(button.has({ className: including("MuiButton-text")}))
-    .assertion(button.has({ className: not(including("MuiButton-contained"))}))
-    .assertion(button.has({ className: not(including("MuiButton-textPrimary"))}))
+    .assertion(button.has({ className: including("MuiButton-root") }))
+    .assertion(button.has({ className: including("MuiButton-text") }))
+    .assertion(button.has({ className: not(including("MuiButton-contained")) }))
+    .assertion(button.has({ className: not(including("MuiButton-textPrimary")) }))
   )
   .child('render outline button', (test) => test
     .step(renderButton({ variant: "outlined" }))
@@ -34,13 +34,13 @@ export default test("Button")
   )
   .child('render primary outlined variant', (test) => test
     .step(renderButton({ variant: "outlined", color: "primary" }))
-    .assertion(button.has({ className: including("MuiButton-outlined")}))
-    .assertion(button.has({ className: including("MuiButton-outlinedPrimary")}))
+    .assertion(button.has({ className: including("MuiButton-outlined") }))
+    .assertion(button.has({ className: including("MuiButton-outlinedPrimary") }))
   )
   .child('render secondary outlined variant', (test) => test
     .step(renderButton({ variant: "outlined", color: "secondary" }))
-    .assertion(button.has({ className: including("MuiButton-outlined")}))
-    .assertion(button.has({ className: including("MuiButton-outlinedSecondary")}))
+    .assertion(button.has({ className: including("MuiButton-outlined") }))
+    .assertion(button.has({ className: including("MuiButton-outlinedSecondary") }))
   )
   .child('render inherit outlined variant', (test) => test
     .step(renderButton({ variant: "outlined", color: "inherit" }))
@@ -155,27 +155,27 @@ export default test("Button")
     .assertion(button.find(HTML({ className: not(including("MuiButton-startIcon")) })).exists())
   )
   .child('button renders with ripple by default', (test) => test
-    .step(renderButton({ TouchRippleProps: { className: 'touch-ripple'} }))
-    .assertion(button.find(HTML({ className: including('touch-ripple')})).exists())
+    .step(renderButton({ TouchRippleProps: { className: 'touch-ripple' } }))
+    .assertion(button.find(HTML({ className: including('touch-ripple') })).exists())
   )
   .child('can disable ripple effect', (test) => test
-    .step(renderButton({ disableRipple: true, TouchRippleProps: { className: 'touch-ripple'} }))
-    .assertion(button.find(HTML({ className: including('touch-ripple')} )).absent())
+    .step(renderButton({ disableRipple: true, TouchRippleProps: { className: 'touch-ripple' } }))
+    .assertion(button.find(HTML({ className: including('touch-ripple') } )).absent())
   )
   .child('can disable elevation', (test) => test
     .step(renderButton({ disableElevation: true }))
     .assertion(button.has({ className: including("MuiButton-disableElevation") }))
   )
   .child('have a focusRipple by default', (test) => test
-    .step(renderButton({ TouchRippleProps: { classes: { ripplePulsate: 'pulstat-focus-visible'} } }))
+    .step(renderButton({ TouchRippleProps: { classes: { ripplePulsate: 'pulstat-focus-visible' } } }))
     .step(button.focus())
-    .assertion(button.find(HTML({ className: including("pulstat-focus-visible")} )).exists())
+    .assertion(button.find(HTML({ className: including("pulstat-focus-visible") } )).exists())
   )
   .child('can disable focusRipple', (test) => test
     .step(
       renderButton({
         disableFocusRipple: true,
-        TouchRippleProps: { classes: { ripplePulsate: 'pulstat-focus-visible'} }
+        TouchRippleProps: { classes: { ripplePulsate: 'pulstat-focus-visible' } }
       })
     )
     .step(button.focus())
@@ -198,4 +198,4 @@ export default test("Button")
     .step(renderButton({ component: 'span' } as ComponentProps<typeof Component>))
     .assertion(button.exists())
     .assertion(HTML.selector('span')({ className: including('MuiButton-root') }).exists())
-  )
+  );

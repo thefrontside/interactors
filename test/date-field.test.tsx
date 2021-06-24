@@ -1,6 +1,6 @@
 import { Page, test } from "bigtest";
 import { TextField as Component } from "@material-ui/core";
-import { DateField } from "../src";
+import { DateField, matching, some } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderDateField = createRenderStep(Component, { id: "datefield", label: "datefield", type: "date" });
@@ -12,6 +12,7 @@ export default test("DateField")
     test
       .step(renderDateField())
       .assertion(datefield.has({ value: "" }))
+      .assertion(datefield.has({ classList: some(matching(/MuiInput-input-\d+/)) }))
       .child("fillIn string", (test) =>
         test
           .step(datefield.fillIn("2014-08-18"))
