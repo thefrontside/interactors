@@ -11,4 +11,5 @@ export const ListItem = HTML.extend<HTMLElement>("MUI ListItem")
       apply: (element) => element.hasAttribute("disabled") || element.getAttribute("aria-disabled") == "true",
       default: false,
     },
+    index: (element) => Array.from(element.parentElement?.children ?? []).indexOf(element),
   });
