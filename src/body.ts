@@ -1,4 +1,4 @@
-import { HTML } from "bigtest";
+import { HTML } from "@bigtest/interactor";
 
 export const Body = HTML.extend<HTMLBodyElement>("body")
   .selector("body")

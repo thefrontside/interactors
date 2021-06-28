@@ -1,0 +1,14 @@
+{
+  "tag": "alpha",
+  "changes": [
+    ".changes/accordion.md",
+    ".changes/bottom-navigation.md",
+    ".changes/link.md",
+    ".changes/menu.md",
+    ".changes/select.md",
+    ".changes/start-v4.md",
+    ".changes/switch.md",
+    ".changes/tabs.md",
+    ".changes/textfield.md"
+  ]
+}

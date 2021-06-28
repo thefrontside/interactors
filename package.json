@@ -1,11 +1,22 @@
 {
   "name": "material-ui-interactors",
-  "version": "1.0.0",
+  "version": "4.0.0-alpha.1",
   "description": "BigTest interactors for material-ui.com components.",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "browser": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
   "scripts": {
+    "lint": "eslint src test",
     "test": "bigtest ci",
-    "prepack": "tsc",
+    "build:cjs": "tsc --outdir dist/cjs --module commonjs --project tsconfig.build.json",
+    "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
+    "build:types": "tsc --build tsconfig.build.json",
+    "prepack": "run-p build:*",
     "start": "parcel serve test/harness.html"
   },
   "repository": {
@@ -23,19 +34,25 @@
   },
   "homepage": "https://github.com/thefrontside/material-ui-interactors#readme",
   "devDependencies": {
-    "@bigtest/globals": "^0.7.5",
+    "@date-io/date-fns": "^1.3.13",
+    "@frontside/eslint-config": "^2.0.0",
     "@frontside/typescript": "^1.1.1",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/pickers": "^3.3.10",
+    "@material-ui/styles": "^4.11.3",
+    "@testing-library/react": "^11.2.5",
     "@types/react": "^17.0.3",
     "bigtest": "^0.13.3",
+    "date-fns": "^2.19.0",
+    "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@bigtest/interactor": "^0.28.2",
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/styles": "^4.11.3",
-    "@testing-library/react": "^11.2.5"
+    "@bigtest/globals": "^0.7.5",
+    "@bigtest/interactor": "^0.28.2"
   }
 }

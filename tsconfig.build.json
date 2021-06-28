@@ -1,0 +1,16 @@
+{
+  "extends": "@frontside/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist/cjs",
+    "rootDir": "./src",
+    "declarationDir": "dist"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+}
