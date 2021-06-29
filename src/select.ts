@@ -2,7 +2,7 @@ import { createInteractor, HTML, Interactor } from "@bigtest/interactor";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter } from "./helpers";
 
-const Option = HTML.extend<HTMLLIElement>("MUI Option")
+export const SelectOption = HTML.extend<HTMLLIElement>("MUI Option")
   .selector('li[role="option"]')
   .filters({
     selected: (element) => element.getAttribute("aria-selected") == "true",
@@ -52,7 +52,7 @@ async function clearSelection(labelId: string) {
         .map((option) => option.innerText))
   );
   for (let option of selected) {
-    await SelectOptionsList(labelId).find(Option(option)).choose();
+    await SelectOptionsList(labelId).find(SelectOption(option)).choose();
   }
 }
 
@@ -80,6 +80,13 @@ const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
       apply: (element) => element.previousElementSibling?.getAttribute("aria-disabled") == "true",
       default: false,
     },
+  })
+  .actions({
+    open: ({ perform }) =>
+      perform((element) => {
+        let selectElement = element.previousElementSibling;
+        if (isHTMLElement(selectElement)) dispatchMouseDown(selectElement);
+      }),
   });
 
 export const Select = BaseSelect.extend("MUI Select")
@@ -89,7 +96,7 @@ export const Select = BaseSelect.extend("MUI Select")
       if ((await applyGetter(interactor, getValueText)) == value) return;
 
       let labelId = await openSelectOptionsList(interactor);
-      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await SelectOptionsList(labelId).find(SelectOption(value)).choose();
     },
   });
 
@@ -103,7 +110,7 @@ export const MultiSelect = BaseSelect.extend("MUI MultiSelect")
 
       let labelId = await openSelectOptionsList(interactor);
       await clearSelection(labelId);
-      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await SelectOptionsList(labelId).find(SelectOption(value)).choose();
       await closeSelectOptionsList(labelId);
     },
     select: async (interactor, value: string) => {
@@ -112,7 +119,7 @@ export const MultiSelect = BaseSelect.extend("MUI MultiSelect")
       if (selected.includes(value)) return;
 
       let labelId = await openSelectOptionsList(interactor);
-      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await SelectOptionsList(labelId).find(SelectOption(value)).choose();
       await closeSelectOptionsList(labelId);
     },
     deselect: async (interactor, value: string) => {
@@ -121,7 +128,7 @@ export const MultiSelect = BaseSelect.extend("MUI MultiSelect")
       if (!selected.includes(value)) return;
 
       let labelId = await openSelectOptionsList(interactor);
-      await SelectOptionsList(labelId).find(Option(value)).choose();
+      await SelectOptionsList(labelId).find(SelectOption(value)).choose();
       await closeSelectOptionsList(labelId);
     },
   });
