@@ -1,13 +1,13 @@
 import { createInteractor, HTML, Interactor } from "@bigtest/interactor";
 import { createFormFieldFilters } from "./form-field-filters";
-import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter } from "./helpers";
+import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
 
 const Option = HTML.extend<HTMLLIElement>("MUI Option")
   .selector('li[role="option"]')
   .filters({
     selected: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
-      apply: (element) => element.getAttribute("aria-disabled") == "true",
+      apply: isDisabled,
       default: false,
     },
   })
@@ -77,7 +77,7 @@ const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
     classList: (element) => Array.from(element.parentElement?.classList ?? []),
     valid: (element) => !element.previousElementSibling?.classList.toString().includes("Mui-error"),
     disabled: {
-      apply: (element) => element.previousElementSibling?.getAttribute("aria-disabled") == "true",
+      apply: (element) => isDisabled(element.previousElementSibling),
       default: false,
     },
   });
