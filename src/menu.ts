@@ -1,12 +1,12 @@
 import { createInteractor, HTML } from "@bigtest/interactor";
 import { Button } from "./button";
-import { applyGetter } from "./helpers";
+import { applyGetter, isDisabled } from "./helpers";
 
 export const MenuItem = HTML.extend<HTMLElement>("MUI MenuItem")
   .selector('[class*="MuiMenuItem-root"][role="menuitem"]')
   .filters({
     disabled: {
-      apply: (element) => element.getAttribute("aria-disabled") == "true",
+      apply: isDisabled,
       default: false,
     },
   })

@@ -29,4 +29,5 @@ export * from "./snackbar";
 export * from "./form-control";
 export * from "./dialog";
 export * from "./fab";
+export * from "./slider";
 export { default as Radio } from "./radio";

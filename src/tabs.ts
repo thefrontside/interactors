@@ -1,5 +1,5 @@
 import { HTML } from "@bigtest/interactor";
-import { isHTMLElement } from "./helpers";
+import { isDisabled, isHTMLElement } from "./helpers";
 
 export const Tab = HTML.extend<HTMLElement>("MUI Tab")
   .selector('[class*="MuiTab-root"][role="tab"]')
@@ -7,8 +7,7 @@ export const Tab = HTML.extend<HTMLElement>("MUI Tab")
   .filters({
     active: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
-      apply: (element) =>
-        element.getAttribute("aria-disabled") == "true" || (isHTMLElement(element, "Button") && element.disabled),
+      apply: isDisabled,
       default: false,
     },
   });

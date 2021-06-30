@@ -1,5 +1,5 @@
 import { HTML } from "@bigtest/interactor";
-import { applyGetter, isHTMLElement } from "./helpers";
+import { applyGetter, isDisabled, isHTMLElement } from "./helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
@@ -10,7 +10,7 @@ const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
   .filters({
     expanded: (element) => element.getAttribute("aria-expanded") == "true",
     disabled: {
-      apply: (element) => element.getAttribute("aria-disabled") == "true",
+      apply: isDisabled,
       default: false,
     },
   });
@@ -24,7 +24,7 @@ export const Accordion = HTML.extend<HTMLElement>("MUI Accordion")
   .filters({
     expanded: isExpanded,
     disabled: {
-      apply: (element) => getSummary(element)?.getAttribute("aria-disabled") == "true",
+      apply: (element) => isDisabled(getSummary(element)),
       default: false,
     },
   })

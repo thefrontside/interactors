@@ -3,7 +3,15 @@ import { some, TextField } from "../src/index";
 import { TextField as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 
-const renderTextField = createRenderStep(Component, { id: 'text-field-id', label: 'textfield', helperText: 'TextField' });
+const renderTextField = createRenderStep(
+  Component,
+  {
+    id: 'text-field-id',
+    label: 'textfield',
+    helperText: 'TextField',
+    placeholder: 'Enter text'
+  }
+);
 const textfield = TextField("textfield");
 
 export default test("TextField")
@@ -13,7 +21,7 @@ export default test("TextField")
       .step(renderTextField())
       .assertion(textfield.exists())
       .assertion(textfield.has({ value: '' }))
-      .assertion(textfield.has({ placeholder: '' }))
+      .assertion(textfield.has({ placeholder: 'Enter text' }))
       .assertion(textfield.has({ description: 'TextField' }))
       .assertion(textfield.has({ classList: some(matching(/MuiInputBase-input-\d+/)) }))
       .assertion(textfield.is({ valid: true }))
@@ -43,6 +51,7 @@ export default test("TextField")
   .child("disabled={true}", (test) =>
     test
       .step(renderTextField({ disabled: true }))
+      .assertion(textfield.absent())
       .assertion(TextField({ disabled: true }).exists())
   )
   .child("multiline={true}", (test) =>
@@ -54,4 +63,10 @@ export default test("TextField")
     test
       .step(renderTextField({ id: undefined }))
       .assertion(textfield.exists())
+  )
+  .child("id={undefined} label={undefined}", (test) =>
+    test
+      .step(renderTextField({ id: undefined, label: undefined }))
+      .assertion(textfield.absent())
+      .assertion(TextField('Enter text').exists())
   );

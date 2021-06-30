@@ -1,4 +1,5 @@
 import { HTML } from "@bigtest/interactor";
+import { isDisabled } from "./helpers";
 
 export const Button = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUI Button")
   .selector(
@@ -10,7 +11,7 @@ export const Button = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUI Butt
   .filters({
     href: (element) => element.getAttribute("href"),
     disabled: {
-      apply: (element) => element.disabled || element.getAttribute("aria-disabled") == "true",
+      apply: (element) => element.disabled || isDisabled(element),
       default: false,
     },
   });

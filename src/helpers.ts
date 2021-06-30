@@ -19,7 +19,16 @@ export function isDefined<T>(value: T | null | undefined): value is T {
   return value !== null && value !== undefined;
 }
 
-export function getInputLabel(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): HTMLLabelElement | undefined {
+export function isDisabled<T extends Element>(element: T): boolean;
+export function isDisabled<T extends Element>(element?: T | null): boolean | undefined;
+export function isDisabled<T extends Element>(element?: T | null): boolean | undefined {
+  if (isHTMLElement(element, "Button")) return element.disabled;
+  return element ? element.getAttribute("aria-disabled") == "true" : undefined;
+}
+
+export function getInputLabel(
+  input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+): HTMLLabelElement | undefined {
   return (
     input.labels?.[0] ??
     input.previousElementSibling
