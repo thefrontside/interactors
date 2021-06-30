@@ -4,7 +4,6 @@ import { applyGetter, isDisabled } from "./helpers";
 
 export const MenuItem = HTML.extend<HTMLElement>("MUI MenuItem")
   .selector('[class*="MuiMenuItem-root"][role="menuitem"]')
-  .locator((element) => element.innerText)
   .filters({
     disabled: {
       apply: isDisabled,

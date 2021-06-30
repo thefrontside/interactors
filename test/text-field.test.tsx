@@ -49,4 +49,9 @@ export default test("TextField")
     test
       .step(renderTextField({ multiline: true }))
       .assertion(textfield.exists())
+  )
+  .child("id={undefined}", (test) =>
+    test
+      .step(renderTextField({ id: undefined }))
+      .assertion(textfield.exists())
   );
