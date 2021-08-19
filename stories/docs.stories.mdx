@@ -1,0 +1,14 @@
+import { Button } from "@material-ui/core";
+import { Meta, Source, Canvas } from "@storybook/addon-docs";
+import { Accordion, BottomNavigation } from "./interactors.stories";
+import { InteractiveStory as Story } from "./interactive-story";
+
+<Meta title="Interactors" />
+
+<Canvas>
+  <Story story={Accordion} />
+</Canvas>
+
+<Canvas>
+  <Story story={BottomNavigation} />
+</Canvas>

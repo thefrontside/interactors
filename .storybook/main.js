@@ -1,5 +1,5 @@
 module.exports = {
-  stories: ["../stories/**/*.stories.@(mdx|js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  stories: ["../stories/**/*.stories.@(md|ts)x"],
+  addons: ["@storybook/addon-postcss", "@storybook/addon-essentials"],
   features: { previewCsfV3: true },
 };
