@@ -1,6 +1,5 @@
-import { Button } from "@material-ui/core";
 import { Meta, Source, Canvas } from "@storybook/addon-docs";
-import { Accordion, BottomNavigation } from "./interactors.stories";
+import { Accordion, BottomNavigation, Button, Calendar } from "./interactors.stories";
 import { InteractiveStory as Story } from "./interactive-story";
 
 <Meta title="Interactors" />
@@ -11,4 +10,12 @@ import { InteractiveStory as Story } from "./interactive-story";
 
 <Canvas>
   <Story story={BottomNavigation} />
+</Canvas>
+
+<Canvas>
+  <Story story={Button} />
+</Canvas>
+
+<Canvas>
+  <Story story={Calendar} />
 </Canvas>

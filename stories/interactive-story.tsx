@@ -1,8 +1,8 @@
 import { Button, Grid } from "@material-ui/core";
 import { ComponentStory, StoryContext } from "@storybook/react";
-import { useCallback, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 export const InteractiveStory = ({
-  story,
+  story: storyComponent,
   args,
   context,
 }: {
@@ -11,24 +11,28 @@ export const InteractiveStory = ({
   context: StoryContext;
 }): JSX.Element => {
   let [isRunning, run] = useState(false);
-  let [key, setKey] = useState(Math.random().toString());
+  let [shouldRender, renderStory] = useState(true);
 
-  let reset = useCallback(() => setKey(Math.random().toString()), []);
+  let reset = useCallback(() => renderStory(false), []);
 
   let play = useCallback(async () => {
     try {
       run(true);
-      await story.play?.();
+      await storyComponent.play?.();
     } catch (error) {
       // TODO Think about how to show errors
       throw error;
     } finally {
       run(false);
     }
-  }, [story]);
+  }, [storyComponent]);
+
+  useLayoutEffect(() => {
+    if (shouldRender == false) renderStory(true);
+  }, [shouldRender]);
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} direction="column">
       <Grid item>
         <Button onClick={play} disabled={isRunning}>
           {isRunning ? "Playing" : "Play"}
@@ -36,9 +40,7 @@ export const InteractiveStory = ({
         <Button onClick={reset}>Reset</Button>
       </Grid>
 
-      <Grid item key={key}>
-        {story.render?.(args, context)}
-      </Grid>
+      <Grid item>{shouldRender ? storyComponent.render?.(args, context) : null}</Grid>
     </Grid>
   );
 };
