@@ -5,10 +5,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 
 export const StaticDatePicker = (): JSX.Element => {
   let [selectedDate, setSelectedDate] = useState<Date | null>(new Date("2014-08-18T21:11:54"));
-
-  let handleDateChange = useCallback((date: Date | null) => {
-    setSelectedDate(date);
-  }, []);
+  let handleDateChange = useCallback((date: Date | null) => setSelectedDate(date), []);
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>

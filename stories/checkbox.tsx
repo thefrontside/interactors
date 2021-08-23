@@ -3,10 +3,7 @@ import { useCallback, useState } from "react";
 
 export const Checkboxes = (): JSX.Element => {
   let [checked, setChecked] = useState(true);
-
-  let handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  }, []);
+  let handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setChecked(event.target.checked), []);
 
   return (
     <div>

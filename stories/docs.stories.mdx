@@ -1,5 +1,18 @@
 import { Meta, Source, Canvas } from "@storybook/addon-docs";
-import { Accordion, BottomNavigation, Button, Calendar } from "./interactors.stories";
+import {
+  Accordion,
+  BottomNavigation,
+  Button,
+  Calendar,
+  Checkbox,
+  DateField,
+  DateTimeField,
+  Dialog,
+  Fab,
+  Link,
+  List,
+  Menu,
+} from "./interactors.stories";
 import { InteractiveStory as Story } from "./interactive-story";
 
 <Meta title="Interactors" />
@@ -18,4 +31,36 @@ import { InteractiveStory as Story } from "./interactive-story";
 
 <Canvas>
   <Story story={Calendar} />
+</Canvas>
+
+<Canvas>
+  <Story story={Checkbox} />
+</Canvas>
+
+<Canvas>
+  <Story story={DateField} />
+</Canvas>
+
+<Canvas>
+  <Story story={DateTimeField} />
+</Canvas>
+
+<Canvas>
+  <Story story={Dialog} />
+</Canvas>
+
+<Canvas>
+  <Story story={Fab} />
+</Canvas>
+
+<Canvas>
+  <Story story={Link} />
+</Canvas>
+
+<Canvas>
+  <Story story={List} />
+</Canvas>
+
+<Canvas>
+  <Story story={Menu} />
 </Canvas>
