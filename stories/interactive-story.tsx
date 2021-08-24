@@ -1,13 +1,13 @@
 import { Button, Grid } from "@material-ui/core";
 import { ComponentStory, StoryContext } from "@storybook/react";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { FunctionComponent, PropsWithChildren, useCallback, useLayoutEffect, useState } from "react";
 export const InteractiveStory = ({
   story: storyComponent,
   args,
   context,
 }: {
-  story: ComponentStory<any>;
-  args: unknown;
+  story: ComponentStory<FunctionComponent>;
+  args: PropsWithChildren<unknown>;
   context: StoryContext;
 }): JSX.Element => {
   let [isRunning, run] = useState(false);
