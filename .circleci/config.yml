@@ -103,9 +103,9 @@ workflows:
           name: "test-<<matrix.package>>"
           prepack: false
           matrix:
-          parameters:
-            package:
-              - html
+            parameters:
+              package:
+                - html
           requires:
             - prepack
       - lint:
