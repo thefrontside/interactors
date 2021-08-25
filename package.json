@@ -19,7 +19,8 @@
     "prepack": "yarn workspaces run prepack",
     "test": "yarn workspaces run test",
     "lint": "yarn workspaces run lint",
-    "watch": "yarn prepack:tsc && yarn tsc -b ./tsconfig.monorepo.json --watch"
+    "watch": "yarn prepack:tsc && yarn tsc -b ./tsconfig.monorepo.json --watch",
+    "prepack:all": "yarn prepack"
   },
   "volta": {
     "node": "12.11.1",
