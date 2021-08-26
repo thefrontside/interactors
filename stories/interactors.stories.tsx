@@ -29,7 +29,7 @@ import { SimpleAccordion } from "./accordion";
 import { SimpleBottomNavigation } from "./bottom-navigation";
 import { ContainedButtons } from "./button";
 import { StaticDatePicker } from "./calendar";
-import { Checkboxes } from "./checkbox";
+import { CheckboxLabels } from "./checkbox";
 import { DateFields } from "./data-field";
 import { DateTimeFields } from "./datatime-field";
 import { FormDialog } from "./dialog";
@@ -147,36 +147,40 @@ await CalendarInteractor().setDay(23);
   },
 };
 
-export const Checkbox: ComponentStory<typeof Checkboxes> = {
-  render: () => <Checkboxes />,
+export const Checkbox: ComponentStory<typeof CheckboxLabels> = {
+  render: () => <CheckboxLabels />,
   async play(): Promise<void> {
-    await CheckboxInteractor("primary checkbox").click();
+    await CheckboxInteractor("Secondary").click();
     await delay(500);
-    await CheckboxInteractor("secondary checkbox").click();
+    await CheckboxInteractor("Primary").click();
     await delay(500);
-    await CheckboxInteractor("uncontrolled-checkbox").click();
+    await CheckboxInteractor("Uncontrolled").click();
     await delay(500);
-    await CheckboxInteractor("indeterminate checkbox").click();
+    await CheckboxInteractor("Indeterminate").click();
     await delay(500);
-    await CheckboxInteractor("checkbox with default color").click();
+    await CheckboxInteractor("Custom color").click();
     await delay(500);
-    await CheckboxInteractor("checkbox with small size").click();
+    await CheckboxInteractor("Custom icon").click();
+    await delay(500);
+    await CheckboxInteractor("Custom size").click();
   },
   parameters: {
     docs: {
       source: {
         code: `
-await CheckboxInteractor("primary checkbox").click();
+await CheckboxInteractor("Secondary").click();
 await delay(500);
-await CheckboxInteractor("secondary checkbox").click();
+await CheckboxInteractor("Primary").click();
 await delay(500);
-await CheckboxInteractor("uncontrolled-checkbox").click();
+await CheckboxInteractor("Uncontrolled").click();
 await delay(500);
-await CheckboxInteractor("indeterminate checkbox").click();
+await CheckboxInteractor("Indeterminate").click();
 await delay(500);
-await CheckboxInteractor("checkbox with default color").click();
+await CheckboxInteractor("Custom color").click();
 await delay(500);
-await CheckboxInteractor("checkbox with small size").click();
+await CheckboxInteractor("Custom icon").click();
+await delay(500);
+await CheckboxInteractor("Custom size").click();
 `,
       },
     },

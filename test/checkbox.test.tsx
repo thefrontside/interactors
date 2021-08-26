@@ -60,7 +60,7 @@ export default test("Checkbox")
   )
   .child("test `filter` by visible", (test) =>
     test
-      .step(render(<Component hidden />))
+      .step(render(<Component style={{ visibility: 'hidden' }} />))
       .assertion(Checkbox({ visible: false }).exists())
   )
 
