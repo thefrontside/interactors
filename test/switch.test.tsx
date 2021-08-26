@@ -56,7 +56,7 @@ export default test("Switch")
   )
   .child("test `filter` by visible", (test) =>
     test
-      .step(render(<Component />))
+      .step(render(<Component hidden />))
       .assertion(Switch({ visible: false }).exists())
   )
 
