@@ -1,5 +1,11 @@
 # @interactors/html
 
+## 0.31.3
+
+### Patch Changes
+
+- 7caff9c: Update repository location
+
 ## 0.31.2
 
 ### Patch Changes
