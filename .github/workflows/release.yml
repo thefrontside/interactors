@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - 'v[0-9]+'
+      - main
 
 jobs:
   publish-releases:
