@@ -17,7 +17,9 @@
     "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
     "build:types": "tsc --build tsconfig.build.json",
     "prepack": "run-p build:*",
-    "start": "parcel serve test/harness.html"
+    "start": "parcel serve test/harness.html",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -41,6 +43,10 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.3.10",
     "@material-ui/styles": "^4.11.3",
+    "@storybook/addon-docs": "^6.4.0-alpha.30",
+    "@storybook/addon-essentials": "^6.4.0-alpha.30",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/react": "^6.4.0-alpha.30",
     "@testing-library/react": "^11.2.5",
     "@types/react": "^17.0.3",
     "bigtest": "^0.13.3",
