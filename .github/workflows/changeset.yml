@@ -3,7 +3,7 @@ name: Changeset
 on:
   push:
     branches:
-      - 'v[0-9]+'
+      - main
 
 jobs:
   create-release-pr:
