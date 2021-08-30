@@ -1,5 +1,28 @@
 # Changelog
 
+## \[4.0.0-alpha.2]
+
+- Added interactor for [Button](https://material-ui.com/components/buttons/) component
+  - [3279a09](https://github.com/thefrontside/material-ui-interactors/commit/3279a09785353fd13756b270f2160955c4cd80ab) improve button interactor, refactor to use render helper on 2021-06-23
+- Fix finding components by class attribute selector to ignore theme postfix
+  - [aba4a84](https://github.com/thefrontside/material-ui-interactors/commit/aba4a8481adb9c9582241a22d3d089c85168de8f) fix finding components with custom theme on 2021-06-17
+- Rearrange the deps and devDeps. Fix [#13](https://github.com/thefrontside/material-ui-interactors/issues/13)
+  Fix prepack build
+  - [ba17868](https://github.com/thefrontside/material-ui-interactors/commit/ba178689e35055259b4aee3d2482cbf46575cd4c) Rearrange the deps and devDeps on 2021-05-17
+  - [b4fa711](https://github.com/thefrontside/material-ui-interactors/commit/b4fa71173e007f06e70b31ee6be901fd09fa2aec) move bigtest to the devDeps on 2021-05-18
+- Fix import `HTML` interactor from `@bigtest/interactor` instead of `bigtest`
+  - [425bb02](https://github.com/thefrontside/material-ui-interactors/commit/425bb02e6cdb1ec666e3148aac4ad47abfd0f9f9) add changes description on 2021-06-17
+  - [97732cb](https://github.com/thefrontside/material-ui-interactors/commit/97732cb925c10d49858c65f48ebaa09599f9866c) Update .changes/fix-html-import.md on 2021-06-17
+- Added interactor for [List](https://material-ui.com/components/list/) component
+  - [0366a25](https://github.com/thefrontside/material-ui-interactors/commit/0366a2580ff6a6ee28cb3d58fd69473e5b148d06) add list interactor on 2021-06-21
+- Added interactor for [Popover](https://material-ui.com/components/popover/) component
+  Export `SelectOption` interactor
+  - [413d5ae](https://github.com/thefrontside/material-ui-interactors/commit/413d5ae1a12f3db3b02b3c0ee83067cb016dd7e5) add popover interactor on 2021-06-21
+- Added interactor for [Radio](https://material-ui.com/components/radio/) component
+  - [58474c3](https://github.com/thefrontside/material-ui-interactors/commit/58474c3ee7e5a97965940f1d4a509654a7e43c8a) Add changeset on 2021-06-02
+- Added interactors for [Slider](https://material-ui.com/components/slider/) component
+  - [b43e08b](https://github.com/thefrontside/material-ui-interactors/commit/b43e08b54e74472e70786d07c741ceb9e13a53f9) implement Slider interactor on 2021-06-30
+
 ## \[4.0.0-alpha.1]
 
 - Added interactor for [Accordion](https://material-ui.com/components/accordion/) component
