@@ -8,5 +8,8 @@
   },
   "include": [
     "src/*.ts"
+  ],
+  "references": [
+    { "path" : "../../packages/html" }
   ]
 }
