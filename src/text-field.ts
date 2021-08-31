@@ -1,4 +1,4 @@
-import { TextField as BaseTextField } from "@bigtest/interactor";
+import { TextField as BaseTextField } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isHTMLElement } from "./helpers";
 import { GetElementType } from "./types";

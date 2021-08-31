@@ -1,4 +1,4 @@
-import { Button } from "@bigtest/interactor";
+import { Button } from "@interactors/html";
 
 export const Fab = Button.extend("MUI Fab Button")
   .selector('button[class*="MuiFab-root"]')

@@ -1,4 +1,4 @@
-import { CheckBox as BaseCheckbox, isVisible } from "@bigtest/interactor";
+import { CheckBox as BaseCheckbox, isVisible } from "@interactors/html";
 
 export const Checkbox = BaseCheckbox.extend("MUI Checkbox")
   .selector('[class*="MuiCheckbox-root"] input[type=checkbox]')

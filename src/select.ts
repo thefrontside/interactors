@@ -1,4 +1,4 @@
-import { createInteractor, HTML, Interactor } from "@bigtest/interactor";
+import { createInteractor, HTML, Interactor } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
 

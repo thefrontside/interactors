@@ -1,4 +1,4 @@
-import { HTML } from "@bigtest/interactor";
+import { HTML } from "@interactors/html";
 import { isDisabled } from "./helpers";
 
 export const Button = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUI Button")

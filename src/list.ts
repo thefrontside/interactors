@@ -1,4 +1,4 @@
-import { HTML } from "@bigtest/interactor";
+import { HTML } from "@interactors/html";
 
 export const List = HTML.extend<HTMLElement>("MUI List")
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)

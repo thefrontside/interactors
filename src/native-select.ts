@@ -1,4 +1,4 @@
-import { Select, MultiSelect } from "@bigtest/interactor";
+import { Select, MultiSelect } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { GetElementType } from "./types";
 

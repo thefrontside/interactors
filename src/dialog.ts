@@ -1,4 +1,4 @@
-import { HTML } from "@bigtest/interactor";
+import { HTML } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 export const Dialog = HTML.extend("MUI Dialog")

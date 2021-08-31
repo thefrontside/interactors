@@ -1,7 +1,7 @@
-import * as Bigtest from "@bigtest/interactor";
+import * as Bigtest from "@interactors/html";
 
 export { Bigtest };
-export { HTML, Heading, Page, including, matching, and, or, not, some, every } from "@bigtest/interactor";
+export { HTML, Heading, Page, including, matching, and, or, not, some, every } from "@interactors/html";
 
 export * from "./types";
 
