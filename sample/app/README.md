@@ -1,6 +1,6 @@
-# BigTest Sample App
+# Interactors Sample App
 
-This app shows some examples of using BigTest and Interactors to programatically test a web app.
+This app shows some examples of using Interactors to programatically test a web app.
 
 [BigTest](https://frontside.com/bigtest/platform) is a free, Open Source testing platform built from scratch for the modern age — with no traces of Selenium, Playwright, or earlier tools.
 

@@ -1,8 +1,8 @@
-# BigTest Sample App
+# Interactors Sample App
 
-The BigTest Sample app shows some examples of using BigTest and Interactors to programatically test a web app.
+The Interactors Sample app shows some examples of using Interactors to programatically test a web app.
 
-This repository contains the files that are created when someone runs the command `npx bigtest-sample` to generate their own app, as they are following along with [the Quick Start](https://frontside.com/bigtest/docs/interactors).
+This repository contains the files that are created when someone runs the command `npx interactors-sample` to generate their own app, as they are following along with [the Quick Start](https://frontside.com/bigtest/docs/interactors).
 
 ## Getting Started
 
@@ -39,13 +39,13 @@ npm run test:cypress
 Generate a new sample app using npx:
 
 ```
-npx bigtest-sample
+npx interactors-sample
 ```
 
 You can use `--yarn` or `-Y` flags to use yarn instead:
 
 ```
-npx bigtest-sample --yarn
+npx interactors-sample --yarn
 ```
 
 ## Build App Locally
@@ -58,6 +58,6 @@ yarn dev:build
 
 This will save you the trouble of having to publish preview packages and will create the sample app inside `./build` using your local script instead of using `npx`.
 
-## Publishing BigTest Sample
+## Publishing Interactors Sample
 
 This is a note for the project maintainers. If you make changes to this package, please bump the package version manually.

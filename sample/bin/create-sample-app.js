@@ -12,7 +12,7 @@ const { install } = require('./install');
 const { processTemplate } = require('./template');
 
 const SOURCE_DIR = `${path.dirname(__dirname)}/app`;
-const TARGET_DIR = process.env.DEV_BUILD ? `${path.dirname(__dirname)}/build`: `${process.cwd()}/bigtest-sample`;
+const TARGET_DIR = process.env.DEV_BUILD ? `${path.dirname(__dirname)}/build`: `${process.cwd()}/interactors-sample`;
 
 let template;
 
@@ -20,7 +20,7 @@ async function createDirectory(message) {
   if (fse.existsSync(TARGET_DIR)) {
     if(!process.env.DEV_BUILD){
       throw new MainError({
-        message: `${formatErr('directory \'bigtest-sample\' already exists')}\n${messages.abort}`
+        message: `${formatErr('directory \'interactors-sample\' already exists')}\n${messages.abort}`
       });
     } else {
       rmrfsync(`${TARGET_DIR}/*`);

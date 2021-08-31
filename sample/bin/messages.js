@@ -12,7 +12,7 @@ const messages = {
     after: chalk`{green Installation complete\n}`
   },
   cleanup: chalk`{red Removed generated files because of error\n}`,
-  abort: `Please rename the existing 'bigtest-sample' directory and rerun the command\n`
+  abort: `Please rename the existing 'interactors-sample' directory and rerun the command\n`
 }
 
 const generateInstructions = (template) => {
@@ -33,7 +33,7 @@ const generateInstructions = (template) => {
     default:
       commands = bigtestCommand.concat(jestCommand, cypressCommand);
   };
-  return chalk`{white Setup is complete!}\n\nNow you can start exploring:\n\n  {magentaBright cd} {white bigtest-sample}\n\n${commands}\n{yellow Have any questions?}\nReach us at: {cyan https://discord.gg/RKss6jw2}\n`;
+  return chalk`{white Setup is complete!}\n\nNow you can start exploring:\n\n  {magentaBright cd} {white interactors-sample}\n\n${commands}\n{yellow Have any questions?}\nReach us at: {cyan https://discord.gg/RKss6jw2}\n`;
 }
 
 module.exports = {

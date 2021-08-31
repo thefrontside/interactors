@@ -1,11 +1,11 @@
 const baseTemplate = ({ dependencies }) => {
   return {
     pkgjson : {
-      "name": "bigtest-sample-app",
+      "name": "interactors-sample-app",
       "version": "0.0.0",
       "private": true,
-      "description": "BigTest Sample App",
-      "repository": "https://github.com/thefrontside/bigtest.git",
+      "description": "Interactors Sample App",
+      "repository": "https://github.com/thefrontside/interactors.git",
       "author": "Frontside Engineering <engineering@frontside.com>",
       "license": "MIT",
       "scripts": {

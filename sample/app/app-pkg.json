@@ -1,9 +1,9 @@
 {
-  "name": "bigtest-sample-app",
+  "name": "interactors-sample-app",
   "version": "0.0.0",
   "private": true,
-  "description": "BigTest Sample App",
-  "repository": "https://github.com/thefrontside/bigtest.git",
+  "description": "Interactors Sample App",
+  "repository": "https://github.com/thefrontside/interactors.git",
   "author": "Frontside Engineering <engineering@frontside.com>",
   "license": "MIT",
   "scripts": {
@@ -18,7 +18,7 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
-    "@bigtest/cypress": "^0.1.1",
+    "@interactors/with-cypress": "^0.1.1",
     "@testing-library/react": "^11.1.0",
     "babel-jest": "^26.6.3",
     "bigtest": "0.14.4",
