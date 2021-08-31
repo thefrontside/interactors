@@ -1,0 +1,5 @@
+node_modules
+.bigtest
+.cache
+dist
+build
