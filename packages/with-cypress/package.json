@@ -1,11 +1,11 @@
 {
-  "name": "@bigtest/cypress",
+  "name": "@interactors/with-cypress",
   "version": "0.1.1",
-  "description": "Cypress Integration for BigTest Interactors",
+  "description": "Cypress Integration for Interactors",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/thefrontside/bigtest.git",
+  "repository": "https://github.com/thefrontside/interactors.git",
   "author": "Frontside Engineering <engineering@frontside.com>",
   "license": "MIT",
   "files": [
