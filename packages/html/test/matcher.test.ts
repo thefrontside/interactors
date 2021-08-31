@@ -69,5 +69,21 @@ describe('@interactors/html', () => {
         '└─ Received: "FOO"',
       ].join('\n'));
     });
+
+    it('can use regex on locator when locating element', async () => {
+      dom(`
+        <p><a href="/foobar">FOO</a></p>
+        <p><a href="/foobar">BAR</a></p>
+      `);
+
+      await expect(Link(/foo/i).exists()).resolves.toBeUndefined();
+      await expect(Link(/quox/i).exists()).rejects.toHaveProperty('message', [
+        'did not find link matching /quox/i, did you mean one of:', '',
+        '┃ link    ┃',
+        '┣━━━━━━━━━┫',
+        '┃ ⨯ "FOO" ┃',
+        '┃ ⨯ "BAR" ┃',
+      ].join('\n'));
+    })
   });
 });
