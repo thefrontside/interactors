@@ -1,4 +1,4 @@
-import { Button, Heading, Link } from '@interactors/with-cypress';
+import { Button, Heading, Link } from '@bigtest/cypress';
 
 describe('Interactors with Cypress', () => {
   beforeEach(() => {
