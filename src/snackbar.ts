@@ -1,4 +1,4 @@
-import { HTML } from "@bigtest/interactor";
+import { HTML } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 export const Snackbar = HTML.extend("MUI Snackbar")

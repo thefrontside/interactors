@@ -1,4 +1,4 @@
-import { createInteractor, HTML } from "@bigtest/interactor";
+import { createInteractor, HTML } from "@interactors/html";
 import { Button } from "./button";
 import { applyGetter, isDisabled } from "./helpers";
 

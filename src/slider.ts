@@ -1,4 +1,4 @@
-import { HTML } from "@bigtest/interactor";
+import { HTML } from "@interactors/html";
 import { isDefined } from "./helpers";
 
 function isDisabled(element: Element) {

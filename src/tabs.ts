@@ -1,4 +1,4 @@
-import { HTML } from "@bigtest/interactor";
+import { HTML } from "@interactors/html";
 import { isDisabled, isHTMLElement } from "./helpers";
 
 export const Tab = HTML.extend<HTMLElement>("MUI Tab")

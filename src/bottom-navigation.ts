@@ -1,4 +1,4 @@
-import { createInteractor } from "@bigtest/interactor";
+import { createInteractor } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUI BottomNavigationAction")

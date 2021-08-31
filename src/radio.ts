@@ -1,4 +1,4 @@
-import { RadioButton, isVisible } from "@bigtest/interactor";
+import { RadioButton, isVisible } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 export default RadioButton.extend("radio")

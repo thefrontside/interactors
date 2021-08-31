@@ -5,12 +5,12 @@ import { createRenderStep } from "./helpers";
 import { cloneElement, useRef, useState } from "react";
 
 const renderPopover = createRenderStep(Component, { children: 'Content' }, ({ props, children }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  let [isOpen, setIsOpen] = useState<boolean>(true);
 
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  let buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const handleClick = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+  let handleClick = () => setIsOpen(true);
+  let handleClose = () => setIsOpen(false);
 
   return (
     <>
@@ -20,7 +20,7 @@ const renderPopover = createRenderStep(Component, { children: 'Content' }, ({ pr
         { open: isOpen, anchorEl: buttonRef.current, onClose: handleClose },
       )}
     </>
-  )
+  );
 });
 const popover = Popover("Content");
 
@@ -32,4 +32,4 @@ export default test("Popover")
     test
       .step(popover.close())
       .assertion(popover.absent())
-  )
+  );

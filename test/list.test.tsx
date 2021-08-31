@@ -13,7 +13,7 @@ const renderList = createRenderStep(Component, { 'aria-label': 'Three items list
         <ComponentItem>Two</ComponentItem>,
         <ComponentItem disabled>Three</ComponentItem>,
       )
-  )
+  );
 });
 const list = List("Three items list");
 
@@ -23,4 +23,4 @@ export default test("List")
   .assertion(list.exists())
   .assertion(list.find(ListItem('One')).exists())
   .assertion(list.find(ListItem('Three', { disabled: true })).exists())
-  .assertion(list.find(ListItem('Two')).is({ index: 1 }))
+  .assertion(list.find(ListItem('Two')).is({ index: 1 }));
