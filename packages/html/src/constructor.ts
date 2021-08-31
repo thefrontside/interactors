@@ -24,6 +24,7 @@ import { interaction, check, Interaction, ReadonlyInteraction } from './interact
 import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
+import { matching } from './matchers/matching';
 
 const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
@@ -241,8 +242,9 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
 ): InteractorConstructor<E, FP, AM> {
   function initInteractor(...args: any[]) {
     let locator, filter;
-    if(typeof(args[0]) === 'string' || isMatcher(args[0])) {
-      locator = new Locator(specification.locator || defaultLocator, args[0]);
+    let locatorValue = args[0] instanceof RegExp ? matching(args[0]) : args[0]
+    if (typeof(locatorValue) === 'string' || isMatcher(locatorValue)) {
+      locator = new Locator(specification.locator || defaultLocator, locatorValue);
       filter = new Filter(specification, args[1] || {});
     } else {
       filter = new Filter(specification, args[0] || {});
