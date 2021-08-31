@@ -8,7 +8,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/html"
+      "packages/html",
+      "packages/with-cypress"
     ]
   },
   "scripts": {
