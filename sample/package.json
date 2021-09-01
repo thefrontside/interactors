@@ -1,0 +1,47 @@
+{
+  "name": "interactors-sample",
+  "version": "0.0.14",
+  "description": "Interactors Sample App",
+  "repository": "https://github.com/thefrontside/interactors.git",
+  "author": "Frontside Engineering <engineering@frontside.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "cd app && node ../bin/start-dev.js",
+    "lint": "echo no-op",
+    "test:jest": "cd app && npm run test:jest",
+    "test:cypress": "cd app && npm run test:cypress",
+    "test:bigtest": "cd app && npm run test:bigtest",
+    "dev:build": "DEV_BUILD=true node bin/create-sample-app",
+    "update:locks": "npm i && yarn && cd app && cat app-pkg.json > package.json && npm i && yarn"
+  },
+  "bin": {
+    "sample": "./bin/create-sample-app.js"
+  },
+  "files": [
+    "*"
+  ],
+  "dependencies": {
+    "@effection/process": "^2.0.0-beta.12",
+    "chalk": "^4.1.0",
+    "effection": "^2.0.0-beta.12",
+    "fs-extra": "^10.0.0",
+    "lodash.merge": "^4.6.2",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "@frontside/eslint-config": "^2.0.0",
+    "eslint": "^7.18.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@frontside/eslint-config"
+    ],
+    "rules": {
+      "@typescript-eslint/no-var-requires": "off"
+    }
+  },
+  "volta": {
+    "node": "14.17.5",
+    "yarn": "1.22.11"
+  }
+}

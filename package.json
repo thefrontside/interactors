@@ -8,7 +8,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/html"
+      "packages/html",
+      "packages/with-cypress"
     ]
   },
   "scripts": {
@@ -23,12 +24,12 @@
     "prepack:all": "yarn prepack"
   },
   "volta": {
-    "node": "12.11.1",
-    "yarn": "1.22.4"
+    "node": "14.17.5",
+    "yarn": "1.22.11"
   },
   "devDependencies": {
     "@changesets/cli": "^2.8.0",
-    "@types/node": "^13.13.4"
+    "@types/node": "^14.17.5"
   },
   "resolutions": {
     "@definitelytyped/typescript-versions": "^0.0.40",

@@ -37,7 +37,7 @@
     "@types/jsdom": "^16.2.3",
     "@types/lodash.isequal": "^4.5.5",
     "@types/mocha": "^7.0.1",
-    "@types/node": "^13.13.4",
+    "@types/node": "^14.17.5",
     "dtslint": "^4.0.5",
     "expect": "^24.9.0",
     "express": "^4.17.1",
@@ -46,7 +46,7 @@
     "ts-node": "^9.1.1"
   },
   "volta": {
-    "node": "12.16.0",
-    "yarn": "1.19.1"
+    "node": "14.17.5",
+    "yarn": "1.22.11"
   }
 }

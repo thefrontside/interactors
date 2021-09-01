@@ -2,7 +2,7 @@ version: 2.1
 executors:
   linux:
     docker:
-      - image: circleci/node:15-browsers
+      - image: circleci/node:14-browsers
   macos:
     macos:
       xcode: "12.4.0"
@@ -106,6 +106,7 @@ workflows:
             parameters:
               package:
                 - html
+                - with-cypress
           requires:
             - prepack
       - lint:
