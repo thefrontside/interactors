@@ -1,0 +1,16 @@
+{
+  "port": 28000,
+  "launch": [
+    "default"
+  ],
+  "app": {
+    "command": "npm start",
+    "env": {
+      "PORT": 28001
+    },
+    "url": "http://localhost:28001"
+  },
+  "testFiles": [
+    "test/**/*.test.{tsx,js}"
+  ]
+}
