@@ -1,4 +1,4 @@
-# material-ui-interactors
+# @interactors/material-ui
 
 The collection of [interactors](https://frontside.com/bigtest/interactors) for basic
 [Material-UI](https://material-ui.com) components. Simplifies your tests by providing
@@ -8,7 +8,7 @@ a nice and powerful API to emulate user interactions and make short and elegant 
 
 ```typescript
 import { test } from "bigtest";
-import { Button, DateField, Popover, Select, Slider, TextField } from "material-ui-interactors";
+import { Button, DateField, Popover, Select, Slider, TextField } from "@interactors/material-ui";
 
 test("SignUp")
   .step(TextField("Username").fillIn("JohnDow"))

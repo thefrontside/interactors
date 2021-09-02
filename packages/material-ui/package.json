@@ -1,5 +1,5 @@
 {
-  "name": "material-ui-interactors",
+  "name": "@interactors/material-ui",
   "version": "4.0.0-alpha.2",
   "description": "BigTest interactors for material-ui.com components.",
   "main": "dist/cjs/index.js",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thefrontside/material-ui-interactors.git"
+    "url": "git+https://github.com/thefrontside/interactors.git"
   },
   "keywords": [
     "material-ui",
@@ -32,9 +32,9 @@
   "author": "Frontside Engineering <engineering@frontside.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thefrontside/material-ui-interactors/issues"
+    "url": "https://github.com/thefrontside/interactors/issues"
   },
-  "homepage": "https://github.com/thefrontside/material-ui-interactors#readme",
+  "homepage": "https://github.com/thefrontside/interactors#readme",
   "devDependencies": {
     "@date-io/date-fns": "^1.3.13",
     "@frontside/eslint-config": "^2.1.0",
