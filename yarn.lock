@@ -1765,7 +1765,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@frontside/eslint-config@^2.0.0", "@frontside/eslint-config@^2.1.0":
+"@frontside/eslint-config@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@frontside/eslint-config/-/eslint-config-2.1.0.tgz#4d078d3f5756b9abe561a636af9dc852366f40d0"
   integrity sha512-h7c1GaOnVhpPbcKVCzeOjSmvLgiV6Ez0grdE8NvO7rUMJWvlRUB+dUejkQZYzyyQSvzPP5eW+BmfriuA83ejUw==
