@@ -1,5 +1,15 @@
 # @interactors/html
 
+## 0.32.0
+
+### Minor Changes
+
+- fd6375a: Improve build configuration
+
+### Patch Changes
+
+- e2a6d11: Allow use a regular expression (in addition to locator string and filter) as a primary method for looking up an interactor. E.g. `Button(/submit/i)`
+
 ## 0.31.3
 
 ### Patch Changes
