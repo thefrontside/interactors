@@ -9,11 +9,5 @@ module.exports = {
     'interactors/integrations',
     'interactors/storybook',
     'interactors/existing-interactors',
-  ],
-  platform: [
-    'platform/installation',
-    'platform/writing-your-first-test',
-    'platform/running-tests',
-    'platform/architecture',
-  ],
+  ]
 };

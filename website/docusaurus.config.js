@@ -28,16 +28,8 @@ module.exports = {
           activeBaseRegex: '(interactors)|(docs\/interactors)',
           label: 'Interactors',
           position: 'left',
-        },{
-          to: '/platform',
-          activeBaseRegex: '(platform)|(docs\/platform)',
-          label: 'Runner',
-          position: 'left',
-        }, {
-          to: '/about',
-          label: 'About',
-          position: 'left'
-        }, {
+        },
+        {
           href: 'https://github.com/thefrontside/bigtest',
           label: 'GitHub',
           position: 'right',
@@ -62,36 +54,6 @@ module.exports = {
             {
               label: 'Docs',
               to: 'docs/interactors/',
-            }
-          ],
-        },
-        {
-          title: 'Runner',
-          items: [
-            {
-              label: 'About the Runner',
-              to: 'platform/',
-            },
-            {
-              label: 'Introduction',
-              to: 'docs/platform/',
-            }
-          ],
-        },
-        {
-          title: 'BigTest Platform',
-          items: [
-            {
-              label: 'About BigTest',
-              to: 'about/',
-            },
-            {
-              label: 'Architecture',
-              to: 'about#architecture',
-            },
-            {
-              label: 'Projects',
-              to: 'about#projects',
             }
           ],
         },
