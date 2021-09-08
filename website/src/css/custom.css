@@ -76,12 +76,12 @@ body {
   padding-right: var(--ifm-spacing-horizontal);
 }
 
-.navbar__link[href$="interactors"] {
+.navbar__link[href$="docs"] {
   width: 164px;
   text-align: center;
 }
 
-.navbar__link[href$="interactors"]:after {
+.navbar__link[href$="docs"]:after {
   content: 'beta';
   font-size: 0.7em;
   padding: 1px 2px;
