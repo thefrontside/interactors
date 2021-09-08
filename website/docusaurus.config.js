@@ -1,12 +1,12 @@
 module.exports = {
-  title: 'BigTest',
-  tagline: 'Truly cross-browser testing',
+  title: 'Interactors',
+  tagline: 'Test your app as real people use it',
   url: 'https://frontside.com',
-  baseUrl: '/bigtest/',
+  baseUrl: '/interactors/',
   onBrokenLinks: 'throw',
   favicon: 'images/favicon.png',
   organizationName: 'thefrontside',
-  projectName: 'bigtest',
+  projectName: 'interactors',
   themeConfig: {
     colorMode: {
       disableSwitch: true,
@@ -16,21 +16,15 @@ module.exports = {
       theme: require('prism-react-renderer/themes/nightOwl'),
     },
     navbar: {
-      title: '',
-      logo: {
-        alt: 'BigTest',
-        src: 'images/bigtest-logo@2x.png',
-        srcDark: 'images/logo-dark@2x.png'
-      },
+      title: 'Interactors',
       items: [
         {
-          to: '/interactors',
-          activeBaseRegex: '(interactors)|(docs\/interactors)',
-          label: 'Interactors',
+          to: '/docs',
+          label: 'Docs',
           position: 'left',
         },
         {
-          href: 'https://github.com/thefrontside/bigtest',
+          href: 'https://github.com/thefrontside/interactors',
           label: 'GitHub',
           position: 'right',
         },
@@ -49,11 +43,11 @@ module.exports = {
           items: [
             {
               label: 'About Interactors',
-              to: 'interactors/',
+              to: '/',
             },
             {
               label: 'Docs',
-              to: 'docs/interactors/',
+              to: 'docs',
             }
           ],
         },
@@ -66,7 +60,7 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/thefrontside/bigtest',
+              href: 'https://github.com/thefrontside/interactors',
             }
           ],
         }
@@ -101,7 +95,7 @@ module.exports = {
       src: 'https://plausible.io/js/plausible.js',
       async: true,
       defer: true,
-      'data-domain': 'frontside.com/bigtest'
+      'data-domain': 'frontside.com/interactors'
     }
   ]
 };

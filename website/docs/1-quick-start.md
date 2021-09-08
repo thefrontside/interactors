@@ -1,7 +1,7 @@
 ---
 id: quick-start
 title: Quick Start
-slug: /interactors
+slug: /
 ---
 
 Interactors make writing your UI tests easier, faster, and more reliable. You can use them across many different testing frameworks.
