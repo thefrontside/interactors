@@ -111,7 +111,7 @@ function Interactors() {
             </p>
             <Link
               className={styles.ctaButton}
-              to={useBaseUrl('docs/interactors')}>
+              to={useBaseUrl('docs')}>
               Get Started
             </Link>
           </div>
@@ -177,7 +177,7 @@ function Interactors() {
         <section className="text--center">
           <Link
             className={styles.ctaButton}
-            to={useBaseUrl('docs/interactors')}>
+            to={useBaseUrl('docs')}>
             Try Interactors
             </Link>
         </section>

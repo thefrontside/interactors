@@ -18,13 +18,13 @@ These are the default interactors that are offered in `@interactors/html`:
 - [Select](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/select.ts)
 - [TextField](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/text-field.ts)
 
-As you might have seen on the [Quick Start](/docs/interactors/) page, you can import any of the interactors directly from the `@interactors/html` package:
+As you might have seen on the [Quick Start](/docs/) page, you can import any of the interactors directly from the `@interactors/html` package:
 
 ```js
 import { Button, TextField } from '@interactors/html';
 ```
 
-If your app has unique interfaces that are not covered by these built-in tools, you are encouraged to [write your own interactors](/docs/interactors/write-your-own). You can also check out [Existing Interactors](/docs/interactors/existing-interactors) to find out where you can see interactors written by other organizations.
+If your app has unique interfaces that are not covered by these built-in tools, you are encouraged to [write your own interactors](/docs/write-your-own). You can also check out [Existing Interactors](/docs/existing-interactors) to find out where you can see interactors written by other organizations.
 
 ### Page
 
@@ -36,7 +36,7 @@ Page.has({ title: 'BigTest Example App' });
 _The `Page` interactor is instantiated differently than the other predefined interactors so you do not need to call it `Page()` unless you want to pass in an argument._
 
 :::note Heads up
-We introduced `.exists()` and `.absent()` in the [Quick Start](/docs/interactors/) section but there are also `.has()` and `.is()` Interactor assertion methods. We will discuss their details on the [Assertions](/docs/interactors/assertions) page.
+We introduced `.exists()` and `.absent()` in the [Quick Start](/docs/) section but there are also `.has()` and `.is()` Interactor assertion methods. We will discuss their details on the [Assertions](/docs/assertions) page.
 :::
 
 And when using the BigTest runner, the Page interactor can be used to navigate between routes:
@@ -52,4 +52,4 @@ export default test('BigTest Runner')
 
 ## Up Next
 
-What are the pieces that make up an interactor? Locators and filters help you find things in the UI and make assertions. Actions advance the state of your app. Keep reading on the [Locators, Filters, and Actions](/docs/interactors/locators-filters-actions) page to learn more.
+What are the pieces that make up an interactor? Locators and filters help you find things in the UI and make assertions. Actions advance the state of your app. Keep reading on the [Locators, Filters, and Actions](/docs/locators-filters-actions) page to learn more.

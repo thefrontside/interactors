@@ -8,7 +8,7 @@ Nearly every app has at least one user interaction that is unusual or special, l
 In this section, you will learn how to write a new Interactor for any interface and use it in your tests. We will start with a simple example for learning purposes, level up to a more complex scenario, and then cover common questions.
 
 :::note
-On the [Existing Interactors](/docs/interactors/existing-interactors) page, you will discover some examples of interactors written for other projects and libraries. Although you may be able to find prewritten interactors that suit your needs, we still recommend you read through the rest of this guide to understand how interactors are composed as you will find it useful to be able to modify existing and predefined interactors.
+On the [Existing Interactors](/docs/existing-interactors) page, you will discover some examples of interactors written for other projects and libraries. Although you may be able to find prewritten interactors that suit your needs, we still recommend you read through the rest of this guide to understand how interactors are composed as you will find it useful to be able to modify existing and predefined interactors.
 :::
 
 ## Writing your first interactor
@@ -447,7 +447,7 @@ When the predefined interactors are not enough, we encourage you to write your o
 
 For example, let's say that you want to replace a custom datepicker with a popular third-party library instead. Although you may have many tests for flows with the date picker, only your Interactor needs to change.
 
-You are also encouraged to browse through the collection of interactors written by other oganizations. We share some of them on the [Existing Interactors](/docs/interactors/existing-interactors) page. Even if you end up writing your own interactors, seeing examples in other projects will provide you with a good point of reference.
+You are also encouraged to browse through the collection of interactors written by other oganizations. We share some of them on the [Existing Interactors](/docs/existing-interactors) page. Even if you end up writing your own interactors, seeing examples in other projects will provide you with a good point of reference.
 
 ### I have an interaction that is really difficult to test. What should I do?
 
@@ -459,4 +459,4 @@ Another way to find some bugs is to use automated tools such as [Lighthouse](htt
 
 ## Up Next
 
-Now that you’ve seen some of the power of Interactors, you’ll be happy to know that you can start using them right now in your current test suite. Interactors are compatible with several test runners, and we’ve made it particularly easy for you to plug them into your [Jest and Cypress](/docs/interactors/integrations) setups.
+Now that you’ve seen some of the power of Interactors, you’ll be happy to know that you can start using them right now in your current test suite. Interactors are compatible with several test runners, and we’ve made it particularly easy for you to plug them into your [Jest and Cypress](/docs/integrations) setups.

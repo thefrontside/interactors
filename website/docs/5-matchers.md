@@ -206,4 +206,4 @@ This `greaterThan()` matcher will return true when the value of the relevant int
 
 ## Up Next
 
-By now you should have a much better understanding of how to locate, interact with, and make assertions with Interactors. But what if you keep running into a combination of locators, filters, and actions across your UI? [Writing your own Interactors](/docs/interactors/write-your-own) allows you to package a simple and reusable way of testing a component or element that you and your team can use in their test suites.
+By now you should have a much better understanding of how to locate, interact with, and make assertions with Interactors. But what if you keep running into a combination of locators, filters, and actions across your UI? [Writing your own Interactors](/docs/write-your-own) allows you to package a simple and reusable way of testing a component or element that you and your team can use in their test suites.

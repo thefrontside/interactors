@@ -50,7 +50,7 @@ The locator of the `TextField` interactor is the `innerText` of its associated l
 </label>
 ```
 
-_This is just the way the predefined TextField interactor is configured. It is possible to modify pre-existing interactors such as this TextField interactor or create your own interactors from scratch to suit your needs. We will be going over how you can do all of this on the [Writing Interactors](/docs/interactors/write-your-own) page._
+_This is just the way the predefined TextField interactor is configured. It is possible to modify pre-existing interactors such as this TextField interactor or create your own interactors from scratch to suit your needs. We will be going over how you can do all of this on the [Writing Interactors](/docs/write-your-own) page._
 :::
 
 You can think of the locator as the "default filter" since filters and locators both provide the same functionality. The reason why Interactors offers both solutions is convenience, because having to pass in an object for each interactor can get repetitive.
@@ -97,4 +97,4 @@ It’s that simple! Because Interactors can only match one element, there’s no
 
 Locators, filters, and actions can be convenient for finding and interacting with matching UI elements, but where they really shine is in making assertions about what you expect your application to be showing.
 
-In the next page, [Assertions](/docs/interactors/assertions), we will go over the different assertion methods and explore how you can use filters to make assertions.
+In the next page, [Assertions](/docs/assertions), we will go over the different assertion methods and explore how you can use filters to make assertions.
