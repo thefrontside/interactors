@@ -218,7 +218,6 @@ function Interactors() {
                   </p>
           </div>
         </section>
-        <SubscribeForm highlight={true} />
       </main>
     </Layout>
   );
