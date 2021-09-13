@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.0
+
+### Minor Changes
+
+- eee44a7: Change package name to @interactors/material-ui
+
 ## \[4.0.0-alpha.2]
 
 - Added interactor for [Button](https://material-ui.com/components/buttons/) component
