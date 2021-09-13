@@ -8,23 +8,24 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-background-color: #fff;
-  --ifm-color-primary: #14315D;
-  --ifm-color-primary-dark: #14315D;
-  --ifm-color-primary-darker: #14315D;
-  --ifm-color-primary-darkest: #14315D;
-  --ifm-color-primary-light: #14315D;
-  --ifm-color-primary-lighter: #14315D;
-  --ifm-color-primary-lightest: #14315D;
+  --ifm-color-primary: #14315d;
+  --ifm-color-primary-dark: #14315d;
+  --ifm-color-primary-darker: #14315d;
+  --ifm-color-primary-darkest: #14315d;
+  --ifm-color-primary-light: #14315d;
+  --ifm-color-primary-lighter: #14315d;
+  --ifm-color-primary-lightest: #14315d;
+  --ifm-color-primary-dimmed: rgba(20, 49, 93, 0.8);
   --color-over-primary: #fff;
   --ifm-code-font-size: 95%;
-  --ifm-heading-color: #14315D;
+  --ifm-heading-color: #14315d;
   --ifm-sub-heading-color: #4f6586;
   --ifm-navbar-height: 80px;
-  --ifm-container-width: 1346px;
+  --ifm-container-width: 1440px;
   --ifm-spacing-horizontal: 33px;
   --ifm-toc-border-color: rgba(224, 224, 224, 0.5);
   --ifm-navbar-shadow: 0 1px 0px var(--ifm-toc-border-color);
-  --ifm-code-font-size: 0.80em;
+  --ifm-code-font-size: 0.8em;
   --ifm-navbar-link-color: var(--ifm-color-primary);
   --fs-pink: #f74d7b;
   --fs-skyblue: #26abe8;
@@ -34,8 +35,8 @@
   --size-med-sm: 20px;
 }
 
-html[data-theme='dark'] {
-  --ifm-color-content: #CCCCCC;
+html[data-theme="dark"] {
+  --ifm-color-content: #cccccc;
   --ifm-color-primary: white;
   --ifm-color-primary-dark: white;
   --ifm-color-primary-darker: white;
@@ -43,7 +44,8 @@ html[data-theme='dark'] {
   --ifm-color-primary-light: white;
   --ifm-color-primary-lighter: white;
   --ifm-color-primary-lightest: white;
-  --color-over-primary: #14315D;
+  --ifm-color-primary-dimmed: rgba(255, 255, 255, 0.6);
+  --color-over-primary: #14315d;
   --ifm-heading-color: white;
   --ifm-sub-heading-color: #95acce;
   --ifm-navbar-background-color: var(--ifm-background-color);
@@ -76,13 +78,13 @@ body {
   padding-right: var(--ifm-spacing-horizontal);
 }
 
-.navbar__link[href$="docs"] {
+.navbar__link[href$="interactors"] {
   width: 164px;
   text-align: center;
 }
 
-.navbar__link[href$="docs"]:after {
-  content: 'beta';
+.navbar__link[href$="interactors"]:after {
+  content: "beta";
   font-size: 0.7em;
   padding: 1px 2px;
   border: 1px solid var(--fs-pink);
@@ -99,7 +101,7 @@ body {
 }
 
 .navbar__link[href$="platform"]:after {
-  content: 'alpha';
+  content: "alpha";
   font-size: 0.7em;
   padding: 1px 2px;
   border: 1px solid var(--ifm-sub-heading-color);
@@ -126,7 +128,7 @@ body {
 
 @media screen and (min-width: 997px) {
   .navbar__link--active:before {
-    content: '';
+    content: "";
     width: 100%;
     height: 2px;
     background: linear-gradient(-90deg, #26abe8, #f74d7b);
@@ -185,7 +187,8 @@ body {
   margin-bottom: 2px;
 }
 
-.markdown a.hash-link, a.hash-link {
+.markdown a.hash-link,
+a.hash-link {
   color: var(--fs-pink);
   border: none;
 }
@@ -213,7 +216,7 @@ body {
   padding-left: 10px;
 }
 .table-of-contents__link:before {
-  content: '';
+  content: "";
   display: block;
   background: transparent;
   position: absolute;
@@ -256,10 +259,14 @@ body {
   font-size: 0.8rem;
 }
 
+.interactors-hero-tabs code {
+  font-size: 1.2rem;
+}
+
 .interactors-hero-tabs .maybe-class-name {
   /* color: var(--fs-pink) !important; */
   font-weight: bold;
-  background-image: linear-gradient(45deg,#ec6999,#59aae9 95%);
+  background-image: linear-gradient(45deg, #ec6999, #59aae9 95%);
   text-align: center;
   -webkit-background-clip: text;
   background-clip: text;
