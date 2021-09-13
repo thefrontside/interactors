@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@bigtest/globals": "^0.7.6",
-    "@bigtest/performance": "^0.5.0",
     "change-case": "^4.1.1",
     "element-is-visible": "^1.0.0",
     "lodash.isequal": "^4.5.0"
@@ -48,7 +47,6 @@
     "ts-node": "^9.1.1"
   },
   "volta": {
-    "node": "14.17.5",
-    "yarn": "1.22.11"
+    "extends": "../../package.json"
   }
 }

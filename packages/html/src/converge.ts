@@ -1,4 +1,3 @@
-import { performance } from '@bigtest/performance';
 import { bigtestGlobals } from '@bigtest/globals';
 
 function wait(ms: number) {
@@ -6,12 +5,12 @@ function wait(ms: number) {
 }
 
 export async function converge<T>(fn: () => T): Promise<T> {
-  let startTime = performance.now();
+  let startTime = window.performance.now();
   while(true) {
     try {
       return fn();
     } catch(e) {
-      let diff = performance.now() - startTime;
+      let diff = window.performance.now() - startTime;
       if(diff > bigtestGlobals.defaultInteractorTimeout) {
         throw e;
       } else {
