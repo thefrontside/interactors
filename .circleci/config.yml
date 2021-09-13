@@ -106,6 +106,7 @@ workflows:
             parameters:
               package:
                 - html
+                - material-ui
                 - with-cypress
           requires:
             - prepack

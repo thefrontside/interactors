@@ -2,7 +2,13 @@
   "files": [],
   "references": [
     {
-      "path": "./packages/interactor"
+      "path": "./packages/html"
+    },
+    {
+      "path": "./packages/material-ui"
+    },
+    {
+      "path": "./packages/with-cypress"
     }
   ]
 }

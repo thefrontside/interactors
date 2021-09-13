@@ -1,0 +1,65 @@
+{
+  "name": "@interactors/material-ui",
+  "version": "4.0.0-alpha.2",
+  "description": "BigTest interactors for material-ui.com components.",
+  "main": "dist/cjs/index.js",
+  "browser": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "eslint src test",
+    "test": "bigtest ci",
+    "build:cjs": "tsc --outdir dist/cjs --module commonjs --project tsconfig.build.json",
+    "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
+    "build:types": "tsc --build tsconfig.build.json",
+    "prepack": "run-p build:*",
+    "start": "parcel serve test/harness.html",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thefrontside/interactors.git"
+  },
+  "keywords": [
+    "material-ui",
+    "interactors"
+  ],
+  "author": "Frontside Engineering <engineering@frontside.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thefrontside/interactors/issues"
+  },
+  "homepage": "https://github.com/thefrontside/interactors#readme",
+  "devDependencies": {
+    "@date-io/date-fns": "^1.3.13",
+    "@frontside/eslint-config": "^2.1.0",
+    "@frontside/typescript": "^2.0.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/pickers": "^3.3.10",
+    "@material-ui/styles": "^4.11.4",
+    "@storybook/addon-docs": "^6.4.0-alpha.30",
+    "@storybook/addon-essentials": "^6.4.0-alpha.30",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/react": "^6.4.0-alpha.30",
+    "@testing-library/react": "^12.0.0",
+    "@types/react": "^17.0.19",
+    "bigtest": "^0.14.4",
+    "date-fns": "^2.23.0",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "tslib": "^2.3.1",
+    "typescript": "~4.3.5"
+  },
+  "dependencies": {
+    "@bigtest/globals": "^0.7.5",
+    "@interactors/html": "^0.31.3"
+  }
+}

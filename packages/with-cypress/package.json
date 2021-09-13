@@ -28,7 +28,7 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "devDependencies": {
-    "@frontside/eslint-config": "^2.0.0",
+    "@frontside/eslint-config": "^2.1.0",
     "@frontside/tsconfig": "^1.2.0",
     "@frontside/typescript": "^1.1.1",
     "cypress": "^8.0.0",
