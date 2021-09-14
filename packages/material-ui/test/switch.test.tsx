@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { Body, matching, some, Switch } from "../src/index";
+import { test } from "@bigtest/suite";
+import { Body, matching, some, Switch, Page } from "../src";
 import { Switch as Component, FormControlLabel } from "@material-ui/core";
 import { createRenderStep, render } from "./helpers";
 

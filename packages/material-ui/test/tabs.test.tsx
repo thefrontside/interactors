@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { matching, some, Tab, Tabs } from "../src/index";
+import { test } from "@bigtest/suite";
+import { matching, some, Tab, Tabs, Page } from "../src";
 import { Tabs as Component, Tab as TabComponent } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useState } from "react";

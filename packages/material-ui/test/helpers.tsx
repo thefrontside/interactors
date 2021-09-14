@@ -1,7 +1,7 @@
 import "date-fns";
 import { render as rtlRender } from "@testing-library/react";
 import { ComponentProps, ComponentType, ReactElement, useState } from "react";
-import { ThemeProvider, jssPreset, StylesProvider, createMuiTheme } from "@material-ui/core";
+import { ThemeProvider, jssPreset, StylesProvider, createTheme } from "@material-ui/core";
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -18,8 +18,8 @@ export function render(description: string | ReactElement, element?: ReactElemen
     element = description;
     description = typeof element.type == "string" ? element.type : element.type.name || "render unknown element";
   }
-  let purple = createMuiTheme({ palette: { primary: { main: "#800080" } } });
-  let green = createMuiTheme({ palette: { primary: { main: "#008000" } } });
+  let purple = createTheme({ palette: { primary: { main: "#800080" } } });
+  let green = createTheme({ palette: { primary: { main: "#008000" } } });
   return {
     description,
     action: () => {
@@ -92,7 +92,6 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
     let [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        {/* @ts-expect-error the component generic doesn't fit properly */}
         {children({
           onChange: setSelectedDate,
           date: selectedDate,

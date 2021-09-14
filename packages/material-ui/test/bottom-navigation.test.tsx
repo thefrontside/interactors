@@ -1,6 +1,6 @@
 import { cloneElement, useState } from "react";
-import { test, Page } from "bigtest";
-import { BottomNavigation } from '../src';
+import { test } from "@bigtest/suite";
+import { BottomNavigation, Page } from '../src';
 import { BottomNavigation as Component, BottomNavigationAction } from '@material-ui/core';
 import { Restore, Favorite, LocationOn } from '@material-ui/icons';
 import { createRenderStep } from "./helpers";

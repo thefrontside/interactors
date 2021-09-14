@@ -1,4 +1,4 @@
 {
-  "extends": "../../tsconfig-base.json",
+  "extends": "../../tsconfig.monorepo.json",
   "exclude": ["types/**/*.ts"],
 }

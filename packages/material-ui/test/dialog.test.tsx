@@ -1,5 +1,5 @@
-import { test, Page, including } from "bigtest";
-import { Button, Dialog, matching, some } from "../src/index";
+import { test } from "@bigtest/suite";
+import { Button, Dialog, matching, some, Page, including } from "../src";
 import { Button as ButtonComponent, Dialog as Component, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";

@@ -1,11 +1,6 @@
 {
-  "extends": "@frontside/tsconfig",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "outDir": "dist/cjs",
     "rootDir": "./src",
     "declarationDir": "dist"
@@ -13,4 +8,7 @@
   "include": [
     "src/**/*.ts"
   ],
+  "references": [
+    { "path": "../html/tsconfig.build.json" }
+  ]
 }

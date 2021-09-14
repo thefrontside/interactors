@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { matching, Snackbar, some } from "../src/index";
+import { test } from "@bigtest/suite";
+import { matching, Snackbar, some, Page } from "../src";
 import { Snackbar as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 

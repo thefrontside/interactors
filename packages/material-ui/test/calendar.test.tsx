@@ -1,6 +1,6 @@
-import { test, Page } from "bigtest";
+import { test } from "@bigtest/suite";
 import { Calendar as Component } from "@material-ui/pickers";
-import { Calendar, createCalendar } from "../src";
+import { Calendar, createCalendar, Page } from "../src";
 import { createPickerRenderStep } from "./helpers";
 import DateFnsUtils from "@date-io/date-fns";
 
