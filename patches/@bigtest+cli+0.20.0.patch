@@ -1,0 +1,18 @@
+diff --git a/node_modules/@bigtest/cli/dist/start-server.js b/node_modules/@bigtest/cli/dist/start-server.js
+index f513f32..df283df 100644
+--- a/node_modules/@bigtest/cli/dist/start-server.js
++++ b/node_modules/@bigtest/cli/dist/start-server.js
+@@ -11,11 +11,11 @@ const ensure_configuration_1 = require("./ensure-configuration");
+ function startServer(project, options) {
+     return {
+         name: 'server',
+-        *init() {
++        *init(_, local) {
+             ensure_configuration_1.ensureConfiguration(project);
+             let atom = server_1.createOrchestratorAtom();
+             yield effection_1.spawn(server_1.createOrchestrator({ atom, project }));
+-            yield effection_1.spawn(function* () {
++            yield local.spawn(function* () {
+                 yield effection_1.sleep(options.timeout);
+                 throw new effection_1.MainError({ exitCode: 3, message: chalk_1.default.red(`ERROR: Timed out waiting for server to start after ${options.timeout}ms`) });
+             });
