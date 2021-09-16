@@ -1,0 +1,17 @@
+diff --git a/node_modules/@bigtest/server/dist/src/app-server.js b/node_modules/@bigtest/server/dist/src/app-server.js
+index 96a23a2..55e1b38 100644
+--- a/node_modules/@bigtest/server/dist/src/app-server.js
++++ b/node_modules/@bigtest/server/dist/src/app-server.js
+@@ -30,8 +30,10 @@ function* appServer(options) {
+ exports.appServer = appServer;
+ function* isReachable(url) {
+     try {
+-        let response = yield fetch_1.fetch(url);
+-        return response.ok;
++        yield function* errorBoundary() {
++            let response = yield fetch_1.fetch(url);
++            return response.ok;
++        };
+     }
+     catch (error) {
+         if (error.name === 'FetchError') {
