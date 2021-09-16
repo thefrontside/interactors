@@ -1,4 +1,5 @@
-import { Button, Heading, Link, Page, test } from 'bigtest';
+import { Button, Heading, Link, Page } from '@interactors/html';
+import { test } from 'bigtest';
 
 export default test('Interactors with BigTest')
   .step(Page.visit('/'))

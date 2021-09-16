@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from '../App';
-import { Button, Heading, Link } from 'bigtest';
+import { Button, Heading, Link } from '@interactors/html';
 
 describe('Interactor with Jest', () => {
   beforeEach(() => {

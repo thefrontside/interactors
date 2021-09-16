@@ -9,7 +9,6 @@ const jestTemplate = ({ dependencies, browserslist, babel, jest }) => {
         "@babel/preset-react": `${dependencies['@babel/preset-react']}`,
         "@testing-library/react": `${dependencies['@testing-library/react']}`,
         "babel-jest": `${dependencies['babel-jest']}`,
-        "bigtest":`${dependencies['bigtest']}`,
         "jest": `${dependencies['jest']}`,
         "jest-css-modules-transform": `${dependencies['jest-css-modules-transform']}`,
         "react-test-renderer": `${dependencies['react-test-renderer']}`,
@@ -20,7 +19,7 @@ const jestTemplate = ({ dependencies, browserslist, babel, jest }) => {
       jest
     },
     files: []
-  }
+  };
 };
 
 module.exports = {
