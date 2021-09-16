@@ -1,5 +1,11 @@
 # @interactors/html
 
+## 0.32.1-alpha.0
+
+### Patch Changes
+
+- c628b63: Swap out performance ponyfill
+
 ## 0.32.0
 
 ### Minor Changes

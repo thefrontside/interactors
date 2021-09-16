@@ -2,7 +2,12 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "@interactors/material-ui": "4.0.0-alpha.2"
+    "@interactors/material-ui": "4.0.0-alpha.2",
+    "@interactors/html": "0.32.0",
+    "@interactors/with-cypress": "0.1.2"
   },
-  "changesets": ["kind-jobs-hang"]
+  "changesets": [
+    "kind-jobs-hang",
+    "neat-seahorses-run"
+  ]
 }
