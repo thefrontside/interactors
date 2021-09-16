@@ -24,7 +24,7 @@ By the end of this page you will be testing one of your own apps with Interactor
 Run the following command to install a sample project which includes a simple app with test suites implemented for Jest, Cypress, and BigTest:
 
 ```
-npx bigtest-sample
+npx interactors-sample
 ```
 
 After you’ve installed the project, you’ll be able to run the test suite of your choice. For example, for running the Jest suite you can use `npm run test:jest`. More details are available in the welcome message for the project.
@@ -154,7 +154,7 @@ Interactors have methods like `click` that mimic user actions. If you are using 
   </TabItem>
 </Tabs>
 
-If you are using the sample project, you can find these examples inside `bigtest-sample/src/test/` directory.
+If you are using the sample project, you can find these examples inside `interactors-sample/src/test/` directory.
 
 Now run your tests as you usually would or use any of the sample project options. Congratulations – you used your first Interactor!
 
