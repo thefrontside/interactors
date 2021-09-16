@@ -29,3 +29,5 @@ export { or } from './matchers/or';
 export { not } from './matchers/not';
 export { some } from './matchers/some';
 export { every } from './matchers/every';
+
+export * from './globals';

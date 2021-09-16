@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { bigtestGlobals } from '@bigtest/globals';
+import { globals } from './globals';
 import { converge } from './converge';
 import { makeBuilder } from './builder';
 import {
@@ -129,7 +128,7 @@ function getLookupFilterForAssertion<E extends Element, F extends Filters<E>>(fi
 }
 
 export function unsafeSyncResolveParent(options: InteractorOptions<any, any, any>): Element {
-  return options.ancestors.reduce(resolveUnique, bigtestGlobals.document.documentElement);
+  return options.ancestors.reduce(resolveUnique, globals.getDocument().documentElement);
 }
 
 export function unsafeSyncResolveUnique<E extends Element>(options: InteractorOptions<E, any, any>): E {
@@ -149,7 +148,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
 
     perform<T>(fn: (element: E) => T): Interaction<T> {
       return interaction(`${description(options)} performs`, async () => {
-        if(bigtestGlobals.runnerState === 'assertion') {
+        if(globals.readOnlyMode) {
           throw new Error(`tried to run perform on ${this.description} in an assertion, perform should only be run in steps`);
         }
         return await converge(() => fn(resolver(options)));
@@ -190,7 +189,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
           actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
         }
         return interaction(`${actionDescription} on ${this.description}`, async () => {
-          if(bigtestGlobals.runnerState === 'assertion') {
+          if(globals.readOnlyMode) {
             throw new Error(`tried to ${actionDescription} on ${this.description} in an assertion, actions should only be performed in steps`);
           }
           return action(this, ...args);

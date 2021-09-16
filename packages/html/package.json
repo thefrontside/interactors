@@ -26,13 +26,13 @@
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@bigtest/globals": "^0.7.6",
     "change-case": "^4.1.1",
     "element-is-visible": "^1.0.0",
     "lodash.isequal": "^4.5.0",
     "performance-api": "^1.0.0"
   },
   "devDependencies": {
+    "@bigtest/globals": "^0.7.6",
     "@frontside/eslint-config": "^2.1.0",
     "@frontside/tsconfig": "^1.2.0",
     "@frontside/typescript": "^1.1.1",
