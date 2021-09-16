@@ -1,4 +1,4 @@
-import { performance } from '@bigtest/performance';
+import { performance } from 'performance-api';
 import { bigtestGlobals } from '@bigtest/globals';
 
 function wait(ms: number) {
