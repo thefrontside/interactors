@@ -1,8 +1,10 @@
 {
-  "mode": "pre",
+  "mode": "exit",
   "tag": "alpha",
   "initialVersions": {
     "@interactors/material-ui": "4.0.0-alpha.2"
   },
-  "changesets": ["kind-jobs-hang"]
+  "changesets": [
+    "kind-jobs-hang"
+  ]
 }
