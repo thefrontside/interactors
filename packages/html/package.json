@@ -33,9 +33,7 @@
     "performance-api": "^1.0.0"
   },
   "devDependencies": {
-    "@frontside/eslint-config": "^2.1.0",
     "@frontside/tsconfig": "^1.2.0",
-    "@frontside/typescript": "^1.1.1",
     "@types/express": "^4.17.6",
     "@types/jsdom": "^16.2.3",
     "@types/lodash.isequal": "^4.5.5",

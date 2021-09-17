@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.monorepo.json",
+  "extends": "@frontside/tsconfig",
   "compilerOptions": {
     "esModuleInterop": true
   },

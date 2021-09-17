@@ -1224,11 +1224,6 @@
   resolved "https://registry.yarnpkg.com/@bigtest/logging/-/logging-0.6.0.tgz#08cdba99e5aca7dca4fd76abfa3b1e0b449bf633"
   integrity sha512-ksoUQ1NInAf5Wz342yynYNmwnWucQ63tUc+FvJJNfJoZWRSfl0WyVHvczemfE8hIc7+rweQrQGm1niP5f1FiHg==
 
-"@bigtest/performance@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@bigtest/performance/-/performance-0.5.0.tgz#195f2c445cbe2ebe4357e08f7b39449240bf62d7"
-  integrity sha512-5lmaul6UIdyEApxapYumCShEdKca7PjwYlcIHiu/5iI032DUQsq4dygYMX07cgevfCZSR2fss57uMGfdB22GbQ==
-
 "@bigtest/performance@^0.6.0":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@bigtest/performance/-/performance-0.6.0.tgz#f9c1d5135c40a874326ff8702c69169c493ef535"
@@ -1806,15 +1801,6 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@frontside/typescript/-/typescript-1.1.1.tgz#d02638acef5878f324460692362c4342aae511f9"
   integrity sha512-A87oF/TktmtBKVEE0bhK8oJwzXCM955ibjFTZjPJSYUWMFgm2nh+oUHye1c74pc7+6yWbto3FT7UXv+f2GAzEA==
-  dependencies:
-    "@frontside/tsconfig" "1.2.0"
-    eslint "7.17.0"
-    typescript "^4.1.3"
-
-"@frontside/typescript@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@frontside/typescript/-/typescript-2.0.0.tgz#587d7d727e81cf02f0bedecf9515285051e22841"
-  integrity sha512-JU8MT6gKKwRVBzHHJE6OjdZ1sN0HTRBZPrY4rYz4dWIWNTj8/foPFWzH0afE8tjjTepDWWhF3aoh2MPWR6di/Q==
   dependencies:
     "@frontside/tsconfig" "1.2.0"
     eslint "7.17.0"
