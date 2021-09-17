@@ -1,4 +1,7 @@
 {
   "extends": "../../tsconfig.monorepo.json",
+  "compilerOptions": {
+    "esModuleInterop": true
+  },
   "exclude": ["types/**/*.ts"],
 }
