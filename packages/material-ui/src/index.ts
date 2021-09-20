@@ -15,7 +15,7 @@ export {
   Matcher,
   MultiSelect as HTMLMultiSelect,
   Page,
-  RadioButton,
+  RadioButton as HTMLRadio,
   ReadonlyInteraction,
   Select as HTMLSelect,
   TextField as HTMLTextField,
