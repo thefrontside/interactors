@@ -1,7 +1,4 @@
 {
   "extends": "@frontside/tsconfig",
-  "compilerOptions": {
-    "esModuleInterop": true
-  },
-  "exclude": ["types/**/*.ts"],
+  "exclude": ["types/**/*.ts"]
 }
