@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { isVisible } from 'element-is-visible';
 import { FormField } from './form-field';
 
@@ -12,7 +12,7 @@ const RadioButtonInteractor = FormField.extend<HTMLInputElement>('radio button')
     },
   })
   .actions({
-    choose: ({ perform }) => perform((element) => { fireEvent.click(element); }),
+    choose: ({ perform }) => perform((element) => { userEvent.click(element); }),
   })
 
 /**

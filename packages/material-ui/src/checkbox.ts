@@ -1,4 +1,5 @@
 import { CheckBox as BaseCheckbox, isVisible } from "@interactors/html";
+import { userEvent } from "@interactors/html/testing-library";
 
 export const Checkbox = BaseCheckbox.extend("MUI Checkbox")
   .selector('[class*="MuiCheckbox-root"] input[type=checkbox]')
@@ -23,6 +24,6 @@ export const Checkbox = BaseCheckbox.extend("MUI Checkbox")
     click: ({ perform }) =>
       perform((element) => {
         element.focus();
-        element.click();
+        userEvent.click(element);
       }),
   });

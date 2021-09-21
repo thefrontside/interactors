@@ -92,6 +92,7 @@ export function createPickerRenderStep<T extends ComponentType<any>>(PickerCompo
     let [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        {/* @ts-expect-error the component generic doesn't fit properly */}
         {children({
           onChange: setSelectedDate,
           date: selectedDate,
