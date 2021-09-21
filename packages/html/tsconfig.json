@@ -1,4 +1,4 @@
 {
-  "extends": "../../tsconfig-base.json",
-  "exclude": ["types/**/*.ts"],
+  "extends": "@frontside/tsconfig",
+  "exclude": ["types/**/*.ts"]
 }

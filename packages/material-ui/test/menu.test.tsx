@@ -1,5 +1,5 @@
-import { test, Page, HTML } from "bigtest";
-import { matching, Menu, MenuItem, MenuList, some } from "../src/index";
+import { test } from "@bigtest/suite";
+import { matching, Menu, MenuItem, MenuList, some, Page, HTML } from "../src";
 import { Menu as Component, Button, MenuItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, MouseEvent, useState } from "react";

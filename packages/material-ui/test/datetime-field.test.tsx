@@ -1,6 +1,6 @@
-import { Page, test } from "bigtest";
+import { test } from "@bigtest/suite";
 import { TextField as Component } from "@material-ui/core";
-import { DateTimeField, matching, some } from "../src";
+import { DateTimeField, matching, some, Page } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderDateTimeField = createRenderStep(Component, {

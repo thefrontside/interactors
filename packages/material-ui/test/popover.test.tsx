@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { Popover } from "../src/index";
+import { test } from "@bigtest/suite";
+import { Popover, Page } from "../src";
 import { Button, Popover as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useRef, useState } from "react";

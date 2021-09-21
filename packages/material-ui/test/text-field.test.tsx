@@ -1,5 +1,5 @@
-import { test, Page, matching } from "bigtest";
-import { some, TextField } from "../src/index";
+import { test } from "@bigtest/suite";
+import { some, TextField, Page, matching } from "../src";
 import { TextField as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 

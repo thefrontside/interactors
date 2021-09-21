@@ -1,6 +1,6 @@
-import { Page, test } from "bigtest";
+import { test } from "@bigtest/suite";
 import { Link as Component } from '@material-ui/core';
-import { Link, matching, some } from "../src";
+import { Link, matching, some, Page } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderLink = createRenderStep(Component, { children: 'link', href: 'https://material-ui.com/components/links/' });

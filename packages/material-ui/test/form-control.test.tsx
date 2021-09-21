@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { FormControl, matching, some, Switch } from "../src/index";
+import { test } from "@bigtest/suite";
+import { FormControl, matching, some, Switch, Page } from "../src";
 import { FormControl as Component, InputLabel, FormHelperText, Switch as SwitchComponent, FormControlLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";

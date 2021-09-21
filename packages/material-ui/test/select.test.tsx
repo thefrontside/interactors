@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { Select, MultiSelect, some, matching } from "../src/index";
+import { test } from "@bigtest/suite";
+import { Select, MultiSelect, some, matching, Page } from "../src";
 import { Select as Component, FormControl, InputLabel, MenuItem, Chip, FormHelperText } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement } from "react";

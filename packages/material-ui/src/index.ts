@@ -1,7 +1,42 @@
-import * as Bigtest from "@interactors/html";
-
-export { Bigtest };
-export { HTML, Heading, Page, including, matching, and, or, not, some, every } from "@interactors/html";
+export {
+  App,
+  Button as HTMLButton,
+  CheckBox as HTMLCheckbox,
+  FormField,
+  HTML,
+  Heading,
+  Interaction,
+  Interactor,
+  InteractorBuilder,
+  InteractorConstructor,
+  InteractorSpecification,
+  InteractorSpecificationBuilder,
+  Link as HTMLLink,
+  Matcher,
+  MultiSelect as HTMLMultiSelect,
+  Page,
+  RadioButton as HTMLRadio,
+  ReadonlyInteraction,
+  Select as HTMLSelect,
+  TextField as HTMLTextField,
+  and,
+  blur,
+  createInspector,
+  createInteractor,
+  every,
+  fillIn,
+  focus,
+  focused,
+  including,
+  isInteraction,
+  isVisible,
+  matching,
+  not,
+  or,
+  perform,
+  read,
+  some,
+} from "@interactors/html";
 
 export * from "./types";
 
@@ -30,4 +65,4 @@ export * from "./form-control";
 export * from "./dialog";
 export * from "./fab";
 export * from "./slider";
-export { default as Radio } from "./radio";
+export * from "./radio";

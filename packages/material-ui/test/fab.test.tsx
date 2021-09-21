@@ -1,5 +1,5 @@
-import { test, Page, HTML, some, matching } from "bigtest";
-import { Fab, including } from "../src/index";
+import { test } from "@bigtest/suite";
+import { Fab, including, Page, HTML, some, matching } from "../src";
 import { Fab as Component, Icon } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { createRenderStep } from "./helpers";

@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { List, ListItem } from "../src/index";
+import { test } from "@bigtest/suite";
+import { List, ListItem, Page } from "../src";
 import { List as Component, ListItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement } from "react";

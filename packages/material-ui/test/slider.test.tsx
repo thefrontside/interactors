@@ -1,7 +1,7 @@
-import { Page, test } from 'bigtest';
-import { Slider as Component } from '@material-ui/core';
-import { Slider, Thumb } from '../src/index';
-import { createRenderStep } from './helpers';
+import { test } from "@bigtest/suite";
+import { Slider as Component } from "@material-ui/core";
+import { Slider, Thumb, Page } from "../src/index";
+import { createRenderStep } from "./helpers";
 
 const renderSlider = createRenderStep(
   Component,

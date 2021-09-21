@@ -1,5 +1,5 @@
-import { test, Page } from "bigtest";
-import { Accordion, matching, some } from "../src/index";
+import { test } from "@bigtest/suite";
+import { Accordion, matching, some, Page } from "../src/index";
 import {
   Accordion as Component,
   AccordionSummary,
