@@ -49,7 +49,7 @@ TextField({ id: 'username-id' }).has({ visibility: true });
 Use `exists` when you expect that the interactor will find multiple results. This assertion will still pass even if there are multiple `TextField`s found.
 
 ```js
-TextField().exists({ placeholder: 'USERNAME' });
+TextField({ placeholder: 'USERNAME' }).exists();
 ```
 
 ### Using `absent()` for non-existent results
