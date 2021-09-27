@@ -1,15 +1,15 @@
 export class NoSuchElementError extends Error {
-  get name(): string { return "NoSuchElementError" }
+  name = "NoSuchElementError";
 }
 
 export class AmbiguousElementError extends Error {
-  get name(): string { return "AmbiguousElementError" }
+  name = "AmbiguousElementError";
 }
 
 export class NotAbsentError extends Error {
-  get name(): string { return "NotAbsentError" }
+  name = "NotAbsentError";
 }
 
 export class FilterNotMatchingError extends Error {
-  get name(): string { return "FilterNotMatchingError" }
+  name = "FilterNotMatchingError";
 }
