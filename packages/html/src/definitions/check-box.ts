@@ -1,5 +1,5 @@
+import { fireEvent } from '@testing-library/dom';
 import { isVisible } from 'element-is-visible';
-import { dispatchClick } from '../dispatch';
 import { FormField } from './form-field';
 
 const CheckBoxInteractor = FormField.extend<HTMLInputElement>('check box')
@@ -15,20 +15,20 @@ const CheckBoxInteractor = FormField.extend<HTMLInputElement>('check box')
   .actions({
     check: ({ perform }) => perform((element) => {
       if((!element.checked || element.indeterminate))
-        if (dispatchClick(element))
+        if (fireEvent.click(element))
           element.indeterminate = false;
     }),
     uncheck: ({ perform }) => perform((element) => {
       if((element.checked || element.indeterminate))
-        if (dispatchClick(element))
+        if (fireEvent.click(element))
           element.indeterminate = false;
     }),
     toggle: ({ perform }) => perform((element) => {
-      if (dispatchClick(element))
+      if (fireEvent.click(element))
         element.indeterminate = false;
     }),
     click: ({ perform }) => perform((element) => {
-      if (dispatchClick(element))
+      if (fireEvent.click(element))
         element.indeterminate = false;
     }),
   })

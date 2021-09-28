@@ -1,5 +1,6 @@
 import { createInteractor } from '../index';
 import { isVisible } from 'element-is-visible';
+import userEvent from '@testing-library/user-event'
 
 const HTMLInteractor = createInteractor<HTMLElement>('element')
   .selector(':not(svg), :not(svg *), foreignObject :not(svg):not(svg *)')
@@ -14,7 +15,7 @@ const HTMLInteractor = createInteractor<HTMLElement>('element')
     focused: (element) => element.ownerDocument.activeElement === element
   })
   .actions({
-    click: ({ perform }) => perform((element) => { element.click(); }),
+    click: ({ perform }, init?: MouseEventInit) => perform((element) => { userEvent.click(element, init); }),
     focus: ({ perform }) => perform((element) => { element.focus(); }),
     blur: ({ perform }) => perform((element) => { element.blur(); }),
   })
