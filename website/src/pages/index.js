@@ -1,15 +1,16 @@
 /* eslint-disable prefer-let/prefer-let */
-import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import SubscribeForm from '../components/subscribe-form';
+import React from "react";
+import clsx from "clsx";
+import Layout from "@theme/Layout";
+import Link from "@docusaurus/Link";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import styles from "./styles.module.css";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+import SubscribeForm from "../components/subscribe-form";
+import BoopButton from "../components/boop-button";
 
 // // originally from interactors/getting-started/why-bigtest
 
@@ -22,7 +23,6 @@ import SubscribeForm from '../components/subscribe-form';
 // What problems does this solve/benefits? (Easier to write tests, refactor UIs, shared testing helpers for component libraries, can test for a11y, etc)
 
 // How this fits into an existing testing strategy
-
 
 // // originally from interactors/overview
 
@@ -44,32 +44,40 @@ import SubscribeForm from '../components/subscribe-form';
 //   - How is this possible? Introduce the term convergence
 // ***
 
-
 const features = [
   {
-    title: 'Compatible with your test suite',
-    imageUrl: 'images/cross-platform.png',
+    title: "Compatible with your test suite",
+    imageUrl: "images/cross-platform.png",
     description: (
       <>
-        Interactors work out-of-the-box with your existing tests in Jest, Cypress, BigTest, and more. You can add them in over time to improve what you already have.
+        Interactors work out-of-the-box with your existing tests in Jest,
+        Cypress, BigTest, and more. You can add them in over time to improve
+        what you already have.
       </>
     ),
   },
   {
-    title: 'Optimized for design systems',
-    imageUrl: 'images/design-systems.png',
+    title: "Optimized for design systems",
+    imageUrl: "images/design-systems.png",
     description: (
       <>
-        More and more teams opt to use design systems to build their apps, which come with tricky components like date pickers or interactive tables. Eliminate hacky and fragile tests from those cases by shipping Interactors along with your design system components.
+        More and more teams opt to use design systems to build their apps, which
+        come with tricky components like date pickers or interactive tables.
+        Eliminate hacky and fragile tests from those cases by shipping
+        Interactors along with your design system components.
       </>
     ),
   },
   {
-    title: 'UX & a11y centric',
-    imageUrl: 'images/ux-centric.png',
+    title: "UX & a11y centric",
+    imageUrl: "images/ux-centric.png",
     description: (
       <>
-        Nobody uses an app by searching <code>[test-data-submit-button]</code> selectors: we read labels, click buttons, or navigate through keystrokes. Interactors help you detect interaction flaws such as ambiguity in the elements of your page or the lack of adequate aria labels.
+        Nobody uses an app by searching <code>[test-data-submit-button]</code>{" "}
+        selectors: we read labels, click buttons, or navigate through
+        keystrokes. Interactors help you detect interaction flaws such as
+        ambiguity in the elements of your page or the lack of adequate aria
+        labels.
       </>
     ),
   },
@@ -81,7 +89,7 @@ function Feature({ imageUrl, title, description }) {
     <section className={styles.feature}>
       {imgUrl && (
         <div className={styles.featureImage}>
-          <img src={imgUrl} alt='' />
+          <img src={imgUrl} alt="" />
         </div>
       )}
       <div className={styles.featureText}>
@@ -99,7 +107,8 @@ function Interactors() {
   return (
     <Layout
       title="Interactors"
-      description="Test your app as real people use it">
+      description="Test your app as real people use it"
+    >
       <header>
         <div className={clsx("container", styles.heroContainer)}>
           <div className={styles.heroText}>
@@ -107,25 +116,32 @@ function Interactors() {
               Test your app as real people use it
             </h1>
             <p className={styles.heroSubheader}>
-              Interactors make it easy to test UIs at scale while keeping accessibility at the core.
+              Interactors make it easy to test UIs at scale while keeping
+              accessibility at the core.
             </p>
-            <Link
-              className={styles.ctaButton}
-              to={useBaseUrl('docs')}>
+            <Link className={styles.ctaButton} to={useBaseUrl("docs")}>
               Get Started
             </Link>
+            <BoopButton>Boop</BoopButton>
           </div>
-          <div className={clsx(styles.heroImage, styles.interactorsHero, 'interactors-hero-tabs')}>
+          <div
+            className={clsx(
+              styles.heroImage,
+              styles.interactorsHero,
+              "interactors-hero-tabs"
+            )}
+          >
             <div className={styles.interactorsHeroBackground}>
               <Tabs
                 defaultValue="jest"
                 values={[
-                  {label: 'Jest', value: 'jest'},
-                  {label: 'Cypress', value: 'cypress'},
-                  {label: 'BigTest (alpha)', value: 'bigtest'}
-                ]}>
+                  { label: "Jest", value: "jest" },
+                  { label: "Cypress", value: "cypress" },
+                  { label: "BigTest (alpha)", value: "bigtest" },
+                ]}
+              >
                 <TabItem value="jest">
-                  <CodeBlock className='language-js'>
+                  <CodeBlock className="language-js">
                     {`it('subscribes to newsletter', async () => {
     await Input('email').fillIn('jorge@frontside.com');
     await Button('Subscribe').click();
@@ -167,55 +183,50 @@ function Interactors() {
       <main>
         {features && features.length > 0 && (
           <>
-            {
-              features.map((props, idx) => (
-                <Feature key={idx} {...props} />
-              ))
-            }
+            {features.map((props, idx) => (
+              <Feature key={idx} {...props} />
+            ))}
           </>
         )}
         <section className="text--center">
-          <Link
-            className={styles.ctaButton}
-            to={useBaseUrl('docs')}>
+          <Link className={styles.ctaButton} to={useBaseUrl("docs")}>
             Try Interactors
-            </Link>
+          </Link>
         </section>
 
         <section>
           <div className={styles.textColumn}>
-            <img src={useBaseUrl('images/decor-dots-horizontal.png')} alt="" className={styles.topDecoration} />
+            <img
+              src={useBaseUrl("images/decor-dots-horizontal.png")}
+              alt=""
+              className={styles.topDecoration}
+            />
             <h2>Why use Interactors?</h2>
             <p>
-              In many typical test suites, if you change something about
-              one button, you may have to change dozens of tests.
-              It can take more time to update the tests than to make the
-              change in the codebase.
+              In many typical test suites, if you change something about one
+              button, you may have to change dozens of tests. It can take more
+              time to update the tests than to make the change in the codebase.
               Does that sound familiar?
-                  </p>
+            </p>
             <p>
-              Interactors were designed to help solve this problem
-              and bring your user interface tests closer to what users
-              actually do.
-                  </p>
+              Interactors were designed to help solve this problem and bring
+              your user interface tests closer to what users actually do.
+            </p>
             <p>
-              A user finds something they want to interact with,
-              takes action, and gets a result.
-              The code to accomplish these same steps in a test is in one
-              place as an Interactor.
-              These Interactors can then be reused in many different test
-              contexts.
-              You can even create your own Interactors that test for
-              whether a UI is accessible to people using assistive
-              technology or navigating by keyboard controls.
-                  </p>
+              A user finds something they want to interact with, takes action,
+              and gets a result. The code to accomplish these same steps in a
+              test is in one place as an Interactor. These Interactors can then
+              be reused in many different test contexts. You can even create
+              your own Interactors that test for whether a UI is accessible to
+              people using assistive technology or navigating by keyboard
+              controls.
+            </p>
             <p>
-              Best of all, you do not need to throw out your existing
-              tests when you try out Interactors! They fit right in
-              with the work that you have already done.
-              Try out the Quick Start guide to see this in action
-              in your own app's test suite.
-                  </p>
+              Best of all, you do not need to throw out your existing tests when
+              you try out Interactors! They fit right in with the work that you
+              have already done. Try out the Quick Start guide to see this in
+              action in your own app's test suite.
+            </p>
           </div>
         </section>
       </main>
