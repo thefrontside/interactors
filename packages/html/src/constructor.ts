@@ -12,12 +12,13 @@ import {
   Filters,
   Actions,
   FilterParams,
+  FilterMethods,
   InteractorSpecification,
   BaseInteractor,
 } from './specification';
 import { Filter } from './filter';
 import { Locator } from './locator';
-import { MatchFilter } from './match';
+import { MatchFilter, applyFilter } from './match';
 import { formatTable } from './format-table';
 import { FilterNotMatchingError } from './errors';
 import { interaction, check, Interaction, ReadonlyInteraction } from './interaction';
@@ -111,7 +112,7 @@ function description(options: InteractorOptions<any, any, any>): string {
 }
 
 /**
- * Removes any default values for a filter from the lookup if that filter is present in the 
+ * Removes any default values for a filter from the lookup if that filter is present in the
  * assertion. Otherwise, it is not possible to make an assertion on a filter that might conflict
  * see https://github.com/thefrontside/bigtest/issues/966
 */
@@ -203,6 +204,19 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     });
   }
 
+  for(let [filterName, filter] of Object.entries(options.specification.filters || {})) {
+    Object.defineProperty(interactor, filterName, {
+      value: function() {
+        return interaction(`${filterName} of ${this.description}`, async () => {
+          return applyFilter(filter, resolver(options));
+        });
+      },
+      configurable: true,
+      writable: true,
+      enumerable: false,
+    });
+  }
+
   return interactor as BaseInteractor<E, FilterParams<E, F>> & ActionMethods<E, A>;
 }
 
@@ -237,10 +251,10 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
   });
 }
 
-export function createConstructor<E extends Element, FP extends FilterParams<any, any>, AM extends ActionMethods<any, any>>(
+export function createConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>>(
   name: string,
   specification: InteractorSpecification<E, any, any>,
-): InteractorConstructor<E, FP, AM> {
+): InteractorConstructor<E, FP, FM, AM> {
   function initInteractor(...args: any[]) {
     let locator, filter;
     let locatorValue = args[0] instanceof RegExp ? matching(args[0]) : args[0]
@@ -253,5 +267,5 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
   }
 
-  return makeBuilder(initInteractor, name, specification) as unknown as InteractorConstructor<E, FP, AM>;
+  return makeBuilder(initInteractor, name, specification) as unknown as InteractorConstructor<E, FP, FM, AM>;
 }

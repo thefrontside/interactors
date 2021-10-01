@@ -474,6 +474,22 @@ describe('@interactors/html', () => {
       await expect(TextField('Password', { enabled: false }).exists()).resolves.toBeUndefined();
     });
 
+    it('can use filter methods to retrieve value', async () => {
+      dom(`
+        <input id="Email" value='jonas@example.com'/>
+        <input id="Password" disabled="disabled" value='test1234'/>
+      `);
+
+      await expect(TextField('Email').value()).resolves.toEqual('jonas@example.com');
+      await expect(TextField('Does Not Exist').value()).rejects.toHaveProperty('message', [
+        'did not find text field "Does Not Exist", did you mean one of:', '',
+        '┃ text field   ┃ enabled: true ┃',
+        '┣━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━┫',
+        '┃ ⨯ "Email"    ┃ ✓ true        ┃',
+        '┃ ⨯ "Password" ┃ ⨯ false       ┃',
+      ].join('\n'))
+    });
+
     it('the values in an assertion override the default values for a filter', async () => {
       dom(`
         <input id="Email" value='jonas@example.com'/>

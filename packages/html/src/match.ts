@@ -1,6 +1,6 @@
 import { Locator } from './locator';
 import { Filter } from './filter';
-import { Filters } from './specification';
+import { Filters, FilterFn, FilterObject } from './specification';
 import { escapeHtml } from './escape-html';
 import { MaybeMatcher, applyMatcher, matcherDescription } from './matcher';
 
@@ -101,6 +101,14 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
 
   formatAsExpectations(): string {
     return this.items.filter((i) => !i.matches).map((i) => i.formatAsExpectation()).join('\n\n');
+  }
+}
+
+export function applyFilter<T>(definition: FilterFn<T, any> | FilterObject<T, any>, element: Element): T {
+  if(typeof(definition) === 'function') {
+    return definition(element) as T;
+  } else {
+    return definition.apply(element) as T;
   }
 }
 
