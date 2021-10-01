@@ -6,7 +6,8 @@
     "declarationDir": "dist"
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "types"
   ],
   "references": [
     { "path": "../html/tsconfig.build.json" }

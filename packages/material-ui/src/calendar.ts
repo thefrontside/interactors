@@ -1,4 +1,5 @@
 import { createInteractor, HTML, including, Interaction, Interactor, not } from "@interactors/html";
+import { userEvent } from "@interactors/html/testing-library";
 import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
@@ -45,14 +46,14 @@ function goToNextMonth<T>({ perform }: Interactor<HTMLElement, T>) {
   return perform((element) => {
     // NOTE: We can't go upwards by using `Interactor().find(...)`
     let nextMonthElement = getHeaderElement(element)?.lastElementChild;
-    if (isHTMLElement(nextMonthElement)) nextMonthElement.click();
+    if (isHTMLElement(nextMonthElement)) userEvent.click(nextMonthElement);
   });
 }
 function goToPrevMonth<T>({ perform }: Interactor<HTMLElement, T>) {
   return perform((element) => {
     // NOTE: We can't go upwards by using `Interactor().find(...)`
     let prevMonthElement = getHeaderElement(element)?.firstElementChild;
-    if (isHTMLElement(prevMonthElement)) prevMonthElement.click();
+    if (isHTMLElement(prevMonthElement)) userEvent.click(prevMonthElement);
   });
 }
 
