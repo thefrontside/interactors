@@ -6,7 +6,6 @@ export const darkThemeQuery = "(prefers-color-scheme: dark)";
 export const colorValues = {
   white: "#fff",
   black: "#0e151d",
-  // black: "#000000",
   pink: "#f74d7b",
   blue: "#14315d",
   skyblue: "#26abe8",

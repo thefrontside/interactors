@@ -36,3 +36,7 @@ globalStyle("a", {
 globalStyle("img", {
   maxWidth: "100%",
 });
+
+// globalStyle("code", {
+//   color: 'red',
+// })

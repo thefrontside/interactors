@@ -7,7 +7,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-background-color: #fff;
+  /* --ifm-background-color: #fff;
   --ifm-color-primary: #14315D;
   --ifm-color-primary-dark: #14315D;
   --ifm-color-primary-darker: #14315D;
@@ -18,10 +18,10 @@
   --color-over-primary: #fff;
   --ifm-code-font-size: 95%;
   --ifm-heading-color: #14315D;
-  --ifm-sub-heading-color: #4f6586;
-  --ifm-navbar-height: 80px;
-  --ifm-container-width: 1346px;
-  --ifm-spacing-horizontal: 33px;
+  --ifm-sub-heading-color: #4f6586; */
+  /* --ifm-navbar-height: 80px; */
+  --ifm-container-width: 1440px;
+  /* --ifm-spacing-horizontal: 33px;
   --ifm-toc-border-color: rgba(224, 224, 224, 0.5);
   --ifm-navbar-shadow: 0 1px 0px var(--ifm-toc-border-color);
   --ifm-code-font-size: 0.80em;
@@ -31,10 +31,31 @@
   --ifm-link-hover-decoration: none;
   --ra-color-text-dark: var(--ifm-color-primary);
   --font-family: proxima-nova, sans-serif;
-  --size-med-sm: 20px;
+  --size-med-sm: 20px; */
+  /* --ifm-code-background: red, */
+  --ifm-alert-background-color: red;
+  --ifm-alert-border-color: red;
+  --ifm-alert-color: white;
+  --ifm-alert-background-color: purple;
+  --ifm-color-secondary: purple; /* .alert--secondary controls hard coded color */
+  --ifm-color-info: green; /* color controled by --ifm-alert-color */
+
+  --ifm-tabs-color-active: red;
+  --ifm-tabs-color: blue;
+
+  --ifm-link-hover-color: yellow; /* .hash-link controls, this is hover for all links # */
+  --ifm-link-hover-decoration: none;
+
 }
 
-html[data-theme='dark'] {
+.main-wrapper {
+  width: 100%;
+  max-width: var(--ifm-container-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* html[data-theme='dark'] {
   --ifm-color-content: #CCCCCC;
   --ifm-color-primary: white;
   --ifm-color-primary-dark: white;
@@ -48,10 +69,9 @@ html[data-theme='dark'] {
   --ifm-sub-heading-color: #95acce;
   --ifm-navbar-background-color: var(--ifm-background-color);
   --ifm-toc-border-color: rgba(92, 92, 92, 0.5);
-}
-
+} */
+/*
 .docusaurus-highlight-code-line {
-  /* background-color: rgb(72, 77, 91); */
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
@@ -136,12 +156,7 @@ body {
   }
 }
 
-.main-wrapper {
-  width: 100%;
-  max-width: var(--ifm-container-width);
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 .docSidebarContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage- {
   flex-shrink: 0;
@@ -257,7 +272,6 @@ body {
 }
 
 .interactors-hero-tabs .maybe-class-name {
-  /* color: var(--fs-pink) !important; */
   font-weight: bold;
   background-image: linear-gradient(45deg,#ec6999,#59aae9 95%);
   text-align: center;
@@ -307,4 +321,4 @@ body {
   --ifm-alert-border-color: var(--fs-pink);
   --ifm-alert-color: var(--ifm-font-color-base);
   --ra-admonition-icon-color: var(--fs-pink);
-}
+} */
