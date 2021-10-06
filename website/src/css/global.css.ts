@@ -4,6 +4,7 @@ import vars, {
   desktopQuery,
   darkThemeQuery,
 } from "./frontside-theme.css";
+import './docusaurus.css';
 
 globalStyle("html, body", {
   margin: 0,
@@ -36,7 +37,3 @@ globalStyle("a", {
 globalStyle("img", {
   maxWidth: "100%",
 });
-
-// globalStyle("code", {
-//   color: 'red',
-// })

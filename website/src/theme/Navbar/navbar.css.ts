@@ -1,91 +1,95 @@
 import vars, {
   laptopQuery,
   darkThemeQuery,
-  colorValues,
+  desktopQuery,
 } from "../../css/frontside-theme.css";
-import { style } from "@vanilla-extract/css";
-// import { pageWrap } from "../../styles/page.css";
-// import gradientDecor from "../../img/q3-2021/button-gradient.png";
+import { globalStyle, style, styleVariants } from "@vanilla-extract/css";
+import { pageWrap } from "../../css/page.css";
 
-export const navWrap = style([
-  //   pageWrap,
+const navWrap = style([
+  pageWrap,
   {
     display: "flex",
     flexFlow: "row wrap",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    paddingTop: vars.space.sm,
+    paddingBottom: vars.space.sm,
+    position: 'sticky',
+    top: 0,
+    zIndex: 300,
+    boxShadow: `0 1px 6px rgba(255, 255, 255, 0.5)`,
+    '@media': {
+      [desktopQuery]: {
+        marginTop: vars.space.xs,
+        borderRadius: vars.radius.md,
+        paddingTop: vars.space.sm,
+        paddingBottom: vars.space.sm,
+      },
+      [darkThemeQuery]: {
+      boxShadow: `0 3px 6px rgba(0, 0, 0, 0.5)`,
+      }
+    }
   },
 ]);
 
-// export const contactButton = style({
-//   display: "inline-block",
-//   background: `url(${gradientDecor}) no-repeat right bottom, linear-gradient(90deg, ${vars.colors.violet}, ${vars.colors.pink} 120%)`,
-//   backgroundSize: "contain, cover",
-//   fontWeight: vars.fontWeights.bold,
-//   fontSize: vars.fontSize.xs,
-//   color: vars.colors.white,
-//   textTransform: "uppercase",
-//   paddingRight: vars.space["2xs"],
-//   paddingLeft: vars.space["2xs"],
-//   paddingTop: vars.space["3xs"],
-//   paddingBottom: vars.space["3xs"],
-//   borderRadius: vars.radius.md,
-//   letterSpacing: vars.letterSpacing.xl,
-//   marginLeft: vars.space.md,
-//   order: 3,
-// });
+const interactorsNav = style({
+  backgroundImage: `linear-gradient(45deg, ${vars.colors.blue} -5%, ${vars.colors.violet}, ${vars.colors.pink} 105%)`,
+})
+
+export const navBar = styleVariants({
+  'Interactors': [navWrap, interactorsNav],
+  default: {
+    background: 'red',
+  }
+});
 
 export const navLink = style({
   fontWeight: vars.fontWeights.bold,
   fontSize: vars.fontSize.xs,
   letterSpacing: vars.letterSpacing.xs,
-  color: vars.colors.blue,
+  color: vars.colors.white,
   display: "inline-block",
   position: "relative",
+  marginLeft: vars.space.sm,
 
   "@media": {
-    [darkThemeQuery]: {
-      color: vars.colors.white,
-    },
     [laptopQuery]: {
       marginLeft: vars.space.md,
     },
   },
   selectors: {
-    '&[aria-current="page"]:before': {
-      display: "block",
-      content: '" "',
-      position: "absolute",
-      bottom: "-0.2rem",
-      left: 0,
-      width: "100%",
-      height: "0.105rem",
-      background: `linear-gradient(90deg, ${colorValues.skyblue}, ${colorValues.violet}, ${colorValues.pink} 95%)`,
-      borderRadius: vars.radius.md,
-    },
-    "&:first-child": {
-      "@media": {
-        [laptopQuery]: {
-          display: "none",
-        },
-      },
+    '&:hover': {
+      color: vars.colors.white,
     },
   },
 });
 
-export const logoMargin = style({
-  marginRight: "auto",
-  order: 1,
+export const logoCol = style({
+  display: 'flex',
+  flexFlow: 'row nowrap',
+  alignItems: 'center',
 });
 
-export const logoSVGFill = style({
-  fill: vars.colors.blue,
-  "@media": {
-    [darkThemeQuery]: {
-      fill: vars.colors.white,
-    },
-  },
-});
+globalStyle(`${logoCol} b`, {
+  display: 'none',
+})
+
+export const frontsideLink = style({
+  display: 'none',
+  '@media': {
+    [laptopQuery]: {
+      display: 'inline-block',
+      marginRight: vars.space.sm,
+      paddingRight: vars.space.sm,
+      borderRight: `1px solid ${vars.colors.black}`,
+    }
+  }
+})
+
+export const logoFrontside = style({
+  width: '1.5rem',
+})
 
 export const linksGroup = style({
   display: "flex",

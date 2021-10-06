@@ -98,7 +98,7 @@ Interactors have methods like `click` that mimic user actions. If you are using 
   values={[
     {label: 'Jest', value: 'jest'},
     {label: 'Cypress', value: 'cypress'},
-    {label: 'BigTest (alpha)', value: 'bigtest'}
+    {label: 'Bigtest', value: 'bigtest'}
 ]}>
   <TabItem value="jest">
 
@@ -176,7 +176,7 @@ In the sample project, when you click the “Sign In” button it disappears and
   values={[
     {label: 'Jest', value: 'jest'},
     {label: 'Cypress', value: 'cypress'},
-    {label: 'BigTest (alpha)', value: 'bigtest'}
+    {label: 'Bigtest', value: 'bigtest'}
 ]}>
   <TabItem value="jest">
 
@@ -242,7 +242,7 @@ Here are examples of what a test for an airline datepicker interface could look 
   values={[
     {label: 'Jest', value: 'jest'},
     {label: 'Cypress', value: 'cypress'},
-    {label: 'BigTest (alpha)', value: 'bigtest'}
+    {label: 'Bigtest', value: 'bigtest'}
 ]}>
   <TabItem value="jest">
 

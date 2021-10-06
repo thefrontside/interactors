@@ -7,7 +7,7 @@ There are organizations that have already adopted interactors. With their permis
 
 ## FOLIO
 
-FOLIO uses interactors for testing their `Stripes` components. You can browse through their catalog of UI components [here](https://github.com/folio-org/stripes-testing/tree/master/interactors). 
+FOLIO uses interactors for testing their `Stripes` components. You can browse through their catalog of UI components [here](https://github.com/folio-org/stripes-testing/tree/master/interactors).
 
 ## Material-UI
 
@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
   values={[
     {label: 'Jest', value: 'jest'},
     {label: 'Cypress', value: 'cypress'},
-    {label: 'BigTest (alpha)', value: 'bigtest'}
+    {label: 'Bigtest', value: 'bigtest'}
 ]}>
   <TabItem value="jest">
 
@@ -82,7 +82,7 @@ import TabItem from '@theme/TabItem';
 
 ### Material UI & Storybook
 
-Naturally, with the support of Interactors for both `Material UI` and `Storybook`, the three libraries will work together seamelessly. As we have mentioned earlier, `Storybook` will soon be releasing [`Component Story Format 3.0`](https://storybook.js.org/blog/component-story-format-3-0/) with which you will be able to use interactors. 
+Naturally, with the support of Interactors for both `Material UI` and `Storybook`, the three libraries will work together seamelessly. As we have mentioned earlier, `Storybook` will soon be releasing [`Component Story Format 3.0`](https://storybook.js.org/blog/component-story-format-3-0/) with which you will be able to use interactors.
 
 Below is an example of how you would use `Material UI` interactors to write stories. It is very similar to an example we showed earlier with just the import source changed from `@interactors/html` to `material-ui-interactors`:
 

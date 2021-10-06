@@ -13,6 +13,11 @@ export const baseButton = style({
   borderRadius: vars.radius.md,
   padding: vars.space['xs'],
   cursor: 'pointer',
+  'selectors': {
+    '&:hover': {
+      color: vars.colors.white,
+    }
+  }
 });
 
 export const paginationButton = style([baseButton, {
@@ -62,6 +67,14 @@ export const socialLink = style([textSmCaps, {
 const baseActionButton = style([baseButton, {
   paddingRight: vars.space['sm'],
   paddingLeft: vars.space['sm'],
+  transition: 'ease-in background 200ms',
+  backgroundSize: 'calc(100% + 30px)',
+  backgroundPosition: '-5px',
+  'selectors': {
+    '&:hover': {
+      backgroundPosition: '-30px',
+    }
+  }
 }]);
 
 export const actionButton = style([baseActionButton, {

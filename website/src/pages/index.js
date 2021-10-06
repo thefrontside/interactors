@@ -12,7 +12,6 @@ import {
   featureRow,
   featureText,
   featureTextAlternate,
-  heroCode,
   featureImageSmaller,
   heroText,
   heroWrap,
@@ -23,10 +22,13 @@ import { bigQuote,
   bigQuoteAuthor,
   featureHeading,
   heading3Xl,
-  textGradientPinkSkyblue,
+  textGradientPinkPurple,
   textLg,
   mardownColumn
 } from "../css/typography.css";
+import {
+  heroCode
+} from "../css/interactors.css";
 
 import { actionButton } from "../css/buttons.css";
 
@@ -131,7 +133,7 @@ function Interactors() {
       <header className={heroWrap}>
         <div className={heroText}>
           <h1 className={heading3Xl}>
-            <span className={textGradientPinkSkyblue}>Interactors:</span>{' '}composable page objects for components
+            <span className={textGradientPinkPurple}>Interactors:</span>{' '}composable page objects for components
           </h1>
           <p className={textLg}>
             Improve your component library's testing experience
@@ -141,13 +143,12 @@ function Interactors() {
           </Link>
         </div>
         <div className={heroCode}>
-          <div>
             <Tabs
               defaultValue="jest"
               values={[
                 { label: "Jest", value: "jest" },
                 { label: "Cypress", value: "cypress" },
-                { label: "BigTest (alpha)", value: "bigtest" },
+                { label: "Bigtest", value: "bigtest" },
               ]}
             >
               <TabItem value="jest">
@@ -157,36 +158,35 @@ function Interactors() {
   await Button('Subscribe').click();
 
   await Heading('Thanks!').exists();
-  })`}
+})`}
                 </CodeBlock>
               </TabItem>
               <TabItem value="cypress">
                 <CodeBlock className="language-js">
                   {`it('subscribes to newsletter', () => {
-    cy.do([
-      Input('email').fillIn('jorge@frontside.com'),
-      Button('Subscribe').click()
-    ]);
-    cy.expect([
-      Heading('Thanks!').exists();
-    ])
-  })`}
+  cy.do([
+    Input('email').fillIn('jorge@frontside.com'),
+    Button('Subscribe').click()
+  ]);
+  cy.expect([
+    Heading('Thanks!').exists();
+  ])
+})`}
                 </CodeBlock>
               </TabItem>
               <TabItem value="bigtest">
                 <CodeBlock className="language-js">
                   {`test('subscribes to newsletter')
-    .step([
-      Input('email').fillIn('jorge@frontside.com'),
-      Button('Subscribe').click()
-    ])
-    .assertion(
-      Heading('Thanks!').exists()
-    );`}
+.step([
+  Input('email').fillIn('jorge@frontside.com'),
+  Button('Subscribe').click()
+])
+.assertion(
+  Heading('Thanks!').exists()
+);`}
                 </CodeBlock>
               </TabItem>
             </Tabs>
-          </div>
         </div>
       </header>
       <main className={pageWrap}>
@@ -194,9 +194,10 @@ function Interactors() {
 
         <div>
           <blockquote className={bigQuote}>
+          “
             <strong>
               Gone are the days of fragile, hard-coded selectors or
-              dependencies on mark-up structure.
+              dependencies on mark-up structure in your consumers’ test cases
             </strong>
             ”
           </blockquote>

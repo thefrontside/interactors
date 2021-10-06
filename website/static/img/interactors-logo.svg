@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="158.99" height="24.04" viewBox="0 0 158.99 24.04">
+  <defs>
+    <style>
+      .a {
+        font-size: 18px;
+        fill: #fff;
+        font-family: ProximaNova-Extrabld, Proxima Nova;
+        letter-spacing: 0.03em;
+      }
+
+      .b {
+        letter-spacing: -0.01em;
+      }
+
+      .c {
+        letter-spacing: 0em;
+      }
+
+      .d {
+        letter-spacing: 0.02em;
+      }
+
+      .e {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g>
+    <text class="a" transform="translate(31.14 19.15)">INTER<tspan class="b" x="53.93" y="0">A</tspan><tspan x="66.35" y="0">C</tspan><tspan class="c" x="79.25" y="0">T</tspan><tspan class="d" x="89.91" y="0">ORS</tspan></text>
+    <circle class="e" cx="20.54" cy="4.74" r="2.74"/>
+    <path class="e" d="M20.54,7.49A2.74,2.74,0,0,1,17.8,4.74,2.9,2.9,0,0,1,18,3.8a4.53,4.53,0,0,0-.91-.1,4.38,4.38,0,1,0,4.37,4.38,4.3,4.3,0,0,0-.07-.73A2.76,2.76,0,0,1,20.54,7.49Z"/>
+    <path class="e" d="M12.68,8.08a4.05,4.05,0,0,1,.07-.7,7.53,7.53,0,1,0,4.31,6.8,7.23,7.23,0,0,0-.22-1.75A4.36,4.36,0,0,1,12.68,8.08Z"/>
+  </g>
+</svg>

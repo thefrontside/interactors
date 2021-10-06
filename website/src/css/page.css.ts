@@ -78,18 +78,6 @@ export const heroImage = style([sideImage, {
   }
 }]);
 
-export const heroCode = style([{
-  textAlign: 'left',
-  marginTop: vars.space.md,
-  '@media': {
-    [laptopQuery]: {
-      flexShrink: 0,
-      width: '50%',
-      marginTop: 0,
-    }
-  }
-}]);
-
 export const featureRow = style({
   marginBottom: vars.space['md'],
 
@@ -147,3 +135,4 @@ export const homeBottomCTA = style({
   marginBottom: vars.space.lg,
   textAlign: 'center',
 });
+

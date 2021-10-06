@@ -17,11 +17,15 @@ module.exports = {
     },
     navbar: {
       title: "Interactors",
+      logo: {
+        alt: 'BigTest',
+        src: 'img/interactors-logo.svg',
+      },
       items: [
         {
           to: "/docs",
           label: "Docs",
-          position: "left",
+          position: "right",
         },
         {
           href: "https://github.com/thefrontside/interactors",
@@ -39,15 +43,32 @@ module.exports = {
       style: "light",
       links: [
         {
-          title: "Interactors",
+          title: 'About',
           items: [
             {
-              label: "About Interactors",
+              label: "Maintained by Frontside",
+              href: "https://fronside.com/",
+            },
+            {
+              label: "Interactors Release Post",
+              href: "https://frontside.com/blog/2021-08-04-interactors-design-systems/"
+            }
+          ]
+        },
+        {
+          title: "OSS Projects",
+          items: [
+            {
+              label: "Interactors",
               to: "/",
             },
             {
-              label: "Docs",
-              to: "docs",
+              label: "Bigtest",
+              href: "https://frontside.com/bigtest",
+            },
+            {
+              label: "Effection",
+              href: "https://frontside.com/effection",
             },
           ],
         },
