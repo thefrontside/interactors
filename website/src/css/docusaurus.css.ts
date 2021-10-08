@@ -74,6 +74,10 @@ globalStyle(`.markdown > h3`, {
   textTransform: 'uppercase'
 });
 
+globalStyle(`.markdown > h3 code`, {
+  textTransform: 'none'
+});
+
 globalStyle(`.markdown > h4`, {
   fontSize: '1rem',
   lineHeight: '2.8181818rem',
@@ -82,6 +86,14 @@ globalStyle(`.markdown > h4`, {
   fontWeight: vars.fontWeights.bold,
   letterSpacing: vars.letterSpacing.xl,
 });
+
+globalStyle('.markdown code', {
+  '@media': {
+    [darkThemeQuery]: {
+      borderColor: 'rgba(255, 255, 255, 0.2)',
+    }
+  }
+})
 
 globalStyle('.tabs-container .tabs', {
   marginBottom: '-1.3rem',

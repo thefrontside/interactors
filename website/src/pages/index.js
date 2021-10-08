@@ -127,7 +127,7 @@ function Interactors() {
   const { siteConfig = {} } = context;
   return (
     <Layout
-      title="Interactors"
+      title="Interactors: composable page objects"
       description="Test your app as real people use it"
     >
       <header className={heroWrap}>
