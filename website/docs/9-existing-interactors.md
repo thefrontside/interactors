@@ -11,9 +11,9 @@ FOLIO uses interactors for testing their `Stripes` components. You can browse th
 
 ## Material-UI
 
-If you use [`Material UI`](https://material-ui.com/) to design your apps, we have some great news! The interactors for each Material UI components have already been written so that you do not have to create them yourself. You can see each of those interactors [here](https://github.com/thefrontside/material-ui-interactors/tree/v4/src).
+If you use [`Material UI`](https://material-ui.com/) to design your apps, we have some great news! The interactors for each Material UI components have already been written so that you do not have to create them yourself. You can see each of those interactors [here](https://github.com/thefrontside/interactors/tree/main/packages/material-ui).
 
-There is no longer a need to write complex query selectors or search for components by class; just import the corresponding `Material UI` components from the `material-ui-interactors` package and start writing your tests - it's that simple.
+There is no longer a need to write complex query selectors or search for components by class; just import the corresponding `Material UI` components from the `@interactors/material-ui` package and start writing your tests - it's that simple.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -33,7 +33,7 @@ import TabItem from '@theme/TabItem';
   import { render } from '@testing-library/react';
   import App from './App';
 
-  import { Button } from 'material-ui-interactors';
+  import { Button } from '@interactors/material-ui';
 
   describe('Material UI with Interactors in Jest', () => {
     beforeEach(() => render(<App />));
@@ -48,7 +48,7 @@ import TabItem from '@theme/TabItem';
   <TabItem value="cypress">
 
   ```js
-  import { Button } from 'material-ui-interactors';
+  import { Button } from '@interactors/material-ui';
 
   describe('Material UI with Interactors in Cypress', () => {
     beforeEach(() => cy.visit('/'));
@@ -68,7 +68,7 @@ import TabItem from '@theme/TabItem';
   import { test } from 'bigtest';
   import { Page } from '@interactors/html';
 
-  import { Button } from 'material-ui-interactors';
+  import { Button } from '@interactors/material-ui';
 
   export default test('BigTest')
     .step(
@@ -84,10 +84,10 @@ import TabItem from '@theme/TabItem';
 
 Naturally, with the support of Interactors for both `Material UI` and `Storybook`, the three libraries will work together seamelessly. As we have mentioned earlier, `Storybook` will soon be releasing [`Component Story Format 3.0`](https://storybook.js.org/blog/component-story-format-3-0/) with which you will be able to use interactors.
 
-Below is an example of how you would use `Material UI` interactors to write stories. It is very similar to an example we showed earlier with just the import source changed from `@interactors/html` to `material-ui-interactors`:
+Below is an example of how you would use `Material UI` interactors to write stories. It is very similar to an example we showed earlier with just the import source changed from `@interactors/html` to `@interactors/material-ui`:
 
 ```js
-import { Button, TextField } from 'material-ui-interactors';
+import { Button, TextField } from '@interactors/material-ui';
 
 export const FormSignIn = {
   play: async () => {
