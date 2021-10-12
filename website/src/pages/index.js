@@ -154,10 +154,10 @@ function Interactors() {
               <TabItem value="jest">
                 <CodeBlock className="language-js">
                   {`it('subscribes to newsletter', async () => {
-  await Input('email').fillIn('jorge@frontside.com');
-  await Button('Subscribe').click();
+ await Input('email').fillIn('jorge@frontside.com');
+ await Button('Subscribe').click();
 
-  await Heading('Thanks!').exists();
+ await Heading('Thanks!').exists();
 })`}
                 </CodeBlock>
               </TabItem>

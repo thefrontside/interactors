@@ -44,8 +44,8 @@ globalStyle(`${heroCode} .tabs__item`, {
 });
 
 globalStyle(`${heroCode} pre`, {
-  fontSize: vars.fontSize.base,
-  lineHeight: vars.lineHeights.lg,
+  fontSize: vars.fontSize.sm,
+  lineHeight: vars.lineHeights.base,
 });
 
 
