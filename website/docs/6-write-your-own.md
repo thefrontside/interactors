@@ -73,7 +73,7 @@ Locators, filters, and actions are optional when creating your own interactor. W
 
 :::note
 `fillIn` is a function exported by `@interactors/html`. See the implementation [here](https://github.com/thefrontside/interactors/blob/main/packages/html/src/fill-in.ts#L63-L76). You can use any of the predefined functions or implement your own.
-::: 
+:::
 
 :::note Cypress
 If you're using Cypress, all of the predefined Interactors and Interactor functions will need to be imported from `@interactors/with-cypress` and not `@interactors/html`.
@@ -199,7 +199,7 @@ Let's get back to our example and add the new MyTextField interactor to a test. 
   values={[
     {label: 'Jest', value: 'jest'},
     {label: 'Cypress', value: 'cypress'},
-    {label: 'BigTest (alpha)', value: 'bigtest'}
+    {label: 'Bigtest', value: 'bigtest'}
 ]}>
   <TabItem value="jest">
 
@@ -357,7 +357,7 @@ Now that we have the TableCell Interactor ready, let’s put it in action to tes
   values={[
     {label: 'Jest', value: 'jest'},
     {label: 'Cypress', value: 'cypress'},
-    {label: 'BigTest (alpha)', value: 'bigtest'}
+    {label: 'Bigtest', value: 'bigtest'}
 ]}>
   <TabItem value="jest">
 
