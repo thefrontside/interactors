@@ -1,5 +1,4 @@
-import { bigtestGlobals } from "@bigtest/globals";
-import { Interactor } from "@interactors/html";
+import { Interactor, globals } from "@interactors/html";
 
 type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
 
@@ -9,7 +8,7 @@ export function isHTMLElement<T extends HTMLElementTypes = "">(
   element: unknown | null | undefined,
   type: T = "" as T
 ): element is InstanceType<typeof window[`HTML${T}Element`]> {
-  let { defaultView } = bigtestGlobals.document;
+  let { defaultView } = globals.document;
   let Constructor = (defaultView as unknown as Record<string, unknown>)?.[`HTML${type}Element`];
   return typeof Constructor == "function" && element instanceof Constructor;
 }

@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { TextField, Heading } from '../src/index';
 import { dom } from './helpers';
-import { bigtestGlobals } from '@bigtest/globals';
+import { globals } from '../src/globals';
 
 describe('fillIn', () => {
   it('triggers a change event', async () => {
@@ -18,7 +18,7 @@ describe('fillIn', () => {
       </script>
     `);
 
-    bigtestGlobals.document.getElementById('nameField');
+    globals.document.getElementById('nameField');
     await TextField('Name').fillIn('changed');
     await Heading('success changed').exists();
   });
@@ -194,7 +194,7 @@ describe('fillIn', () => {
           target.textContent = 'success ' + event.target.value;
         });
       </script>`);
-    let input = bigtestGlobals.document.getElementById('nameField');
+    let input = globals.document.getElementById('nameField');
 
     // monkey patch input.value to effectively disable setting it javascript.
     Object.defineProperty(input, 'value', {

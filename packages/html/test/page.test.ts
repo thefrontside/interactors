@@ -8,7 +8,7 @@ import { JSDOM, ResourceLoader } from 'jsdom';
 
 import { dom } from './helpers';
 
-import { Page, read } from '../src/index';
+import { Page, read, setDocumentResolver } from '../src';
 
 describe('@interactors/html', function() {
   describe('Page', () => {
@@ -40,6 +40,7 @@ describe('@interactors/html', function() {
         let resources = new ResourceLoader({ proxy: "http://localhost:27000" });
         jsdom = new JSDOM(`<!doctype html><html><body><iframe/></body></html>`, { resources });
         bigtestGlobals.testFrame = jsdom.window.document.querySelector('iframe') as HTMLIFrameElement;
+        setDocumentResolver(() => bigtestGlobals.testFrame?.contentDocument as Document);
         bigtestGlobals.appUrl = 'http://example.com';
       });
 
