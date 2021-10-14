@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.0.0
+
+### Minor Changes
+
+- 1b04681: Use `@testing-library/user-event` to emulate user clicks
+
+### Patch Changes
+
+- cacf81e: Fix `@interactors/html` monorepo reference
+- 2ff412b: Allow set document resolver for interactors and decouple it from `@bigtest/globals`
+- 029c42f: Publish new package name for material-ui interactors
+- Updated dependencies [8cc06bb]
+- Updated dependencies [1b04681]
+- Updated dependencies [2ff412b]
+- Updated dependencies [c628b63]
+  - @interactors/html@0.33.0
+
 ## 4.0.0-alpha.3
 
 ### Minor Changes

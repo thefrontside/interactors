@@ -1,5 +1,17 @@
 # @interactors/html
 
+## 0.33.0
+
+### Minor Changes
+
+- 1b04681: Use `@testing-library/user-event` to emulate user clicks
+
+### Patch Changes
+
+- 8cc06bb: Fix the Cypress error with trying set readonly property of custom errors.
+- 2ff412b: Allow set document resolver for interactors and decouple it from `@bigtest/globals`
+- c628b63: Swap out performance ponyfill
+
 ## 0.32.0
 
 ### Minor Changes
