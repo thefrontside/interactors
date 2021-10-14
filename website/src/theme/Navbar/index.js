@@ -25,17 +25,17 @@ const items = [
   {
     title: 'Interactors',
     description: 'Page objects for components libraries',
-    url: '/interactors',
+    url: 'https://frontside.com/interactors',
   },
   {
     title: 'Effection',
     description: 'Structured concurrency in Javascript',
-    url: '/effection',
+    url: 'https://frontside.com/effection',
   },
   {
     title: 'Bigtest',
     description: 'Stateful test runner using GraphQL',
-    url: '/bigtest',
+    url: 'https://frontside.com/bigtest',
   }
 ];
 
