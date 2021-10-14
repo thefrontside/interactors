@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
 import { bigtestGlobals, RunnerState } from '@bigtest/globals';
-import { Interaction, isInteraction, ReadonlyInteraction } from '@interactors/html';
+import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver } from '@interactors/html';
 
 declare global {
   namespace Cypress {
@@ -12,9 +12,7 @@ declare global {
   }
 }
 
-Object.defineProperty(bigtestGlobals, 'document', {
-  get: () => cy.$$('body')[0].ownerDocument
-});
+setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
 
 function interact(
   interaction: Interaction<void> | ReadonlyInteraction<void>,

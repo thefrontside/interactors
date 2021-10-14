@@ -25,6 +25,7 @@ import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
+import { globals } from './globals';
 
 const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
@@ -129,7 +130,7 @@ function getLookupFilterForAssertion<E extends Element, F extends Filters<E>>(fi
 }
 
 export function unsafeSyncResolveParent(options: InteractorOptions<any, any, any>): Element {
-  return options.ancestors.reduce(resolveUnique, bigtestGlobals.document.documentElement);
+  return options.ancestors.reduce(resolveUnique, globals.document.documentElement);
 }
 
 export function unsafeSyncResolveUnique<E extends Element>(options: InteractorOptions<E, any, any>): E {
