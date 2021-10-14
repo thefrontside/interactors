@@ -29,12 +29,12 @@ const items = [
   },
   {
     title: 'Effection',
-    description: 'Structured concurrency in Javascript',
+    description: 'Structured Concurrency for JavaScript',
     url: 'https://frontside.com/effection',
   },
   {
     title: 'Bigtest',
-    description: 'Stateful test runner using GraphQL',
+    description: 'Universal test runner using GraphQL',
     url: 'https://frontside.com/bigtest',
   }
 ];
