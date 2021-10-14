@@ -2,17 +2,89 @@ import React from "react";
 // import SearchBar from "@theme/SearchBar"; // TODO: look into search bar requirements
 import { useThemeConfig } from "@docusaurus/theme-common";
 import Link from "@docusaurus/Link";
+import { useSelect } from 'downshift';
 
 import Logo from "@theme/Logo";
+import DropdownArrow from './dropdown-arrow';
+
 import {
   navBar,
   navLink,
   logoCol,
-  // logoFrontside,
-  // frontsideLink
+  projectsList,
+  projectItem,
+  projectItemHighlighted,
+  projectTitle,
+  projectDescription,
+  labelDropdown,
+  projectCurrent,
+  arrowDropdownButton
 } from './navbar.css';
 
-// import FSLogo from './fs-icon';
+const items = [
+  {
+    title: 'Interactors',
+    description: 'Page objects for components libraries',
+    url: '/interactors',
+  },
+  {
+    title: 'Effection',
+    description: 'Structured concurrency in Javascript',
+    url: '/effection',
+  },
+  {
+    title: 'Bigtest',
+    description: 'Stateful test runner using GraphQL',
+    url: '/bigtest',
+  }
+];
+
+function ProjectSelect({ currentProject }) {
+  let {
+    isOpen,
+    getToggleButtonProps,
+    getLabelProps,
+    getMenuProps,
+    highlightedIndex,
+    getItemProps,
+  } = useSelect({ items, itemToString: (item => item.title), initialSelectedItem: 0 })
+  return (
+    <div className={logoCol}>
+      <Logo />
+      <label className={labelDropdown} {...getLabelProps()}>Choose an element:</label>
+      <button type="button" className={arrowDropdownButton} {...getToggleButtonProps()}>
+        <DropdownArrow />
+      </button>
+      <ul className={projectsList} {...getMenuProps()}>
+        {isOpen &&
+          items.map((item, index) => (
+            <li
+              key={`${item}${index}`}
+              className={highlightedIndex === index ? projectItemHighlighted : projectItem}
+              {...getItemProps({ item, index })}
+            >
+              {currentProject !== item.title ?
+                <a href={item.url}>
+                  <span className={projectTitle}>
+                    {item.title}
+                  </span>
+                  <span className={projectDescription}>{item.description}</span>
+                </a>
+                :
+                <Link to={'/'}>
+                  <span className={projectCurrent[item.title]}>
+                    {item.title}
+                  </span>
+                  <span className={projectDescription}>{item.description}</span>
+                </Link>
+              }
+
+            </li>
+          ))}
+      </ul>
+    </div>
+  )
+}
 
 function Navbar() {
   let {
@@ -21,12 +93,7 @@ function Navbar() {
 
   return (
     <nav className={navBar[title]}>
-      <div className={logoCol}>
-        {/* <a href="https://frontside.com/" target="_blank" className={frontsideLink} >
-          <FSLogo className={logoFrontside} />
-        </a> */}
-        <Logo />
-      </div>
+      <ProjectSelect currentProject={title} />
       <div>
         {items.map((item, i) => (
           <React.Fragment key={i}>

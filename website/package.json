@@ -17,6 +17,7 @@
     "@vanilla-extract/css-utils": "^0.1.1",
     "@vanilla-extract/webpack-plugin": "^2.1.0",
     "clsx": "^1.1.1",
+    "downshift": "^6.1.7",
     "email-validator": "^2.0.4",
     "jsonp": "^0.2.1",
     "react": "^16.8.4",

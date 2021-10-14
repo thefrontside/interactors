@@ -85,6 +85,8 @@ export const headingXl = style([textXl, boldCaps]);
 
 export const headingLg = style([textLg, boldCaps]);
 
+export const headingMd = style([textMd, boldCaps]);
+
 export const headingXlNoMargin = style([headingXl, {
   marginTop: 0,
   marginBottom: 0,
@@ -109,6 +111,19 @@ export const textBlueDashWhite = style({
       color: vars.colors.white,
     }
   }
+});
+
+export const textWhiteDashBlue = style({
+  color: vars.colors.white,
+  '@media': {
+    [darkThemeQuery]: {
+      color: vars.colors.blue,
+    }
+  }
+});
+
+export const textBlue = style({
+  color: vars.colors.blue,
 });
 
 export const indentLine = style({
