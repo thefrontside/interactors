@@ -24,7 +24,7 @@ import {
 const items = [
   {
     title: 'Interactors',
-    description: 'Page objects for components libraries',
+    description: 'Page Objects for components libraries',
     url: 'https://frontside.com/interactors',
   },
   {
