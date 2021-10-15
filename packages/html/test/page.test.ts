@@ -3,12 +3,11 @@ import expect from 'expect';
 import express from 'express';
 import { Server } from 'http';
 
-import { bigtestGlobals } from '@bigtest/globals';
 import { JSDOM, ResourceLoader } from 'jsdom';
 
 import { dom } from './helpers';
 
-import { Page, read, setDocumentResolver } from '../src';
+import { globals, Page, read, setDocumentResolver } from '../src';
 
 describe('@interactors/html', function() {
   describe('Page', () => {
@@ -17,7 +16,7 @@ describe('@interactors/html', function() {
       let server: Server;
 
       beforeEach(async () => {
-        bigtestGlobals.reset();
+        globals.reset();
 
         let app = express();
 
@@ -39,9 +38,9 @@ describe('@interactors/html', function() {
 
         let resources = new ResourceLoader({ proxy: "http://localhost:27000" });
         jsdom = new JSDOM(`<!doctype html><html><body><iframe/></body></html>`, { resources });
-        bigtestGlobals.testFrame = jsdom.window.document.querySelector('iframe') as HTMLIFrameElement;
-        setDocumentResolver(() => bigtestGlobals.testFrame?.contentDocument as Document);
-        bigtestGlobals.appUrl = 'http://example.com';
+        globals.testFrame = jsdom.window.document.querySelector('iframe') as HTMLIFrameElement;
+        setDocumentResolver(() => globals.testFrame?.contentDocument as Document);
+        globals.appUrl = 'http://example.com';
       });
 
       afterEach(() => {
@@ -71,12 +70,12 @@ describe('@interactors/html', function() {
       });
 
       it('throws an error if app url is not defined', async () => {
-        bigtestGlobals.appUrl = undefined;
+        globals.appUrl = undefined;
         await expect(Page.visit('/foobar')).rejects.toThrow('no app url defined');
       });
 
       it('throws an error if test frame is not defined', async () => {
-        bigtestGlobals.testFrame = undefined;
+        globals.testFrame = undefined;
         await expect(Page.visit('/foobar')).rejects.toThrow('no test frame defined');
       });
     });

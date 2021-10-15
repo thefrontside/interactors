@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { bigtestGlobals, RunnerState } from '@bigtest/globals';
-import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver } from '@interactors/html';
+import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, globals, RunnerState } from '@interactors/html';
 
 declare global {
   namespace Cypress {
@@ -18,7 +17,7 @@ function interact(
   interaction: Interaction<void> | ReadonlyInteraction<void>,
   runnerState: RunnerState
 ) {
-  bigtestGlobals.runnerState = runnerState;
+  globals.runnerState = runnerState;
   return cy.then(() => {
     return interaction;
   }).then(() => {

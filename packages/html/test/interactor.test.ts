@@ -1,9 +1,8 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
-import { bigtestGlobals } from '@bigtest/globals';
 
-import { createInteractor, Link, Heading } from '../src/index';
+import { createInteractor, Link, Heading, globals } from '../src';
 
 const MainNav = createInteractor('main nav')({
   selector: 'nav'
@@ -75,7 +74,7 @@ describe('@interactors/html', () => {
         <p><a href="/foo">Foo</a></p>
       `);
 
-      bigtestGlobals.runnerState = 'assertion';
+      globals.runnerState = 'assertion';
 
       await expect(Link('Foo').perform((e) => e.click())).rejects.toHaveProperty('message',
         'tried to run perform on link "Foo" in an assertion, perform should only be run in steps'
@@ -130,7 +129,7 @@ describe('@interactors/html', () => {
         <a data-foo="foo" href="/foobar">Foo Bar</a>
       `);
 
-      bigtestGlobals.runnerState = 'assertion';
+      globals.runnerState = 'assertion';
 
       await Link('Foo Bar').assert((e) => expect(e.dataset.foo).toEqual('foo'));
     });
