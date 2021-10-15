@@ -5,7 +5,7 @@
 [![Created by Frontside](https://img.shields.io/badge/created%20by-frontside-26abe8.svg)](https://frontside.com)
 [![Chat on Discord](https://img.shields.io/discord/700803887132704931?Label=Discord)](https://discord.gg/Ug5nWH8)
 
-Interactors are designed to help you write UI tests from the outside in that are both efficient and valuable. Learn more at [http://frontside.com/interactors](https://frontside.com/interactors)
+Interactors are Page Objects for component libraries and design systems. Learn more at [http://frontside.com/interactors](https://frontside.com/interactors)
 
 * **Blackbox made easy:** Interactors manipulate an HTML interface from the perspective of a user and make no assumptions about the internal workings of an app. This means they cover 100% of your UI code starting from the raw input event handlers.
 * **Remarkably diagnostic errors:** Because they are strongly associated with both the type and properties of the UI elements they actuate (e.g. Button, Checkbox, Input, ...), they quickly provide the next level in error messaging to help you quickly understand not just that something went wrong, but _why_.
