@@ -1,7 +1,7 @@
 module.exports = {
   title: "Interactors",
   tagline: "Page Objects for components libraries",
-  url: "https://frontside.com/interactors",
+  url: "https://frontside.com/",
   baseUrl: "/interactors/",
   onBrokenLinks: "throw",
   favicon: "images/favicon-interactors.png",

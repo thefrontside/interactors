@@ -1,24 +1,7 @@
 import { globalStyle, style } from "@vanilla-extract/css";
 import vars, {
   laptopQuery,
-  desktopQuery,
-  darkThemeQuery,
 } from "./frontside-theme.css";
-import './docusaurus.css';
-
-// .interactors-hero-tabs .maybe-class-name {
-//   font-weight: bold;
-//   background-image: linear-gradient(45deg,#ec6999,#59aae9 95%);
-//   text-align: center;
-//   -webkit-background-clip: text;
-//   background-clip: text;
-//   -webkit-text-fill-color: transparent;
-// }
-
-// .interactors-hero-tabs .punctuation + .punctuation + .property-access {
-//   color: #db95c2 !important;
-//   font-weight: bold;
-// }
 
 export const heroCode = style([{
   textAlign: 'left',
