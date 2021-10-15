@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/thefrontside/interactors.svg?style=shield)](https://circleci.com/gh/thefrontside/interactors)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Created by Frontside](https://img.shields.io/badge/created%20by-frontside-26abe8.svg)](https://frontside.com)
-[![Chat on Discord](https://img.shields.io/discord/700803887132704931?Label=Discord)](https://discord.gg/Ug5nWH8)
+[![Chat on Discord](https://img.shields.io/discord/700803887132704931?Label=Discord)](https://discord.gg/mv4uxxcAKd)
 
 Interactors are designed to help you write UI tests from the outside in that are both efficient and valuable.
 
