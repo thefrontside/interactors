@@ -6,7 +6,7 @@
 [![Chat on Discord](https://img.shields.io/discord/700803887132704931?Label=Discord)](https://discord.gg/mv4uxxcAKd)
 
 [Interactors][] are Page Objects for component libraries and design systems.
-This package contains interactors for [Materia-UI][] Learn more about using
+This package contains interactors for [Material-UI][]. Learn more about using
 Material UI Interactors at
 [https://frontside.com/interactors/docs/existing-interactors#material-ui](https://frontside.com/interactors/docs/existing-interactors#material-ui)
 
