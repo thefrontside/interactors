@@ -133,10 +133,10 @@ function Interactors() {
       <header className={heroWrap}>
         <div className={heroText}>
           <h1 className={heading3Xl}>
-            <span className={textGradientPinkPurple}>Interactors:</span>{' '}composable page objects for components
+            <span className={textGradientPinkPurple}>Interactors:</span><br />page objects for components libraries
           </h1>
           <p className={textLg}>
-            Improve your component library's testing experience
+            Improve your users testing experience and make maintenance easier for yourself
           </p>
           <Link className={actionButton} to={useBaseUrl("docs")}>
             Get Started

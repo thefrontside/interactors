@@ -1,4 +1,4 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 import vars, { darkThemeQuery, laptopQuery, desktopQuery } from './frontside-theme.css';
 
@@ -85,6 +85,8 @@ export const headingXl = style([textXl, boldCaps]);
 
 export const headingLg = style([textLg, boldCaps]);
 
+export const headingMd = style([textMd, boldCaps]);
+
 export const headingXlNoMargin = style([headingXl, {
   marginTop: 0,
   marginBottom: 0,
@@ -109,6 +111,19 @@ export const textBlueDashWhite = style({
       color: vars.colors.white,
     }
   }
+});
+
+export const textWhiteDashBlue = style({
+  color: vars.colors.white,
+  '@media': {
+    [darkThemeQuery]: {
+      color: vars.colors.blue,
+    }
+  }
+});
+
+export const textBlue = style({
+  color: vars.colors.blue,
 });
 
 export const indentLine = style({
@@ -266,6 +281,10 @@ export const textGradientSkyblueVioletPink = style([clipBackgroundToText, {
 
 export const textGradientPinkViolet = style([clipBackgroundToText, {
   backgroundImage: `linear-gradient(90deg, ${vars.colors.pink}, ${vars.colors.violet})`,
+}]);
+
+export const textGradientPurpleViolet = style([clipBackgroundToText, {
+  backgroundImage: `linear-gradient(90deg, ${vars.colors.purple}, ${vars.colors.violet})`,
 }]);
 
 export const textBottomGradient = style({
