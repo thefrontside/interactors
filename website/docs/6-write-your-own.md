@@ -75,10 +75,6 @@ Locators, filters, and actions are optional when creating your own interactor. W
 `fillIn` is a function exported by `@interactors/html`. See the implementation [here](https://github.com/thefrontside/interactors/blob/main/packages/html/src/fill-in.ts#L63-L76). You can use any of the predefined functions or implement your own.
 :::
 
-:::note Cypress
-If you're using Cypress, all of the predefined Interactors and Interactor functions will need to be imported from `@interactors/with-cypress` and not `@interactors/html`.
-:::
-
 ### `extend()` method
 
 In the example above, we're extending from the `HTML` interactor to compose the `MyTextField` interactor, but if you take a look at the implementation of the predefined [TextField](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/text-field.ts) interactor, you'll see that the `value` filter and `fillIn` action are already available.
@@ -226,7 +222,7 @@ Let's get back to our example and add the new MyTextField interactor to a test. 
   <TabItem value="cypress">
 
   ```js
-  import { Button, Heading } from '@interactors/with-cypress';
+  import { Button, Heading } from '@interactors/html';
   import { MyTextField } from './MyTextField';
 
   describe('email subscription form', () => {
