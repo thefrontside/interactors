@@ -1,22 +1,14 @@
 # @interactors/material-ui
 
-The collection of [interactors](https://frontside.com/bigtest/interactors) for basic
-[Material-UI](https://material-ui.com) components. Simplifies your tests by providing
-a nice and powerful API to emulate user interactions and make short and elegant assertions.
+[![npm](https://img.shields.io/npm/v/@interactors/material-ui.svg)](https://www.npmjs.com/package/@interactors/material-ui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Created by Frontside](https://img.shields.io/badge/created%20by-frontside-26abe8.svg)](https://frontside.com)
+[![Chat on Discord](https://img.shields.io/discord/700803887132704931?Label=Discord)](https://discord.gg/mv4uxxcAKd)
 
-## Usage
+[Interactors][] are Page Objects for component libraries and design systems.
+This package contains interactors for [Material-UI][]. Learn more about using
+Material UI Interactors at
+[https://frontside.com/interactors/docs/existing-interactors#material-ui](https://frontside.com/interactors/docs/existing-interactors#material-ui)
 
-```typescript
-import { test } from "bigtest";
-import { Button, DateField, Popover, Select, Slider, TextField } from "@interactors/material-ui";
-
-test("SignUp")
-  .step(TextField("Username").fillIn("JohnDow"))
-  .step(TextField("Password").fillIn("VeryStrongPassword"))
-  .step(TextField("Repeat password").fillIn("VeryStrongPassword"))
-  .step(Select("Gender").choose("Male"))
-  .step(DateField("Date of birth").fillIn("1990-03-17"))
-  .step(Slider("Your satisfaction").setValue(10))
-  .step(Button("Submit").click())
-  .assertion(Popover("Registration successful").exists());
-```
+[Interactors]: https://frontside.com/interactors
+[Material-UI]: https://material-ui.com
