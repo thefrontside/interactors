@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { matching, Menu, MenuItem, MenuList, some, Page, HTML } from "../src";
 import { Menu as Component, Button, MenuItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

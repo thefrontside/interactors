@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Button, Dialog, matching, some, Page, including } from "../src";
 import { Button as ButtonComponent, Dialog as Component, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

@@ -1,4 +1,4 @@
-import { Interactor, globals } from "@interactors/html";
+import { Interactor } from "@interactors/html";
 
 type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
 
@@ -8,9 +8,13 @@ export function isHTMLElement<T extends HTMLElementTypes = "">(
   element: unknown | null | undefined,
   type: T = "" as T
 ): element is InstanceType<typeof window[`HTML${T}Element`]> {
-  let { defaultView } = globals.document;
-  let Constructor = (defaultView as unknown as Record<string, unknown>)?.[`HTML${type}Element`];
-  return typeof Constructor == "function" && element instanceof Constructor;
+  if(element) {
+    let { defaultView } = (element as Element).ownerDocument;
+    let Constructor = (defaultView as unknown as Record<string, unknown>)?.[`HTML${type}Element`];
+    return typeof Constructor == "function" && element instanceof Constructor;
+  } else {
+    return false;
+  }
 }
 export const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 

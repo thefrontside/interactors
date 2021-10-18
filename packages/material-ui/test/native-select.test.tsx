@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { NativeSelect, NativeMultiSelect, some, matching, Page } from "../src";
 import { Select as Component, FormControl, InputLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

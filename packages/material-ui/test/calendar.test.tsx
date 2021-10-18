@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Calendar as Component } from "@material-ui/pickers";
 import { Calendar, createCalendar, Page } from "../src";
 import { createPickerRenderStep } from "./helpers";

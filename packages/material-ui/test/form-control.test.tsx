@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { FormControl, matching, some, Switch, Page } from "../src";
 import { FormControl as Component, InputLabel, FormHelperText, Switch as SwitchComponent, FormControlLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

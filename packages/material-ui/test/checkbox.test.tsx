@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Body, Checkbox, Page } from "../src";
 import { Checkbox as Component, FormControlLabel } from "@material-ui/core";
 import { createRenderStep, render } from "./helpers";
