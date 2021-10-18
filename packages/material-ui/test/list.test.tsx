@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { List, ListItem, Page } from "../src";
 import { List as Component, ListItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

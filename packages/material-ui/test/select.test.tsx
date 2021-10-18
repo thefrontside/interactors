@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Select, MultiSelect, some, matching, Page } from "../src";
 import { Select as Component, FormControl, InputLabel, MenuItem, Chip, FormHelperText } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

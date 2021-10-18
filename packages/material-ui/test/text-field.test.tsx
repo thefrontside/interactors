@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { some, TextField, Page, matching } from "../src";
 import { TextField as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

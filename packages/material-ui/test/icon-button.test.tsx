@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Button, Page, createInteractor, including } from "../src";
 import { IconButton as Component } from "@material-ui/core";
 import { PhotoCamera } from '@material-ui/icons';

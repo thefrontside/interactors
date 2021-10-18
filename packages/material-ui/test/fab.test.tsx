@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Fab, including, Page, HTML, some, matching } from "../src";
 import { Fab as Component, Icon } from "@material-ui/core";
 import { Add } from "@material-ui/icons";

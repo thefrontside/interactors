@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Link as Component } from '@material-ui/core';
 import { Link, matching, some, Page } from "../src";
 import { createRenderStep } from "./helpers";

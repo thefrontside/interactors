@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Popover, Page } from "../src";
 import { Button, Popover as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
