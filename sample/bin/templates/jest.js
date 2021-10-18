@@ -7,6 +7,7 @@ const jestTemplate = ({ dependencies, browserslist, babel, jest }) => {
       "dependencies": {
         "@babel/preset-env": `${dependencies['@babel/preset-env']}`,
         "@babel/preset-react": `${dependencies['@babel/preset-react']}`,
+        "@interactors/html": `${dependencies['@interactors/html']}`,
         "@testing-library/react": `${dependencies['@testing-library/react']}`,
         "babel-jest": `${dependencies['babel-jest']}`,
         "jest": `${dependencies['jest']}`,

@@ -20,7 +20,6 @@ const baseTemplate = ({ dependencies }) => {
         "typescript": `${dependencies.typescript}`,
         "eslint": `${dependencies.eslint}`,
         "@babel/core": `${dependencies['@babel/core']}`,
-        "@interactors/html": `${dependencies['@interactors/html']}`,
       },
       "volta": {
         "node": "14.17.5",

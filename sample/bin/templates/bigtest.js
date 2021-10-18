@@ -5,7 +5,8 @@ const bigtestTemplate = ({ dependencies }) => {
         "test:bigtest": "bigtest ci"
       },
       "dependencies": {
-        "bigtest": `${dependencies.bigtest}`
+        "@interactors/html": `${dependencies['@interactors/html']}`,
+        "bigtest": `${dependencies.bigtest}`,
       }
     },
     files: [
