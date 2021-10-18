@@ -1,14 +1,10 @@
 import { bigtestGlobals } from "@bigtest/globals";
-
-export type RunnerState = "pending" | "step" | "assertion";
+import { Interaction } from "./interaction";
 
 interface Globals {
   document: Document;
-  runnerState: RunnerState;
-  appUrl?: string;
+  wrapInteraction: <T>(interaction: Interaction<T>) => Interaction<T>;
   interactorTimeout: number;
-  testFrame?: HTMLIFrameElement;
-  appTimeout: number;
   reset: () => void;
 }
 
@@ -33,23 +29,10 @@ if (!globalThis.__interactors) {
           enumerable: true,
           configurable: true,
         },
-        runnerState: {
-          get(): RunnerState {
-            return bigtestGlobals.runnerState || "pending";
-          },
-          set(state: RunnerState) {
-            bigtestGlobals.runnerState = state;
-          },
+        wrapInteraction: {
+          value: <T>(interaction: Interaction<T>): (Interaction<T>) => interaction,
           enumerable: true,
-        },
-        appUrl: {
-          get(): string | undefined {
-            return bigtestGlobals.appUrl;
-          },
-          set(url: string | undefined) {
-            bigtestGlobals.appUrl = url;
-          },
-          enumerable: true,
+          configurable: true,
         },
         interactorTimeout: {
           get(): number {
@@ -60,26 +43,10 @@ if (!globalThis.__interactors) {
           },
           enumerable: true,
         },
-        testFrame: {
-          get(): HTMLIFrameElement | undefined {
-            return bigtestGlobals.testFrame;
-          },
-          set(frame: HTMLIFrameElement | undefined) {
-            bigtestGlobals.testFrame = frame;
-          },
-          enumerable: true,
-        },
-        appTimeout: {
-          get(): number {
-            return bigtestGlobals.defaultAppTimeout;
-          },
-          set(timeout: number) {
-            bigtestGlobals.defaultAppTimeout = timeout;
-          },
-          enumerable: true,
-        },
         reset: {
           value() {
+            setDocumentResolver(() => bigtestGlobals.document);
+            setInteractionWrapper((interaction) => interaction);
             bigtestGlobals.reset();
           },
           enumerable: true,
@@ -94,6 +61,14 @@ export const globals = globalThis.__interactors;
 export function setDocumentResolver(resolver: () => Document): void {
   Object.defineProperty(globalThis.__interactors, "document", {
     get: resolver,
+    enumerable: true,
+    configurable: true,
+  });
+}
+
+export function setInteractionWrapper<T>(wrapper: (interaction: Interaction<T>) => Interaction<T>): void {
+  Object.defineProperty(globalThis.__interactors, "wrapInteraction", {
+    value: wrapper,
     enumerable: true,
     configurable: true,
   });

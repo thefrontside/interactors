@@ -1,8 +1,9 @@
+import { bigtestGlobals } from '@bigtest/globals';
 import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInteractor, read, globals } from '../src';
+import { createInteractor, read } from '../src';
 
 const Link = createInteractor<HTMLLinkElement>('link')
   .selector('a')
@@ -426,7 +427,7 @@ describe('@interactors/html', () => {
         <p><a href="/foo">Foo</a></p>
       `);
 
-      globals.runnerState = 'assertion';
+      bigtestGlobals.runnerState = 'assertion';
 
       await expect(Link('Foo').click()).rejects.toHaveProperty('message',
         'tried to click on link "Foo" in an assertion, actions should only be performed in steps'

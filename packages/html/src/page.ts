@@ -1,6 +1,6 @@
+import { bigtestGlobals } from '@bigtest/globals';
 import { interaction, Interaction } from './interaction';
 import { createInteractor } from './create-interactor';
-import { globals } from './globals';
 
 let visitCounter = 1;
 
@@ -22,7 +22,7 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
   visit(path = '/'): Interaction<void> {
     return interaction(`visiting ${JSON.stringify(path)}`, async () => {
       // eslint-disable-next-line prefer-let/prefer-let
-      const { appUrl, testFrame } = globals;
+      const { appUrl, testFrame } = bigtestGlobals;
 
       if(!appUrl) throw new Error('no app url defined');
       if(!testFrame) throw new Error('no test frame defined');
@@ -45,7 +45,7 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
           clearTimeout(timeout);
           testFrame.removeEventListener('load', listener);
           reject(new Error('timed out trying to load application'));
-        }, globals.appTimeout);
+        }, bigtestGlobals.defaultAppTimeout);
       });
     });
   }

@@ -76,7 +76,7 @@ export interface BaseInteractor<E extends Element, F extends FilterParams<any, a
    * await Link('Next').assert((e) => assert(e.tagName === 'A'));
    * ```
    */
-  assert(fn: (element: E) => void): Interaction<void>;
+  assert(fn: (element: E) => void): ReadonlyInteraction<void>;
 
   /**
    * Checks that there is one element matching the interactor, and that this
