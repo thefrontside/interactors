@@ -185,36 +185,40 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
   }
 
   for(let [actionName, action] of Object.entries(options.specification.actions || {})) {
-    Object.defineProperty(interactor, actionName, {
-      value: function(...args: unknown[]) {
-        let actionDescription = actionName;
-        if(args.length) {
-          actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
-        }
-        return interaction(`${actionDescription} on ${this.description}`, async () => {
-          if(bigtestGlobals.runnerState === 'assertion') {
-            throw new Error(`tried to ${actionDescription} on ${this.description} in an assertion, actions should only be performed in steps`);
+    if(!interactor.hasOwnProperty(actionName)) {
+      Object.defineProperty(interactor, actionName, {
+        value: function(...args: unknown[]) {
+          let actionDescription = actionName;
+          if(args.length) {
+            actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
-          return action(this, ...args);
-        });
-      },
-      configurable: true,
-      writable: true,
-      enumerable: false,
-    });
+          return interaction(`${actionDescription} on ${this.description}`, async () => {
+            if(bigtestGlobals.runnerState === 'assertion') {
+              throw new Error(`tried to ${actionDescription} on ${this.description} in an assertion, actions should only be performed in steps`);
+            }
+            return action(this, ...args);
+          });
+        },
+        configurable: true,
+        writable: true,
+        enumerable: false,
+      });
+    }
   }
 
   for(let [filterName, filter] of Object.entries(options.specification.filters || {})) {
-    Object.defineProperty(interactor, filterName, {
-      value: function() {
-        return interaction(`${filterName} of ${this.description}`, async () => {
-          return applyFilter(filter, resolver(options));
-        });
-      },
-      configurable: true,
-      writable: true,
-      enumerable: false,
-    });
+    if(!interactor.hasOwnProperty(filterName)) {
+      Object.defineProperty(interactor, filterName, {
+        value: function() {
+          return interaction(`${filterName} of ${this.description}`, async () => {
+            return applyFilter(filter, resolver(options));
+          });
+        },
+        configurable: true,
+        writable: true,
+        enumerable: false,
+      });
+    }
   }
 
   return interactor as BaseInteractor<E, FilterParams<E, F>> & ActionMethods<E, A>;
