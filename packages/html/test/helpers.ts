@@ -1,6 +1,6 @@
 import { beforeEach } from "mocha";
 import { DOMWindow, JSDOM } from "jsdom";
-import { globals, setDocumentResolver } from "../src/globals";
+import { globals, setDocumentResolver, setInteractorTimeout } from "@interactors/globals";
 
 let jsdom: JSDOM;
 
@@ -14,7 +14,7 @@ export function dom(html: string): DOMWindow {
 
 beforeEach(() => {
   globals.reset();
-  globals.interactorTimeout = 20;
+  setInteractorTimeout(20);
 });
 
 afterEach(() => {

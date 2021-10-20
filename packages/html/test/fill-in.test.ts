@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
-import { TextField, Heading } from '../src/index';
+import { globals } from '@interactors/globals';
+import { TextField, Heading } from '../src';
 import { dom } from './helpers';
-import { globals } from '../src/globals';
 
 describe('fillIn', () => {
   it('triggers a change event', async () => {
