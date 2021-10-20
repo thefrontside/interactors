@@ -1,10 +1,10 @@
 module.exports = {
   title: "Interactors",
-  tagline: "Test your app as real people use it",
-  url: "https://frontside.com",
+  tagline: "Page Objects for components libraries",
+  url: "https://frontside.com/",
   baseUrl: "/interactors/",
   onBrokenLinks: "throw",
-  favicon: "images/favicon.png",
+  favicon: "images/favicon-interactors.png",
   organizationName: "thefrontside",
   projectName: "interactors",
   themeConfig: {
@@ -18,8 +18,8 @@ module.exports = {
     navbar: {
       title: "Interactors",
       logo: {
-        alt: 'BigTest',
-        src: 'img/interactors-logo.svg',
+        alt: 'Interactors',
+        src: 'images/interactors-logo.svg',
       },
       items: [
         {
@@ -88,7 +88,7 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} The Frontside Software, Inc.`,
     },
-    image: "images/meta-image.png",
+    image: "images/meta-interactors.png",
   },
   presets: [
     [
@@ -108,7 +108,7 @@ module.exports = {
       },
     ],
   ],
-  stylesheets: ["https://use.typekit.net/gyc5wys.css"],
+  stylesheets: ["https://use.typekit.net/ugs0ewy.css"],
   plugins: [
     [
       require.resolve("./plugins/docusaurus-plugin-vanilla-extract"),
@@ -122,7 +122,7 @@ module.exports = {
       src: "https://plausible.io/js/plausible.js",
       async: true,
       defer: true,
-      "data-domain": "frontside.com/interactors",
+      "data-domain": "frontside.com",
     },
   ],
 };

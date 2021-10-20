@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Radio as Interactor, Page } from "../src";
 import { Radio as MuiRadio } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

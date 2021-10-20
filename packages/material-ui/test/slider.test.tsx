@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Slider as Component } from "@material-ui/core";
 import { Slider, Thumb, Page } from "../src/index";
 import { createRenderStep } from "./helpers";

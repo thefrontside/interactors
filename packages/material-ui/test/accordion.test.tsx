@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { Accordion, matching, some, Page } from "../src/index";
 import {
   Accordion as Component,

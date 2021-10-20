@@ -1,5 +1,5 @@
 import { cloneElement, useState } from "react";
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { BottomNavigation, Page } from '../src';
 import { BottomNavigation as Component, BottomNavigationAction } from '@material-ui/core';
 import { Restore, Favorite, LocationOn } from '@material-ui/icons';

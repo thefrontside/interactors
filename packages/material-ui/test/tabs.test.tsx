@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { matching, some, Tab, Tabs, Page } from "../src";
 import { Tabs as Component, Tab as TabComponent } from "@material-ui/core";
 import { createRenderStep } from "./helpers";

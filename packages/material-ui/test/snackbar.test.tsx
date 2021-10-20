@@ -1,4 +1,4 @@
-import { test } from "@bigtest/suite";
+import { test } from "bigtest";
 import { matching, Snackbar, some, Page } from "../src";
 import { Snackbar as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
