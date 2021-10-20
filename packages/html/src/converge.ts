@@ -1,5 +1,5 @@
 import { performance } from 'performance-api';
-import { globals } from './globals'
+import { globals } from '@interactors/globals'
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

@@ -1219,6 +1219,13 @@
     "@bigtest/suite" "^0.12.0"
     effection "^2.0.0-beta.12"
 
+"@bigtest/globals@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@bigtest/globals/-/globals-0.8.1.tgz#165658b5aa4cc31b17f0955c2726289c12f48fdc"
+  integrity sha512-SC6q/LcX5teTreWAIup41VZm9P16VGQc8nk7KDbGUpMPa3nEsKZulWYsnHl4K9ATMw8UKmnCSkWbLqGoK9rU4Q==
+  dependencies:
+    "@bigtest/suite" "^0.12.1"
+
 "@bigtest/logging@^0.6.0":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@bigtest/logging/-/logging-0.6.0.tgz#08cdba99e5aca7dca4fd76abfa3b1e0b449bf633"
@@ -1287,6 +1294,11 @@
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@bigtest/suite/-/suite-0.12.0.tgz#7dae3533fd0234e1877b15f7d8648a7bac9e54d5"
   integrity sha512-tFI6FLBT0qIyb0HDrfbBgV3pPUl5jblDTT1YotDtYn4X9rQ9Lo02a4odmqqlb1KIwGUa9wso6Xn/0WgLjmy91w==
+
+"@bigtest/suite@^0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@bigtest/suite/-/suite-0.12.1.tgz#030dd439acd40506175ebe2defca88bdb9e5a90a"
+  integrity sha512-M5deEswjHli5QaPsGRJ4SACYYpXL2lVanQDqFphX0bVdk1B/vb/hg18/mI7q1h+VATSMeUR+4/l6mL+sotr5SA==
 
 "@bigtest/webdriver@^0.9.0":
   version "0.9.0"

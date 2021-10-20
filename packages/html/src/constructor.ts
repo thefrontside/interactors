@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { bigtestGlobals } from '@bigtest/globals';
+import { globals } from '@interactors/globals';
 import { converge } from './converge';
 import { makeBuilder } from './builder';
 import {
@@ -25,7 +26,6 @@ import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
-import { globals } from './globals';
 
 const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';

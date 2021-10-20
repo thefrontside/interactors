@@ -1,11 +1,10 @@
 import { bigtestGlobals } from "@bigtest/globals";
-import { Interaction } from "./interaction";
 
 interface Globals {
-  document: Document;
-  wrapInteraction: <T>(interaction: Interaction<T>) => Interaction<T>;
-  interactorTimeout: number;
-  reset: () => void;
+  readonly document: Document;
+  readonly wrapInteraction: <Interaction>(interaction: Interaction) => Interaction;
+  readonly interactorTimeout: number;
+  readonly reset: () => void;
 }
 
 declare global {
@@ -30,16 +29,13 @@ if (!globalThis.__interactors) {
           configurable: true,
         },
         wrapInteraction: {
-          value: <T>(interaction: Interaction<T>): (Interaction<T>) => interaction,
+          value: <Interaction>(interaction: Interaction): Interaction => interaction,
           enumerable: true,
           configurable: true,
         },
         interactorTimeout: {
           get(): number {
             return bigtestGlobals.defaultInteractorTimeout;
-          },
-          set(timeout: number) {
-            bigtestGlobals.defaultInteractorTimeout = timeout;
           },
           enumerable: true,
         },
@@ -66,7 +62,13 @@ export function setDocumentResolver(resolver: () => Document): void {
   });
 }
 
-export function setInteractionWrapper<T>(wrapper: (interaction: Interaction<T>) => Interaction<T>): void {
+export function setInteractorTimeout(ms: number): void {
+  bigtestGlobals.defaultInteractorTimeout = ms;
+}
+
+export function setInteractionWrapper<Interaction extends Record<string, unknown>>(
+  wrapper: (interaction: Interaction) => Interaction
+): void {
   Object.defineProperty(globalThis.__interactors, "wrapInteraction", {
     value: wrapper,
     enumerable: true,
