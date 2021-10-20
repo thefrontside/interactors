@@ -4,9 +4,7 @@ import { dom } from './helpers';
 
 import { createInteractor, Link, Heading } from '../src';
 
-const MainNav = createInteractor('main nav')({
-  selector: 'nav'
-});
+const MainNav = createInteractor('main nav').selector('nav');
 
 describe('@interactors/html', () => {
   describe('instantiation', () => {

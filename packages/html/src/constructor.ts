@@ -2,7 +2,7 @@
 
 import { globals } from '@interactors/globals';
 import { converge } from './converge';
-import { makeBuilder } from './builder';
+import { MergeObjects } from './merge-objects';
 import {
   InteractorOptions,
   ActionMethods,
@@ -272,5 +272,21 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
   }
 
-  return makeBuilder(initInteractor, name, specification) as unknown as InteractorConstructor<E, FP, FM, AM>;
+  return Object.assign(initInteractor, {
+    selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
+      return createConstructor(name, { ...specification, selector: value });
+    },
+    locator: (value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM> => {
+      return createConstructor(name, { ...specification, locator: value });
+    },
+    filters: <FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM> => {
+      return createConstructor(name, { ...specification, filters: { ...specification.filters, ...filters } });
+    },
+    actions: <AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>> => {
+      return createConstructor(name, { ...specification, actions: Object.assign({}, specification.actions, actions) });
+    },
+    extend: <ER extends Element = E>(newName: string): InteractorConstructor<ER, FP, FM, AM> => {
+      return createConstructor(newName, specification) as unknown as InteractorConstructor<ER, FP, FM, AM>;
+    },
+  }) as unknown as InteractorConstructor<E, FP, FM, AM>;
 }
