@@ -31,6 +31,7 @@
     "test:unit": "mocha -r ts-node/register \"test/**/*.test.ts\"",
     "test:types": "dtslint types --localTs ../../node_modules/typescript/lib --expectOnly",
     "test": "yarn test:unit && yarn test:types",
+    "mocha": "mocha -r ts-node/register",
     "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
     "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
