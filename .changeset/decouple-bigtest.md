@@ -1,6 +1,6 @@
 ---
-"@interactors/globals": patch
-"@interactors/html": patch
+"@interactors/globals": minor
+"@interactors/html": minor
 "@interactors/with-cypress": patch
 ---
 

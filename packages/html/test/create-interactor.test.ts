@@ -1,5 +1,5 @@
 import { bigtestGlobals } from '@bigtest/globals';
-import { describe, it } from 'mocha';
+import { afterEach, describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
@@ -60,6 +60,10 @@ const MainNav = createInteractor('main nav')
   .selector('nav')
 
 describe('@interactors/html', () => {
+  afterEach(() => {
+    bigtestGlobals.reset();
+  })
+
   describe('.exists', () => {
     it('can determine whether an element exists based on the interactor', async () => {
       dom(`

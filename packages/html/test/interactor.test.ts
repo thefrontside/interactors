@@ -1,5 +1,5 @@
 import { bigtestGlobals } from '@bigtest/globals';
-import { describe, it } from 'mocha';
+import { afterEach, describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
@@ -10,6 +10,10 @@ const MainNav = createInteractor('main nav')({
 });
 
 describe('@interactors/html', () => {
+  afterEach(() => {
+    bigtestGlobals.reset();
+  })
+
   describe('instantiation', () => {
     describe('no arguments', () => {
       it('just uses the selector to locate', async () => {
@@ -129,8 +133,6 @@ describe('@interactors/html', () => {
       dom(`
         <a data-foo="foo" href="/foobar">Foo Bar</a>
       `);
-
-      bigtestGlobals.runnerState = 'assertion';
 
       await Link('Foo Bar').assert((e) => expect(e.dataset.foo).toEqual('foo'));
     });

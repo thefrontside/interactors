@@ -14,7 +14,7 @@ declare global {
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-setInteractionWrapper((interaction) => {
+setInteractionWrapper((interaction: Interaction<void>) => {
   return {
     ...interaction,
     check() {
