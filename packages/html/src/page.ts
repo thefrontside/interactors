@@ -19,6 +19,9 @@ const PageInteractor = createInteractor('page')({
 });
 
 const PageInteractorInstance = Object.assign(PageInteractor(), {
+  /**
+   * @deprecated `visit` method will be removed soon, please use `visit` function from `bigtest` instead
+   */
   visit(path = '/'): Interaction<void> {
     return interaction(`visiting ${JSON.stringify(path)}`, async () => {
       // eslint-disable-next-line prefer-let/prefer-let
@@ -26,7 +29,7 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
 
       if(!appUrl) throw new Error('no app url defined');
       if(!testFrame) throw new Error('no test frame defined');
-      
+
       let url = new URL(appUrl);
       let [pathname = '', hash = ''] = path.split('#');
       url.pathname = pathname;

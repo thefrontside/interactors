@@ -1,5 +1,4 @@
-import { bigtestGlobals } from '@bigtest/globals';
-import { afterEach, describe, it } from 'mocha';
+import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
@@ -60,10 +59,6 @@ const MainNav = createInteractor('main nav')
   .selector('nav')
 
 describe('@interactors/html', () => {
-  afterEach(() => {
-    bigtestGlobals.reset();
-  })
-
   describe('.exists', () => {
     it('can determine whether an element exists based on the interactor', async () => {
       dom(`
@@ -424,18 +419,6 @@ describe('@interactors/html', () => {
         '- <a href="/foo">',
         '- <a href="/bar&quot;">',
       ].join('\n'))
-    });
-
-    it('throws an error if runner is currently in assertion state', async () => {
-      dom(`
-        <p><a href="/foo">Foo</a></p>
-      `);
-
-      bigtestGlobals.runnerState = 'assertion';
-
-      await expect(Link('Foo').click()).rejects.toHaveProperty('message',
-        'tried to click on link "Foo" in an assertion, actions should only be performed in steps'
-      );
     });
   });
 

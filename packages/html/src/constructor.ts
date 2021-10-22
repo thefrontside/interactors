@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { bigtestGlobals } from '@bigtest/globals';
 import { globals } from '@interactors/globals';
 import { converge } from './converge';
 import { makeBuilder } from './builder';
@@ -151,12 +150,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
 
     perform<T>(fn: (element: E) => T): Interaction<T> {
       return globals.wrapInteraction(
-          interaction(`run perform on ${description(options)}`, async () => {
-          if(bigtestGlobals.runnerState === 'assertion') {
-            throw new Error(`tried to run perform on ${this.description} in an assertion, perform should only be run in steps`);
-          }
-          return await converge(() => fn(resolver(options)));
-        })
+          interaction(`run perform on ${description(options)}`, () => converge(() => fn(resolver(options))))
       );
     },
 
@@ -195,12 +189,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
             actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
           return globals.wrapInteraction(
-            interaction(`${actionDescription} on ${this.description}`, async () => {
-              if(bigtestGlobals.runnerState === 'assertion') {
-                throw new Error(`tried to ${actionDescription} on ${this.description} in an assertion, actions should only be performed in steps`);
-              }
-              return action(this, ...args);
-            })
+            interaction(`${actionDescription} on ${this.description}`, () => action(this, ...args))
           );
         },
         configurable: true,
