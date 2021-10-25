@@ -2,4 +2,4 @@
 "@interactors/html": patch
 ---
 
-Fix copy-pasted ts-docs of select interactors
+Fix copy-pasted ts-docs of html interactors

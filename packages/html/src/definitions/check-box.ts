@@ -32,9 +32,9 @@ const CheckBoxInteractor = FormField.extend<HTMLInputElement>('check box')
  * ### Example
  *
  * ``` typescript
- * await CheckBox('Submit').click();
- * await CheckBox('Submit').is({ disabled: true });
- * await CheckBox({ id: 'submit-button', disabled: true }).exists();
+ * await CheckBox('Accept').check();
+ * await CheckBox('Accept').is({ disabled: true });
+ * await CheckBox({ id: 'accept', disabled: true }).exists();
  * ```
  *
  * ### Filters
