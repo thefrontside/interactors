@@ -82,11 +82,11 @@ const MultiSelectInteractor = FormField.extend<HTMLSelectElement>('select box')
  *
  * - `title`: *string* – Filter by title
  * - `id`: *string* – Filter by id
- * - `valid`: *boolean* – Filter by whether the checkbox is valid.
+ * - `valid`: *boolean* – Filter by whether the select box is valid.
  * - `values`: *string[]* – Filter by the text of the selected options.
  * - `visible`: *boolean* – Filter by visibility. Defaults to `true`. See {@link isVisible}.
- * - `disabled`: *boolean* – Filter by whether the checkbox is disabled. Defaults to `false`.
- * - `focused`: *boolean* – Filter by whether the checkbox is focused. See {@link focused}.
+ * - `disabled`: *boolean* – Filter by whether the select box is disabled. Defaults to `false`.
+ * - `focused`: *boolean* – Filter by whether the select box is focused. See {@link focused}.
  *
  * ### Actions
  *
