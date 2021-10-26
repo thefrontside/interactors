@@ -104,6 +104,7 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function applyFilter<T>(definition: FilterFn<T, any> | FilterObject<T, any>, element: Element): T {
   if(typeof(definition) === 'function') {
     return definition(element) as T;
