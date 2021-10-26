@@ -45,7 +45,6 @@ export * from "./time-field";
 export * from "./datetime-field";
 
 export * from "./checkbox";
-export * from "./body";
 export * from "./calendar";
 export * from "./accordion";
 export * from "./menu";

@@ -10,7 +10,7 @@ const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUI BottomNa
   })
   .actions({ click: ({ perform }) => perform((element) => userEvent.click(element)) });
 
-export const BottomNavigation = createInteractor<HTMLElement>("MUI BottomNavigation")
+const BottomNavigationInteractor = createInteractor<HTMLElement>("MUI BottomNavigation")
   .selector('[class*="MuiBottomNavigation-root"]')
   .filters({
     value: (element) => {
@@ -21,3 +21,30 @@ export const BottomNavigation = createInteractor<HTMLElement>("MUI BottomNavigat
   .actions({
     navigate: (interactor, value: string) => interactor.find(BottomNavigationAction(value)).click(),
   });
+
+/**
+ * Call this {@link InteractorConstructor} to initialize a bottom navigation {@link Interactor}.
+ * The bottom navigation interactor can be used to interact with bottom navigation on the page and
+ * to assert on their state.
+ *
+ * The bottom navigation can be located by `value` filter.
+ *
+ * ### Example
+ *
+ * ``` typescript
+ * await BottomNavigation().navigate('Favorites');
+ * await BottomNavigation().has({ value: 'Recents' });
+ * await BottomNavigation({ value: 'Nearby' }).exists();
+ * ```
+ *
+ * ### Filters
+ *
+ * - `value`: *string* – Filter by value
+ *
+ * ### Actions
+ *
+ * - `navigate(value: string)`: *{@link Interaction}* – Navigate to new destination
+ *
+ * @category Interactor
+ */
+export const BottomNavigation = BottomNavigationInteractor;
