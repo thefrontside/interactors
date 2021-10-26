@@ -6,7 +6,7 @@ function getLabelElement(root: HTMLElement) {
   return isHTMLElement(label) ? label : null;
 }
 
-export const FormControl = HTML.extend("MUI Form Control")
+const FormControlInteractor = HTML.extend("MUI Form Control")
   .selector('[class*="MuiFormControl-root"]')
   .locator((element) => getLabelElement(element)?.innerText ?? "")
   .filters({
@@ -16,3 +16,29 @@ export const FormControl = HTML.extend("MUI Form Control")
       return isHTMLElement(descriptionElement) ? descriptionElement.innerText : "";
     },
   });
+
+/**
+ * Call this {@link InteractorConstructor} to initialize a form control {@link
+ * Interactor}. The form control interactor can be used to assert on form
+ * fields state.
+ *
+ * The form control is located by the text of its label.
+ *
+ * ### Example
+ *
+ * ``` typescript
+ * await FormControl('Email').has({ description: 'Email for newsletters' });
+ * await FormControl({ id: 'email-field', valid: true }).exists();
+ * ```
+ *
+ * ### Filters
+ *
+ * - `id`: *string* – Filter by id
+ * - `visible`: *boolean* – Filter by visibility. Defaults to `true`. See {@link isVisible}.
+ * - `valid`: *boolean* – Filter by whether the form field is valid.
+ * - `description`: *string* – Filter by the form's field description text.
+ * - `disabled`: *boolean* – Filter by whether the form field is disabled. Defaults to `false`.
+ *
+ * @category Interactor
+ */
+export const FormControl = FormControlInteractor;
