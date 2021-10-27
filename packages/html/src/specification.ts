@@ -196,14 +196,6 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
     never;
 }
 
-export interface InteractorBuilder<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
-  selector(value: string): InteractorConstructor<E, FP, FM, AM>;
-  locator(value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM>;
-  filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
-  actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
-  extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
-}
-
 /**
  * An interactor constructor is a function which can be used to initialize an
  * {@link Interactor}. When calling {@link createInteractor}, you will get
@@ -216,7 +208,13 @@ export interface InteractorBuilder<E extends Element, FP extends FilterParams<an
  * @typeParam F the filters of this interactor, this is usually inferred from the specification
  * @typeParam A the actions of this interactor, this is usually inferred from the specification
  */
-export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> extends InteractorBuilder<E, FP, FM, AM> {
+export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
+  selector(value: string): InteractorConstructor<E, FP, FM, AM>;
+  locator(value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM>;
+  filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
+  actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
+  extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
+
   /**
    * The constructor can be called with filters only:
    *
@@ -250,25 +248,6 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
    * @param filters An object describing a set of filters to apply, which should match the value of applying the filters defined in the {@link InteractorSpecification} to the element.
    */
   (value: MaybeMatcher<string>, filters?: FP): Interactor<E, FP> & FM & AM;
-}
-
-/**
- * When calling {@link createInteractor}, this is the intermediate object that
- * is returned. See {@link InteractorSpecification} for a detailed list of all
- * available options.
- *
- * @typeParam E The type of DOM Element that this interactor operates on. By specifying the element type, actions and filters defined for the interactor can be type checked against the actual element type.
- */
-export interface InteractorSpecificationBuilder<E extends Element> extends InteractorBuilder<E, EmptyObject, EmptyObject, EmptyObject> {
-  /**
-   * Calling the builder will create an interactor.
-   *
-   * @param specification The specification of this interactor
-   * @typeParam F the filters of this interactor, this is usually inferred from the specification
-   * @typeParam A the actions of this interactor, this is usually inferred from the specification
-   */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  <F extends Filters<E> = EmptyObject, A extends Actions<E> = EmptyObject>(specification: InteractorSpecification<E, F, A>): InteractorConstructor<E, FilterParams<E, F>, FilterMethods<E, F>, ActionMethods<E, A>>;
 }
 
 export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E>> = {

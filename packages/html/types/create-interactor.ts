@@ -1,20 +1,14 @@
 import { createInteractor } from '../src/index';
 
-const Link = createInteractor<HTMLLinkElement>('link')({
-  selector: 'a',
-  actions: {
+const Link = createInteractor<HTMLLinkElement>('link')
+  .selector('a')
+  .actions({
     click: ({ perform }) => perform(element => { element.click() }),
     setHref: ({ perform }, value: string) => perform((element) => { element.href = value })
-  }
-});
+  });
 
-const Div = createInteractor('div')({
-  locator: (element) => element.id || "",
-});
-
-// cannot pass invalid options
-// $ExpectError
-createInteractor<HTMLLinkElement>('whatever')({ foo: "bar" });
+const Div = createInteractor('div')
+  .locator((element) => element.id || "");
 
 Link('foo').click();
 

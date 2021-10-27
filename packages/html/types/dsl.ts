@@ -1,20 +1,19 @@
 import { test } from '@bigtest/suite';
 import { createInteractor } from '../src/index';
 
-const TextField = createInteractor<HTMLInputElement>('text field')({
-  selector: 'input',
-  locator: (element) => element.id,
-  filters: {
+const TextField = createInteractor<HTMLInputElement>('text field')
+  .selector('input')
+  .locator((element) => element.id)
+  .filters({
     enabled: {
       apply: (element) => !element.disabled,
       default: true
     },
     value: (element) => element.value
-  },
-  actions: {
+  })
+  .actions({
     fillIn: ({ perform }, value: string) => perform((element) => { element.value = value })
-  }
-});
+  });
 
 test("using interactors")
   .step(TextField("username").fillIn("cowboyd"))

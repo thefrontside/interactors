@@ -1,4 +1,4 @@
-export { Interactor, InteractorSpecificationBuilder, InteractorConstructor, InteractorBuilder, InteractorSpecification } from './specification';
+export { Interactor, InteractorConstructor, InteractorSpecification } from './specification';
 export { Interaction, ReadonlyInteraction, isInteraction } from './interaction';
 export { createInteractor } from './create-interactor';
 export { createInspector } from './inspector'
