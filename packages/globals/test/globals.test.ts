@@ -2,7 +2,7 @@ import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
 
-import { globals, setDocumentResolver, setInteractionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -37,17 +37,21 @@ describe("@interactors/globals", () => {
 
   describe("wrapInteraction", () => {
     it("returns the same interaction without any change", () => {
-      let interaction = {};
+      let interaction = Promise.resolve();
       expect(globals.wrapInteraction(interaction)).toBe(interaction);
     });
 
     it("applies defined interaction wrapper", () => {
-      let interaction = { description: "foo" };
-      setInteractionWrapper((i: typeof interaction) => {
+      let interaction = { description: "foo", then: () => null };
+      let removeWrapper = addInteractionWrapper((i: typeof interaction) => {
         i.description = "bar";
         return i;
       });
-      expect(globals.wrapInteraction(interaction)).toEqual({ ...interaction, description: "bar" });
+      let wrappedInteraction = globals.wrapInteraction(interaction);
+
+      removeWrapper();
+
+      expect(wrappedInteraction).toEqual({ ...interaction, description: "bar" });
     });
   });
 });

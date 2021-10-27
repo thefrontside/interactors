@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, setInteractionWrapper } from '@interactors/html';
+import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, addInteractionWrapper } from '@interactors/html';
 
 declare global {
   namespace Cypress {
@@ -14,7 +14,7 @@ declare global {
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-setInteractionWrapper((interaction: Interaction<void>) => {
+addInteractionWrapper((interaction: Interaction<void>) => {
   return {
     ...interaction,
     check() {

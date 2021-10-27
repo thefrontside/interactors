@@ -23,9 +23,6 @@
     "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
-  "dependencies": {
-    "@bigtest/globals": "^0.8.1"
-  },
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
     "@types/jsdom": "^16.2.3",

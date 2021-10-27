@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface Globals {
   readonly document: Document;
-  readonly wrapInteraction: <Interaction>(interaction: Interaction) => Interaction;
+  readonly wrapInteraction: <I>(interaction: I) => I;
+  readonly interactionWrappers: Set<<I>(interaction: I) => I>;
   readonly interactorTimeout: number;
   readonly reset: () => void;
 }
@@ -24,9 +26,17 @@ if (!globalThis.__interactors) {
           configurable: true,
         },
         wrapInteraction: {
-          value: <Interaction>(interaction: Interaction): Interaction => interaction,
+          value: <I>(interaction: I): I => {
+            let wrappedInteraction = interaction;
+            for (let wrapper of getGlobals().interactionWrappers) {
+              wrappedInteraction = wrapper(wrappedInteraction);
+            }
+            return wrappedInteraction;
+          },
           enumerable: true,
-          configurable: true,
+        },
+        interactionWrappers: {
+          value: new Set(),
         },
         interactorTimeout: {
           value: 1900,
@@ -37,7 +47,6 @@ if (!globalThis.__interactors) {
           value() {
             setDocumentResolver(() => globalThis.document);
             setInteractorTimeout(1900);
-            setInteractionWrapper((interaction) => interaction);
           },
           enumerable: true,
         },
@@ -46,10 +55,12 @@ if (!globalThis.__interactors) {
   });
 }
 
-export const globals = globalThis.__interactors;
+const getGlobals = () => globalThis.__interactors as Globals;
+
+export const globals = getGlobals() as Omit<Globals, "interactionWrappers">;
 
 export function setDocumentResolver(resolver: () => Document): void {
-  Object.defineProperty(globalThis.__interactors, "document", {
+  Object.defineProperty(getGlobals(), "document", {
     get: resolver,
     enumerable: true,
     configurable: true,
@@ -57,19 +68,17 @@ export function setDocumentResolver(resolver: () => Document): void {
 }
 
 export function setInteractorTimeout(ms: number): void {
-  Object.defineProperty(globalThis.__interactors, "interactorTimeout", {
+  Object.defineProperty(getGlobals(), "interactorTimeout", {
     value: ms,
     enumerable: true,
     configurable: true,
   });
 }
 
-export function setInteractionWrapper<Interaction extends Record<string, unknown>>(
-  wrapper: (interaction: Interaction) => Interaction
-): void {
-  Object.defineProperty(globalThis.__interactors, "wrapInteraction", {
-    value: wrapper,
-    enumerable: true,
-    configurable: true,
-  });
+export function addInteractionWrapper<I extends Record<string, unknown>>(
+  wrapper: (interaction: I) => I
+): () => boolean {
+  getGlobals().interactionWrappers.add(wrapper as any);
+
+  return () => getGlobals().interactionWrappers.delete(wrapper as any);
 }
