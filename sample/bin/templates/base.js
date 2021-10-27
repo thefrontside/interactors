@@ -13,14 +13,14 @@ const baseTemplate = ({ dependencies }) => {
         "build": "parcel build src/index.html --no-cache"
       },
       "dependencies": {
+        "@babel/core": `${dependencies['@babel/core']}`,
+        "@interactors/html": `${dependencies['@interactors/html']}`,
+        "eslint": `${dependencies.eslint}`,
         "parcel": `${dependencies.parcel}`,
         "react": `${dependencies.react}`,
         "react-dom": `${dependencies['react-dom']}`,
         "react-router-dom": `${dependencies['react-router-dom']}`,
         "typescript": `${dependencies.typescript}`,
-        "eslint": `${dependencies.eslint}`,
-        "@babel/core": `${dependencies['@babel/core']}`,
-        "@interactors/html": `${dependencies['@interactors/html']}`,
       },
       "volta": {
         "node": "14.17.5",

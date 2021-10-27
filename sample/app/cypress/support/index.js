@@ -1,0 +1,1 @@
+import '@interactors/with-cypress';

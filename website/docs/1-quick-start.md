@@ -60,7 +60,7 @@ import TabItem from '@theme/TabItem';
 </Tabs>
 
 :::note Cypress
-If you are using Cypress, you will only need to install `@interactors/with-cypress`:
+If you are using Cypress, you will also need to install `@interactors/with-cypress`:
 
 <Tabs
   groupId="package-manager"
@@ -72,18 +72,20 @@ If you are using Cypress, you will only need to install `@interactors/with-cypre
   <TabItem value="npm">
 
   ```
-  npm install @interactors/with-cypress --save-dev
+  npm install @interactors/html @interactors/with-cypress --save-dev
   ```
 
   </TabItem>
   <TabItem value="yarn">
 
   ```
-  yarn add @interactors/with-cypress --dev
+  yarn add @interactors/html @interactors/with-cypress --dev
   ```
 
   </TabItem>
 </Tabs>
+
+Please refer to the Cypress section on our [Integrations](/docs/integrations#cypress) page for more details as there are additional setup steps.
 :::
 
 ## Import Interactors in your test suite
@@ -123,7 +125,7 @@ Interactors have methods like `click` that mimic user actions. If you are using 
   <TabItem value="cypress">
 
   ```js
-  import { Button } from '@interactors/with-cypress';
+  import { Button } from '@interactors/html';
 
   describe('Interactors with Cypress', () => {
     beforeEach(() => cy.visit('/'));
@@ -268,7 +270,7 @@ Here are examples of what a test for an airline datepicker interface could look 
   <TabItem value="cypress">
 
   ```js
-  import { Heading, RadioButton, TextField } from '@interactors/with-cypress';
+  import { Heading, RadioButton, TextField } from '@interactors/html';
   import { DatePicker, Modal } from './MyInteractors';
 
   describe('Interactors with Cypress', () => {
