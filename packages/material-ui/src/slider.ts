@@ -109,7 +109,7 @@ export const Thumb = HTML.extend<HTMLElement>("MUI Slider Thumb")
       }),
   });
 
-export const Slider = HTML.extend("MUI Slider")
+const SliderInteractor = HTML.extend("MUI Slider")
   .selector('[class*="MuiSlider-root"]')
   .locator((element) => {
     let thumb = getThumb(element);
@@ -156,3 +156,47 @@ export const Slider = HTML.extend("MUI Slider")
     setMax: ({ find }) => find(Thumb()).setMax(),
     setValue: ({ find }, value: number) => find(Thumb()).setValue(value),
   });
+
+/**
+ * Call this {@link InteractorConstructor} to initialize a slider {@link Interactor}.
+ * The slider interactor can be used to interact with sliders on the page and
+ * to assert on their state.
+ *
+ * The slider is located by the label or the `aria-label` attribute.
+ *
+ * ### Example
+ *
+ * ``` typescript
+ * await Slider('Submit').click();
+ * await Slider('Submit').is({ disabled: true });
+ * await Slider({ id: 'submit-slider', disabled: true }).exists();
+ * ```
+ *
+ * ### Filters
+ *
+ * - `id`: *string* – Filter by id
+ * - `visible`: *boolean* – Filter by visibility. Defaults to `true`. See {@link isVisible}.
+ * - `disabled`: *boolean* – Filter by whether the slider is disabled. Defaults to `false`.
+ * - `orientation`: *horizontal | vertical* - Filter by orientation
+ * - `horizontal`: *boolean* - Filter by whether the slider has horizontal orientation
+ * - `vertical`: *boolean* - Filter by whether the slider has vertical orientation
+ * - `minValue`: *number* - Filter by the least possible value
+ * - `maxValue`: *number* - Filter by the greatest possible value
+ * - `value`: *number* - Filter by the current value
+ * - `textValue`: *string* - Filter by the text representation of current value
+ * - `min`: *boolean* - Filter by whether the slider value is equal `minValue`
+ * - `max`: *boolean* - Filter by whether the slider value is equal `maxValue`
+ *
+ * ### Actions
+ *
+ * - `focus()`: *{@link Interaction}* – Move focus to the slider
+ * - `blur()`: *{@link Interaction}* – Move focus away from the slider
+ * - `decrease(steps: number = 1)`: *{@link Interaction}* – Decrease slider value by specific steps
+ * - `increase(steps: number = 1)`: *{@link Interaction}* – Increase slider value by specific steps
+ * - `setMin()`: *{@link Interaction}* - Set value to the least possible
+ * - `setMax()`: *{@link Interaction}* – Set value to the greatest possible
+ * - `setValue(value: number)`: *{@link Interaction}* – Set current value
+ *
+ * @category Interactor
+ */
+export const Slider = SliderInteractor;

@@ -15,13 +15,14 @@ import {
   FilterMethods,
   InteractorSpecification,
   BaseInteractor,
+  FilterObject,
 } from './specification';
 import { Filter } from './filter';
 import { Locator } from './locator';
 import { MatchFilter, applyFilter } from './match';
 import { formatTable } from './format-table';
 import { FilterNotMatchingError } from './errors';
-import { interaction, check, Interaction, ReadonlyInteraction } from './interaction';
+import { interaction, interactionFilter, check, checkFilter, Interaction, ReadonlyInteraction } from './interaction';
 import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
@@ -203,8 +204,11 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     if(!interactor.hasOwnProperty(filterName)) {
       Object.defineProperty(interactor, filterName, {
         value: function() {
-          return interaction(`${filterName} of ${this.description}`, async () => {
+          return interactionFilter(`${filterName} of ${this.description}`, async () => {
             return applyFilter(filter, resolver(options));
+          }, (parentElement) => {
+            let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
+            return applyFilter(filter, element);
           });
         },
         configurable: true,
@@ -230,19 +234,23 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       }) as unknown as T;
     },
 
-    exists(): ReadonlyInteraction<void> {
-      return check(`${interactor.description} exists`, () => {
+    exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
+      return checkFilter(`${interactor.description} exists`, () => {
         return converge(() => {
           resolveNonEmpty(unsafeSyncResolveParent(options), options);
         });
+      }, (element) => {
+        return findMatchesMatching(element, options).length > 0;
       });
     },
 
-    absent(): ReadonlyInteraction<void> {
-      return check(`${interactor.description} does not exist`, () => {
+    absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
+      return checkFilter(`${interactor.description} does not exist`, () => {
         return converge(() => {
           resolveEmpty(unsafeSyncResolveParent(options), options);
         });
+      }, (element) => {
+        return findMatchesMatching(element, options).length === 0;
       });
     }
   });

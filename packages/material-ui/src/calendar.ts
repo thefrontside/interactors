@@ -148,7 +148,7 @@ export function createCalendar(utils: DatePickerUtils) {
   });
 }
 
-export const Calendar = createInteractor<HTMLElement>("MUI Calendar")
+const CalendarInteractor = createInteractor<HTMLElement>("MUI Calendar")
   .selector('[class*="MuiPickersCalendar-transitionContainer"]')
   .locator(calendarLocator)
   .filters({
@@ -185,3 +185,38 @@ export const Calendar = createInteractor<HTMLElement>("MUI Calendar")
     },
     setDay: goToDay,
   });
+
+/**
+ * Call this {@link InteractorConstructor} to initialize a calendar {@link Interactor}.
+ * The calendar interactor can be used to interact with calendars on the page and
+ * to assert on their state.
+ *
+ * The calendar is located by selected day and title text divided by space (ex. '18 August 2014').
+ *
+ * ### Example
+ *
+ * ``` typescript
+ * await Calendar('18 August 2014').setDay(13);
+ * await Calendar('18 August 2014').has({ weekDay: 'Mo' });
+ * await Calendar({ title: 'August 2014', day: 18 }).exists();
+ * ```
+ *
+ * ### Filters
+ *
+ * - `title`: *string* – Filter by title
+ * - `year`: *number* – Filter by year
+ * - `month`: *string* – Filter by month
+ * - `day`: *number* – Filter by day
+ * - `weekDay`: *string* – Filter by weekDay
+ *
+ * ### Actions
+ *
+ * - `nextMonth()`: *{@link Interaction}* – Switch calendar view to the next month
+ * - `prevMonth()`: *{@link Interaction}* – Switch calendar view to the previous month
+ * - `setYear(value: number)`: *{@link Interaction}* – Switch calendar view to the target year
+ * - `setMonth(value: string)`: *{@link Interaction}* – Switch calendar view to the target month
+ * - `setDay(value: number)`: *{@link Interaction}* – Set a new date for calendar with previously selected year and month
+ *
+ * @category Interactor
+ */
+export const Calendar = CalendarInteractor;

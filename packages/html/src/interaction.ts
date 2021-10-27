@@ -1,3 +1,5 @@
+import type { FilterObject } from './specification';
+
 const interactionSymbol = Symbol.for('interaction');
 
 export function isInteraction(x: unknown): x is Interaction<unknown> {
@@ -64,4 +66,12 @@ export function interaction<T>(description: string, action: () => Promise<T>): I
 
 export function check<T>(description: string, check: () => Promise<T>): ReadonlyInteraction<T> {
   return { check, ...interaction(description, check) };
+}
+
+export function interactionFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
+  return { apply: filter, ...interaction(description, action) };
+}
+
+export function checkFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
+  return { apply: filter , ...check(description, action) };
 }

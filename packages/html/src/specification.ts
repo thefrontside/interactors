@@ -20,7 +20,7 @@ export interface ExistsAssertionsImplementation {
    * await Link('Next').exists();
    * ```
    */
-  exists(): ReadonlyInteraction<void>;
+  exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
 
   /**
    * An assertion which checks that an element matching the interactor does not
@@ -32,7 +32,7 @@ export interface ExistsAssertionsImplementation {
    * await Link('Next').absent();
    * ```
    */
-  absent(): ReadonlyInteraction<void>;
+  absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
 }
 
 export interface BaseInteractor<E extends Element, F extends FilterParams<any, any>> {
@@ -191,10 +191,8 @@ export type FilterReturn<F> = {
 
 export type FilterParams<E extends Element, F extends Filters<E>> = keyof F extends never ? never : {
   [P in keyof F]?:
-    F[P] extends FilterFn<infer TArg, E> ?
-    MaybeMatcher<TArg> :
-    F[P] extends FilterObject<infer TArg, E> ?
-    MaybeMatcher<TArg> :
+    F[P] extends FilterFn<infer TArg, E> ? MaybeMatcher<TArg> :
+    F[P] extends FilterObject<infer TArg, E> ? MaybeMatcher<TArg> :
     never;
 }
 
