@@ -1,15 +1,11 @@
 {
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "types": ["cypress"],
-    "outDir": "dist",
+    "outDir": "dist/cjs",
     "rootDir": "./src",
     "declarationDir": "dist"
   },
   "include": [
-    "src/*.ts"
-  ],
-  "references": [
-    { "path" : "../html/tsconfig.build.json" },
+    "src/**/*.ts"
   ]
 }

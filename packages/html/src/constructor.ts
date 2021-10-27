@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { bigtestGlobals } from '@bigtest/globals';
+import { globals } from '@interactors/globals';
 import { converge } from './converge';
 import { makeBuilder } from './builder';
 import {
@@ -27,7 +27,6 @@ import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
-import { globals } from './globals';
 
 const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
@@ -151,16 +150,13 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     },
 
     perform<T>(fn: (element: E) => T): Interaction<T> {
-      return interaction(`${description(options)} performs`, async () => {
-        if(bigtestGlobals.runnerState === 'assertion') {
-          throw new Error(`tried to run perform on ${this.description} in an assertion, perform should only be run in steps`);
-        }
-        return await converge(() => fn(resolver(options)));
-      });
+      return globals.wrapInteraction(
+          interaction(`run perform on ${description(options)}`, () => converge(() => fn(resolver(options))))
+      );
     },
 
-    assert(fn: (element: E) => void): Interaction<void> {
-      return interaction(`${this.description} asserts`, () => {
+    assert(fn: (element: E) => void): ReadonlyInteraction<void> {
+      return check(`${this.description} asserts`, () => {
         return converge(() => {
           fn(resolver(options));
         });
@@ -193,12 +189,9 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
           if(args.length) {
             actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
-          return interaction(`${actionDescription} on ${this.description}`, async () => {
-            if(bigtestGlobals.runnerState === 'assertion') {
-              throw new Error(`tried to ${actionDescription} on ${this.description} in an assertion, actions should only be performed in steps`);
-            }
-            return action(this, ...args);
-          });
+          return globals.wrapInteraction(
+            interaction(`${actionDescription} on ${this.description}`, () => action(this, ...args))
+          );
         },
         configurable: true,
         writable: true,

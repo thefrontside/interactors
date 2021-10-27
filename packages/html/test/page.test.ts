@@ -3,12 +3,12 @@ import expect from 'expect';
 import express from 'express';
 import { Server } from 'http';
 
-import { bigtestGlobals } from '@bigtest/globals';
 import { JSDOM, ResourceLoader } from 'jsdom';
+import { bigtestGlobals } from '@bigtest/globals';
 
 import { dom } from './helpers';
 
-import { Page, read, setDocumentResolver } from '../src';
+import { globals, Page, read, setDocumentResolver } from '../src';
 
 describe('@interactors/html', function() {
   describe('Page', () => {
@@ -17,7 +17,7 @@ describe('@interactors/html', function() {
       let server: Server;
 
       beforeEach(async () => {
-        bigtestGlobals.reset();
+        globals.reset();
 
         let app = express();
 

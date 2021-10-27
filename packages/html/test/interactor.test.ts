@@ -1,9 +1,8 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
-import { bigtestGlobals } from '@bigtest/globals';
 
-import { createInteractor, Link, Heading } from '../src/index';
+import { createInteractor, Link, Heading } from '../src';
 
 const MainNav = createInteractor('main nav')({
   selector: 'nav'
@@ -54,7 +53,7 @@ describe('@interactors/html', () => {
     });
 
     it('can return description of interaction', () => {
-      expect(Link('Foo Bar').perform((e) => e.click()).description).toEqual('link "Foo Bar" performs');
+      expect(Link('Foo Bar').perform((e) => e.click()).description).toEqual('run perform on link "Foo Bar"');
     });
 
     it('throws an error if ambiguous', async () => {
@@ -68,18 +67,6 @@ describe('@interactors/html', () => {
         '- <a href="/foo">',
         '- <a href="/bar&quot;">',
       ].join('\n'))
-    });
-
-    it('throws an error if runner is currently in assertion state', async () => {
-      dom(`
-        <p><a href="/foo">Foo</a></p>
-      `);
-
-      bigtestGlobals.runnerState = 'assertion';
-
-      await expect(Link('Foo').perform((e) => e.click())).rejects.toHaveProperty('message',
-        'tried to run perform on link "Foo" in an assertion, perform should only be run in steps'
-      );
     });
 
     it('returns a value outside', async () => {
@@ -129,8 +116,6 @@ describe('@interactors/html', () => {
       dom(`
         <a data-foo="foo" href="/foobar">Foo Bar</a>
       `);
-
-      bigtestGlobals.runnerState = 'assertion';
 
       await Link('Foo Bar').assert((e) => expect(e.dataset.foo).toEqual('foo'));
     });

@@ -7,5 +7,8 @@
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "references": [
+    { "path": "../globals/tsconfig.build.json" }
   ]
 }

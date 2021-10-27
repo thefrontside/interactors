@@ -8,6 +8,7 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "packages/globals",
       "packages/html",
       "packages/material-ui",
       "packages/with-cypress"
