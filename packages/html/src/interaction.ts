@@ -50,22 +50,22 @@ export function interaction<T>(description: string, action: () => Promise<T>): I
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
     then(onFulfill, onReject) {
-      if(!promise) { promise = action(); }
+      if(!promise) { promise = this.action(); }
       return promise.then(onFulfill, onReject);
     },
     catch(onReject) {
-      if(!promise) { promise = action(); }
+      if(!promise) { promise = this.action(); }
       return promise.catch(onReject);
     },
     finally(handler) {
-      if(!promise) { promise = action(); }
+      if(!promise) { promise = this.action(); }
       return promise.finally(handler);
     }
   }
 }
 
 export function check<T>(description: string, check: () => Promise<T>): ReadonlyInteraction<T> {
-  return { check, ...interaction(description, check) };
+  return { check() { return this.action() }, ...interaction(description, check) };
 }
 
 export function interactionFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
