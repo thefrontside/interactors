@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+type ActionType = "interaction" | "check";
+
 interface Globals {
   readonly document: Document;
-  readonly wrapInteraction: <I>(interaction: I) => I;
-  readonly interactionWrappers: Set<<I>(interaction: I) => I>;
+  readonly wrapAction: <T>(description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>;
+  readonly actionWrappers: Set<
+    <T>(description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
+  >;
   readonly interactorTimeout: number;
   readonly reset: () => void;
 }
@@ -25,17 +29,17 @@ if (!globalThis.__interactors) {
           enumerable: true,
           configurable: true,
         },
-        wrapInteraction: {
-          value: <I>(interaction: I): I => {
-            let wrappedInteraction = interaction;
-            for (let wrapper of getGlobals().interactionWrappers) {
-              wrappedInteraction = wrapper(wrappedInteraction);
+        wrapAction: {
+          value: <T>(description: string, action: () => Promise<T>, type: ActionType): (() => Promise<T>) => {
+            let wrappedAction = action;
+            for (let wrapper of getGlobals().actionWrappers) {
+              wrappedAction = wrapper(description, wrappedAction, type);
             }
-            return wrappedInteraction;
+            return wrappedAction;
           },
           enumerable: true,
         },
-        interactionWrappers: {
+        actionWrappers: {
           value: new Set(),
         },
         interactorTimeout: {
@@ -57,7 +61,7 @@ if (!globalThis.__interactors) {
 
 const getGlobals = () => globalThis.__interactors as Globals;
 
-export const globals = getGlobals() as Omit<Globals, "interactionWrappers">;
+export const globals = getGlobals() as Omit<Globals, "actionWrappers">;
 
 export function setDocumentResolver(resolver: () => Document): void {
   Object.defineProperty(getGlobals(), "document", {
@@ -75,10 +79,10 @@ export function setInteractorTimeout(ms: number): void {
   });
 }
 
-export function addInteractionWrapper<I extends Record<string, unknown>>(
-  wrapper: (interaction: I) => I
+export function addActionWrapper<T>(
+  wrapper: (description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
 ): () => boolean {
-  getGlobals().interactionWrappers.add(wrapper as any);
+  getGlobals().actionWrappers.add(wrapper as any);
 
-  return () => getGlobals().interactionWrappers.delete(wrapper as any);
+  return () => getGlobals().actionWrappers.delete(wrapper as any);
 }

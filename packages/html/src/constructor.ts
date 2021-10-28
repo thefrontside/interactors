@@ -150,9 +150,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     },
 
     perform<T>(fn: (element: E) => T): Interaction<T> {
-      return globals.wrapInteraction(
-          interaction(`run perform on ${description(options)}`, () => converge(() => fn(resolver(options))))
-      );
+      return interaction(`run perform on ${description(options)}`, () => converge(() => fn(resolver(options))))
     },
 
     assert(fn: (element: E) => void): ReadonlyInteraction<void> {
@@ -189,8 +187,9 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
           if(args.length) {
             actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
-          return globals.wrapInteraction(
-            interaction(`${actionDescription} on ${this.description}`, () => action(this, ...args))
+          return interaction(
+            `${actionDescription} on ${description(options)}`,
+            () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args)
           );
         },
         configurable: true,
