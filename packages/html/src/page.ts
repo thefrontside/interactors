@@ -4,9 +4,9 @@ import { createInteractor } from './create-interactor';
 
 let visitCounter = 1;
 
-const PageInteractor = createInteractor('page')({
-  selector: ':root',
-  filters: {
+const PageInteractor = createInteractor('page')
+  .selector(':root')
+  .filters({
     title: (element) => element.ownerDocument.title,
     url: (element) => {
       let url = new URL(element.ownerDocument.location.href);
@@ -15,8 +15,7 @@ const PageInteractor = createInteractor('page')({
       url.search = search.toString();
       return url.toString();
     },
-  },
-});
+  });
 
 const PageInteractorInstance = Object.assign(PageInteractor(), {
   /**

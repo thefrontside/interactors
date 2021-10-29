@@ -2,7 +2,7 @@
 
 import { globals } from '@interactors/globals';
 import { converge } from './converge';
-import { makeBuilder } from './builder';
+import { MergeObjects } from './merge-objects';
 import {
   InteractorOptions,
   ActionMethods,
@@ -154,7 +154,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     },
 
     assert(fn: (element: E) => void): ReadonlyInteraction<void> {
-      return check(`${this.description} asserts`, () => {
+      return check(`${description(options)} asserts`, () => {
         return converge(() => {
           fn(resolver(options));
         });
@@ -167,11 +167,11 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
 
     is(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
       let filter = new Filter(options.specification, filters);
-      return check(`${this.description} matches filters: ${filter.description}`, () => {
+      return check(`${description(options)} matches filters: ${filter.description}`, () => {
         return converge(() => {
           let element = resolver({...options, filter: getLookupFilterForAssertion(options.filter, filters) });
           let match = new MatchFilter(element, filter);
-          if(!match.matches) {
+          if (!match.matches) {
             throw new FilterNotMatchingError(`${description(options)} does not match filters:\n\n${match.formatAsExpectations()}`);
           }
         });
@@ -179,12 +179,12 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     },
   }
 
-  for(let [actionName, action] of Object.entries(options.specification.actions || {})) {
-    if(!interactor.hasOwnProperty(actionName)) {
+  for (let [actionName, action] of Object.entries(options.specification.actions || {})) {
+    if (!interactor.hasOwnProperty(actionName)) {
       Object.defineProperty(interactor, actionName, {
         value: function(...args: unknown[]) {
           let actionDescription = actionName;
-          if(args.length) {
+          if (args.length) {
             actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
           return interaction(
@@ -199,11 +199,11 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     }
   }
 
-  for(let [filterName, filter] of Object.entries(options.specification.filters || {})) {
-    if(!interactor.hasOwnProperty(filterName)) {
+  for (let [filterName, filter] of Object.entries(options.specification.filters || {})) {
+    if (!interactor.hasOwnProperty(filterName)) {
       Object.defineProperty(interactor, filterName, {
         value: function() {
-          return interactionFilter(`${filterName} of ${this.description}`, async () => {
+          return interactionFilter(`${filterName} of ${description(options)}`, async () => {
             return applyFilter(filter, resolver(options));
           }, (parentElement) => {
             let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
@@ -234,7 +234,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     },
 
     exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${interactor.description} exists`, () => {
+      return checkFilter(`${description(options)} exists`, () => {
         return converge(() => {
           resolveNonEmpty(unsafeSyncResolveParent(options), options);
         });
@@ -244,7 +244,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     },
 
     absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${interactor.description} does not exist`, () => {
+      return checkFilter(`${description(options)} does not exist`, () => {
         return converge(() => {
           resolveEmpty(unsafeSyncResolveParent(options), options);
         });
@@ -271,5 +271,21 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
   }
 
-  return makeBuilder(initInteractor, name, specification) as unknown as InteractorConstructor<E, FP, FM, AM>;
+  return Object.assign(initInteractor, {
+    selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
+      return createConstructor(name, { ...specification, selector: value });
+    },
+    locator: (value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM> => {
+      return createConstructor(name, { ...specification, locator: value });
+    },
+    filters: <FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM> => {
+      return createConstructor(name, { ...specification, filters: { ...specification.filters, ...filters } });
+    },
+    actions: <AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>> => {
+      return createConstructor(name, { ...specification, actions: Object.assign({}, specification.actions, actions) });
+    },
+    extend: <ER extends Element = E>(newName: string): InteractorConstructor<ER, FP, FM, AM> => {
+      return createConstructor(newName, specification) as unknown as InteractorConstructor<ER, FP, FM, AM>;
+    },
+  }) as unknown as InteractorConstructor<E, FP, FM, AM>;
 }
