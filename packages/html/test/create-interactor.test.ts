@@ -334,6 +334,21 @@ describe('@interactors/html', () => {
       await Link('Foo Bar').click();
       await Header('Hello!').exists();
     });
+    it('can use destructured action', async () => {
+      dom(`
+        <a id="foo" href="/foobar">Foo Bar</a>
+        <div id="target"></div>
+        <script>
+          foo.onclick = () => {
+            target.innerHTML = '<h1>Hello!</h1>';
+          }
+        </script>
+      `);
+      let { click } = Link('Foo Bar')
+
+      await click();
+      await Header('Hello!').exists();
+    });
 
     it('can pass arguments to action', async () => {
       dom(`
