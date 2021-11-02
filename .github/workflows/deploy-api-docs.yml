@@ -1,0 +1,15 @@
+name: Deploy API Docs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-typedocs:
+    name: Trigger Netlify Deploys
+    runs-on: ubuntu-latest
+    steps:
+      # these build hooks will trigger builds from the main branch
+      - name: Deploy @interactors/html API docs
+        run: curl -X POST -d {} ${{ secrets.DEPLOY_API_HTML_V1 }}
+      - name: Deploy @interactors/material-ui API docs
+        run: curl -X POST -d {} ${{ secrets.DEPLOY_API_MUI_V4 }}
