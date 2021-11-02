@@ -33,6 +33,7 @@
     "test:types": "dtslint types --localTs ../../node_modules/typescript/lib --expectOnly",
     "test": "yarn test:unit && yarn test:types",
     "mocha": "mocha -r ts-node/register",
+    "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
     "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
     "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
@@ -59,7 +60,8 @@
     "express": "^4.17.1",
     "jsdom": "^16.2.2",
     "mocha": "^6.2.2",
-    "ts-node": "^9.1.1"
+    "ts-node": "^9.1.1",
+    "typedoc": "^0.22.7"
   },
   "volta": {
     "node": "14.17.5",
