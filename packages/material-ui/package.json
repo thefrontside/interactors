@@ -17,6 +17,7 @@
     "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
     "prepack": "tsc --build tsconfig.build.json && run-p build:*",
     "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
+    "docs:netlify": "yarn prepack && yarn docs",
     "start": "parcel serve test/harness.html",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
