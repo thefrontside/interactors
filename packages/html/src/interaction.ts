@@ -1,3 +1,4 @@
+import { globals } from '@interactors/globals';
 import type { FilterObject } from './specification';
 
 const interactionSymbol = Symbol.for('interaction');
@@ -42,7 +43,7 @@ export interface ReadonlyInteraction<T> extends Interaction<T> {
   check: () => Promise<T>;
 }
 
-export function interaction<T>(description: string, action: () => Promise<T>): Interaction<T> {
+function createInteraction<T>(description: string, action: () => Promise<T>): Interaction<T> {
   let promise: Promise<T>;
   return {
     description,
@@ -50,22 +51,26 @@ export function interaction<T>(description: string, action: () => Promise<T>): I
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
     then(onFulfill, onReject) {
-      if(!promise) { promise = action(); }
+      if(!promise) { promise = this.action(); }
       return promise.then(onFulfill, onReject);
     },
     catch(onReject) {
-      if(!promise) { promise = action(); }
+      if(!promise) { promise = this.action(); }
       return promise.catch(onReject);
     },
     finally(handler) {
-      if(!promise) { promise = action(); }
+      if(!promise) { promise = this.action(); }
       return promise.finally(handler);
     }
   }
 }
 
+export function interaction<T>(description: string, action: () => Promise<T>): Interaction<T> {
+  return createInteraction(description, globals.wrapAction(description, action, 'interaction'))
+}
+
 export function check<T>(description: string, check: () => Promise<T>): ReadonlyInteraction<T> {
-  return { check, ...interaction(description, check) };
+  return { check() { return this.action() }, ...createInteraction(description, globals.wrapAction(description, check, 'check')) };
 }
 
 export function interactionFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {

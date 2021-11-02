@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, addInteractionWrapper } from '@interactors/html';
+import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, addActionWrapper } from '@interactors/html';
 
 declare global {
   namespace Cypress {
@@ -11,35 +11,31 @@ declare global {
   }
 }
 
+let cypressCommand: CypressCommand | null = null
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-addInteractionWrapper((interaction: Interaction<void>) => {
-  return {
-    ...interaction,
-    check() {
-        throw new Error(
-          `tried to ${interaction.description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``
-        );
-    },
-  };
-});
+addActionWrapper((description, action, type) =>
+  async () => {
+    if (type == 'interaction' && cypressCommand == 'expect')
+      throw new Error(`tried to ${description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
+    return action()
+  }
+);
 
 function interact(interactions: Interaction<void>[], command: CypressCommand): void {
-  interactions.forEach((interaction) => 
-    cy
-      .then(() =>
-        command == 'expect'
-          ? (interaction as ReadonlyInteraction<void>).check()
-          : interaction.action()
-      )
-      .then(() => {
-        Cypress.log({
-          displayName: command,
-          message: interaction.description
-        });
-      })
-  )
+  interactions
+    .reduce((cy: Cypress.Chainable<void>, interaction) =>
+      cy
+        .then(() => interaction)
+        .then(() => {
+          Cypress.log({
+            displayName: command,
+            message: interaction.description
+          });
+        }),
+      cy.then(() => void (cypressCommand = command))
+    ).then(() => (cypressCommand = null))
 };
 
 function isInteractions(interactions: unknown[]): interactions is ReadonlyInteraction<void>[] {
