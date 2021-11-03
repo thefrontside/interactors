@@ -2,7 +2,12 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from '../helpers';
 
-import { HTML, matching } from '../../src/index';
+import { createInteractor, matching } from '../../src/index';
+
+const HTML = createInteractor<HTMLElement>('html')
+  .filters({
+    title: (e) => e.title,
+  });
 
 describe('matching', () => {
   beforeEach(() => {

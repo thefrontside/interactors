@@ -2,7 +2,12 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from '../helpers';
 
-import { HTML, including } from '../../src/index';
+import { createInteractor, including } from '../../src/index';
+
+const HTML = createInteractor<HTMLElement>('html')
+  .filters({
+    title: (e) => e.title,
+  });
 
 describe('including', () => {
   it('can check whether the given string is contained', async () => {

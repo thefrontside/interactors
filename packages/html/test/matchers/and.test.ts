@@ -2,7 +2,12 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from '../helpers';
 
-import { HTML, and, including } from '../../src/index';
+import { createInteractor, and, including } from '../../src/index';
+
+const HTML = createInteractor<HTMLElement>('html')
+  .filters({
+    title: (e) => e.title,
+  });
 
 describe('and', () => {
   it('can check whether the given value matches all of the given matchers', async () => {

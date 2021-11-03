@@ -1,13 +1,27 @@
 import { describe, it } from 'mocha';
 import { globals } from '@interactors/globals';
-import { TextField, Heading } from '../src';
+import { createInteractor, fillIn } from '../src';
 import { dom } from './helpers';
+
+const TextField = createInteractor<HTMLInputElement | HTMLTextAreaElement>('text field')
+  .selector('input')
+  .filters({
+    id: (e) => e.id,
+    value: (e) => e.value,
+  })
+  .actions({
+    fillIn: ({ perform }, value: string) => perform((e) => fillIn(e, value)),
+    focus: ({ perform }) => perform((e) => e.focus()),
+    blur: ({ perform }) => perform((e) => e.blur()),
+  });
+
+const Heading = createInteractor('heading')
+  .selector('h1')
 
 describe('fillIn', () => {
   it('triggers a change event', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input value="initial" type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -19,14 +33,13 @@ describe('fillIn', () => {
     `);
 
     globals.document.getElementById('nameField');
-    await TextField('Name').fillIn('changed');
+    await TextField({ id: 'nameField' }).fillIn('changed');
     await Heading('success changed').exists();
   });
 
   it('does not trigger a change event if value is identical', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input value="initial" type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -37,14 +50,13 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('initial');
+    await TextField({ id: 'nameField' }).fillIn('initial');
     await Heading('success initial').absent();
   });
 
   it('focuses field before changing value', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input value="initial" type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -55,14 +67,13 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('changed');
+    await TextField({ id: 'nameField' }).fillIn('changed');
     await Heading('success initial').exists();
   });
 
   it('blurs field after changing value', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input value="initial" type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -73,14 +84,13 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('changed');
+    await TextField({ id: 'nameField' }).fillIn('changed');
     await Heading('success changed').exists();
   });
 
   it('blurs field', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input type="text" id="nameField"/>
       </p>
       <script>
@@ -93,15 +103,14 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').focus();
-    await TextField('Name').blur();
+    await TextField({ id: 'nameField' }).focus();
+    await TextField({ id: 'nameField' }).blur();
     await Heading('Success').exists();
   });
 
   it('triggers an input event for each key press', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -116,14 +125,13 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('cha');
+    await TextField({ id: 'nameField' }).fillIn('cha');
     await Heading('-key:c-key:h-key:a').exists();
   });
 
   it('clears field and triggers input event before filling in', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input value="initial" type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -138,14 +146,13 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('cha');
+    await TextField({ id: 'nameField' }).fillIn('cha');
     await Heading('-del-key:c-key:h-key:a').exists();
   });
 
   it('triggers a cancellable keydown event for each key press', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -159,15 +166,14 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('cha');
-    await TextField('Name').has({ value: 'ca' });
+    await TextField({ id: 'nameField' }).fillIn('cha');
+    await TextField({ id: 'nameField' }).has({ value: 'ca' });
     await Heading('-key:c-key:h-key:a').exists();
   });
 
   it('triggers a keyup event for each key press', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -178,14 +184,13 @@ describe('fillIn', () => {
       </script>
     `);
 
-    await TextField('Name').fillIn('cha');
+    await TextField({ id: 'nameField' }).fillIn('cha');
     await Heading('-key:c-key:h-key:a').exists();
   });
 
   it('fills in the value, even when the input.value property is monkey-patched', async () => {
     dom(`
       <p>
-        <label for="nameField">Name</label>
         <input value="initial" type="text" id="nameField"/>
         <h1 id="target"></h1>
       </p>
@@ -206,7 +211,7 @@ describe('fillIn', () => {
         return prop?.get?.call(this);
       }
     })
-    await TextField('Name').fillIn('changed');
+    await TextField({ id: 'nameField' }).fillIn('changed');
     await Heading('success changed').exists();
   });
 });
