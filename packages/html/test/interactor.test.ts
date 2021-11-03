@@ -6,7 +6,7 @@ import { createInteractor, Link, Heading } from '../src';
 
 const MainNav = createInteractor('main nav').selector('nav');
 
-describe('@interactors/html', () => {
+describe('Interactor', () => {
   describe('instantiation', () => {
     describe('no arguments', () => {
       it('just uses the selector to locate', async () => {
