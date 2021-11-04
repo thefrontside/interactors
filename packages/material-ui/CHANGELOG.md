@@ -1,5 +1,30 @@
 # Changelog
 
+## 4.1.0
+
+### Minor Changes
+
+- 10639b8: Add filter methods which return the current value of a filter
+
+### Patch Changes
+
+- 9725501: Add ts-docs for material-ui interactors
+- dcf14c7: Enhance NPM READMEs to point to interactor website
+- 3c0aa1c: Added API typedocs
+- Updated dependencies [cdbc904]
+- Updated dependencies [1f551e9]
+- Updated dependencies [e95ab99]
+- Updated dependencies [10639b8]
+- Updated dependencies [020595c]
+- Updated dependencies [6834dcf]
+- Updated dependencies [dcf14c7]
+- Updated dependencies [85ef221]
+- Updated dependencies [e3448b0]
+- Updated dependencies [9f79e84]
+- Updated dependencies [3c0aa1c]
+- Updated dependencies [2f5aa35]
+  - @interactors/html@0.34.0
+
 ## 4.0.0
 
 ### Minor Changes
