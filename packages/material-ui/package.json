@@ -17,6 +17,8 @@
     "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
     "prepack": "tsc --build tsconfig.build.json && run-p build:*",
     "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
+    "docs:netlify": "yarn prepack && yarn docs",
+    "docs:preview": "yarn parcel docs/api/v4/index.html",
     "start": "parcel serve test/harness.html",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -52,6 +54,7 @@
     "bigtest": "^0.15.3",
     "date-fns": "^2.23.0",
     "npm-run-all": "^4.1.5",
+    "parcel": "^2.0.0-beta.2",
     "parcel-bundler": "^1.12.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

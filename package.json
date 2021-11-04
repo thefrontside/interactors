@@ -24,7 +24,9 @@
     "lint": "yarn workspaces run lint",
     "watch": "yarn prepack:tsc && yarn tsc -b ./tsconfig.monorepo.json --watch",
     "prepack:all": "yarn prepack",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "docs:html": "yarn workspace @interactors/html run docs:netlify",
+    "docs:mui": "yarn workspace @interactors/material-ui run docs:netlify"
   },
   "volta": {
     "node": "14.17.5",
