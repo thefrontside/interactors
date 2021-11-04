@@ -4,7 +4,7 @@ import { dom } from '../helpers';
 
 import { HTML, matching } from '../../src/index';
 
-describe('@interactors/html', () => {
+describe('matching', () => {
   beforeEach(() => {
     dom(`
       <div title="hello world"></div>
@@ -12,10 +12,8 @@ describe('@interactors/html', () => {
     `);
   });
 
-  describe('matching', () => {
-    it('can check whether the given string matching', async () => {
-      await HTML({ title: matching(/he(llo|ck)/) }).exists();
-      await expect(HTML({ title: matching(/blah/) }).exists()).rejects.toHaveProperty('name', 'NoSuchElementError')
-    });
+  it('can check whether the given string matching', async () => {
+    await HTML({ title: matching(/he(llo|ck)/) }).exists();
+    await expect(HTML({ title: matching(/blah/) }).exists()).rejects.toHaveProperty('name', 'NoSuchElementError')
   });
 });
