@@ -1,5 +1,28 @@
 # @interactors/html
 
+## 0.34.0
+
+### Minor Changes
+
+- cdbc904: Add `@interactors/globals` package. Decouple interactors from `@bigtest/globals`
+- e95ab99: Add filter delegation
+- 10639b8: Add filter methods which return the current value of a filter
+- 020595c: Remove deprecated matchers
+- 9f79e84: Remove interactor specification interface
+
+### Patch Changes
+
+- 1f551e9: call action from interaction context
+- 6834dcf: fix using destructured interactor actions
+- dcf14c7: Enhance NPM READMEs to point to interactor website
+- 85ef221: wrap interaction actions instead the whole interaction
+- e3448b0: Fix copy-pasted ts-docs of html interactors
+- 3c0aa1c: Added API typedocs
+- 2f5aa35: fix missing fallback file for testing library
+- Updated dependencies [cdbc904]
+- Updated dependencies [85ef221]
+  - @interactors/globals@0.1.0
+
 ## 0.33.0
 
 ### Minor Changes

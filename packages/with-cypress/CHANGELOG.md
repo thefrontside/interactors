@@ -1,5 +1,26 @@
 # @interactors/with-cypress
 
+## 0.1.4
+
+### Patch Changes
+
+- cdbc904: Add `@interactors/globals` package. Decouple interactors from `@bigtest/globals`
+- dcf14c7: Enhance NPM READMEs to point to interactor website
+- 85ef221: wrap interaction actions instead the whole interaction
+- Updated dependencies [cdbc904]
+- Updated dependencies [1f551e9]
+- Updated dependencies [e95ab99]
+- Updated dependencies [10639b8]
+- Updated dependencies [020595c]
+- Updated dependencies [6834dcf]
+- Updated dependencies [dcf14c7]
+- Updated dependencies [85ef221]
+- Updated dependencies [e3448b0]
+- Updated dependencies [9f79e84]
+- Updated dependencies [3c0aa1c]
+- Updated dependencies [2f5aa35]
+  - @interactors/html@0.34.0
+
 ## 0.1.3
 
 ### Patch Changes
