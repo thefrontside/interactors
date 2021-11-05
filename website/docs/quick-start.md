@@ -85,7 +85,7 @@ If you are using Cypress, you will also need to install `@interactors/with-cypre
   </TabItem>
 </Tabs>
 
-Please refer to the Cypress section on our [Integrations](/docs/integrations#cypress) page for more details as there are additional setup steps.
+Please refer to the [Cypress](/docs/cypress) guide for more details as there are additional setup steps.
 :::
 
 ## Import Interactors in your test suite
@@ -320,12 +320,13 @@ As you can see, Interactors not only make it simple to use DOM elements like Rad
 
 ### Continue learning about Interactors
 
-Try using more of the [Predefined Interactors](/docs/predefined-interactors) within your tests such as `Link`, `CheckBox`, `TextField`, and more.
+Try using more of the [HTML Interactors](/docs/predefined-interactors) within
+your tests such as `Link`, `CheckBox`, `TextField`, and more. Check out the
+[Libraries](/docs/library) to find interactors for the components you are
+using.
 
-You’ll quickly realize how much more powerful Interactors are when combined with [Locators, Filters, and Actions](/docs/locators-filters-actions).
+Once you are comfortable with those, you’ll want to [write your own Interactors](/docs/create-first-interactor) to streamline the workflow of testing your own application.
 
-Once you are comfortable with those, you’ll want to [write your own Interactors](/docs/write-your-own) to explore just how useful they can be.
-
-### Join the BigTest community
+### Join the Interactors community
 
 If you want to know more about Interactors or have any questions, you can reach out to us on our Discord channel. We're eager to help you get started and hear your feedback on how to improve Interactors. [Join us today!](https://discord.gg/r6AvtnU)
