@@ -3,7 +3,6 @@ export { Interaction, ReadonlyInteraction, isInteraction } from './interaction';
 export { createInteractor } from './create-interactor';
 export { createInspector } from './inspector'
 export { Page } from './page';
-export { App } from './app';
 export { read } from './read';
 export { perform } from './perform';
 export { fillIn } from './fill-in';
