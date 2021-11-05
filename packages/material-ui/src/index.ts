@@ -1,5 +1,4 @@
 export {
-  App,
   Button as HTMLButton,
   CheckBox as HTMLCheckbox,
   FormField,
