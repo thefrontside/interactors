@@ -2,9 +2,11 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInteractor, Link, Heading } from '../src';
+import { createInteractor } from '../src';
 
-const MainNav = createInteractor('main nav').selector('nav');
+const MainNav = createInteractor<HTMLElement>('main nav').selector('nav');
+const Link = createInteractor<HTMLAnchorElement>('link').selector('a');
+const Heading = createInteractor<HTMLHeadingElement>('heading').selector('h1');
 
 describe('Interactor', () => {
   describe('instantiation', () => {

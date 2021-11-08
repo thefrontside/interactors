@@ -2,21 +2,27 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { HTML } from '../src/index';
+import { createInteractor } from '../src/index';
 
-const Header = HTML.extend('header')
+const Header = createInteractor('header')
+  .filters({
+    text: (e) => e.textContent
+  })
   .selector('h1,h2,h3,h4,h5,h6')
 
-const Calendar = HTML.extend<HTMLElement>("calendar")
+const Calendar = createInteractor<HTMLElement>("calendar")
   .selector("div.calendar")
 
-const TextField = HTML.extend<HTMLInputElement>('text field')
+const TextField = createInteractor<HTMLInputElement>('text field')
   .selector('input')
   .filters({
     placeholder: element => element.placeholder,
   })
+  .actions({
+    click: ({ perform }) => perform((e) => e.click())
+  });
 
-const Datepicker = HTML.extend<HTMLDivElement>("datepicker")
+const Datepicker = createInteractor<HTMLDivElement>("datepicker")
   .selector("div.datepicker")
   .locator(element => element.querySelector("label")?.textContent || "")
   .filters({

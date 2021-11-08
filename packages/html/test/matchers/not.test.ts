@@ -2,8 +2,13 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from '../helpers';
 
-import { HTML, not, including } from '../../src/index';
+import { createInteractor, not, including } from '../../src/index';
 
+const HTML = createInteractor<HTMLElement>('html')
+  .filters({
+    id: (e) => e.id,
+    title: (e) => e.title,
+  });
 
 const div = HTML({ id: "test-div" });
 

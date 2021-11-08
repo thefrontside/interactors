@@ -2,9 +2,10 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInspector, createInteractor, including, Link } from '../src/index';
+import { createInspector, createInteractor, including } from '../src/index';
 
-const Div = createInteractor('div').selector('div')
+const Div = createInteractor('div').selector('div');
+const Link = createInteractor<HTMLAnchorElement>('link').selector('a').filters({ href: (e) => e.href });
 
 describe('inspector', () => {
   it('.find', async () => {
@@ -19,6 +20,6 @@ describe('inspector', () => {
 
     let links = divs.map(div => div.find(Link).all()).reduce((a, b) => a.concat(b))
 
-    await expect(Promise.all(links.map(e => e.has({ href: including('/') })))).resolves
+    await expect(Promise.all(links.map(e => e.has({ href: including('/') })))).resolves.toEqual([undefined, undefined])
   });
 });
