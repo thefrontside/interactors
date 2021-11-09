@@ -1,5 +1,6 @@
-import { createInteractor, HTML, Interactor } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { createInteractor, Interactor } from "@interactors/core";
+import { HTML } from "@interactors/html";
+import { userEvent } from "@interactors/core/testing-library";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
 

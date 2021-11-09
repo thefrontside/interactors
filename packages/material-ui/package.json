@@ -64,6 +64,7 @@
     "webpack": "^5.53.0"
   },
   "dependencies": {
+    "@interactors/core": "^0.1.0",
     "@interactors/html": "^0.34.0"
   }
 }

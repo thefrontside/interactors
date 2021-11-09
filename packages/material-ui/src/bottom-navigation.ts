@@ -1,5 +1,5 @@
-import { createInteractor } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { createInteractor } from "@interactors/core";
+import { userEvent } from "@interactors/core/testing-library";
 import { isHTMLElement } from "./helpers";
 
 const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUI BottomNavigationAction")

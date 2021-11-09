@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
-import { Heading } from '../../src/index';
-import { dom } from '../helpers';
+import { Heading } from '../src/index';
+import { dom } from './helpers';
 
 describe('@interactors/html', () => {
   describe('Heading', () => {

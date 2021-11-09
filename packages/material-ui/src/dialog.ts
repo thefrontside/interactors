@@ -1,5 +1,5 @@
 import { HTML } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { userEvent } from "@interactors/core/testing-library";
 import { isHTMLElement } from "./helpers";
 
 const DialogInteractor = HTML.extend("MUI Dialog")

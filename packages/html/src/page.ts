@@ -1,6 +1,5 @@
 import { bigtestGlobals } from '@bigtest/globals';
-import { interaction, Interaction } from './interaction';
-import { createInteractor } from './create-interactor';
+import { createInteractor } from '@interactors/core';
 
 let visitCounter = 1;
 
@@ -15,14 +14,11 @@ const PageInteractor = createInteractor('page')
       url.search = search.toString();
       return url.toString();
     },
-  });
+  })
+  .actions({
+    async visit(interactor, path = '/') {
+      console.log('`Page.visit` is deprecated, use `visit` from bigtest instead!');
 
-const PageInteractorInstance = Object.assign(PageInteractor(), {
-  /**
-   * @deprecated `visit` method will be removed soon, please use `visit` function from `bigtest` instead
-   */
-  visit(path = '/'): Interaction<void> {
-    return interaction(`visiting ${JSON.stringify(path)}`, async () => {
       // eslint-disable-next-line prefer-let/prefer-let
       const { appUrl, testFrame } = bigtestGlobals;
 
@@ -49,9 +45,8 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
           reject(new Error('timed out trying to load application'));
         }, bigtestGlobals.defaultAppTimeout);
       });
-    });
-  }
-});
+    }
+  });
 
 /**
  * This {@link Interactor} can be used to assert on global properties of the
@@ -81,4 +76,4 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
  *
  * @category Interactor
  */
-export const Page = PageInteractorInstance;
+export const Page = PageInteractor();

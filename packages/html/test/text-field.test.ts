@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
-import { TextField, Heading } from '../../src/index';
-import { dom } from '../helpers';
+import { TextField, Heading } from '../src/index';
+import { dom } from './helpers';
 
 describe('@interactors/html', () => {
   describe('TextField', () => {

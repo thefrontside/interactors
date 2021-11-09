@@ -1,7 +1,7 @@
 {
-  "name": "@interactors/html",
-  "version": "0.34.0",
-  "description": "Interactors for working with applications",
+  "name": "@interactors/core",
+  "version": "0.1.0",
+  "description": "Composable page objects for components",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
   "types": "dist/index.d.ts",
@@ -12,37 +12,53 @@
   "files": [
     "dist/**/*",
     "src/**/*",
+    "testing-library.*",
     "README.md"
   ],
   "exports": {
     ".": {
       "require": "./dist/cjs/index.js",
       "default": "./dist/esm/index.js"
+    },
+    "./testing-library": {
+      "require": "./dist/cjs/testing-library.js",
+      "default": "./dist/esm/testing-library.js"
     }
   },
   "scripts": {
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "check:types": "tsc --noEmit",
-    "test": "mocha -r ts-node/register \"test/**/*.test.ts\"",
+    "test:unit": "mocha \"test/**/*.test.ts\"",
+    "test:types": "dtslint types --localTs ../../node_modules/typescript/lib --expectOnly",
+    "test": "yarn test:unit && yarn test:types",
     "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
-    "docs:netlify": "yarn prepack && yarn docs",
-    "docs:preview": "yarn parcel docs/api/v1/index.html",
     "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
     "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@interactors/core": "^0.1.0"
+    "@bigtest/globals": "^0.7.6",
+    "@interactors/globals": "^0.1.0",
+    "@testing-library/dom": "^8.5.0",
+    "@testing-library/user-event": "^13.2.1",
+    "change-case": "^4.1.1",
+    "element-is-visible": "^1.0.0",
+    "lodash.isequal": "^4.5.0",
+    "performance-api": "^1.0.0"
   },
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
+    "@types/express": "^4.17.6",
+    "@types/jsdom": "^16.2.3",
+    "@types/lodash.isequal": "^4.5.5",
     "@types/mocha": "^7.0.1",
     "@types/node": "^14.17.5",
+    "dtslint": "^4.0.5",
     "expect": "^24.9.0",
+    "express": "^4.17.1",
     "jsdom": "^16.2.2",
     "mocha": "^6.2.2",
-    "parcel": "^2.0.0-beta.2",
     "ts-node": "^9.1.1",
     "typedoc": "^0.22.7"
   },

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, addActionWrapper } from '@interactors/html';
+import { setDocumentResolver, addActionWrapper } from '@interactors/globals';
+import { Interaction, isInteraction, ReadonlyInteraction } from '@interactors/core';
 
 declare global {
   namespace Cypress {

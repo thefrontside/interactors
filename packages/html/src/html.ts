@@ -1,4 +1,4 @@
-import { createInteractor } from '../index';
+import { createInteractor } from '@interactors/core';
 import { isVisible } from 'element-is-visible';
 import userEvent from '@testing-library/user-event'
 

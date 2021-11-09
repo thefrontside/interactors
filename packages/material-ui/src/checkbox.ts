@@ -1,5 +1,6 @@
-import { CheckBox as BaseCheckbox, isVisible } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { isVisible } from "@interactors/core";
+import { CheckBox as BaseCheckbox } from "@interactors/html";
+import { userEvent } from "@interactors/core/testing-library";
 
 const CheckboxInteractor = BaseCheckbox.extend("MUI Checkbox")
   .selector('[class*="MuiCheckbox-root"] input[type=checkbox]')

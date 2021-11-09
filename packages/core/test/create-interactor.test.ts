@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInteractor, read } from '../src';
+import { createInteractor } from '../src';
 
 const Link = createInteractor<HTMLLinkElement>('link')
   .selector('a')
@@ -546,8 +546,8 @@ describe('createInteractor', () => {
         <input id="Password" value='test1234'/>
       `);
 
-      await expect(read(TextField('Password'), 'value')).resolves.toEqual('test1234')
-      await expect(read(TextField({ value: 'jonas@example.com' }), 'id')).resolves.toEqual('Email')
+      await expect(TextField('Password').value()).resolves.toEqual('test1234')
+      await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email')
     })
   })
 });

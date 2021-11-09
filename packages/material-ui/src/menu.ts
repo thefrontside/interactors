@@ -1,5 +1,6 @@
-import { createInteractor, HTML } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { createInteractor } from "@interactors/core";
+import { HTML } from "@interactors/html";
+import { userEvent } from "@interactors/core/testing-library";
 import { Button } from "./button";
 import { applyGetter, isDisabled } from "./helpers";
 
