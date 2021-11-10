@@ -154,7 +154,7 @@ MultiSelect().has({ values: every(blueOrGreen) });
 
 To create your own matcher without the use of any of the preexisting ones, you will need to create a function that returns a `{ match(), description() }` object.
 
-The `match()` function is where you place all of the matcher logic. It takes one argument, `actual`, which represents the values from the interactors. Here's how the `including()` matcher is implemented:
+The `match()` function returns a boolean value indicating whether a filter or locator matches. It takes a single argument, `actual`, which is the current value of the filter or locator. Here's how the `including()` matcher is implemented:
 
 ```js
 export function including(subString) {
