@@ -1,6 +1,5 @@
 import { createInteractor, Interactor } from "@interactors/core";
-import { HTML } from "@interactors/html";
-import { userEvent } from "@interactors/core/testing-library";
+import { click, HTML } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
 
@@ -14,7 +13,7 @@ export const SelectOption = HTML.extend<HTMLLIElement>("MUI Option")
     },
   })
   .actions({
-    choose: ({ perform }) => perform((element) => userEvent.click(element)),
+    choose: ({ perform }) => perform((element) => click(element)),
   });
 
 const SelectOptionsList = createInteractor<HTMLElement>("MUI OptionsList")

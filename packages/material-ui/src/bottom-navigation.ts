@@ -1,5 +1,4 @@
-import { createInteractor } from "@interactors/core";
-import { userEvent } from "@interactors/core/testing-library";
+import { click, createInteractor } from "@interactors/core";
 import { isHTMLElement } from "./helpers";
 
 const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUI BottomNavigationAction")
@@ -8,7 +7,7 @@ const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUI BottomNa
     let label = element.querySelector('[class*="MuiBottomNavigationAction-label"]');
     return isHTMLElement(label) ? label.innerText : "";
   })
-  .actions({ click: ({ perform }) => perform((element) => userEvent.click(element)) });
+  .actions({ click: ({ perform }) => perform((element) => click(element)) });
 
 const BottomNavigationInteractor = createInteractor<HTMLElement>("MUI BottomNavigation")
   .selector('[class*="MuiBottomNavigation-root"]')

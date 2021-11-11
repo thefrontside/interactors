@@ -1,5 +1,4 @@
-import { HTML } from "@interactors/html";
-import { userEvent } from "@interactors/core/testing-library";
+import { click, HTML } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 const DialogInteractor = HTML.extend("MUI Dialog")
@@ -15,7 +14,7 @@ const DialogInteractor = HTML.extend("MUI Dialog")
     close: ({ perform }) =>
       perform((element) => {
         let backdrop = element.querySelector('[class*="MuiBackdrop-root"]');
-        if (isHTMLElement(backdrop)) userEvent.click(backdrop);
+        if (isHTMLElement(backdrop)) click(backdrop);
       }),
   });
 

@@ -12,17 +12,12 @@
   "files": [
     "dist/**/*",
     "src/**/*",
-    "testing-library.*",
     "README.md"
   ],
   "exports": {
     ".": {
       "require": "./dist/cjs/index.js",
       "default": "./dist/esm/index.js"
-    },
-    "./testing-library": {
-      "require": "./dist/cjs/testing-library.js",
-      "default": "./dist/esm/testing-library.js"
     }
   },
   "scripts": {
