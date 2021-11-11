@@ -16,8 +16,8 @@
   ],
   "dependencies": {
     "@bigtest/globals": "^0.7.6",
-    "@interactors/html": "^0.34.0",
-    "@interactors/core": "^0.1.0"
+    "@interactors/core": "^0.1.0",
+    "@interactors/html": "^0.34.0"
   },
   "peerDependencies": {
     "cypress": "^6.0.0 || ^7.0.0 || ^8.0.0"
@@ -35,7 +35,7 @@
     "@frontside/typescript": "^1.1.1",
     "cypress": "^8.0.0",
     "start-server-and-test": "^1.11.7",
-    "ts-node": "^9.1.1"
+    "ts-node": "^10.4.0"
   },
   "volta": {
     "node": "14.17.5",
