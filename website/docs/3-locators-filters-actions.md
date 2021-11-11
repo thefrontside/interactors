@@ -3,7 +3,7 @@ id: locators-filters-actions
 title: Locators, Filters, and Actions
 ---
 
-Whether they are predefined or written by you, all interactors have some things in common. They have to be able to find elements in the page and manipulate them like a user would. To do these things, Interactors use a locator, filters, and actions.
+Whether they are predefined or written by you, all interactors have some things in common. They have to be able to find elements in the page and manipulate them like a user would. To do these things, Interactors use a _locator_, _filters_, and _actions_.
 
 ## The Locator
 
