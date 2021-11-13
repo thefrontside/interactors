@@ -1,4 +1,4 @@
-import { dispatchChange, dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch';
+import { dispatchChange, dispatchInput, dispatchKeyDown, dispatchKeyUp } from '../dispatch';
 
 type TextFieldElement = HTMLInputElement | HTMLTextAreaElement;
 

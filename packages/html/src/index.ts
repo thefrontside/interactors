@@ -1,31 +1,14 @@
-export { Interactor, InteractorConstructor, InteractorSpecification } from './specification';
-export { Interaction, ReadonlyInteraction, isInteraction } from './interaction';
-export { createInteractor } from './create-interactor';
-export { createInspector } from './inspector'
+export * from '@interactors/core';
+export * from '@interactors/globals';
+
+export { HTML } from './html';
 export { Page } from './page';
-export { read } from './read';
-export { perform } from './perform';
-export { fillIn } from './fill-in';
-export { focused, focus, blur } from './focused';
-export { isVisible } from 'element-is-visible';
-export { Matcher } from './matcher';
-
-export { HTML } from './definitions/html';
-export { FormField } from './definitions/form-field';
-export { Link } from './definitions/link';
-export { Heading } from './definitions/heading';
-export { Button } from './definitions/button';
-export { TextField } from './definitions/text-field';
-export { CheckBox } from './definitions/check-box';
-export { RadioButton } from './definitions/radio-button';
-export { Select } from './definitions/select';
-export { MultiSelect } from './definitions/multi-select';
-
-export { including } from './matchers/including';
-export { matching } from './matchers/matching';
-export { and } from './matchers/and';
-export { or } from './matchers/or';
-export { not } from './matchers/not';
-export { some } from './matchers/some';
-export { every } from './matchers/every';
-export * from '@interactors/globals'
+export { FormField } from './form-field';
+export { Link } from './link';
+export { Heading } from './heading';
+export { Button } from './button';
+export { TextField } from './text-field';
+export { CheckBox } from './check-box';
+export { RadioButton } from './radio-button';
+export { Select } from './select';
+export { MultiSelect } from './multi-select';

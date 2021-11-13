@@ -1,4 +1,4 @@
-import userEvent from '@testing-library/user-event';
+import { click } from '@interactors/core';
 import { isVisible } from 'element-is-visible';
 import { FormField } from './form-field';
 
@@ -14,12 +14,12 @@ const CheckBoxInteractor = FormField.extend<HTMLInputElement>('check box')
   })
   .actions({
     check: ({ perform }) => perform((element) => {
-      if ((!element.checked || element.indeterminate)) userEvent.click(element);
+      if ((!element.checked || element.indeterminate)) click(element);
     }),
     uncheck: ({ perform }) => perform((element) => {
-      if ((element.checked || element.indeterminate)) userEvent.click(element);
+      if ((element.checked || element.indeterminate)) click(element);
     }),
-    toggle: ({ perform }) => perform((element) => userEvent.click(element)),
+    toggle: ({ perform }) => perform((element) => click(element)),
   })
 
 /**

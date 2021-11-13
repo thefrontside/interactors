@@ -5,10 +5,11 @@ import { Server } from 'http';
 
 import { JSDOM, ResourceLoader } from 'jsdom';
 import { bigtestGlobals } from '@bigtest/globals';
+import { globals, setDocumentResolver } from '@interactors/globals';
 
 import { dom } from './helpers';
 
-import { globals, Page, read, setDocumentResolver } from '../src';
+import { Page } from '../src';
 
 describe('Page', () => {
   describe('visit', () => {
@@ -50,23 +51,23 @@ describe('Page', () => {
 
     it('can load the app by visiting the root path', async () => {
       await Page.visit();
-      await expect(read(Page, 'url')).resolves.toEqual('http://example.com/');
+      await expect(Page.url()).resolves.toEqual('http://example.com/');
     });
 
     it('can load the app by visiting the given path', async () => {
       await Page.visit('/foobar');
-      await expect(read(Page, 'url')).resolves.toEqual('http://example.com/foobar');
+      await expect(Page.url()).resolves.toEqual('http://example.com/foobar');
     });
 
     it('can reload the app by visiting changed url hash', async () => {
       await Page.visit('/#/foo');
-      await expect(read(Page, 'url')).resolves.toEqual('http://example.com/#/foo');
+      await expect(Page.url()).resolves.toEqual('http://example.com/#/foo');
       await Page.visit('/#/bar');
-      await expect(read(Page, 'url')).resolves.toEqual('http://example.com/#/bar');
+      await expect(Page.url()).resolves.toEqual('http://example.com/#/bar');
     });
 
     it('is an interaction which can describe itself', async () => {
-      expect(Page.visit('/foobar').description).toEqual('visiting "/foobar"');
+      expect(Page.visit('/foobar').description).toEqual('visit with "/foobar" on page');
     });
 
     it('throws an error if app url is not defined', async () => {

@@ -39,7 +39,9 @@ const AccordionInteractor = HTML.extend<HTMLElement>("MUI Accordion")
 
       await interactor.find(AccordionSummary()).click();
     },
-    toggle: (interactor) => interactor.find(AccordionSummary()).click(),
+    toggle: async (interactor) => {
+      await interactor.find(AccordionSummary()).click();
+    }
   });
 
 /**

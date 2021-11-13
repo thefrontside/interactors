@@ -1,4 +1,4 @@
-import { fillIn } from '../index';
+import { fillIn } from '@interactors/core';
 import { FormField } from './form-field';
 
 const selector = 'textarea, input' + [

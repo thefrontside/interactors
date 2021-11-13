@@ -105,6 +105,8 @@ workflows:
           matrix:
             parameters:
               package:
+                - globals
+                - core
                 - html
                 - material-ui
                 - with-cypress
