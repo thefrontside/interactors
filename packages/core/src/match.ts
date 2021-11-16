@@ -1,5 +1,5 @@
 import { Locator } from './locator';
-import { Filter } from './filter';
+import { FilterSet } from './filter-set';
 import { Filters, FilterFn, FilterObject } from './specification';
 import { escapeHtml } from './escape-html';
 import { MaybeMatcher, applyMatcher, matcherDescription } from './matcher';
@@ -13,19 +13,19 @@ export class Match<E extends Element, F extends Filters<E>> {
 
   constructor(
     public element: E,
-    public filter: Filter<E, F>,
+    public filterSet: FilterSet<E, F>,
     public locator?: Locator<E>,
   ) {
     this.matchLocator = locator && new MatchLocator(element, locator);
-    this.matchFilter = new MatchFilter(element, filter);
+    this.matchFilter = new MatchFilter(element, filterSet);
     this.matches = (this.matchLocator ? this.matchLocator.matches : true) && this.matchFilter.matches;
   }
 
   asTableHeader(name: string): string[] {
     if(this.matchLocator) {
-      return [name, ...this.filter.asTableHeader()];
+      return [name, ...this.filterSet.asTableHeader()];
     } else {
-      return this.filter.asTableHeader();
+      return this.filterSet.asTableHeader();
     }
   }
 
@@ -83,7 +83,7 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
 
   constructor(
     public element: E,
-    public filter: Filter<E, F>,
+    public filter: FilterSet<E, F>,
   ) {
     this.items = Object.entries(filter.all).map(([key, expected]) => {
       return new MatchFilterItem(element, filter, key, expected)
@@ -119,7 +119,7 @@ export class MatchFilterItem<T, E extends Element, F extends Filters<E>> {
 
   constructor(
     public element: E,
-    public filter: Filter<E, F>,
+    public filter: FilterSet<E, F>,
     public key: string,
     public expected: MaybeMatcher<T>,
   ) {

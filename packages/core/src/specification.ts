@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Filter } from './filter';
+import { FilterSet } from './filter-set';
 import { Locator } from './locator';
 import { Interaction, ReadonlyInteraction } from './interaction';
 import { MergeObjects } from './merge-objects';
@@ -256,6 +256,6 @@ export type InteractorOptions<E extends Element, F extends Filters<E>, A extends
   name: string;
   specification: InteractorSpecification<E, F, A>;
   locator?: Locator<E>;
-  filter: Filter<E, F>;
+  filter: FilterSet<E, F>;
   ancestors: InteractorOptions<any, any, any>[];
 };

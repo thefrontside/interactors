@@ -17,7 +17,7 @@ import {
   BaseInteractor,
   FilterObject,
 } from './specification';
-import { Filter } from './filter';
+import { FilterSet } from './filter-set';
 import { Locator } from './locator';
 import { MatchFilter, applyFilter } from './match';
 import { formatTable } from './format-table';
@@ -118,8 +118,8 @@ function description(options: InteractorOptions<any, any, any>): string {
  * assertion. Otherwise, it is not possible to make an assertion on a filter that might conflict
  * see https://github.com/thefrontside/bigtest/issues/966
 */
-function getLookupFilterForAssertion<E extends Element, F extends Filters<E>>(filter: Filter<E, F>, filters: FilterParams<E, F>): Filter<E, F> {
-  let lookupFilter = new Filter(filter.specification, Object.assign({}, filter.filters));
+function getLookupFilterForAssertion<E extends Element, F extends Filters<E>>(filter: FilterSet<E, F>, filters: FilterParams<E, F>): FilterSet<E, F> {
+  let lookupFilter = new FilterSet(filter.specification, Object.assign({}, filter.filters));
   let specFilters = lookupFilter.specification.filters;
   for (let key in specFilters) {
     if (typeof specFilters[key] !== 'function'
@@ -168,7 +168,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     },
 
     is(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
-      let filter = new Filter(options.specification, filters);
+      let filter = new FilterSet(options.specification, filters);
       return check(`${description(options)} matches filters: ${filter.description}`, () => {
         return converge(() => {
           let element = resolver({...options, filter: getLookupFilterForAssertion(options.filter, filters) });
@@ -266,9 +266,9 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     let locatorValue = args[0] instanceof RegExp ? matching(args[0]) : args[0]
     if (typeof(locatorValue) === 'string' || isMatcher(locatorValue)) {
       locator = new Locator(specification.locator || defaultLocator, locatorValue);
-      filter = new Filter(specification, args[1] || {});
+      filter = new FilterSet(specification, args[1] || {});
     } else {
-      filter = new Filter(specification, args[0] || {});
+      filter = new FilterSet(specification, args[0] || {});
     }
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
   }

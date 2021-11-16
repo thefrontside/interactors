@@ -2,7 +2,7 @@ import { Filters, FilterFn, FilterObject, FilterParams, InteractorSpecification 
 import { noCase } from 'change-case';
 import { matcherDescription } from './matcher';
 
-export class Filter<E extends Element, F extends Filters<E>> {
+export class FilterSet<E extends Element, F extends Filters<E>> {
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public specification: InteractorSpecification<E, F, any>,
