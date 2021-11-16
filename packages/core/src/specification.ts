@@ -130,22 +130,6 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
 
 export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;
 
-/**
- * A function which given an element returns a string which can be used to
- * locate the element, for example by returning the elements text content, or
- * an attribute value.
- *
- * ### Example
- *
- * ``` typescript
- * const inputValue: LocatorFn<HTMLInputElement> = (element) => element.value;
- * ```
- *
- * @param element The element to extract a locator out of
- * @typeParam E The type of the element that the locator function operates on
- */
-export type LocatorFn<E extends Element> = (element: E) => string;
-
 export type FilterFn<T, E extends Element> = (element: E) => T;
 
 export type FilterObject<T, E extends Element> = {
@@ -174,7 +158,7 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
    * parameter of an {@link InteractorConstructor} must match the value
    * returned from the locator function.
    */
-  locator?: LocatorFn<E>;
+  locator?: FilterDefinition<string, E>;
 }
 
 export type ActionMethods<E extends Element, A extends Actions<E>> = {
@@ -215,7 +199,7 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
  */
 export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
   selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
-  locator(value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM>;
+  locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
   actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
   extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;

@@ -60,7 +60,7 @@ export class MatchLocator<E extends Element> {
     public locator: Locator<E>,
   ) {
     this.expected = locator.value;
-    this.actual = locator.locatorFn(element);
+    this.actual = locator.apply(element);
     this.matches = applyMatcher(this.expected, this.actual);
   }
 

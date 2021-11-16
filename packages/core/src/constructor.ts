@@ -6,11 +6,11 @@ import { MergeObjects } from './merge-objects';
 import {
   InteractorOptions,
   ActionMethods,
-  LocatorFn,
   InteractorConstructor,
   Interactor,
   Filters,
   Actions,
+  FilterDefinition,
   FilterParams,
   FilterMethods,
   InteractorSpecification,
@@ -28,7 +28,7 @@ import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './err
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
 
-const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "";
+const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
 
 export function findElements<E extends Element>(parentElement: Element, interactor: InteractorOptions<any, any, any>): E[] {
@@ -268,6 +268,9 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
       locator = new Locator(specification.locator || defaultLocator, locatorValue);
       filter = new FilterSet(specification, args[1] || {});
     } else {
+      if(typeof(specification.locator) === 'object' && specification.locator.default) {
+        locator = new Locator(specification.locator, specification.locator.default);
+      }
       filter = new FilterSet(specification, args[0] || {});
     }
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
@@ -277,7 +280,7 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
       return createConstructor(name, { ...specification, selector: value });
     },
-    locator: (value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM> => {
+    locator: (value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM> => {
       return createConstructor(name, { ...specification, locator: value });
     },
     filters: <FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM> => {
