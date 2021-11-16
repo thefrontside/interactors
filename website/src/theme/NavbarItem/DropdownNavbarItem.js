@@ -16,7 +16,7 @@ import {NavLink} from '@theme/NavbarItem/DefaultNavbarItem';
 import NavbarItem from '@theme/NavbarItem';
 const dropdownLinkActiveClass = 'dropdown__link--active';
 
-import { navbarDropdownOffset } from "../Navbar/Navbar.css"
+import { navbarDropdownOffset } from "../Navbar/navbar.css"
 
 function isItemActive(item, localPathname) {
   if (isSamePath(item.to, localPathname)) {
