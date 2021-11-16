@@ -49,23 +49,6 @@ describe('locator', () => {
     ].join('\n'));
   });
 
-  it('can set default value for locator', async () => {
-    const Paragraph = createInteractor('p')
-      .selector('p')
-      .locator({
-        apply: (e) => e.id,
-        default: 'bar-id',
-      })
-      .filters({ id: (e) => e.id });
-
-    dom(`
-      <p id="foo-id">Foo</p>
-      <p id="bar-id">Bar</p>
-    `);
-
-    await expect(Paragraph().id()).resolves.toEqual('bar-id');
-  });
-
   it('can delegate locator to other interactor', async () => {
     const Span = createInteractor('span').selector('span').filters({
       text: (e) => e.textContent || ""

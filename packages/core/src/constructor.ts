@@ -268,9 +268,6 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
       locator = new Locator(specification.locator || defaultLocator, locatorValue);
       filter = new FilterSet(specification, args[1] || {});
     } else {
-      if(typeof(specification.locator) === 'object' && specification.locator.default) {
-        locator = new Locator(specification.locator, specification.locator.default);
-      }
       filter = new FilterSet(specification, args[0] || {});
     }
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
