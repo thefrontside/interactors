@@ -55,6 +55,37 @@ export const navBar = styleVariants({
   default: [navWrap]
 });
 
+export const navDropdown = style({
+  fontWeight: vars.fontWeights.bold,
+  fontSize: vars.fontSize.xs,
+  letterSpacing: vars.letterSpacing.xs,
+  color: vars.colors.white,
+  display: "inline-block",
+  position: "relative",
+  marginLeft: vars.space.sm,
+  padding: 0,
+  
+  "@media": {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    },
+  },
+  selectors: {
+    '&:hover': {
+      color: vars.colors.white,
+    },
+  },
+});
+
+export const navbarDropdownOffset = style({
+  marginLeft: vars.space.sm,
+  "@media": {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    },
+  },
+})
+
 export const navLink = style({
   fontWeight: vars.fontWeights.bold,
   fontSize: vars.fontSize.xs,
