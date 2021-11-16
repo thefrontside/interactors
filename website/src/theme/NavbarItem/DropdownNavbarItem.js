@@ -70,7 +70,8 @@ function DropdownNavbarItemDesktop({items, position, className, ...props}) {
         'dropdown--show': showDropdown,
       })}>
       <NavLink
-        className={clsx(className, 'navbar__item navbar__link')}
+        style={{ display: "inline-block" }}
+        className={clsx(className, 'navbar__link')}
         {...props}
         onClick={props.to ? undefined : (e) => e.preventDefault()}
         onKeyDown={(e) => {
