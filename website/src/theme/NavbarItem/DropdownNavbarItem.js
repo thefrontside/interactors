@@ -70,7 +70,7 @@ function DropdownNavbarItemDesktop({items, position, className, ...props}) {
         'dropdown--show': showDropdown,
       })}>
       <NavLink
-        className={clsx('navbar__item navbar__link', className)}
+        className={clsx(className, 'navbar__item navbar__link')}
         {...props}
         onClick={props.to ? undefined : (e) => e.preventDefault()}
         onKeyDown={(e) => {
@@ -131,7 +131,7 @@ function DropdownNavbarItemMobile({
       })}>
       <NavLink
         role="button"
-        className={clsx('menu__link menu__link--sublist', className)}
+        className={clsx(className, 'menu__link menu__link--sublist')}
         {...props}
         onClick={(e) => {
           e.preventDefault();
