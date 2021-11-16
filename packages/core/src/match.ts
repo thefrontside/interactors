@@ -1,6 +1,6 @@
 import { Locator } from './locator';
 import { FilterSet } from './filter-set';
-import { Filters, FilterFn, FilterObject } from './specification';
+import { Filters, FilterDefinition } from './specification';
 import { escapeHtml } from './escape-html';
 import { MaybeMatcher, applyMatcher, matcherDescription } from './matcher';
 
@@ -105,7 +105,7 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function applyFilter<T>(definition: FilterFn<T, any> | FilterObject<T, any>, element: Element): T {
+export function applyFilter<T>(definition: FilterDefinition<T, any>, element: Element): T {
   if(typeof(definition) === 'function') {
     return definition(element) as T;
   } else {

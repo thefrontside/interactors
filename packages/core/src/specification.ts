@@ -129,7 +129,6 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
 }
 
 export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;
-export type FilterFn<T, E extends Element> = (element: E) => T;
 
 /**
  * A function which given an element returns a string which can be used to
@@ -147,12 +146,16 @@ export type FilterFn<T, E extends Element> = (element: E) => T;
  */
 export type LocatorFn<E extends Element> = (element: E) => string;
 
+export type FilterFn<T, E extends Element> = (element: E) => T;
+
 export type FilterObject<T, E extends Element> = {
   apply: FilterFn<T, E>;
   default?: T;
 }
 
-export type Filters<E extends Element> = Record<string, FilterFn<unknown, E> | FilterObject<unknown, E>>;
+export type FilterDefinition<T, E extends Element> = FilterFn<T, E> | FilterObject<T, E>;
+
+export type Filters<E extends Element> = Record<string, FilterDefinition<unknown, E>>;
 
 export type Actions<E extends Element> = Record<string, ActionFn<E>>;
 
