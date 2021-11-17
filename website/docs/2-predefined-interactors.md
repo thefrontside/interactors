@@ -7,16 +7,16 @@ Predefined interactors cover some of the most common UI testing needs for apps t
 
 These are the default interactors that are offered in `@interactors/html`:
 
-- [Button](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/button.ts)
-- [CheckBox](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/check-box.ts)
-- [FormField](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/form-field.ts)
-- [Heading](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/heading.ts)
-- [Link](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/link.ts)
-- [MultiSelect](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/multi-select.ts)
+- [Button](https://github.com/thefrontside/interactors/blob/main/packages/html/src/button.ts)
+- [CheckBox](https://github.com/thefrontside/interactors/blob/main/packages/html/src/check-box.ts)
+- [FormField](https://github.com/thefrontside/interactors/blob/main/packages/html/src/form-field.ts)
+- [Heading](https://github.com/thefrontside/interactors/blob/main/packages/html/src/heading.ts)
+- [Link](https://github.com/thefrontside/interactors/blob/main/packages/html/src/link.ts)
+- [MultiSelect](https://github.com/thefrontside/interactors/blob/main/packages/html/src/multi-select.ts)
 - [Page](https://github.com/thefrontside/interactors/blob/main/packages/html/src/page.ts)
-- [RadioButton](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/radio-button.ts)
-- [Select](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/select.ts)
-- [TextField](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/text-field.ts)
+- [RadioButton](https://github.com/thefrontside/interactors/blob/main/packages/html/src/radio-button.ts)
+- [Select](https://github.com/thefrontside/interactors/blob/main/packages/html/src/select.ts)
+- [TextField](https://github.com/thefrontside/interactors/blob/main/packages/html/src/text-field.ts)
 
 As you might have seen on the [Quick Start](/docs/) page, you can import any of the interactors directly from the `@interactors/html` package:
 

@@ -91,7 +91,7 @@ Heading().has({ or(id: 'foo', id: 'bar') }); // bad
 
 ### Iterable matchers
 
-For when you need to assert against iterables, you will find the `some()` and `every()` matchers very helpful. We will use the [`MultiSelect`](https://github.com/thefrontside/interactors/blob/main/packages/html/src/definitions/multi-select.ts#L45) interactor for the next example because its `values` filter returns an array based on its options' label:
+For when you need to assert against iterables, you will find the `some()` and `every()` matchers very helpful. We will use the [`MultiSelect`](https://github.com/thefrontside/interactors/blob/main/packages/html/src/multi-select.ts#L45) interactor for the next example because its `values` filter returns an array based on its options' label:
 
 ```js
 .filters({
