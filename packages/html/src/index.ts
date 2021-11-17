@@ -3,6 +3,7 @@ export * from '@interactors/globals';
 
 export { HTML } from './html';
 export { Page } from './page';
+export { FieldSet } from './field-set';
 export { FormField } from './form-field';
 export { Link } from './link';
 export { Heading } from './heading';

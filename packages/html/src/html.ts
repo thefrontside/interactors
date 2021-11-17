@@ -25,7 +25,7 @@ const HTMLInteractor = createInteractor<HTMLElement>('element')
 // undefined
 //
 // See details: https://github.com/jsdom/jsdom/issues/1245
-export function innerText(element?: HTMLElement): string {
+export function innerText(element?: HTMLElement | null): string {
   return (element?.innerText != null ? element?.innerText :  element?.textContent) || '';
 }
 
