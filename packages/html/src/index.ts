@@ -1,7 +1,7 @@
 export * from '@interactors/core';
 export * from '@interactors/globals';
 
-export { HTML } from './html';
+export { HTML, innerText } from './html';
 export { Page } from './page';
 export { FieldSet } from './field-set';
 export { Details } from './details';
