@@ -39,17 +39,6 @@ _The `Page` interactor is instantiated differently than the other predefined int
 We introduced `.exists()` and `.absent()` in the [Quick Start](/docs/) section but there are also `.has()` and `.is()` Interactor assertion methods. We will discuss their details on the [Assertions](/docs/assertions) page.
 :::
 
-And when using the BigTest runner, the Page interactor can be used to navigate between routes:
-
-```js
-import { test } from 'bigtest';
-import { Page } from '@interactors/html';
-
-export default test('BigTest Runner')
-  .step(Page.visit('/contact'))
-  .assertion(Page.has({ title: 'BigTest Example App'}));
-```
-
 ## Up Next
 
 What are the pieces that make up an interactor? Locators and filters help you find things in the UI and make assertions. Actions advance the state of your app. Keep reading on the [Locators, Filters, and Actions](/docs/locators-filters-actions) page to learn more.
