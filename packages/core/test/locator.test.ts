@@ -6,7 +6,7 @@ import { createInteractor } from '../src';
 
 describe('locator', () => {
   it('can use function as locator', async () => {
-    const Paragraph = createInteractor('p')
+    let Paragraph = createInteractor('p')
       .selector('p')
       .locator((e) => e.id);
 
@@ -27,7 +27,7 @@ describe('locator', () => {
   });
 
   it('can use object as locator', async () => {
-    const Paragraph = createInteractor('p')
+    let Paragraph = createInteractor('p')
       .selector('p')
       .locator({
         apply: (e) => e.id
@@ -50,11 +50,11 @@ describe('locator', () => {
   });
 
   it('can delegate locator to other interactor', async () => {
-    const Span = createInteractor('span').selector('span').filters({
+    let Span = createInteractor('span').selector('span').filters({
       text: (e) => e.textContent || ""
     });
 
-    const Paragraph = createInteractor('p')
+    let Paragraph = createInteractor('p')
       .selector('p')
       .locator(Span().text());
 
