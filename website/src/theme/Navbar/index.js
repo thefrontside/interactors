@@ -92,7 +92,7 @@ function Navbar() {
   } = useThemeConfig();
 
   return (
-    <nav className={navBar[title]}>
+    <nav className={`navbar ${navBar[title]}`}>
       <ProjectSelect currentProject={title} />
       <div>
         {items.map((item, i) => (

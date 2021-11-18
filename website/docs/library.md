@@ -1,6 +1,6 @@
 ---
-id: existing-interactors
-title: Existing Interactors
+id: library
+title: Libraries
 ---
 
 There are organizations that have already adopted interactors. With their permission we are able to share their interactors as they may be helpful to you.
