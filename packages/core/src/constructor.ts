@@ -14,7 +14,6 @@ import {
   FilterParams,
   FilterMethods,
   InteractorSpecification,
-  BaseInteractor,
   FilterObject,
 } from './specification';
 import { Filter } from './filter';
@@ -138,10 +137,10 @@ export function unsafeSyncResolveUnique<E extends Element>(options: InteractorOp
   return resolveUnique(unsafeSyncResolveParent(options), options) as E;
 }
 
-export function instantiateBaseInteractor<E extends Element, F extends Filters<E>, A extends Actions<E>>(
+export function instantiateInteractor<E extends Element, F extends Filters<E>, A extends Actions<E>>(
   options: InteractorOptions<E, F, A>,
   resolver: (options: InteractorOptions<E, F, A>) => E
-): BaseInteractor<E, FilterParams<E, F>> & ActionMethods<E, A> {
+): Interactor<E, FilterParams<E, F>> & ActionMethods<E, A> {
   let interactor = {
     options,
 
@@ -177,7 +176,34 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
         });
       });
     },
-  }
+
+    find<T extends Interactor<any, any>>(child: T): T {
+      return instantiateInteractor({
+        ...child.options,
+        ancestors: [...options.ancestors, options, ...child.options.ancestors]
+      }, resolver) as unknown as T;
+    },
+
+    exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
+      return checkFilter(`${description(options)} exists`, () => {
+        return converge(() => {
+          resolveNonEmpty(unsafeSyncResolveParent(options), options);
+        });
+      }, (element) => {
+        return findMatchesMatching(element, options).length > 0;
+      });
+    },
+
+    absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
+      return checkFilter(`${description(options)} does not exist`, () => {
+        return converge(() => {
+          resolveEmpty(unsafeSyncResolveParent(options), options);
+        });
+      }, (element) => {
+        return findMatchesMatching(element, options).length === 0;
+      });
+    }
+  };
 
   for (let [actionName, action] of Object.entries(options.specification.actions || {})) {
     if (!interactor.hasOwnProperty(actionName)) {
@@ -217,42 +243,7 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
     }
   }
 
-  return interactor as BaseInteractor<E, FilterParams<E, F>> & ActionMethods<E, A>;
-}
-
-export function instantiateInteractor<E extends Element, F extends Filters<E>, A extends Actions<E>>(
-  options: InteractorOptions<E, F, A>,
-): Interactor<E, FilterParams<E, F>> & ActionMethods<E, A> {
-  let interactor = instantiateBaseInteractor(options, unsafeSyncResolveUnique)
-
-  return Object.assign(interactor, {
-    find<T extends Interactor<any, any>>(child: T): T {
-      return instantiateInteractor({
-        ...child.options,
-        ancestors: [...options.ancestors, options, ...child.options.ancestors]
-      }) as unknown as T;
-    },
-
-    exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${description(options)} exists`, () => {
-        return converge(() => {
-          resolveNonEmpty(unsafeSyncResolveParent(options), options);
-        });
-      }, (element) => {
-        return findMatchesMatching(element, options).length > 0;
-      });
-    },
-
-    absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${description(options)} does not exist`, () => {
-        return converge(() => {
-          resolveEmpty(unsafeSyncResolveParent(options), options);
-        });
-      }, (element) => {
-        return findMatchesMatching(element, options).length === 0;
-      });
-    }
-  });
+  return interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>;
 }
 
 export function createConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>>(
@@ -268,7 +259,7 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     } else {
       filter = new Filter(specification, args[0] || {});
     }
-    return instantiateInteractor({ name, specification, filter, locator, ancestors: [] });
+    return instantiateInteractor({ name, specification, filter, locator, ancestors: [] }, unsafeSyncResolveUnique);
   }
 
   return Object.assign(initInteractor, {

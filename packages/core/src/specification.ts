@@ -35,80 +35,77 @@ export interface ExistsAssertionsImplementation {
   absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
 }
 
-export interface BaseInteractor<E extends Element, F extends FilterParams<any, any>> {
-  /**
-   * @hidden
-   */
-  options: InteractorOptions<E, any, any>;
-
-  /**
-   * @returns a human readable description of this interactor
-   */
-  description: string;
-
-  /**
-   * Perform a one-off action on the given interactor. Takes a function which
-   * receives an element. This function converges, which means that it is rerun
-   * in a loop until it does not throw an error or times out.
-   *
-   * We recommend using this function for debugging only. You should normally
-   * define an action in an {@link InteractorSpecification}.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Next').perform((e) => e.click());
-   * ```
-   */
-  perform(fn: (element: E) => void): Interaction<void>;
-
-  /**
-   * Perform a one-off assertion on the given interactor. Takes a function which
-   * receives an element. This function converges, which means that it is rerun
-   * in a loop until it does not throw an error or times out.
-   *
-   * We recommend using this function for debugging only. You should normally
-   * define a filter in an {@link InteractorSpecification}.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Next').assert((e) => assert(e.tagName === 'A'));
-   * ```
-   */
-  assert(fn: (element: E) => void): ReadonlyInteraction<void>;
-
-  /**
-   * Checks that there is one element matching the interactor, and that this
-   * element matches the given filters. The available filters are defined by
-   * the {@link InteractorSpecification}.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Home').has({ href: '/' })
-   * ```
-   */
-  has(filters: F): ReadonlyInteraction<void>;
-
-  /**
-   * Identical to {@link has}, but reads better with some filters.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await CheckBox('Accept conditions').is({ checked: true })
-   * ```
-   */
-  is(filters: F): ReadonlyInteraction<void>;
-}
-
 /**
  * Instances of an interactor returned by an {@link InteractorConstructor}, use
  * this class as its base. They are also extended with any additional actions
  * defined in their {@link InteractorSpecification}.
  */
-export interface Interactor<E extends Element, F extends FilterParams<any, any>> extends BaseInteractor<E, F>, ExistsAssertionsImplementation {
+export interface Interactor<E extends Element, F extends FilterParams<any, any>> extends ExistsAssertionsImplementation {
+  /**
+   * @hidden
+   */
+   options: InteractorOptions<E, any, any>;
+
+   /**
+    * @returns a human readable description of this interactor
+    */
+   description: string;
+ 
+   /**
+    * Perform a one-off action on the given interactor. Takes a function which
+    * receives an element. This function converges, which means that it is rerun
+    * in a loop until it does not throw an error or times out.
+    *
+    * We recommend using this function for debugging only. You should normally
+    * define an action in an {@link InteractorSpecification}.
+    *
+    * ## Example
+    *
+    * ``` typescript
+    * await Link('Next').perform((e) => e.click());
+    * ```
+    */
+   perform(fn: (element: E) => void): Interaction<void>;
+ 
+   /**
+    * Perform a one-off assertion on the given interactor. Takes a function which
+    * receives an element. This function converges, which means that it is rerun
+    * in a loop until it does not throw an error or times out.
+    *
+    * We recommend using this function for debugging only. You should normally
+    * define a filter in an {@link InteractorSpecification}.
+    *
+    * ## Example
+    *
+    * ``` typescript
+    * await Link('Next').assert((e) => assert(e.tagName === 'A'));
+    * ```
+    */
+   assert(fn: (element: E) => void): ReadonlyInteraction<void>;
+ 
+   /**
+    * Checks that there is one element matching the interactor, and that this
+    * element matches the given filters. The available filters are defined by
+    * the {@link InteractorSpecification}.
+    *
+    * ## Example
+    *
+    * ``` typescript
+    * await Link('Home').has({ href: '/' })
+    * ```
+    */
+   has(filters: F): ReadonlyInteraction<void>;
+ 
+   /**
+    * Identical to {@link has}, but reads better with some filters.
+    *
+    * ## Example
+    *
+    * ``` typescript
+    * await CheckBox('Accept conditions').is({ checked: true })
+    * ```
+    */
+   is(filters: F): ReadonlyInteraction<void>;
   /**
    * Returns a copy of the given interactor which is scoped to this interactor.
    * When there are multiple matches for an interactor, this makes it possible
