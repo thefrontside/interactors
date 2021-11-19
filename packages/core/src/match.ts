@@ -1,6 +1,6 @@
 import { Locator } from './locator';
-import { Filter } from './filter';
-import { Filters, FilterFn, FilterObject } from './specification';
+import { FilterSet } from './filter-set';
+import { Filters, FilterDefinition } from './specification';
 import { escapeHtml } from './escape-html';
 import { MaybeMatcher, applyMatcher, matcherDescription } from './matcher';
 
@@ -13,19 +13,19 @@ export class Match<E extends Element, F extends Filters<E>> {
 
   constructor(
     public element: E,
-    public filter: Filter<E, F>,
+    public filterSet: FilterSet<E, F>,
     public locator?: Locator<E>,
   ) {
     this.matchLocator = locator && new MatchLocator(element, locator);
-    this.matchFilter = new MatchFilter(element, filter);
+    this.matchFilter = new MatchFilter(element, filterSet);
     this.matches = (this.matchLocator ? this.matchLocator.matches : true) && this.matchFilter.matches;
   }
 
   asTableHeader(name: string): string[] {
     if(this.matchLocator) {
-      return [name, ...this.filter.asTableHeader()];
+      return [name, ...this.filterSet.asTableHeader()];
     } else {
-      return this.filter.asTableHeader();
+      return this.filterSet.asTableHeader();
     }
   }
 
@@ -60,7 +60,7 @@ export class MatchLocator<E extends Element> {
     public locator: Locator<E>,
   ) {
     this.expected = locator.value;
-    this.actual = locator.locatorFn(element);
+    this.actual = locator.apply(element);
     this.matches = applyMatcher(this.expected, this.actual);
   }
 
@@ -83,7 +83,7 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
 
   constructor(
     public element: E,
-    public filter: Filter<E, F>,
+    public filter: FilterSet<E, F>,
   ) {
     this.items = Object.entries(filter.all).map(([key, expected]) => {
       return new MatchFilterItem(element, filter, key, expected)
@@ -105,7 +105,7 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function applyFilter<T>(definition: FilterFn<T, any> | FilterObject<T, any>, element: Element): T {
+export function applyFilter<T>(definition: FilterDefinition<T, any>, element: Element): T {
   if(typeof(definition) === 'function') {
     return definition(element) as T;
   } else {
@@ -119,7 +119,7 @@ export class MatchFilterItem<T, E extends Element, F extends Filters<E>> {
 
   constructor(
     public element: E,
-    public filter: Filter<E, F>,
+    public filter: FilterSet<E, F>,
     public key: string,
     public expected: MaybeMatcher<T>,
   ) {
