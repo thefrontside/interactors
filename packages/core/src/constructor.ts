@@ -32,7 +32,9 @@ const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "
 const defaultSelector = 'div';
 
 export function findElements<E extends Element>(parentElement: Element, interactor: InteractorOptions<any, any, any>): E[] {
-  if(interactor.specification.selector === ':root') {
+  if(typeof(interactor.specification.selector) === 'function') {
+    return interactor.specification.selector(parentElement);
+  } else if(interactor.specification.selector === ':root') {
     // this is a bit of a hack, because otherwise there isn't a good way of selecting the root element
     return [parentElement.ownerDocument.querySelector(':root') as E];
   } else {

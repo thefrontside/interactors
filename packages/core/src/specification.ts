@@ -156,11 +156,13 @@ export type Filters<E extends Element> = Record<string, FilterFn<unknown, E> | F
 
 export type Actions<E extends Element> = Record<string, ActionFn<E>>;
 
+export type SelectorFn<E extends Element> = (parentElement: Element) => E[];
+
 export type InteractorSpecification<E extends Element, F extends Filters<E>, A extends Actions<E>> = {
   /**
    * The CSS selector that this interactor uses to find matching elements
    */
-  selector?: string;
+  selector?: string | SelectorFn<E>;
   actions?: A;
   filters?: F;
   /**
@@ -209,7 +211,7 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
  * @typeParam A the actions of this interactor, this is usually inferred from the specification
  */
 export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
-  selector(value: string): InteractorConstructor<E, FP, FM, AM>;
+  selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
   locator(value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM>;
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
   actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
