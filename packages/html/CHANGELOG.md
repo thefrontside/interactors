@@ -1,5 +1,21 @@
 # @interactors/html
 
+## 0.35.0
+
+### Minor Changes
+
+- 3648853: Remove deprecated app interactor
+- 47f1478: Split off core into own package
+- 735b68d: Add Details interactor
+- 80b72fe: Add FieldSet interactor
+- 31367d7: Reexport innerText function
+
+### Patch Changes
+
+- Updated dependencies [0c96dab]
+- Updated dependencies [f4949ac]
+  - @interactors/core@0.2.0
+
 ## 0.34.0
 
 ### Minor Changes

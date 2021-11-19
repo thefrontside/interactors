@@ -1,6 +1,6 @@
 {
   "name": "@interactors/html",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "description": "Interactors for working with applications",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -33,7 +33,7 @@
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@interactors/core": "^0.1.0"
+    "@interactors/core": "^0.2.0"
   },
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
