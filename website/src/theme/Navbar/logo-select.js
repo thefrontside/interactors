@@ -59,7 +59,6 @@ function ProjectSelect({ currentProject }) {
 
   return (
     <div className={logoCol}>
-      {/* <Logo /> */}
       <Link to={'/'} className={logoCol}>
         <img src={useBaseUrl(curentLogo.img)} alt="" className={projectLogo} />
         <h1 className={logoTitle}>
