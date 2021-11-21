@@ -1,5 +1,23 @@
 # @interactors/with-cypress
 
+## 0.2.0
+
+### Minor Changes
+
+- 47f1478: Split off core into own package
+
+### Patch Changes
+
+- Updated dependencies [3648853]
+- Updated dependencies [47f1478]
+- Updated dependencies [735b68d]
+- Updated dependencies [80b72fe]
+- Updated dependencies [31367d7]
+- Updated dependencies [0c96dab]
+- Updated dependencies [f4949ac]
+  - @interactors/html@0.35.0
+  - @interactors/core@0.2.0
+
 ## 0.1.4
 
 ### Patch Changes
