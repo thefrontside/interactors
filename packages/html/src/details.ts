@@ -1,9 +1,9 @@
-import { HTML, innerText } from './html';
+import { HTML } from './html';
 
 const SummaryInteractor = HTML.extend('summary').selector('summary');
 
 const DetailsInteractor = HTML.extend<HTMLDetailsElement>('details')
-  .locator((e) => innerText(e.querySelector('summary')))
+  .locator(SummaryInteractor().text())
   .selector('details')
   .filters({
     open: (element) => element.open,
