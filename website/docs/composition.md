@@ -69,6 +69,13 @@ field with the label "City". The interactor returned by `find` has the same acti
 and filters as the text field that we passed as an argument, so we can call the
 `fillIn` action from the `TextField` interactor on the result!
 
+## Taking it further
+
+With `find` we can compose interactors on the fly, but when you are creating your
+own interactors, there are many more ways to reuse and compose interactors to create
+complex interactions and simplify common tasks. Check out our guides on defining [locators](/docs/create-locator),
+[filters](/docs/create-filters) and [actions](/docs/create-actions) for more information.
+
 ## Waiting
 
 You might be worried that composing interactors this way would have an effect
