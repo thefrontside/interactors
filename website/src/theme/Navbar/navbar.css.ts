@@ -64,7 +64,7 @@ export const navDropdown = style({
   position: "relative",
   marginLeft: vars.space.sm,
   padding: 0,
-  
+
   "@media": {
     [laptopQuery]: {
       marginLeft: vars.space.md,
@@ -238,3 +238,29 @@ export const projectDescription = style([textSm, textBlue, {
   marginBottom: 0,
   display: 'block',
 }]);
+
+globalStyle(`${navWrap} .dropdown__menu`, {
+  padding: 0,
+  borderRadius: vars.radius.sm,
+  left: '-20px',
+});
+
+globalStyle(`${navWrap} .dropdown__link`, {
+  color: vars.colors.blue,
+  padding: vars.space['2xs'],
+  margin: 0,
+  '@media': {
+    [darkThemeQuery]: {
+      color: vars.colors.white,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown__link:hover`, {
+  background: 'rgba(38, 171, 232, 0.10)',
+});
+
+globalStyle(`${navWrap} .dropdown__link svg`, {
+  display: 'none',
+});
+
