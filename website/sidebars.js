@@ -21,6 +21,7 @@ module.exports = {
       collapsed: false,
       items: [
         'create-first-interactor',
+        'create-selector',
         'create-locator',
         'create-filters',
         'create-actions',
