@@ -49,7 +49,7 @@ describe('locator', () => {
     ].join('\n'));
   });
 
-  it('can delegate locator to other interactor', async () => {
+  it('can delegate locator to other interactor filter', async () => {
     let Span = createInteractor('span').selector('span').filters({
       text: (e) => e.textContent || ""
     });
@@ -57,6 +57,29 @@ describe('locator', () => {
     let Paragraph = createInteractor('p')
       .selector('p')
       .locator(Span().text());
+
+    dom(`
+      <p><span>Foo</span> Quox</p>
+      <p><span>Bar</span> Quox</p>
+    `);
+
+    await expect(Paragraph('Foo').exists()).resolves.toBeUndefined();
+    await expect(Paragraph('Bar').exists()).resolves.toBeUndefined();
+    await expect(Paragraph('Quox').exists()).rejects.toHaveProperty('message', [
+      'did not find p "Quox", did you mean one of:', '',
+      '┃ p       ┃',
+      '┣━━━━━━━━━┫',
+      '┃ ⨯ "Foo" ┃',
+      '┃ ⨯ "Bar" ┃',
+    ].join('\n'));
+  });
+
+  it('can delegate locator to other interactor locator', async () => {
+    let Span = createInteractor('span').selector('span');
+
+    let Paragraph = createInteractor('p')
+      .selector('p')
+      .locator(Span());
 
     dom(`
       <p><span>Foo</span> Quox</p>

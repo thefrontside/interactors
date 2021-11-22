@@ -101,6 +101,11 @@ export interface BaseInteractor<E extends Element, F extends FilterParams<any, a
    * ```
    */
   is(filters: F): ReadonlyInteraction<void>;
+
+  /**
+   * @hidden
+   */
+  apply: FilterFn<string, Element>;
 }
 
 /**

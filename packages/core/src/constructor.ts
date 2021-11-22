@@ -179,6 +179,11 @@ export function instantiateBaseInteractor<E extends Element, F extends Filters<E
         });
       });
     },
+
+    apply(parentElement: Element): string {
+      let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
+      return applyFilter(options.specification.locator || defaultLocator, element);
+    }
   }
 
   for (let [actionName, action] of Object.entries(options.specification.actions || {})) {
