@@ -8,11 +8,11 @@ on:
 jobs:
   publish-releases:
     name: Publish Releases
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Publish Releases
-      uses: thefrontside/actions/synchronize-with-npm@v1.6
+      uses: thefrontside/actions/synchronize-with-npm@v1.9
       with:
         before_all: yarn prepack:all
         npm_publish: yarn publish
