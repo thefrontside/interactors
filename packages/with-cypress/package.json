@@ -1,6 +1,6 @@
 {
   "name": "@interactors/with-cypress",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Cypress Integration for Interactors",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -16,8 +16,8 @@
   ],
   "dependencies": {
     "@bigtest/globals": "^0.7.6",
-    "@interactors/core": "^0.2.0",
-    "@interactors/html": "^0.35.0"
+    "@interactors/core": "^0.3.0",
+    "@interactors/html": "^0.36.0"
   },
   "peerDependencies": {
     "cypress": "^6.0.0 || ^7.0.0 || ^8.0.0"

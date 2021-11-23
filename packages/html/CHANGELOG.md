@@ -1,5 +1,16 @@
 # @interactors/html
 
+## 0.36.0
+
+### Minor Changes
+
+- af252a3: Use locator delegation for html interactors
+
+### Patch Changes
+
+- Updated dependencies [53dea63]
+  - @interactors/core@0.3.0
+
 ## 0.35.0
 
 ### Minor Changes
