@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies [53dea63]
+- Updated dependencies [af252a3]
+  - @interactors/core@0.3.0
+  - @interactors/html@0.36.0
+
 ## 4.2.0
 
 ### Minor Changes
