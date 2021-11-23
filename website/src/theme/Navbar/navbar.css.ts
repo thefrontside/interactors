@@ -55,6 +55,37 @@ export const navBar = styleVariants({
   default: [navWrap]
 });
 
+export const navDropdown = style({
+  fontWeight: vars.fontWeights.bold,
+  fontSize: vars.fontSize.xs,
+  letterSpacing: vars.letterSpacing.xs,
+  color: vars.colors.white,
+  display: "inline-block",
+  position: "relative",
+  marginLeft: vars.space.sm,
+  padding: 0,
+
+  "@media": {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    },
+  },
+  selectors: {
+    '&:hover': {
+      color: vars.colors.white,
+    },
+  },
+});
+
+export const navbarDropdownOffset = style({
+  marginLeft: vars.space.sm,
+  "@media": {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    },
+  },
+})
+
 export const navLink = style({
   fontWeight: vars.fontWeights.bold,
   fontSize: vars.fontSize.xs,
@@ -207,3 +238,49 @@ export const projectDescription = style([textSm, textBlue, {
   marginBottom: 0,
   display: 'block',
 }]);
+
+
+globalStyle(`${navWrap} .dropdown`, {
+  padding: 0,
+  marginLeft: vars.space.sm,
+  '@media': {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown > .navbar__link`, {
+  marginLeft: 0,
+  '@media': {
+    [laptopQuery]: {
+      marginLeft: 0,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown__menu`, {
+  padding: 0,
+  borderRadius: vars.radius.sm,
+  left: calc(vars.space.xs).multiply(-1).toString(),
+});
+
+globalStyle(`${navWrap} .dropdown__link`, {
+  color: vars.colors.blue,
+  padding: vars.space['2xs'],
+  margin: 0,
+  '@media': {
+    [darkThemeQuery]: {
+      color: vars.colors.white,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown__link:hover`, {
+  background: 'rgba(38, 171, 232, 0.10)',
+});
+
+globalStyle(`${navWrap} .dropdown__link svg`, {
+  display: 'none',
+});
+
