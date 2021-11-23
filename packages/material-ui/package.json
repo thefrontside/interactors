@@ -1,6 +1,6 @@
 {
   "name": "@interactors/material-ui",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "BigTest interactors for material-ui.com components.",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -64,7 +64,7 @@
     "webpack": "^5.53.0"
   },
   "dependencies": {
-    "@interactors/core": "^0.2.0",
-    "@interactors/html": "^0.35.0"
+    "@interactors/core": "^0.3.0",
+    "@interactors/html": "^0.36.0"
   }
 }
