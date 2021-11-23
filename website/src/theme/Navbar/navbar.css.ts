@@ -239,10 +239,30 @@ export const projectDescription = style([textSm, textBlue, {
   display: 'block',
 }]);
 
+
+globalStyle(`${navWrap} .dropdown`, {
+  padding: 0,
+  marginLeft: vars.space.sm,
+  '@media': {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown > .navbar__link`, {
+  marginLeft: 0,
+  '@media': {
+    [laptopQuery]: {
+      marginLeft: 0,
+    }
+  }
+});
+
 globalStyle(`${navWrap} .dropdown__menu`, {
   padding: 0,
   borderRadius: vars.radius.sm,
-  left: '-20px',
+  left: calc(vars.space.xs).multiply(-1).toString(),
 });
 
 globalStyle(`${navWrap} .dropdown__link`, {
