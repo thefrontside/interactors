@@ -149,10 +149,7 @@ filter delegation, it is easy to reuse the filters of another interactor:
 
   const DatePicker = HTML.extend('datepicker')
     .selector('.datepicker')
-    .locator((element) => {
-      let label = element.querySelector('label');
-      return label ? label.textContent : "";
-    });
+    .locator(TextField());
     .filters({
       open: Calendar().open()
     });
@@ -166,10 +163,7 @@ filter delegation, it is easy to reuse the filters of another interactor:
 
   const DatePicker = HTML.extend<HTMLDivElement>('datepicker')
     .selector('.datepicker')
-    .locator((element) => {
-      let label = element.querySelector('label');
-      return label ? label.textContent : "";
-    });
+    .locator(TextField());
     .filters({
       open: Calendar().open()
     });

@@ -101,7 +101,7 @@ do something like the following:
   import { HTML } from '@interactors/html';
 
   const DatePicker = HTML.extend('datepicker')
-    .selector('.datepicker');
+    .selector('.datepicker')
     .locator((element) => {
       let label = element.querySelector('label');
       return label ? label.textContent : "";
@@ -115,7 +115,7 @@ do something like the following:
   import { HTML } from '@interactors/html';
 
   const DatePicker = HTML.extend<HTMLDivElement>('datepicker')
-    .selector('.datepicker');
+    .selector('.datepicker')
     .locator((element) => {
       let label = element.querySelector('label');
       return label ? label.textContent : "";
@@ -125,7 +125,64 @@ do something like the following:
   </TabItem>
 </Tabs>
 
-Of course, the best would be to be able to use the `TextField` interactor in our
-locator. Such a feature is planned, but not implemented [yet][].
+
+This works, but it's a bit cumbersome, and we'd really like to use the
+`TextField` interactor that we already have. We can do this by delegating the
+locator to the `TextField` interactor:
+
+<Tabs groupId="language">
+  <TabItem value="javascript" label="JavaScript" default>
+
+  ```js
+  import { HTML, TextField } from '@interactors/html';
+
+  const DatePicker = HTML.extend('datepicker')
+    .selector('.datepicker')
+    .locator(TextField());
+  ```
+
+  </TabItem>
+  <TabItem value="typescript" label="TypeScript">
+
+  ```ts
+  import { HTML, TextField } from '@interactors/html';
+
+  const DatePicker = HTML.extend<HTMLDivElement>('datepicker')
+    .selector('.datepicker')
+    .locator(TextField());
+  ```
+
+  </TabItem>
+</Tabs>
+
+With this, we can find a date picker by the label of the text field it contains.
+
+We could also delegate to a filter defined on the `TextField` interactor, for example
+the `placeholder` filter:
+
+<Tabs groupId="language">
+  <TabItem value="javascript" label="JavaScript" default>
+
+  ```js
+  import { HTML, TextField } from '@interactors/html';
+
+  const DatePicker = HTML.extend('datepicker')
+    .selector('.datepicker')
+    .locator(TextField().placeholder());
+  ```
+
+  </TabItem>
+  <TabItem value="typescript" label="TypeScript">
+
+  ```ts
+  import { HTML, TextField } from '@interactors/html';
+
+  const DatePicker = HTML.extend<HTMLDivElement>('datepicker')
+    .selector('.datepicker')
+    .locator(TextField().placeholder());
+  ```
+
+  </TabItem>
+</Tabs>
 
 [yet]: https://github.com/thefrontside/interactors/issues/102

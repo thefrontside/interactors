@@ -1,6 +1,6 @@
 ---
 id: create-first-interactor
-title: Your first interactor
+title: Creating and extending
 ---
 
 import Tabs from '@theme/Tabs';
@@ -36,9 +36,8 @@ markup for our datepicker looks like this:
 </div>
 ```
 
-Let's start off by just creating an interactor which just uses the `datepicker`
-class to find the datepicker, but without any functionality. For this purpose
-we can use the `createInteractor` function:
+Let's start off by just creating an interactor for a datepicker without any
+functionality. For this purpose we can use the `createInteractor` function:
 
 <Tabs groupId="language">
   <TabItem value="javascript" label="JavaScript" default>
@@ -47,7 +46,6 @@ we can use the `createInteractor` function:
   import { createInteractor } from '@interactors/core';
 
   const DatePicker = createInteractor('datepicker')
-    .selector('.datepicker');
   ```
 
   </TabItem>
@@ -57,18 +55,15 @@ we can use the `createInteractor` function:
   import { createInteractor } from '@interactors/core';
 
   const DatePicker = createInteractor<HTMLDivElement>('datepicker')
-    .selector('.datepicker');
   ```
 
   </TabItem>
 </Tabs>
 
 The argument to `createInteractor` is the name of the interactor, this will
-appear in error messages and in some other places. `selector` specifies a CSS
-selector that is used to find datepickers. This CSS selector should return a list
-of all of the datepickers that exist.
+appear in error messages and in some other places.
 
-:::note
+:::note TypeScript
 Interactors work well with TypeScript, and they are completely typesafe. When
 using TypeScript you'll want to specify the type of the element that your
 interactors operate on. In this case, since our datepicker is using a `<div>`
@@ -76,16 +71,6 @@ element, we can specify the `HTMLDivElement` type as the element type. This
 gives you access to any additional properties and methods that the element type
 defines.
 :::
-
-Our interactor already is somewhat useful, we could compose it with other
-interactors to limit actions to within the datepicker!
-
-```js
-await DatePicker().find(TextField('Birthday')).fillIn('1986-04-12');
-```
-
-But our interactor does not yet have a sensible way to locate a specific
-datepicker, nor does it have any filters or actions.
 
 ## Extending an interactor
 
@@ -112,8 +97,7 @@ extending `HTML` looks like:
   ```js
   import { HTML } from '@interactors/html';
 
-  const DatePicker = HTML.extend('datepicker')
-    .selector('.datepicker');
+  const DatePicker = HTML.extend('datepicker');
   ```
 
   </TabItem>
@@ -122,8 +106,7 @@ extending `HTML` looks like:
   ```ts
   import { HTML } from '@interactors/html';
 
-  const DatePicker = HTML.extend<HTMLDivElement>('datepicker')
-    .selector('.datepicker');
+  const DatePicker = HTML.extend<HTMLDivElement>('datepicker');
   ```
 
   </TabItem>
