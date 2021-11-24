@@ -5,5 +5,6 @@
     "command": "yarn start --port 28001",
     "url": "http://localhost:28001"
   },
-  "testFiles": ["test/**/*.test.{tsx,js}"]
+  "testFiles": ["test/**/*.test.{tsx,js}"],
+  "tsconfig": "./tsconfig.json"
 }

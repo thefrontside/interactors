@@ -24,7 +24,12 @@ const TabsInteractor = HTML.extend<HTMLElement>("MUI Tabs")
       return isHTMLElement(active) ? active.getAttribute("aria-label") ?? active.innerText : "";
     },
   })
-  .actions({ click: (interactor, value: string) => interactor.find(TabInteractor(value)).click() });
+  .actions({
+    async click(interactor, value: string) {
+      await interactor.find(TabInteractor(value)).click();
+    }
+  });
+
 
 /**
  * Call this {@link InteractorConstructor} to initialize a tab {@link Interactor}.

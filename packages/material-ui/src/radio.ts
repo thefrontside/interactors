@@ -1,4 +1,5 @@
-import { RadioButton, isVisible } from "@interactors/html";
+import { isVisible } from "@interactors/core";
+import { RadioButton } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 const RadioInteractor = RadioButton.extend("radio")

@@ -4,5 +4,6 @@
   "entryPoints": "src/index.ts",
   "readme": "README.md",
   "includeVersion": true,
-  "excludePrivate": true
+  "excludePrivate": true,
+  "readme": "none"
 }

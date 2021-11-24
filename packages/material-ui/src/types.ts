@@ -1,4 +1,4 @@
-import { InteractorConstructor } from "@interactors/html";
+import { InteractorConstructor } from "@interactors/core";
 
 /**
  * Helper functions from `@date-io/*` utils

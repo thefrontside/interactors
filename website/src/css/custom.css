@@ -31,6 +31,8 @@
   --ifm-footer-color: var(--fs-text-color);
   --ifm-link-hover-decoration: none;
   --ifm-menu-link-sublist-icon: url(/images/dropdown-arrow.svg);
+
+  --ifm-heading-font-family: "Proxima Nova", proxima-nova, sans-serif;
 }
 
 .main-wrapper {

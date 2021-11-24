@@ -9,6 +9,7 @@
   "workspaces": {
     "packages": [
       "packages/globals",
+      "packages/core",
       "packages/html",
       "packages/material-ui",
       "packages/with-cypress"
