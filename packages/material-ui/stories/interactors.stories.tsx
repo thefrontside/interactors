@@ -24,6 +24,8 @@ import {
   Tabs as TabsInteractor,
   TextField as TextFieldInteractor,
   TimeField as TimeFieldInteractor,
+  HTML,
+  HTMLTextField,
 } from "../src";
 import { SimpleAccordion } from "./accordion";
 import { SimpleBottomNavigation } from "./bottom-navigation";
@@ -50,6 +52,56 @@ import { TimePickers } from "./time-field";
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default { title: "Interactors" };
+
+const Div = HTML.extend("Div");
+
+export const DeepDivs = {
+  render: () => (
+    <div id="first">
+      <div id="second">
+        <div id="third">
+          <div id="forth">
+            <input />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+  async play() {
+    await Div({ id: "first" })
+      .find(Div({ id: "second" }))
+      .find(Div({ id: "third" }))
+      .find(Div({ id: "forth" }))
+      .find(HTMLTextField())
+      .fillIn("1");
+    // await delay(500);
+    // await Div({ id: "first" })
+    //   .find(Div({ id: "second" }).find(Div({ id: "third" })))
+    //   .find(Div({ id: "forth" }))
+    //   .find(HTMLTextField())
+    //   .fillIn("2");
+    // await delay(500);
+    // await Div({ id: "first" })
+    //   .find(Div({ id: "second" }))
+    //   .find(Div({ id: "third" }).find(Div({ id: "forth" })))
+    //   .find(HTMLTextField())
+    //   .fillIn("3");
+    // await delay(500);
+    // await Div({ id: "first" })
+    //   .find(
+    //     Div({ id: "second" })
+    //       .find(Div({ id: "third" }))
+    //       .find(Div({ id: "forth" }))
+    //   )
+    //   .find(HTMLTextField())
+    //   .fillIn("4");
+    // await delay(500);
+    // await Div({ id: "first" })
+    //   .find(Div({ id: "second" }).find(Div({ id: "third" }).find(Div({ id: "forth" }))))
+    //   .find(HTMLTextField())
+    //   .fillIn("5");
+  },
+};
 
 export const Accordion: ComponentStory<typeof SimpleAccordion> = {
   render: () => <SimpleAccordion />,

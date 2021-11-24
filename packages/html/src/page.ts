@@ -49,7 +49,7 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
           reject(new Error('timed out trying to load application'));
         }, bigtestGlobals.defaultAppTimeout);
       });
-    });
+    }, { name: 'Page', actionName: 'visit', args: [path] });
   }
 });
 

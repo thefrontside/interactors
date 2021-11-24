@@ -1,5 +1,5 @@
-import { globals } from '@interactors/globals';
-import type { FilterObject } from './specification';
+import { globals, InteractorOptions } from '@interactors/globals';
+import type { FilterObject,  } from './specification';
 
 const interactionSymbol = Symbol.for('interaction');
 
@@ -65,18 +65,18 @@ function createInteraction<T>(description: string, action: () => Promise<T>): In
   }
 }
 
-export function interaction<T>(description: string, action: () => Promise<T>): Interaction<T> {
-  return createInteraction(description, globals.wrapAction(description, action, 'interaction'))
+export function interaction<T>(description: string, action: () => Promise<T>, options: InteractorOptions ): Interaction<T> {
+  return createInteraction(description, globals.wrapAction(description, action, 'interaction', options))
 }
 
-export function check<T>(description: string, check: () => Promise<T>): ReadonlyInteraction<T> {
-  return { check() { return this.action() }, ...createInteraction(description, globals.wrapAction(description, check, 'check')) };
+export function check<T>(interaction: Interaction<T>): ReadonlyInteraction<T> {
+  return { check() { return this.action() }, ...interaction };
 }
 
-export function interactionFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
-  return { apply: filter, ...interaction(description, action) };
+export function interactionFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
+  return { apply: filter, ...interaction };
 }
 
-export function checkFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
-  return { apply: filter , ...check(description, action) };
+export function checkFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
+  return { apply: filter , ...check(interaction) };
 }

@@ -3,13 +3,27 @@ type ActionType = "interaction" | "check";
 
 interface Globals {
   readonly document: Document;
-  readonly wrapAction: <T>(description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>;
+  readonly wrapAction: <T>(
+    description: string,
+    action: () => Promise<T>,
+    type: ActionType,
+    options: InteractorOptions
+  ) => () => Promise<T>;
   readonly actionWrappers: Set<
-    <T>(description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
+    <T>(description: string, action: () => Promise<T>, type: ActionType, options: InteractorOptions) => () => Promise<T>
   >;
   readonly interactorTimeout: number;
   readonly reset: () => void;
 }
+
+export type InteractorOptions = {
+  name: string;
+  actionName: string;
+  args?: unknown[];
+  locator?: string;
+  filter?: Record<string, any>;
+  ancestors?: Omit<InteractorOptions, "actionName">[];
+};
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -30,10 +44,15 @@ if (!globalThis.__interactors) {
           configurable: true,
         },
         wrapAction: {
-          value: <T>(description: string, action: () => Promise<T>, type: ActionType): (() => Promise<T>) => {
+          value: <T>(
+            description: string,
+            action: () => Promise<T>,
+            type: ActionType,
+            options: InteractorOptions
+          ): (() => Promise<T>) => {
             let wrappedAction = action;
             for (let wrapper of getGlobals().actionWrappers) {
-              wrappedAction = wrapper(description, wrappedAction, type);
+              wrappedAction = wrapper(description, wrappedAction, type, options);
             }
             return wrappedAction;
           },
@@ -80,7 +99,12 @@ export function setInteractorTimeout(ms: number): void {
 }
 
 export function addActionWrapper<T>(
-  wrapper: (description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
+  wrapper: (
+    description: string,
+    action: () => Promise<T>,
+    type: ActionType,
+    options: InteractorOptions
+  ) => () => Promise<T>
 ): () => boolean {
   getGlobals().actionWrappers.add(wrapper as any);
 

@@ -21,10 +21,15 @@ import {
   Tabs,
   TextField,
   TimeField,
+  DeepDivs
 } from "./interactors.stories";
 import { InteractiveStory as Story } from "./interactive-story";
 
 <Meta title="Interactors" />
+
+<Canvas>
+  <Story story={DeepDivs} />
+</Canvas>
 
 <Canvas>
   <Story story={Accordion} />
