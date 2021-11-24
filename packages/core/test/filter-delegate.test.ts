@@ -62,6 +62,29 @@ describe('filters delegation', () => {
     await expect(Datepicker("Start Date").has({ month: "January" })).resolves.toBeUndefined();
   });
 
+  it('delegates filter to other interactor locator', async () => {
+    let Span = createInteractor('span').selector('span');
+
+    let Paragraph = createInteractor('p')
+      .selector('p')
+      .filters({ span: Span() });
+
+    dom(`
+      <p><span>Foo</span> Quox</p>
+      <p><span>Bar</span> Quox</p>
+    `);
+
+    await expect(Paragraph({ span: 'Foo' }).exists()).resolves.toBeUndefined();
+    await expect(Paragraph({ span: 'Bar' }).exists()).resolves.toBeUndefined();
+    await expect(Paragraph({ span: 'Quox' }).exists()).rejects.toHaveProperty('message', [
+      'did not find p with span "Quox", did you mean one of:', '',
+      '┃ span: "Quox" ┃',
+      '┣━━━━━━━━━━━━━━┫',
+      '┃ ⨯ "Foo"      ┃',
+      '┃ ⨯ "Bar"      ┃',
+    ].join('\n'));
+  });
+
   it('throws an error if the delegated element does not exist', async () => {
     dom(`
       <div class="datepicker">

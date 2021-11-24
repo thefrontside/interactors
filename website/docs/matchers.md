@@ -23,22 +23,23 @@ If your tests are written against a simulated database, it might not be importan
 
 The `including()` matcher invokes Javascript's `includes()` String method to check if the argument is included in the value of your interactors' locator or filter.
 
-And `matching()` is for when you want to use regular expression instead of a string.
+And `matching()` is for when you want to match against a regular expression instead of a string.
 
 To demonstrate how you can use these two matchers, let's take this Heading element:
 
 ```html
-<h1>Foo Bar</h1>
+<h1>Hello Taylor!</h1>
 ```
 
 Here is how you would use `including()` and `matching()` to locate the header and assert that it exists:
 
 ```js
-Heading(including('Foo')).exists();
-Heading(matching(/Bar$/)).exists();
+Heading(including('Hello')).exists();
+Heading(matching(/^Hello \w+!$/)).exists();
 ```
 
 ### Conditional matchers
+
 These next three matchers: `and()`, `or()`, and `not()` are different from the first two matchers in that they can take multiple arguments and the arguments can be either a value or another matcher.
 
 For the next few examples, we'll be using these two link elements:
@@ -51,7 +52,7 @@ For the next few examples, we'll be using these two link elements:
 Let's first see how you can combine `and()` with some of the other matchers. In this test we are checking to see if there is a link with a `href` property that starts with `https`, includes `google`, _and_ ends with `.com`:
 
 ```js
-Link({ 
+Link({
   href: and(
     matching(/^https/),
     including('google'),
@@ -65,7 +66,7 @@ If there is no link that matches all three conditions, the test would fail on ac
 In this next example, we will pass in multiple TLDs to the `or()` matcher:
 
 ```js
-Link('Google').has({ 
+Link('Google').has({
   href: or(
     'https://google.ca',
     'https://google.co.uk'
@@ -78,16 +79,8 @@ If our Google link was `.ca` but we asserted that it was `.co.uk`, our test woul
 And last but not least of the three is the `not()` matcher. This one is also pretty straight forward:
 
 ```js
-Link(not('Google')).has({ href: 'https://twitter.com' });
+Link('Google').has({ href: not(including('twitter')) });
 ```
-
-:::note
-Matchers are meant to be used for the _values_ of locators and filters and they cannot be substituted for the actual filters:
-```js
-Heading().has({ id: or('foo', 'bar') }); // good
-Heading().has({ or(id: 'foo', id: 'bar') }); // bad
-```
-:::
 
 ### Iterable matchers
 
@@ -115,7 +108,7 @@ MultiSelect().has({ values: some(including('Blue')) });
 MultiSelect().has({ values: every(matching(/^Neon/)) });
 ```
 
-In the two tests above we are passing in the `including()` and `matching()` matchers into `some()` and `every()`. Once again, `and()`, `or()`, `not()`, `some()`, and `every()` can take matchers as its arguments. This means you can chain them together multiple times to cater to your needs.
+In the two tests above we are passing in the `including()` and `matching()` matchers into `some()` and `every()`. Once again, `and()`, `or()`, `not()`, `some()`, and `every()` can take matchers as its arguments. This means you can chain them together multiple times if you need to.
 
 Though the matchers are already ergonomic, you can make your tests even tidier and easier to read by creating your own matchers. There are two ways you can write your own matcher: by piggybacking on preexisting matchers or you can create your own from scratch. We will cover both methods next.
 
@@ -169,8 +162,6 @@ export function including(subString) {
 };
 ```
 
-_You can find the source code for the `including()` matcher [here](https://github.com/thefrontside/interactors/blob/main/packages/html/src/matchers/including.ts)._
-
 And the return value from the `description()` function is to display an error message for when no interactors are found:
 
 ```
@@ -203,7 +194,3 @@ export function greaterThan(number) {
 ```
 
 This `greaterThan()` matcher will return true when the value of the relevant interactors' locator or filter is greater than the argument.
-
-## Up Next
-
-By now you should have a much better understanding of how to locate, interact with, and make assertions with Interactors. But what if you keep running into a combination of locators, filters, and actions across your UI? [Writing your own Interactors](/docs/write-your-own) allows you to package a simple and reusable way of testing a component or element that you and your team can use in their test suites.

@@ -6,17 +6,17 @@ import { MergeObjects } from './merge-objects';
 import {
   InteractorOptions,
   ActionMethods,
-  LocatorFn,
   InteractorConstructor,
   Interactor,
   Filters,
   Actions,
+  FilterDefinition,
   FilterParams,
   FilterMethods,
   InteractorSpecification,
   FilterObject,
 } from './specification';
-import { Filter } from './filter';
+import { FilterSet } from './filter-set';
 import { Locator } from './locator';
 import { MatchFilter, applyFilter } from './match';
 import { formatTable } from './format-table';
@@ -27,11 +27,13 @@ import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './err
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
 
-const defaultLocator: LocatorFn<Element> = (element) => element.textContent || "";
+const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
 
 export function findElements<E extends Element>(parentElement: Element, interactor: InteractorOptions<any, any, any>): E[] {
-  if(interactor.specification.selector === ':root') {
+  if(typeof(interactor.specification.selector) === 'function') {
+    return interactor.specification.selector(parentElement);
+  } else if(interactor.specification.selector === ':root') {
     // this is a bit of a hack, because otherwise there isn't a good way of selecting the root element
     return [parentElement.ownerDocument.querySelector(':root') as E];
   } else {
@@ -115,8 +117,8 @@ function description(options: InteractorOptions<any, any, any>): string {
  * assertion. Otherwise, it is not possible to make an assertion on a filter that might conflict
  * see https://github.com/thefrontside/bigtest/issues/966
 */
-function getLookupFilterForAssertion<E extends Element, F extends Filters<E>>(filter: Filter<E, F>, filters: FilterParams<E, F>): Filter<E, F> {
-  let lookupFilter = new Filter(filter.specification, Object.assign({}, filter.filters));
+function getLookupFilterForAssertion<E extends Element, F extends Filters<E>>(filter: FilterSet<E, F>, filters: FilterParams<E, F>): FilterSet<E, F> {
+  let lookupFilter = new FilterSet(filter.specification, Object.assign({}, filter.filters));
   let specFilters = lookupFilter.specification.filters;
   for (let key in specFilters) {
     if (typeof specFilters[key] !== 'function'
@@ -165,7 +167,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     },
 
     is(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
-      let filter = new Filter(options.specification, filters);
+      let filter = new FilterSet(options.specification, filters);
       return check(`${description(options)} matches filters: ${filter.description}`, () => {
         return converge(() => {
           let element = resolver({...options, filter: getLookupFilterForAssertion(options.filter, filters) });
@@ -202,6 +204,11 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       }, (element) => {
         return findMatchesMatching(element, options).length === 0;
       });
+    },
+
+    apply(parentElement: Element): string {
+      let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
+      return applyFilter(options.specification.locator || defaultLocator, element);
     }
   };
 
@@ -255,9 +262,9 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     let locatorValue = args[0] instanceof RegExp ? matching(args[0]) : args[0]
     if (typeof(locatorValue) === 'string' || isMatcher(locatorValue)) {
       locator = new Locator(specification.locator || defaultLocator, locatorValue);
-      filter = new Filter(specification, args[1] || {});
+      filter = new FilterSet(specification, args[1] || {});
     } else {
-      filter = new Filter(specification, args[0] || {});
+      filter = new FilterSet(specification, args[0] || {});
     }
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] }, unsafeSyncResolveUnique);
   }
@@ -266,7 +273,7 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
       return createConstructor(name, { ...specification, selector: value });
     },
-    locator: (value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM> => {
+    locator: (value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM> => {
       return createConstructor(name, { ...specification, locator: value });
     },
     filters: <FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM> => {

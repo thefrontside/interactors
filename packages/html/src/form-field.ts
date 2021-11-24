@@ -1,9 +1,22 @@
-import { HTML, innerText } from './html';
+import { HTML } from './html';
 
-type FieldTypes = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLSelectElement
+type FieldTypes = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+function isElement<T extends keyof HTMLElementTagNameMap>(element: Element, tagName: T): element is HTMLElementTagNameMap[T] {
+  return element.tagName.toLowerCase() === tagName;
+}
+
+const LabelInteractor = HTML.extend<HTMLLabelElement>('label')
+  .selector((element) => {
+    if(isElement(element, 'input') || isElement(element, 'select') || isElement(element, 'textarea')) {
+      return Array.from(element.labels || []);
+    } else {
+      return [];
+    }
+  })
 
 const FormFieldInteractor = HTML.extend<FieldTypes>('form field')
-  .locator((element) => element.labels ? innerText(Array.from(element.labels)[0]) : '')
+  .locator(LabelInteractor().text())
   .filters({
     valid: (element) => element.validity.valid,
     disabled: {

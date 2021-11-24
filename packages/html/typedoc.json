@@ -3,5 +3,6 @@
   "name": "@interactors/html",
   "entryPoints": "src/index.ts",
   "includeVersion": true,
-  "excludePrivate": true
+  "excludePrivate": true,
+  "readme": "none"
 }

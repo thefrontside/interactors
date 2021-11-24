@@ -1,8 +1,10 @@
-import { HTML, innerText } from './html';
+import { HTML } from './html';
+
+const LegendInteractor = HTML.extend<HTMLLegendElement>('legend').selector('legend');
 
 const FieldSetInteractor = HTML.extend<HTMLHeadingElement>('fieldset')
   .selector('fieldset')
-  .locator((e) => innerText(e.querySelector('legend')))
+  .locator(LegendInteractor().text());
 
 /**
  * Call this {@link InteractorConstructor} to initialize a field set {@link Interactor}.

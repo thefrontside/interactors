@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Filter } from './filter';
+import { FilterSet } from './filter-set';
 import { Locator } from './locator';
 import { Interaction, ReadonlyInteraction } from './interaction';
 import { MergeObjects } from './merge-objects';
@@ -44,68 +44,69 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
   /**
    * @hidden
    */
-   options: InteractorOptions<E, any, any>;
+  options: InteractorOptions<E, any, any>;
 
    /**
     * @returns a human readable description of this interactor
     */
-   description: string;
+  description: string;
  
-   /**
-    * Perform a one-off action on the given interactor. Takes a function which
-    * receives an element. This function converges, which means that it is rerun
-    * in a loop until it does not throw an error or times out.
-    *
-    * We recommend using this function for debugging only. You should normally
-    * define an action in an {@link InteractorSpecification}.
-    *
-    * ## Example
-    *
-    * ``` typescript
-    * await Link('Next').perform((e) => e.click());
-    * ```
-    */
-   perform(fn: (element: E) => void): Interaction<void>;
- 
-   /**
-    * Perform a one-off assertion on the given interactor. Takes a function which
-    * receives an element. This function converges, which means that it is rerun
-    * in a loop until it does not throw an error or times out.
-    *
-    * We recommend using this function for debugging only. You should normally
-    * define a filter in an {@link InteractorSpecification}.
-    *
-    * ## Example
-    *
-    * ``` typescript
-    * await Link('Next').assert((e) => assert(e.tagName === 'A'));
-    * ```
-    */
-   assert(fn: (element: E) => void): ReadonlyInteraction<void>;
- 
-   /**
-    * Checks that there is one element matching the interactor, and that this
-    * element matches the given filters. The available filters are defined by
-    * the {@link InteractorSpecification}.
-    *
-    * ## Example
-    *
-    * ``` typescript
-    * await Link('Home').has({ href: '/' })
-    * ```
-    */
-   has(filters: F): ReadonlyInteraction<void>;
- 
-   /**
-    * Identical to {@link has}, but reads better with some filters.
-    *
-    * ## Example
-    *
-    * ``` typescript
-    * await CheckBox('Accept conditions').is({ checked: true })
-    * ```
-    */
-   is(filters: F): ReadonlyInteraction<void>;
+  /**
+   * Perform a one-off action on the given interactor. Takes a function which
+   * receives an element. This function converges, which means that it is rerun
+   * in a loop until it does not throw an error or times out.
+   *
+   * We recommend using this function for debugging only. You should normally
+   * define an action in an {@link InteractorSpecification}.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Next').perform((e) => e.click());
+   * ```
+   */
+  perform(fn: (element: E) => void): Interaction<void>;
+
+  /**
+   * Perform a one-off assertion on the given interactor. Takes a function which
+   * receives an element. This function converges, which means that it is rerun
+   * in a loop until it does not throw an error or times out.
+   *
+   * We recommend using this function for debugging only. You should normally
+   * define a filter in an {@link InteractorSpecification}.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Next').assert((e) => assert(e.tagName === 'A'));
+   * ```
+   */
+  assert(fn: (element: E) => void): ReadonlyInteraction<void>;
+
+  /**
+   * Checks that there is one element matching the interactor, and that this
+   * element matches the given filters. The available filters are defined by
+   * the {@link InteractorSpecification}.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Home').has({ href: '/' })
+   * ```
+   */
+  has(filters: F): ReadonlyInteraction<void>;
+
+  /**
+   * Identical to {@link has}, but reads better with some filters.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await CheckBox('Accept conditions').is({ checked: true })
+   * ```
+   */
+  is(filters: F): ReadonlyInteraction<void>;
+
   /**
    * Returns a copy of the given interactor which is scoped to this interactor.
    * When there are multiple matches for an interactor, this makes it possible
@@ -122,42 +123,36 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * @returns a scoped copy of the initial interactor
    * @typeParam T the type of the interactor that we are going to scope
    */
-   find<T extends Interactor<any, any>>(interactor: T): T;
+  find<T extends Interactor<any, any>>(interactor: T): T;
+
+  /**
+   * @hidden
+   */
+  apply: FilterFn<string, Element>;
 }
 
 export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;
-export type FilterFn<T, E extends Element> = (element: E) => T;
 
-/**
- * A function which given an element returns a string which can be used to
- * locate the element, for example by returning the elements text content, or
- * an attribute value.
- *
- * ### Example
- *
- * ``` typescript
- * const inputValue: LocatorFn<HTMLInputElement> = (element) => element.value;
- * ```
- *
- * @param element The element to extract a locator out of
- * @typeParam E The type of the element that the locator function operates on
- */
-export type LocatorFn<E extends Element> = (element: E) => string;
+export type FilterFn<T, E extends Element> = (element: E) => T;
 
 export type FilterObject<T, E extends Element> = {
   apply: FilterFn<T, E>;
   default?: T;
 }
 
-export type Filters<E extends Element> = Record<string, FilterFn<unknown, E> | FilterObject<unknown, E>>;
+export type FilterDefinition<T, E extends Element> = FilterFn<T, E> | FilterObject<T, E>;
+
+export type Filters<E extends Element> = Record<string, FilterDefinition<unknown, E>>;
 
 export type Actions<E extends Element> = Record<string, ActionFn<E>>;
+
+export type SelectorFn<E extends Element> = (parentElement: Element) => E[];
 
 export type InteractorSpecification<E extends Element, F extends Filters<E>, A extends Actions<E>> = {
   /**
    * The CSS selector that this interactor uses to find matching elements
    */
-  selector?: string;
+  selector?: string | SelectorFn<E>;
   actions?: A;
   filters?: F;
   /**
@@ -166,7 +161,7 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
    * parameter of an {@link InteractorConstructor} must match the value
    * returned from the locator function.
    */
-  locator?: LocatorFn<E>;
+  locator?: FilterDefinition<string, E>;
 }
 
 export type ActionMethods<E extends Element, A extends Actions<E>> = {
@@ -206,8 +201,8 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
  * @typeParam A the actions of this interactor, this is usually inferred from the specification
  */
 export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
-  selector(value: string): InteractorConstructor<E, FP, FM, AM>;
-  locator(value: LocatorFn<E>): InteractorConstructor<E, FP, FM, AM>;
+  selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
+  locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
   actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
   extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
@@ -251,6 +246,6 @@ export type InteractorOptions<E extends Element, F extends Filters<E>, A extends
   name: string;
   specification: InteractorSpecification<E, F, A>;
   locator?: Locator<E>;
-  filter: Filter<E, F>;
+  filter: FilterSet<E, F>;
   ancestors: InteractorOptions<any, any, any>[];
 };

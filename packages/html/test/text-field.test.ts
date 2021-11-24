@@ -50,15 +50,14 @@ describe('@interactors/html', () => {
       await expect(TextField('Name').exists()).rejects.toHaveProperty('name', 'NoSuchElementError');
     });
 
-    it('does not yet support multiple label tags per `input`, only picks the first one', async () => {
+    it('does not yet support multiple label tags per `input`, becomes rejected as ambiguous', async () => {
       dom(`
         <label for="name-field">Name</label>
         <label for="name-field">Designation</label>
         <input id="name-field"/>
       `);
 
-      await expect(TextField('Name').exists()).resolves.toBeUndefined();
-      await expect(TextField('Designation').exists()).rejects.toHaveProperty('name', 'NoSuchElementError');
+      await expect(TextField('Name').exists()).rejects.toHaveProperty('name', 'AmbiguousElementError');
     });
 
     describe('.click', () => {
