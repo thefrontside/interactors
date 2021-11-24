@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FilterSet } from './filter-set';
-import { Locator } from './locator';
-import { Interaction, ReadonlyInteraction } from './interaction';
-import { MergeObjects } from './merge-objects';
-import { MaybeMatcher } from './matcher';
+import { FilterSet } from "./filter-set";
+import { Locator } from "./locator";
+import { Interaction, ReadonlyInteraction } from "./interaction";
+import { MergeObjects } from "./merge-objects";
+import { MaybeMatcher } from "./matcher";
 
 export type EmptyObject = Record<never, never>;
 
 export interface ExistsAssertionsImplementation {
-
   /**
    * An assertion which checks that an element matching the interactor exists.
    * Throws an error if the element does not exist.
@@ -113,7 +112,9 @@ export interface BaseInteractor<E extends Element, F extends FilterParams<any, a
  * this class as its base. They are also extended with any additional actions
  * defined in their {@link InteractorSpecification}.
  */
-export interface Interactor<E extends Element, F extends FilterParams<any, any>> extends BaseInteractor<E, F>, ExistsAssertionsImplementation {
+export interface Interactor<E extends Element, F extends FilterParams<any, any>>
+  extends BaseInteractor<E, F>,
+    ExistsAssertionsImplementation {
   /**
    * Returns a copy of the given interactor which is scoped to this interactor.
    * When there are multiple matches for an interactor, this makes it possible
@@ -130,7 +131,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * @returns a scoped copy of the initial interactor
    * @typeParam T the type of the interactor that we are going to scope
    */
-   find<T extends Interactor<any, any>>(interactor: T): T;
+  find<T extends Interactor<any, any>>(interactor: T): T;
 }
 
 export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;
@@ -140,7 +141,7 @@ export type FilterFn<T, E extends Element> = (element: E) => T;
 export type FilterObject<T, E extends Element> = {
   apply: FilterFn<T, E>;
   default?: T;
-}
+};
 
 export type FilterDefinition<T, E extends Element> = FilterFn<T, E> | FilterObject<T, E>;
 
@@ -164,31 +165,35 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
    * returned from the locator function.
    */
   locator?: FilterDefinition<string, E>;
-}
+};
 
 export type ActionMethods<E extends Element, A extends Actions<E>> = {
-  [P in keyof A]: A[P] extends ((interactor: Interactor<E, EmptyObject>, ...args: infer TArgs) => Promise<infer TReturn>)
-    ? ((...args: TArgs) => Interaction<TReturn>)
+  [P in keyof A]: A[P] extends (interactor: Interactor<E, EmptyObject>, ...args: infer TArgs) => Promise<infer TReturn>
+    ? (...args: TArgs) => Interaction<TReturn>
     : never;
-}
+};
 
 export type FilterMethods<E extends Element, F extends Filters<E>> = {
-  [P in keyof F]:
-    F[P] extends FilterFn<infer TReturn, any> ? (() => Interaction<TReturn> & FilterObject<TReturn, Element>) :
-    F[P] extends FilterObject<infer TReturn, any> ? (() => Interaction<TReturn> & FilterObject<TReturn, Element>) :
-    never;
-}
+  [P in keyof F]: F[P] extends FilterFn<infer TReturn, any>
+    ? () => Interaction<TReturn> & FilterObject<TReturn, Element>
+    : F[P] extends FilterObject<infer TReturn, any>
+    ? () => Interaction<TReturn> & FilterObject<TReturn, Element>
+    : never;
+};
 
 export type FilterReturn<F> = {
   [P in keyof F]?: F[P] extends MaybeMatcher<infer T> ? T : never;
-}
+};
 
-export type FilterParams<E extends Element, F extends Filters<E>> = keyof F extends never ? never : {
-  [P in keyof F]?:
-    F[P] extends FilterFn<infer TArg, E> ? MaybeMatcher<TArg> :
-    F[P] extends FilterObject<infer TArg, E> ? MaybeMatcher<TArg> :
-    never;
-}
+export type FilterParams<E extends Element, F extends Filters<E>> = keyof F extends never
+  ? never
+  : {
+      [P in keyof F]?: F[P] extends FilterFn<infer TArg, E>
+        ? MaybeMatcher<TArg>
+        : F[P] extends FilterObject<infer TArg, E>
+        ? MaybeMatcher<TArg>
+        : never;
+    };
 
 /**
  * An interactor constructor is a function which can be used to initialize an
@@ -202,10 +207,17 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
  * @typeParam F the filters of this interactor, this is usually inferred from the specification
  * @typeParam A the actions of this interactor, this is usually inferred from the specification
  */
-export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
+export interface InteractorConstructor<
+  E extends Element,
+  FP extends FilterParams<any, any>,
+  FM extends FilterMethods<any, any>,
+  AM extends ActionMethods<any, any>
+> {
   selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
   locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
-  filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
+  filters<FR extends Filters<E>>(
+    filters: FR
+  ): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
   actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
   extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
 

@@ -25,7 +25,7 @@ import { FilterNotMatchingError } from "./errors";
 import { interaction, interactionFilter, check, checkFilter, Interaction, ReadonlyInteraction } from "./interaction";
 import { Match } from "./match";
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from "./errors";
-import { isMatcher } from "./matcher";
+import { isMatcher, matcherCode } from "./matcher";
 import { matching } from "./matchers/matching";
 
 const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
@@ -169,12 +169,16 @@ export function serializeOptions(
   args?: unknown[]
 ): SerializedInteractorOptions {
   let locator = options.locator?.value;
+  let filters = options.filter.all;
+  for (let name in filters) {
+    filters[name] = matcherCode(filters[name]);
+  }
   return {
     ...options,
     actionName,
     args,
-    locator: locator == "string" ? locator : undefined,
-    filter: options.filter.all,
+    locator: matcherCode(locator),
+    filter: filters,
     ancestors: options.ancestors.map((ancestor) => serializeOptions(actionName, ancestor)),
   };
 }
