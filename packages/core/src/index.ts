@@ -2,8 +2,6 @@ export { Interactor, InteractorConstructor, InteractorSpecification } from './sp
 export { Interaction, ReadonlyInteraction, isInteraction } from './interaction';
 export { createInteractor } from './create-interactor';
 export { createInspector } from './inspector'
-export { perform } from './perform';
-export { focused, focus, blur } from './focused';
 export { isVisible } from 'element-is-visible';
 export { Matcher } from './matcher';
 
