@@ -1,86 +1,11 @@
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it } from 'mocha';
 import expect from 'expect';
-import express from 'express';
-import { Server } from 'http';
-
-import { JSDOM, ResourceLoader } from 'jsdom';
-import { bigtestGlobals } from '@bigtest/globals';
-import { globals, setDocumentResolver } from '@interactors/globals';
 
 import { dom } from './helpers';
 
 import { Page } from '../src';
 
 describe('Page', () => {
-  describe('visit', () => {
-    let jsdom: JSDOM;
-    let server: Server;
-
-    beforeEach(async () => {
-      globals.reset();
-
-      let app = express();
-
-      app.get('/', (req, res) => {
-        setTimeout(function() {
-          res.writeHead(200, {'Content-Type': 'text/html'});
-          res.write('<!doctype html><html><h1>Homepage</h1></html>');
-          res.end();
-        }, 20);
-      });
-
-      app.get('/foobar', (req, res) => {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write('<!doctype html><html><h1>On foobar!</h1></html>');
-        res.end();
-      });
-
-      server = app.listen(27000);
-
-      let resources = new ResourceLoader({ proxy: "http://localhost:27000" });
-      jsdom = new JSDOM(`<!doctype html><html><body><iframe/></body></html>`, { resources });
-      bigtestGlobals.testFrame = jsdom.window.document.querySelector('iframe') as HTMLIFrameElement;
-      setDocumentResolver(() => bigtestGlobals.testFrame?.contentDocument as Document);
-      bigtestGlobals.appUrl = 'http://example.com';
-    });
-
-    afterEach(() => {
-      server?.close();
-      jsdom?.window?.close();
-    });
-
-    it('can load the app by visiting the root path', async () => {
-      await Page.visit();
-      await expect(Page.url()).resolves.toEqual('http://example.com/');
-    });
-
-    it('can load the app by visiting the given path', async () => {
-      await Page.visit('/foobar');
-      await expect(Page.url()).resolves.toEqual('http://example.com/foobar');
-    });
-
-    it('can reload the app by visiting changed url hash', async () => {
-      await Page.visit('/#/foo');
-      await expect(Page.url()).resolves.toEqual('http://example.com/#/foo');
-      await Page.visit('/#/bar');
-      await expect(Page.url()).resolves.toEqual('http://example.com/#/bar');
-    });
-
-    it('is an interaction which can describe itself', async () => {
-      expect(Page.visit('/foobar').description).toEqual('visit with "/foobar" on page');
-    });
-
-    it('throws an error if app url is not defined', async () => {
-      bigtestGlobals.appUrl = undefined;
-      await expect(Page.visit('/foobar')).rejects.toThrow('no app url defined');
-    });
-
-    it('throws an error if test frame is not defined', async () => {
-      bigtestGlobals.testFrame = undefined;
-      await expect(Page.visit('/foobar')).rejects.toThrow('no test frame defined');
-    });
-  });
-
   describe('filter `title`', () => {
     it('can check the page title', async() => {
       let window = dom('');
