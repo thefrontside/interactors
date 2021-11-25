@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { instantiateBaseInteractor, findElements, unsafeSyncResolveParent } from "./constructor";
-import { BaseInteractor, Filters, InteractorConstructor, FilterParams } from "./specification";
+import { findElements, unsafeSyncResolveParent, instantiateInteractor } from "./constructor";
+import { Interactor, Filters, InteractorConstructor, FilterParams } from "./specification";
 
 type GetElement<I extends InteractorConstructor<any, any, any, any>> = I extends InteractorConstructor<infer E, any, any, any> ? E : never
 type GetFilters<I extends InteractorConstructor<any, any, any, any>> = I extends InteractorConstructor<any, infer F, any, any> ? F : never
 type GetActions<I extends InteractorConstructor<any, any, any, any>> = I extends InteractorConstructor<any, any, any, infer A> ? A : never
 
-export interface InteractorInspector<E extends Element, FP extends FilterParams<any, any>> extends BaseInteractor<E, FP> {
+export interface InteractorInspector<E extends Element, FP extends FilterParams<any, any>> extends Omit<Interactor<E, FP>, 'find'> {
   element: E,
   find<T extends InteractorConstructor<any, any, any, any>>(interactor: T): Inspector<T>
 }
@@ -30,7 +30,7 @@ export function createInspector<IC extends InteractorConstructor<any, any, any, 
       let elements = findElements<GetElement<IC>>(parentElement ?? unsafeSyncResolveParent(options), options);
       return elements.map(
         element => (Object.assign(
-          instantiateBaseInteractor(options, () => element) as (BaseInteractor<GetElement<IC>, Filters<GetFilters<IC>>> & GetActions<IC>), {
+          instantiateInteractor(options, () => element) as (Interactor<GetElement<IC>, Filters<GetFilters<IC>>> & GetActions<IC>), {
           element,
           find<T extends InteractorConstructor<any, any, any, any>>(constructor: T): Inspector<T> {
             return createInspector(constructor, element)

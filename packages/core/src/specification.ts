@@ -35,17 +35,22 @@ export interface ExistsAssertionsImplementation {
   absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
 }
 
-export interface BaseInteractor<E extends Element, F extends FilterParams<any, any>> {
+/**
+ * Instances of an interactor returned by an {@link InteractorConstructor}, use
+ * this class as its base. They are also extended with any additional actions
+ * defined in their {@link InteractorSpecification}.
+ */
+export interface Interactor<E extends Element, F extends FilterParams<any, any>> extends ExistsAssertionsImplementation {
   /**
    * @hidden
    */
   options: InteractorOptions<E, any, any>;
 
-  /**
-   * @returns a human readable description of this interactor
-   */
+   /**
+    * @returns a human readable description of this interactor
+    */
   description: string;
-
+ 
   /**
    * Perform a one-off action on the given interactor. Takes a function which
    * receives an element. This function converges, which means that it is rerun
@@ -103,18 +108,6 @@ export interface BaseInteractor<E extends Element, F extends FilterParams<any, a
   is(filters: F): ReadonlyInteraction<void>;
 
   /**
-   * @hidden
-   */
-  apply: FilterFn<string, Element>;
-}
-
-/**
- * Instances of an interactor returned by an {@link InteractorConstructor}, use
- * this class as its base. They are also extended with any additional actions
- * defined in their {@link InteractorSpecification}.
- */
-export interface Interactor<E extends Element, F extends FilterParams<any, any>> extends BaseInteractor<E, F>, ExistsAssertionsImplementation {
-  /**
    * Returns a copy of the given interactor which is scoped to this interactor.
    * When there are multiple matches for an interactor, this makes it possible
    * to make them more specific by limiting the interactor to a section of the
@@ -130,7 +123,12 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * @returns a scoped copy of the initial interactor
    * @typeParam T the type of the interactor that we are going to scope
    */
-   find<T extends Interactor<any, any>>(interactor: T): T;
+  find<T extends Interactor<any, any>>(interactor: T): T;
+
+  /**
+   * @hidden
+   */
+  apply: FilterFn<string, Element>;
 }
 
 export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;
