@@ -8,39 +8,12 @@ import { MaybeMatcher } from './matcher';
 
 export type EmptyObject = Record<never, never>;
 
-export interface ExistsAssertionsImplementation {
-
-  /**
-   * An assertion which checks that an element matching the interactor exists.
-   * Throws an error if the element does not exist.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Next').exists();
-   * ```
-   */
-  exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
-
-  /**
-   * An assertion which checks that an element matching the interactor does not
-   * exist. Throws an error if the element exists.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Next').absent();
-   * ```
-   */
-  absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
-}
-
 /**
  * Instances of an interactor returned by an {@link InteractorConstructor}, use
  * this class as its base. They are also extended with any additional actions
  * defined in their {@link InteractorSpecification}.
  */
-export interface Interactor<E extends Element, F extends FilterParams<any, any>> extends ExistsAssertionsImplementation {
+export interface Interactor<E extends Element, F extends FilterParams<any, any>> {
   /**
    * @hidden
    */
@@ -50,7 +23,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
     * @returns a human readable description of this interactor
     */
   description: string;
- 
+
   /**
    * Perform a one-off action on the given interactor. Takes a function which
    * receives an element. This function converges, which means that it is rerun
@@ -82,6 +55,30 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * ```
    */
   assert(fn: (element: E) => void): ReadonlyInteraction<void>;
+
+  /**
+   * An assertion which checks that an element matching the interactor exists.
+   * Throws an error if the element does not exist.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Next').exists();
+   * ```
+   */
+  exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
+
+  /**
+   * An assertion which checks that an element matching the interactor does not
+   * exist. Throws an error if the element exists.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Next').absent();
+   * ```
+   */
+  absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
 
   /**
    * Checks that there is one element matching the interactor, and that this
