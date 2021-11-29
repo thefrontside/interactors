@@ -8,41 +8,20 @@ import { MaybeMatcher } from "./matcher";
 
 export type EmptyObject = Record<never, never>;
 
-export interface ExistsAssertionsImplementation {
-  /**
-   * An assertion which checks that an element matching the interactor exists.
-   * Throws an error if the element does not exist.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Next').exists();
-   * ```
-   */
-  exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
-
-  /**
-   * An assertion which checks that an element matching the interactor does not
-   * exist. Throws an error if the element exists.
-   *
-   * ## Example
-   *
-   * ``` typescript
-   * await Link('Next').absent();
-   * ```
-   */
-  absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
-}
-
-export interface BaseInteractor<E extends Element, F extends FilterParams<any, any>> {
+/**
+ * Instances of an interactor returned by an {@link InteractorConstructor}, use
+ * this class as its base. They are also extended with any additional actions
+ * defined in their {@link InteractorSpecification}.
+ */
+export interface Interactor<E extends Element, F extends FilterParams<any, any>> {
   /**
    * @hidden
    */
   options: InteractorOptions<E, any, any>;
 
-  /**
-   * @returns a human readable description of this interactor
-   */
+   /**
+    * @returns a human readable description of this interactor
+    */
   description: string;
 
   /**
@@ -78,6 +57,30 @@ export interface BaseInteractor<E extends Element, F extends FilterParams<any, a
   assert(fn: (element: E) => void): ReadonlyInteraction<void>;
 
   /**
+   * An assertion which checks that an element matching the interactor exists.
+   * Throws an error if the element does not exist.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Next').exists();
+   * ```
+   */
+  exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
+
+  /**
+   * An assertion which checks that an element matching the interactor does not
+   * exist. Throws an error if the element exists.
+   *
+   * ## Example
+   *
+   * ``` typescript
+   * await Link('Next').absent();
+   * ```
+   */
+  absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
+
+  /**
    * Checks that there is one element matching the interactor, and that this
    * element matches the given filters. The available filters are defined by
    * the {@link InteractorSpecification}.
@@ -102,20 +105,6 @@ export interface BaseInteractor<E extends Element, F extends FilterParams<any, a
   is(filters: F): ReadonlyInteraction<void>;
 
   /**
-   * @hidden
-   */
-  apply: FilterFn<string, Element>;
-}
-
-/**
- * Instances of an interactor returned by an {@link InteractorConstructor}, use
- * this class as its base. They are also extended with any additional actions
- * defined in their {@link InteractorSpecification}.
- */
-export interface Interactor<E extends Element, F extends FilterParams<any, any>>
-  extends BaseInteractor<E, F>,
-    ExistsAssertionsImplementation {
-  /**
    * Returns a copy of the given interactor which is scoped to this interactor.
    * When there are multiple matches for an interactor, this makes it possible
    * to make them more specific by limiting the interactor to a section of the
@@ -132,6 +121,11 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * @typeParam T the type of the interactor that we are going to scope
    */
   find<T extends Interactor<any, any>>(interactor: T): T;
+
+  /**
+   * @hidden
+   */
+  apply: FilterFn<string, Element>;
 }
 
 export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;

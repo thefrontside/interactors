@@ -1,6 +1,6 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { Body } from "../src/body";
-import { matching, some, Switch, Page } from "../src";
+import { matching, some, Switch } from "../src";
 import { Switch as Component, FormControlLabel } from "@material-ui/core";
 import { createRenderStep, render } from "./helpers";
 
@@ -10,7 +10,7 @@ const renderSwitch = createRenderStep(Component, {}, ({ props, children }) => (
 const switcher = Switch("switch");
 
 export default test("Switch")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default render", (test) =>
     test
       .step(renderSwitch())

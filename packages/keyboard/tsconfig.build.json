@@ -10,7 +10,6 @@
   ],
   "references": [
     { "path": "../core/tsconfig.build.json" },
-    { "path": "../keyboard/tsconfig.build.json" },
     { "path": "../globals/tsconfig.build.json" }
   ]
 }

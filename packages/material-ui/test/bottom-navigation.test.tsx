@@ -1,6 +1,6 @@
 import { cloneElement, useState } from "react";
-import { test } from "bigtest";
-import { BottomNavigation, Page } from '../src';
+import { test, visit } from "bigtest";
+import { BottomNavigation } from '../src';
 import { BottomNavigation as Component, BottomNavigationAction } from '@material-ui/core';
 import { Restore, Favorite, LocationOn } from '@material-ui/icons';
 import { createRenderStep } from "./helpers";
@@ -21,7 +21,7 @@ const renderBottomNavigation = createRenderStep(Component, {}, ({ props, childre
 const bottomNavigation = BottomNavigation();
 
 export default test('BottomNavigation')
-  .step(Page.visit('/'))
+  .step(visit('/'))
   .step(renderBottomNavigation())
   .assertion(bottomNavigation.has({ value: 'Recents' }))
   .child('test `choose` action', (test) =>

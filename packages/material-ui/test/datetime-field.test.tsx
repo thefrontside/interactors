@@ -1,6 +1,6 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { TextField as Component } from "@material-ui/core";
-import { DateTimeField, matching, some, Page } from "../src";
+import { DateTimeField, matching, some } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderDateTimeField = createRenderStep(Component, {
@@ -11,7 +11,7 @@ const renderDateTimeField = createRenderStep(Component, {
 const datetimefield = DateTimeField("datetimefield");
 
 export default test("DateTimeField")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default", (test) =>
     test
       .step(renderDateTimeField())

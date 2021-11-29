@@ -107,6 +107,7 @@ workflows:
               package:
                 - globals
                 - core
+                - keyboard
                 - html
                 - material-ui
                 - with-cypress

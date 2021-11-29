@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { Select, MultiSelect, some, matching, Page } from "../src";
+import { test, visit } from "bigtest";
+import { Select, MultiSelect, some, matching } from "../src";
 import { Select as Component, FormControl, InputLabel, MenuItem, Chip, FormHelperText } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement } from "react";
@@ -38,7 +38,7 @@ const select = Select("select");
 const multiSelect = MultiSelect("select");
 
 export default test("Select")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child('singular', (test) =>
     test
       .child("default", (test) =>

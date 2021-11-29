@@ -1,13 +1,13 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { TextField as Component } from "@material-ui/core";
-import { DateField, matching, some, Page } from "../src";
+import { DateField, matching, some } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderDateField = createRenderStep(Component, { id: "datefield", label: "datefield", type: "date" });
 const datefield = DateField("datefield");
 
 export default test("DateField")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default", (test) =>
     test
       .step(renderDateField())

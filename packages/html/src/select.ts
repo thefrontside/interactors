@@ -1,4 +1,4 @@
-import { dispatchChange, dispatchInput } from '@interactors/core';
+import { dispatchChange, dispatchInput } from './dispatch';
 import { getSelect } from './get-select';
 import { HTML } from './html';
 import { FormField } from './form-field';

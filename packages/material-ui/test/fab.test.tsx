@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { Fab, including, Page, HTML, some, matching } from "../src";
+import { test, visit } from "bigtest";
+import { Fab, including, HTML, some, matching } from "../src";
 import { Fab as Component, Icon } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { createRenderStep } from "./helpers";
@@ -10,7 +10,7 @@ const fab = Fab('My Fab'.toUpperCase());
 const Span = HTML.selector("span");
 
 export default test("Fab")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("can render a floating action button", (test) =>
     test
       .step(renderFab())
