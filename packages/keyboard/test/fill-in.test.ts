@@ -1,6 +1,7 @@
 import { describe, it } from 'mocha';
 import { globals } from '@interactors/globals';
-import { createInteractor, fillIn } from '../src';
+import { createInteractor } from '@interactors/core';
+import { fillIn } from '../src';
 import { dom } from './helpers';
 
 const TextField = createInteractor<HTMLInputElement | HTMLTextAreaElement>('text field')
@@ -10,7 +11,7 @@ const TextField = createInteractor<HTMLInputElement | HTMLTextAreaElement>('text
     value: (e) => e.value,
   })
   .actions({
-    fillIn: ({ perform }, value: string) => perform((e) => fillIn(e, value)),
+    fillIn,
     focus: ({ perform }) => perform((e) => e.focus()),
     blur: ({ perform }) => perform((e) => e.blur()),
   });

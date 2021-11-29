@@ -10,6 +10,7 @@
     "packages": [
       "packages/globals",
       "packages/core",
+      "packages/keyboard",
       "packages/html",
       "packages/material-ui",
       "packages/with-cypress"

@@ -3,7 +3,7 @@ import { createInteractor } from '@interactors/core';
 
 let visitCounter = 1;
 
-const PageInteractor = createInteractor('page')
+const PageInteractor = createInteractor<HTMLHtmlElement>('page')
   .selector(':root')
   .filters({
     title: (element) => element.ownerDocument.title,

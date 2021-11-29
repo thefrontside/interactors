@@ -1,3 +1,5 @@
+import { KeyboardLayout } from './keyboard-layout';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ActionType = "interaction" | "check";
 
@@ -9,6 +11,7 @@ interface Globals {
   >;
   readonly interactorTimeout: number;
   readonly reset: () => void;
+  readonly keyboardLayout: KeyboardLayout
 }
 
 declare global {
@@ -26,6 +29,11 @@ if (!globalThis.__interactors) {
       {
         document: {
           get: () => globalThis.document,
+          enumerable: true,
+          configurable: true,
+        },
+        keyboardLayout: {
+          get: () => undefined,
           enumerable: true,
           configurable: true,
         },
@@ -86,3 +94,12 @@ export function addActionWrapper<T>(
 
   return () => getGlobals().actionWrappers.delete(wrapper as any);
 }
+
+export function setKeyboardLayout(layout: KeyboardLayout): void {
+  Object.defineProperty(getGlobals(), "keyboardLayout", {
+    value: layout,
+    enumerable: true,
+    configurable: true,
+  });
+}
+

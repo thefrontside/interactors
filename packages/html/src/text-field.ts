@@ -1,4 +1,4 @@
-import { fillIn } from '@interactors/core';
+import { fillIn } from '@interactors/keyboard';
 import { FormField } from './form-field';
 
 const selector = 'textarea, input' + [
@@ -13,7 +13,7 @@ const TextFieldInteractor = FormField.extend<HTMLInputElement | HTMLTextAreaElem
     placeholder: (element) => element.placeholder,
   })
   .actions({
-    fillIn: ({ perform }, value: string) => perform((element) => fillIn(element, value)),
+    fillIn
   })
 
 /**
