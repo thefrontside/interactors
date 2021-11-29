@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { FormControl, matching, some, Switch, Page } from "../src";
+import { test, visit } from "bigtest";
+import { FormControl, matching, some, Switch } from "../src";
 import { FormControl as Component, InputLabel, FormHelperText, Switch as SwitchComponent, FormControlLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";
@@ -30,7 +30,7 @@ const renderFormControl = createRenderStep(Component, {}, ({ props, children }) 
 const formControl = FormControl("Toggler");
 
 export default test("FormControl")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderFormControl())
   .assertion(formControl.exists())
   .assertion(formControl.is({ valid: true }))

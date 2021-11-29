@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { Button, including, not, Page, HTML } from "../src/index";
+import { test, visit } from "bigtest";
+import { Button, including, not, HTML } from "../src/index";
 import { Button as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { ComponentProps } from "react";
@@ -8,7 +8,7 @@ const renderButton = createRenderStep(Component, { children: 'My Button' });
 const button = Button(including("My Button".toUpperCase()));
 
 export default test("Button")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("rendering a button", (test) => test
     .step(renderButton())
     .assertion(button.exists())

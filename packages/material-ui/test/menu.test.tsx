@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { matching, Menu, MenuItem, MenuList, some, Page, HTML } from "../src";
+import { test, visit } from "bigtest";
+import { matching, Menu, MenuItem, MenuList, some, HTML } from "../src";
 import { Menu as Component, Button, MenuItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, MouseEvent, useState } from "react";
@@ -33,7 +33,7 @@ const renderMenu = createRenderStep(Component, { id: 'menu-id' }, ({ props, chil
 const menu = Menu("OPEN MENU");
 
 export default test("Menu")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderMenu())
   .assertion(menu.exists())
   .assertion(HTML({ id: 'menu-item' }).has({ text: 'Empty' }))

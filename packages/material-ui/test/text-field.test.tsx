@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { some, TextField, Page, matching } from "../src";
+import { test, visit } from "bigtest";
+import { some, TextField, matching } from "../src";
 import { TextField as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 
@@ -15,7 +15,7 @@ const renderTextField = createRenderStep(
 const textfield = TextField("textfield");
 
 export default test("TextField")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default render", (test) =>
     test
       .step(renderTextField())

@@ -1,6 +1,6 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { Slider as Component } from "@material-ui/core";
-import { Slider, Thumb, Page } from "../src/index";
+import { Slider, Thumb } from "../src/index";
 import { createRenderStep } from "./helpers";
 
 const renderSlider = createRenderStep(
@@ -31,7 +31,7 @@ const disabledSlider = Slider({ disabled: true });
 const disabledThumb = Thumb({ disabled: true });
 
 export default test("Slider")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child('Slider with one thumb', (test) => test
     .child('default', (test) => test
       .step(renderSlider())

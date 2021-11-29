@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { matching, some, Tab, Tabs, Page } from "../src";
+import { test, visit } from "bigtest";
+import { matching, some, Tab, Tabs } from "../src";
 import { Tabs as Component, Tab as TabComponent } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useState } from "react";
@@ -22,7 +22,7 @@ const renderTabs = createRenderStep(Component, {
 const tabs = Tabs("tabs");
 
 export default test("Tabs")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderTabs())
   .assertion(tabs.exists())
   .assertion(tabs.has({ value: 'THREE' }))

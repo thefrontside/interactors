@@ -1,6 +1,6 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { Body } from "../src/body";
-import { Checkbox, Page } from "../src";
+import { Checkbox } from "../src";
 import { Checkbox as Component, FormControlLabel } from "@material-ui/core";
 import { createRenderStep, render } from "./helpers";
 
@@ -10,7 +10,7 @@ const renderCheckbox = createRenderStep(Component, {}, ({ props, children }) => 
 const checkbox = Checkbox("checkbox");
 
 export default test("Checkbox")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default render", (test) =>
     test
       .step(renderCheckbox())

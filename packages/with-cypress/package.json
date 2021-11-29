@@ -15,7 +15,6 @@
     "README.md"
   ],
   "dependencies": {
-    "@bigtest/globals": "^0.7.6",
     "@interactors/core": "^0.3.0",
     "@interactors/html": "^0.36.0"
   },
