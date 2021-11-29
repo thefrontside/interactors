@@ -2,14 +2,14 @@ import { click, createInteractor } from '@interactors/core';
 import { isVisible } from 'element-is-visible';
 
 const HTMLInteractor = createInteractor<HTMLElement>('element')
-  .selector(':not(svg), :not(svg *), foreignObject :not(svg):not(svg *)')
+  .selector('*')
   .locator(innerText)
   .filters({
     text: innerText,
     title: (element) => element.title,
     id: (element) => element.id,
     visible: { apply: isVisible, default: true },
-    className: (element) => element.className,
+    className: (element) => Array.from(element.classList).join(' '),
     classList: (element) => Array.from(element.classList),
     focused: (element) => element.ownerDocument.activeElement === element
   })
