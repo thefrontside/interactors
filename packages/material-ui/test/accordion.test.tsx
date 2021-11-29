@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { Accordion, matching, some, Page } from "../src/index";
+import { test, visit } from "bigtest";
+import { Accordion, matching, some } from "../src/index";
 import {
   Accordion as Component,
   AccordionSummary,
@@ -27,7 +27,7 @@ const renderAccordion = createRenderStep(Component, {}, ({ props, children }) =>
 const accordion = Accordion("accordion");
 
 export default test("Accordion")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child('default render', (test) =>
     test
       .step(renderAccordion())

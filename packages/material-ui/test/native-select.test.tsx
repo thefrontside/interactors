@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { NativeSelect, NativeMultiSelect, some, matching, Page } from "../src";
+import { test, visit } from "bigtest";
+import { NativeSelect, NativeMultiSelect, some, matching } from "../src";
 import { Select as Component, FormControl, InputLabel } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 
@@ -31,7 +31,7 @@ const select = NativeSelect("select");
 const multiSelect = NativeMultiSelect("select");
 
 export default test("Native Select")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child('singular', (test) =>
     test
       .child("default", (test) =>

@@ -1,13 +1,13 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { TextField as Component } from "@material-ui/core";
-import { matching, some, TimeField, Page } from "../src";
+import { matching, some, TimeField } from "../src";
 import { createRenderStep } from "./helpers";
 
 const renderTimeField = createRenderStep(Component, { id: "timefield", label: "timefield", type: "time" });
 const timefield = TimeField("timefield");
 
 export default test("TimeField")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default", (test) =>
     test
       .step(renderTimeField())
