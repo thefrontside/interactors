@@ -1,5 +1,18 @@
 # @interactors/core
 
+## 0.4.0
+
+### Minor Changes
+
+- 76215cc: Remove deprecated functionality
+
+### Patch Changes
+
+- f06c7fe: simplify interactor instatiate function
+- 960da4e: Remove the ExistsAssertionsImplementation since it is no longer necessary
+- Updated dependencies [891af02]
+  - @interactors/globals@0.2.0
+
 ## 0.3.0
 
 ### Minor Changes

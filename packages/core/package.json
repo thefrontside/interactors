@@ -1,6 +1,6 @@
 {
   "name": "@interactors/core",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Composable page objects for components",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -33,7 +33,7 @@
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@interactors/globals": "^0.1.0",
+    "@interactors/globals": "^0.2.0",
     "@testing-library/dom": "^8.5.0",
     "@testing-library/user-event": "^13.2.1",
     "change-case": "^4.1.1",
