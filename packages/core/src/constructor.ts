@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { globals, InteractorOptions as SerializedInteractorOptions } from "@interactors/globals";
+import { globals, ActionOptions, InteractorOptions as SerializedInteractorOptions } from "@interactors/globals";
 import { converge } from "./converge";
 import { MergeObjects } from "./merge-objects";
 import {
@@ -162,23 +162,43 @@ export function unsafeSyncResolveUnique<E extends Element>(options: InteractorOp
   return resolveUnique(unsafeSyncResolveParent(options), options) as E;
 }
 
-export function serializeOptions(
-  actionName: string,
-  options: InteractorOptions<any, any, any>,
-  args?: unknown[]
-): SerializedInteractorOptions {
-  let locator = options.locator?.value;
-  let filters = options.filter.all;
-  for (let name in filters) {
-    filters[name] = matcherCode(filters[name]);
+export function serializeInteractorOptions(options: InteractorOptions<any, any, any>): SerializedInteractorOptions {
+  let locator = matcherCode(options.locator?.value);
+  let filter: Record<string, string> = {};
+  for (let name in options.filter.all) {
+    filter[name] = matcherCode(options.filter.all[name]);
   }
+  let code = `${options.name}(${[locator, JSON.stringify(filter)].filter(Boolean).join(", ")})}`;
   return {
-    ...options,
+    interactorName: options.name,
+    locator,
+    filter,
+    code,
+  };
+}
+
+export function serializeActionOptions({
+  type,
+  actionName,
+  options,
+  args,
+}: {
+  type: "interaction" | "check";
+  actionName: string;
+  options: InteractorOptions<any, any, any>;
+  args?: unknown[];
+}): ActionOptions {
+  let interactor = serializeInteractorOptions(options);
+  let ancestors = options.ancestors.map((ancestor) => serializeInteractorOptions(ancestor));
+  let code = `${[...ancestors, interactor]
+    .map(({ code }, index) => (index == 0 ? code : `${code})`))
+    .join(".find(")}.${actionName}(${args?.map((arg) => JSON.stringify(arg)).join(", ") ?? ""})`;
+  return {
+    interactor,
     actionName,
+    type,
     args,
-    locator: matcherCode(locator),
-    filter: filters,
-    ancestors: options.ancestors.map((ancestor) => serializeOptions(actionName, ancestor)),
+    code,
   };
 }
 
@@ -197,7 +217,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return interaction(
         `run perform on ${description(options)}`,
         () => converge(() => fn(resolver(options))),
-        serializeOptions("perform", options)
+        serializeActionOptions({ type: "interaction", actionName: "perform", options })
       );
     },
 
@@ -206,7 +226,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} asserts`,
           () => converge(() => void fn(resolver(options))),
-          serializeOptions("assert", options)
+          serializeActionOptions({ type: "check", actionName: "assert", options })
         )
       );
     },
@@ -231,16 +251,16 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
               }
             });
           },
-          serializeOptions("is", options)
+          serializeActionOptions({ type: "check", actionName: "is", options })
         )
       );
     },
 
     find<T extends Interactor<any, any>>(child: T): T {
-      return instantiateInteractor({
-        ...child.options,
-        ancestors: [...options.ancestors, options, ...child.options.ancestors]
-      }, resolver) as unknown as T;
+      return instantiateInteractor(
+        { ...child.options, ancestors: [...options.ancestors, options, ...child.options.ancestors] },
+        resolver
+      ) as unknown as T;
     },
 
     exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
@@ -251,7 +271,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
             converge(() => {
               resolveNonEmpty(unsafeSyncResolveParent(options), options);
             }),
-          serializeOptions("exists", options)
+          serializeActionOptions({ type: "check", actionName: "exists", options })
         ),
         (element) => findMatchesMatching(element, options).length > 0
       );
@@ -265,7 +285,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
             converge(() => {
               resolveEmpty(unsafeSyncResolveParent(options), options);
             }),
-          serializeOptions("absent", options)
+          serializeActionOptions({ type: "check", actionName: "absent", options })
         ),
         (element) => findMatchesMatching(element, options).length === 0
       );
@@ -288,7 +308,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           return interaction(
             `${actionDescription} on ${description(options)}`,
             () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args),
-            serializeOptions(actionName, options, args)
+            serializeActionOptions({ type: "interaction", actionName, options, args })
           );
         },
         configurable: true,
@@ -308,7 +328,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
               async () => {
                 return applyFilter(filter, resolver(options));
               },
-              serializeOptions(filterName, options)
+              serializeActionOptions({ type: "check", actionName: filterName, options })
             ),
             (parentElement) => {
               let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
