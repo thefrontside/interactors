@@ -1,5 +1,11 @@
 # @interactors/globals
 
+## 1.0.0-rc1.0
+
+### Major Changes
+
+- dfcbf1a: Release 1.0 RC1
+
 ## 0.2.0
 
 ### Minor Changes

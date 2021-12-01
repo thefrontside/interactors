@@ -1,6 +1,6 @@
 {
   "name": "@interactors/keyboard",
-  "version": "0.1.1",
+  "version": "1.0.0-rc1.0",
   "description": "Interactors for simulating the keyboard",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -33,7 +33,7 @@
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@interactors/core": "^0.4.0"
+    "@interactors/core": "^1.0.0-rc1.0"
   },
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
