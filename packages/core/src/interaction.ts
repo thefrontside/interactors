@@ -1,10 +1,10 @@
-import { globals, ActionOptions } from "@interactors/globals";
-import type { FilterObject } from "./specification";
+import { ActionOptions, globals } from '@interactors/globals';
+import type { FilterObject } from './specification';
 
-const interactionSymbol = Symbol.for("interaction");
+const interactionSymbol = Symbol.for('interaction');
 
 export function isInteraction(x: unknown): x is Interaction<unknown> {
-  return typeof x === "object" && x != null && interactionSymbol in x;
+  return typeof x === 'object' && x != null && interactionSymbol in x
 }
 
 /**
@@ -28,7 +28,7 @@ export interface Interaction<T> extends Promise<T> {
    */
   action: () => Promise<T>;
 
-  [interactionSymbol]: true;
+  [interactionSymbol]: true
 }
 
 /**
@@ -42,7 +42,6 @@ export interface ReadonlyInteraction<T> extends Interaction<T> {
    */
   check: () => Promise<T>;
 }
-
 function createInteraction<T>(description: string, action: () => Promise<T>): Interaction<T> {
   let promise: Promise<T>;
   return {
@@ -51,49 +50,32 @@ function createInteraction<T>(description: string, action: () => Promise<T>): In
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
     then(onFulfill, onReject) {
-      if (!promise) {
-        promise = this.action();
-      }
+      if(!promise) { promise = this.action(); }
       return promise.then(onFulfill, onReject);
     },
     catch(onReject) {
-      if (!promise) {
-        promise = this.action();
-      }
+      if(!promise) { promise = this.action(); }
       return promise.catch(onReject);
     },
     finally(handler) {
-      if (!promise) {
-        promise = this.action();
-      }
+      if(!promise) { promise = this.action(); }
       return promise.finally(handler);
-    },
-  };
+    }
+  }
 }
 
 export function interaction<T>(description: string, action: () => Promise<T>, options: ActionOptions): Interaction<T> {
-  return createInteraction(description, globals.wrapAction({ description, action, options }));
+  return createInteraction(description, globals.wrapAction({ description, action, options }))
 }
 
 export function check<T>(interaction: Interaction<T>): ReadonlyInteraction<T> {
-  return {
-    check() {
-      return this.action();
-    },
-    ...interaction,
-  };
+  return { check() { return this.action() }, ...interaction };
 }
 
-export function interactionFilter<T, Q>(
-  interaction: Interaction<T>,
-  filter: (element: Element) => Q
-): Interaction<T> & FilterObject<Q, Element> {
+export function interactionFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
   return { apply: filter, ...interaction };
 }
 
-export function checkFilter<T, Q>(
-  interaction: Interaction<T>,
-  filter: (element: Element) => Q
-): ReadonlyInteraction<T> & FilterObject<Q, Element> {
-  return { apply: filter, ...check(interaction) };
+export function checkFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
+  return { apply: filter , ...check(interaction) };
 }
