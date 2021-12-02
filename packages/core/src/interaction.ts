@@ -50,26 +50,26 @@ function createInteraction<T>(description: string, action: () => Promise<T>): In
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
     then(onFulfill, onReject) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = action(); }
       return promise.then(onFulfill, onReject);
     },
     catch(onReject) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = action(); }
       return promise.catch(onReject);
     },
     finally(handler) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = action(); }
       return promise.finally(handler);
     }
   }
 }
 
 export function interaction<T>(description: string, action: () => Promise<T>, options: ActionOptions): Interaction<T> {
-  return createInteraction(description, globals.wrapAction({ description, action, options }))
+  return createInteraction(description, globals.wrapAction(Object.assign(new String(description), { description, action, options }), action, options.type))
 }
 
 export function check<T>(interaction: Interaction<T>): ReadonlyInteraction<T> {
-  return { check() { return this.action() }, ...interaction };
+  return { check() { return interaction.action() }, ...interaction };
 }
 
 export function interactionFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {

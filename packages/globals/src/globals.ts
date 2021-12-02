@@ -34,7 +34,11 @@ export interface ActionEvent<T> {
   options: ActionOptions;
 }
 
-export type ActionWrapper = <T>(event: ActionEvent<T>) => () => Promise<T>;
+export type ActionWrapper<T = any> = (
+  eventOrDescription: ActionEvent<T> | string,
+  action?: () => Promise<T>,
+  type?: ActionType
+) => () => Promise<T>;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -109,7 +113,7 @@ export function setInteractorTimeout(ms: number): void {
   });
 }
 
-export function addActionWrapper(wrapper: ActionWrapper): () => boolean {
+export function addActionWrapper<T>(wrapper: ActionWrapper<T>): () => boolean {
   getGlobals().actionWrappers.add(wrapper as any);
 
   return () => getGlobals().actionWrappers.delete(wrapper as any);
