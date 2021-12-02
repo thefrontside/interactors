@@ -237,7 +237,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       Object.defineProperty(interactor, filterName, {
         value: function() {
           return interactionFilter(`${filterName} of ${description(options)}`, async () => {
-            return applyFilter(filter, resolver(options));
+            return converge(() => applyFilter(filter,  resolver(options)));
           }, (parentElement) => {
             let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
             return applyFilter(filter, element);
