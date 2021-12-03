@@ -325,9 +325,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           return interactionFilter(
             interaction(
               `${filterName} of ${description(options)}`,
-              async () => {
-                return applyFilter(filter, resolver(options));
-              },
+              return converge(() => applyFilter(filter,  resolver(options))),
               serializeActionOptions({ type: "check", actionName: filterName, options })
             ),
             (parentElement) => {

@@ -1,5 +1,29 @@
 # Changelog
 
+## 5.0.0-rc1.0
+
+### Major Changes
+
+- dfcbf1a: Release 1.0 RC1
+
+### Patch Changes
+
+- Updated dependencies [dfcbf1a]
+  - @interactors/core@1.0.0-rc1.0
+  - @interactors/html@1.0.0-rc1.0
+
+## 4.2.2
+
+### Patch Changes
+
+- Updated dependencies [891af02]
+- Updated dependencies [76215cc]
+- Updated dependencies [53f1980]
+- Updated dependencies [f06c7fe]
+- Updated dependencies [960da4e]
+  - @interactors/html@0.37.0
+  - @interactors/core@0.4.0
+
 ## 4.2.1
 
 ### Patch Changes
