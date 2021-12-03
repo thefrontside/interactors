@@ -35,7 +35,8 @@ export interface ActionEvent<T> {
 }
 
 export type ActionWrapper<T = any> = (
-  eventOrDescription: ActionEvent<T> | string,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  eventOrDescription: ActionEvent<T> | String,
   action?: () => Promise<T>,
   type?: ActionType
 ) => () => Promise<T>;

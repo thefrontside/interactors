@@ -38,13 +38,33 @@ describe("@interactors/globals", () => {
   describe("wrapInteraction", () => {
     it("returns the same interaction without any change", () => {
       let action = async () => {};
-      expect(globals.wrapAction("plain action", action, "interaction")).toBe(action);
+      expect(
+        globals.wrapAction({
+          description: "plain action",
+          action,
+          options: {
+            type: "interaction",
+            actionName: "plain",
+            code: "",
+            interactor: { interactorName: "Interactor", code: "" },
+          },
+        })
+      ).toBe(action);
     });
 
     it("applies defined interaction wrapper", async () => {
       let action = async () => "foo";
       let removeWrapper = addActionWrapper(() => async () => "bar");
-      let wrappedAction = globals.wrapAction("foo action", action, "interaction");
+      let wrappedAction = globals.wrapAction({
+        description: "foo action",
+        action,
+        options: {
+          type: "interaction",
+          actionName: "foo",
+          code: "",
+          interactor: { interactorName: "Interactor", code: "" },
+        },
+      });
 
       removeWrapper();
 
