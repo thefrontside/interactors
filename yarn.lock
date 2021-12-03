@@ -1857,6 +1857,11 @@
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
   integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
 
+"@interactors/globals@0.1.0", "@interactors/globals@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@interactors/globals/-/globals-0.1.0.tgz#644eae081b03396665f9ca4ec85729e29c4b685d"
+  integrity sha512-KUwFrYJrt885NmmIeohfgIrkL3wtIzqHZX7XOgJCBL9xzi1KadvbBWHvWPk+qyBTTb202lbaJ3XTp0DB8Knr/Q==
+
 "@interactors/html@^0.31.2":
   version "0.31.3"
   resolved "https://registry.yarnpkg.com/@interactors/html/-/html-0.31.3.tgz#6a84cf7e73cd7b4a5b841255909ac5ceb232edbd"
