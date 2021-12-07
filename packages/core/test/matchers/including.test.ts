@@ -19,4 +19,8 @@ describe('including', () => {
     await HTML({ title: including('world') }).exists();
     await expect(HTML({ title: including('blah') }).exists()).rejects.toHaveProperty('name', 'NoSuchElementError')
   });
+
+  it('can return code representation', () => {
+    expect(including('hello').code?.()).toBe('including("hello")')
+  })
 });

@@ -1,4 +1,4 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher } from '../matcher';
+import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher';
 
 export function and<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
   return {
@@ -8,5 +8,8 @@ export function and<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
     description(): string {
       return args.map(matcherDescription).join(' and ');
     },
+    code(): string {
+      return `and(${args.map(arg => matcherCode(arg)).join(', ')})`
+    }
   }
 }

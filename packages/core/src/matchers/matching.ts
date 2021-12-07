@@ -1,4 +1,4 @@
-import { Matcher } from '../matcher';
+import { Matcher, matcherCode } from '../matcher';
 
 export function matching(regexp: RegExp): Matcher<string> {
   return {
@@ -8,5 +8,8 @@ export function matching(regexp: RegExp): Matcher<string> {
     description(): string {
       return `matching ${regexp}`;
     },
+    code(): string {
+      return `matching(${matcherCode(regexp)})`
+    }
   }
 }

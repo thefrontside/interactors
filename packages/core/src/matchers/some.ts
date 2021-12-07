@@ -1,4 +1,4 @@
-import { Matcher, MaybeMatcher, applyMatcher, matcherDescription } from '../matcher';
+import { Matcher, MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher';
 
 export function some<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
   return {
@@ -8,5 +8,8 @@ export function some<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
     description(): string {
       return `some item ${matcherDescription(expected)}`;
     },
+    code(): string {
+      return `some(${matcherCode(expected)})`
+    }
   }
 }

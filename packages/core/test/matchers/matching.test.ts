@@ -21,4 +21,8 @@ describe('matching', () => {
     await HTML({ title: matching(/he(llo|ck)/) }).exists();
     await expect(HTML({ title: matching(/blah/) }).exists()).rejects.toHaveProperty('name', 'NoSuchElementError')
   });
+
+  it('can return code representation', () => {
+    expect(matching(/he(llo|ck)/).code?.()).toBe('matching(/he(llo|ck)/)')
+  })
 });

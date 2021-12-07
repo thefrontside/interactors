@@ -1,4 +1,4 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher } from '../matcher';
+import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher';
 
 export function not<T>(matcher: MaybeMatcher<T>): Matcher<T> {
   return {
@@ -8,5 +8,8 @@ export function not<T>(matcher: MaybeMatcher<T>): Matcher<T> {
     description(): string {
       return `not ${matcherDescription(matcher)}`;
     },
+    code(): string {
+      return `not(${matcherCode(matcher)})`
+    }
   }
 }

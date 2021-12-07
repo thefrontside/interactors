@@ -1,4 +1,4 @@
-import { Matcher } from '../matcher';
+import { Matcher, matcherCode} from '../matcher';
 
 export function including(subString: string): Matcher<string> {
   return {
@@ -8,5 +8,8 @@ export function including(subString: string): Matcher<string> {
     description(): string {
       return `including ${JSON.stringify(subString)}`;
     },
+    code(): string {
+      return `including(${matcherCode(subString)})`
+    }
   }
 }

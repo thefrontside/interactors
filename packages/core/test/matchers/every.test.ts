@@ -23,4 +23,9 @@ describe('every', () => {
     await MultiSelect({ id: 'colors' }).has({ values: every(including('Neon')) });
     await expect(MultiSelect({ id: 'colors' }).has({ values: every(including('Blue')) })).rejects.toHaveProperty('name', 'FilterNotMatchingError')
   });
+
+  it('can return code representation', () => {
+    expect(every('hello').code?.()).toBe('every("hello")')
+    expect(every(including('Neon')).code?.()).toBe('every(including("Neon"))')
+  })
 });
