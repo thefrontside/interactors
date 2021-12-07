@@ -1,5 +1,6 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
+import { ActionEvent, addActionWrapper } from '@interactors/globals';
 import { dom } from './helpers';
 
 import { createInteractor } from '../src';
@@ -59,6 +60,14 @@ const MainNav = createInteractor('main nav')
   .selector('nav')
 
 describe('createInteractor', () => {
+  let actionCode = ''
+  before(() => {
+    addActionWrapper((actionEvent: ActionEvent<unknown>) => {
+      actionCode = actionEvent.options.code
+      return actionEvent.action
+    })
+  })
+
   describe('.exists', () => {
     it('can determine whether an element exists based on the interactor', async () => {
       dom(`
@@ -131,6 +140,14 @@ describe('createInteractor', () => {
     it('can return description', () => {
       expect(Link('Foo Bar').exists().description).toEqual('link "Foo Bar" exists')
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`<p><a href="/foobar">Foo Bar</a></p>`);
+
+      Link('Foo Bar').exists()
+
+      expect(actionCode).toBe('link("Foo Bar").exists()');
+    })
   });
 
   describe('.absent', () => {
@@ -183,6 +200,14 @@ describe('createInteractor', () => {
     it('can return description', () => {
       expect(Link('Foo Bar').absent().description).toEqual('link "Foo Bar" does not exist')
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`<p><a href="/foobar">Foo Bar</a></p>`);
+
+      Link('Blah').absent()
+
+      expect(actionCode).toBe('link("Blah").absent()');
+    })
   });
 
   describe('.find', () => {
@@ -285,6 +310,18 @@ describe('createInteractor', () => {
 
       await expect(Div("foo").find(Div("bar")).exists()).rejects.toHaveProperty('message', 'did not find div "bar" within div "foo"');
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`
+        <div id="foo">
+          <a href="/foo">Foo</a>
+        </div>
+      `);
+
+      Div("foo").find(Link("Foo")).exists()
+
+      expect(actionCode).toBe('div("foo").find(link("Foo")).exists()');
+    })
   });
 
   describe('.is', () => {
@@ -301,6 +338,14 @@ describe('createInteractor', () => {
         '└─ Received: "jonas@example.com"',
       ].join('\n'))
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`<input id="Email" value='jonas@example.com'/>`);
+
+      TextField('Email').is({ value: 'jonas@example.com' })
+
+      expect(actionCode).toBe('text field("Email", { "enabled": true }).is({ "value": "jonas@example.com" })');
+    })
   });
 
   describe('.has', () => {
@@ -317,6 +362,14 @@ describe('createInteractor', () => {
         '└─ Received: "jonas@example.com"',
       ].join('\n'))
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`<input id="Email" value='jonas@example.com'/>`);
+
+      TextField('Email').has({ value: 'jonas@example.com' })
+
+      expect(actionCode).toBe('text field("Email", { "enabled": true }).is({ "value": "jonas@example.com" })');
+    })
   });
 
   describe('actions', () => {
@@ -435,6 +488,16 @@ describe('createInteractor', () => {
         '- <a href="/bar&quot;">',
       ].join('\n'))
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`
+        <a id="foo" href="/foobar">Foo Bar</a>
+      `);
+
+      Link('Foo Bar').setHref('/monkey');
+
+      expect(actionCode).toBe('link("Foo Bar").setHref("/monkey")');
+    })
   });
 
   describe('filters', () => {
@@ -537,6 +600,16 @@ describe('createInteractor', () => {
       ].join('\n'))
       await expect(TextField('Password', { enabled: false, value: 'test1234' }).exists()).resolves.toBeUndefined();
     });
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`
+        <input id="Email" value='jonas@example.com'/>
+      `);
+
+      TextField('Email', { value: 'jonas@example.com' }).exists();
+
+      expect(actionCode).toBe('text field("Email", { "value": "jonas@example.com", "enabled": true }).exists()');
+    })
   });
 
   describe('getters', () => {
@@ -548,6 +621,17 @@ describe('createInteractor', () => {
 
       await expect(TextField('Password').value()).resolves.toEqual('test1234')
       await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email')
+    })
+
+    it("can be serialized to code representation for action wrapper", () => {
+      dom(`
+        <input id="Email" value='jonas@example.com'/>
+        <input id="Password" value='test1234'/>
+      `);
+
+      TextField('Password').value()
+
+      expect(actionCode).toBe('text field("Password", { "enabled": true }).value()');
     })
   })
 });

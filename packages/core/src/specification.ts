@@ -246,3 +246,15 @@ export type InteractorOptions<E extends Element, F extends Filters<E>, A extends
   filter: FilterSet<E, F>;
   ancestors: InteractorOptions<any, any, any>[];
 };
+
+export type ActionOptions = {
+  type: "interaction";
+  actionName: string;
+  options: InteractorOptions<any, any, any>;
+  args?: unknown[];
+} | {
+  type: "check";
+  actionName: string;
+  options: InteractorOptions<any, any, any>;
+  filters?: FilterParams<any, any>;
+}

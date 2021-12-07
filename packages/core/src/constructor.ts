@@ -26,6 +26,7 @@ import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
+import { serializeActionOptions } from './serialize';
 
 const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
@@ -151,15 +152,21 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     },
 
     perform<T>(fn: (element: E) => T): Interaction<T> {
-      return interaction(`run perform on ${description(options)}`, () => converge(() => fn(resolver(options))))
+      return interaction(
+        `run perform on ${description(options)}`,
+        () => converge(() => fn(resolver(options))),
+        serializeActionOptions({ type: "interaction", actionName: "perform", options })
+      )
     },
 
     assert(fn: (element: E) => void): ReadonlyInteraction<void> {
-      return check(`${description(options)} asserts`, () => {
-        return converge(() => {
-          fn(resolver(options));
-        });
-      });
+      return check(
+        interaction(
+          `${description(options)} asserts`,
+          () => converge(() => { fn(resolver(options)) }),
+          serializeActionOptions({ type: "check", actionName: "assert", options }),
+        )
+      );
     },
 
     has(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
@@ -168,15 +175,19 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
 
     is(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
       let filter = new FilterSet(options.specification, filters);
-      return check(`${description(options)} matches filters: ${filter.description}`, () => {
-        return converge(() => {
-          let element = resolver({...options, filter: getLookupFilterForAssertion(options.filter, filters) });
-          let match = new MatchFilter(element, filter);
-          if (!match.matches) {
-            throw new FilterNotMatchingError(`${description(options)} does not match filters:\n\n${match.formatAsExpectations()}`);
-          }
-        });
-      });
+      return check(
+        interaction(
+          `${description(options)} matches filters: ${filter.description}`,
+          () => converge(() => {
+            let element = resolver({...options, filter: getLookupFilterForAssertion(options.filter, filters) });
+            let match = new MatchFilter(element, filter);
+            if (!match.matches) {
+              throw new FilterNotMatchingError(`${description(options)} does not match filters:\n\n${match.formatAsExpectations()}`);
+            }
+          }),
+          serializeActionOptions({ type: "check", actionName: "is", options, filters }),
+        )
+      );
     },
 
     find<T extends Interactor<any, any>>(child: T): T {
@@ -187,23 +198,23 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     },
 
     exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${description(options)} exists`, () => {
-        return converge(() => {
-          resolveNonEmpty(unsafeSyncResolveParent(options), options);
-        });
-      }, (element) => {
-        return findMatchesMatching(element, options).length > 0;
-      });
+      return checkFilter(
+        interaction(
+          `${description(options)} exists`,
+          () => converge(() => { resolveNonEmpty(unsafeSyncResolveParent(options), options) }),
+          serializeActionOptions({ type: "check", actionName: "exists", options }),
+        ),
+        (element) => findMatchesMatching(element, options).length > 0);
     },
 
     absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${description(options)} does not exist`, () => {
-        return converge(() => {
-          resolveEmpty(unsafeSyncResolveParent(options), options);
-        });
-      }, (element) => {
-        return findMatchesMatching(element, options).length === 0;
-      });
+      return checkFilter(
+        interaction(
+          `${description(options)} does not exist`,
+          () => converge(() => { resolveEmpty(unsafeSyncResolveParent(options), options) }),
+          serializeActionOptions({ type: "check", actionName: "absent", options }),
+        ),
+        (element) => findMatchesMatching(element, options).length === 0);
     },
 
     apply(parentElement: Element): string {
@@ -222,7 +233,8 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           }
           return interaction(
             `${actionDescription} on ${description(options)}`,
-            () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args)
+            () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args),
+            serializeActionOptions({ type: "interaction", actionName, options, args })
           );
         },
         configurable: true,
@@ -236,11 +248,15 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     if (!interactor.hasOwnProperty(filterName)) {
       Object.defineProperty(interactor, filterName, {
         value: function() {
-          return interactionFilter(`${filterName} of ${description(options)}`, async () => {
-            return converge(() => applyFilter(filter,  resolver(options)));
-          }, (parentElement) => {
-            let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
-            return applyFilter(filter, element);
+          return interactionFilter(
+            interaction(
+              `${filterName} of ${description(options)}`,
+              async () => converge(() => applyFilter(filter,  resolver(options))),
+              serializeActionOptions({ type: "check", actionName: filterName, options }),
+            ),
+            (parentElement) => {
+              let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
+              return applyFilter(filter, element);
           });
         },
         configurable: true,

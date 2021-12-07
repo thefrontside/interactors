@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { setDocumentResolver, addActionWrapper } from '@interactors/globals';
+import { setDocumentResolver, addActionWrapper, ActionEvent } from '@interactors/globals';
 import { Interaction, isInteraction, ReadonlyInteraction } from '@interactors/core';
 
 declare global {
@@ -16,13 +16,13 @@ let cypressCommand: CypressCommand | null = null
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-addActionWrapper((description, action, type) =>
-  async () => {
-    if (type == 'interaction' && cypressCommand == 'expect')
-      throw new Error(`tried to ${description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
-    return action()
+addActionWrapper((event: ActionEvent<unknown>) => {
+  return async () => {
+    if (event.options.type == 'interaction' && cypressCommand == 'expect')
+      throw new Error(`tried to ${event.description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
+    return event.action()
   }
-);
+});
 
 function interact(interactions: Interaction<void>[], command: CypressCommand): void {
   interactions
