@@ -30,4 +30,8 @@ describe('not', () => {
     await div.has({ title: not('monkey') });
     await expect(div.has({ title: not('hello') })).rejects.toHaveProperty('name', 'FilterNotMatchingError');
   });
+
+  it('can return code representation', () => {
+    expect(not(including('monkey')).code?.()).toBe('not(including("monkey"))')
+  })
 });

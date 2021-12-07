@@ -28,4 +28,8 @@ describe('or', () => {
     await HTML({ title: or('hello', 'world') }).exists();
     await expect(HTML({ title: or('blah', 'monkey') }).exists()).rejects.toHaveProperty('name', 'NoSuchElementError')
   });
+
+  it('can return code representation', () => {
+    expect(or('hello', 'world').code?.()).toBe('or("hello", "world")')
+  })
 });

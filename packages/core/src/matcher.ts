@@ -3,6 +3,7 @@ import isEqual from 'lodash.isequal';
 export interface Matcher<T> {
   match(actual: T): boolean;
   description(): string;
+  code?(): string;
 }
 
 export type MaybeMatcher<T> = Matcher<T> | T;
@@ -24,5 +25,15 @@ export function applyMatcher<T>(value: MaybeMatcher<T>, actual: T): boolean {
     return value.match(actual);
   } else {
     return isEqual(value, actual);
+  }
+}
+
+export function matcherCode<T>(value: MaybeMatcher<T>): string {
+  if (isMatcher(value) && value.code) {
+    return value.code();
+  } else if (value instanceof RegExp) {
+    return value.toString();
+  } else {
+    return JSON.stringify(value);
   }
 }

@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from '../helpers';
 
-import { createInteractor, and, including } from '../../src/index';
+import { createInteractor, and, including, matching } from '../../src';
 
 const HTML = createInteractor<HTMLElement>('html')
   .filters({
@@ -29,4 +29,10 @@ describe('and', () => {
     await HTML({ title: and('hello', 'hello') }).exists();
     await expect(HTML({ title: and('hello', 'monkey') }).exists()).rejects.toHaveProperty('name', 'NoSuchElementError')
   });
+
+  it('can return code representation', () => {
+    expect(and('hello', 'world').code?.()).toBe('and("hello", "world")')
+    expect(and('hello', including('world')).code?.()).toBe('and("hello", including("world"))')
+    expect(and('hello', matching(/world/ig)).code?.()).toBe('and("hello", matching(/world/gi))')
+  })
 });
