@@ -39,6 +39,7 @@ describe("@interactors/globals", () => {
     it("returns the same interaction without any change", () => {
       let action = async () => {};
       expect(
+        // @ts-expect-error `wrapAction` accepts string as first argument for back compatibility
         globals.wrapAction({
           description: "plain action",
           action,
@@ -55,6 +56,7 @@ describe("@interactors/globals", () => {
     it("applies defined interaction wrapper", async () => {
       let action = async () => "foo";
       let removeWrapper = addActionWrapper(() => async () => "bar");
+      // @ts-expect-error `wrapAction` accepts string as first argument for back compatibility
       let wrappedAction = globals.wrapAction({
         description: "foo action",
         action,
