@@ -9,7 +9,7 @@ export function matching(regexp: RegExp): Matcher<string> {
       return `matching ${regexp}`;
     },
     code(): string {
-      return `matching${matcherCode(regexp)}`
+      return `matching(${matcherCode(regexp)})`
     }
   }
 }

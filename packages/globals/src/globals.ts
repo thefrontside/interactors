@@ -16,7 +16,7 @@ export type InteractorOptions = {
   interactorName: string;
   code: string;
   locator?: string;
-  filter?: Record<string, any>;
+  filter?: Record<string, unknown>;
   ancestors?: InteractorOptions[];
 };
 
@@ -34,12 +34,14 @@ export interface ActionEvent<T> {
   options: ActionOptions;
 }
 
-export type ActionWrapper<T = any> = (
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  eventOrDescription: ActionEvent<T> | String,
-  action?: () => Promise<T>,
-  type?: ActionType
-) => () => Promise<T>;
+export type ActionWrapper<T = any> =
+  | ((event: ActionEvent<T>) => () => Promise<T>)
+  | ((
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      description: String,
+      action: () => Promise<T>,
+      type: ActionType
+    ) => () => Promise<T>);
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -68,7 +70,15 @@ if (!globalThis.__interactors) {
           value: <T>(event: ActionEvent<T>): (() => Promise<T>) => {
             let wrappedAction = event.action;
             for (let wrapper of getGlobals().actionWrappers) {
-              wrappedAction = wrapper({ ...event, action: wrappedAction });
+              wrappedAction = wrapper(
+                Object.assign(new String(event.description), {
+                  description: event.description,
+                  action: wrappedAction,
+                  options: event.options,
+                }),
+                wrappedAction,
+                event.options.type
+              );
             }
             return wrappedAction;
           },
@@ -114,6 +124,15 @@ export function setInteractorTimeout(ms: number): void {
   });
 }
 
+export function addActionWrapper<T>(wrapper: (event: ActionEvent<T>) => () => Promise<T>): () => boolean;
+export function addActionWrapper<T>(
+  wrapper: (
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    description: String,
+    action: () => Promise<T>,
+    type: ActionType
+  ) => () => Promise<T>
+): () => boolean;
 export function addActionWrapper<T>(wrapper: ActionWrapper<T>): () => boolean {
   getGlobals().actionWrappers.add(wrapper as any);
 

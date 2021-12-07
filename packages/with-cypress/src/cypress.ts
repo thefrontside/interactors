@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { setDocumentResolver, addActionWrapper, ActionEvent } from '@interactors/globals';
+import { setDocumentResolver, addActionWrapper, ActionEvent, ActionType } from '@interactors/globals';
 import { Interaction, isInteraction, ReadonlyInteraction } from '@interactors/core';
 
 declare global {
@@ -16,9 +16,10 @@ let cypressCommand: CypressCommand | null = null
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-addActionWrapper((eventOrDescription, action, type) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+addActionWrapper((eventOrDescription: ActionEvent<unknown> | String, action?: () => Promise<unknown>, type?: ActionType) => {
   let event = (
-    typeof eventOrDescription == 'string'
+    eventOrDescription instanceof String
     ? { description: eventOrDescription, action, options: { type } }
     : eventOrDescription
   ) as ActionEvent<unknown>;
