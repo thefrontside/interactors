@@ -80,7 +80,7 @@ async function goToYear<T>(interactor: Interactor<HTMLElement, T>, targetYear: n
 async function goToMonth<T>(
   interactor: Interactor<HTMLElement, T>,
   targetMonth: string,
-  directionStep: () => Interaction<void>,
+  directionStep: () => Interaction<HTMLElement>,
   currentYear?: number
 ) {
   let currentMonth = await applyGetter(interactor, getMonth);
@@ -174,12 +174,12 @@ const CalendarInteractor = createInteractor<HTMLElement>("MUI Calendar")
 
       let directions = [() => goToPrevMonth(interactor), () => goToNextMonth(interactor)];
       directions = Math.round(Math.random()) ? directions : directions.reverse();
-      let directionStep = directions.shift() as () => Interaction<void>;
+      let directionStep = directions.shift() as () => Interaction<HTMLElement>;
 
       try {
         await goToMonth(interactor, targetMonth, directionStep, currentYear);
       } catch (_) {
-        directionStep = directions.shift() as () => Interaction<void>;
+        directionStep = directions.shift() as () => Interaction<HTMLElement>;
         await goToMonth(interactor, targetMonth, directionStep, currentYear);
       }
     },
