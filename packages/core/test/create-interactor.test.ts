@@ -50,8 +50,8 @@ const Datepicker = createInteractor<HTMLDivElement>("datepicker")
     month: element => element.querySelector<HTMLElement>("div.calendar h4")?.textContent
   })
   .actions({
-    toggle: async interactor => {
-      await interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
+    toggle: function*(interactor) {
+      yield interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
     }
   });
 

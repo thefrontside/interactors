@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { Operation } from '@effection/core';
 import { FilterSet } from './filter-set';
 import { Locator } from './locator';
 import { ActionInteraction, AssertionInteraction } from './interaction';
@@ -128,7 +129,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
   apply: FilterFn<string, Element>;
 }
 
-export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Promise<unknown>;
+export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Operation<unknown>;
 
 export type FilterFn<T, E extends Element> = (element: E) => T;
 
@@ -162,7 +163,7 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
 }
 
 export type ActionMethods<E extends Element, A extends Actions<E>> = {
-  [P in keyof A]: A[P] extends ((interactor: Interactor<E, EmptyObject>, ...args: infer TArgs) => Promise<infer TReturn>)
+  [P in keyof A]: A[P] extends ((interactor: Interactor<E, EmptyObject>, ...args: infer TArgs) => Operation<infer TReturn>)
     ? ((...args: TArgs) => ActionInteraction<E, TReturn>)
     : never;
 }
