@@ -1,5 +1,5 @@
 export { Interactor, InteractorConstructor, InteractorSpecification } from './specification';
-export { Interaction, ReadonlyInteraction, isInteraction } from './interaction';
+export { Interaction, ActionInteraction, AssertionInteraction, InteractionType, isInteraction } from './interaction';
 export { createInteractor } from './create-interactor';
 export { createInspector } from './inspector'
 export { isVisible } from 'element-is-visible';

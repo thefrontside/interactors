@@ -37,5 +37,8 @@
   "volta": {
     "node": "14.17.5",
     "yarn": "1.22.11"
+  },
+  "dependencies": {
+    "@effection/core": "^2.0.1"
   }
 }

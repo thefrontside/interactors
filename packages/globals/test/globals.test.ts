@@ -2,7 +2,7 @@ import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
 
-import { globals, setDocumentResolver, addActionWrapper, setInteractorTimeout } from "../src";
+import { globals, InteractionWrapper, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -35,20 +35,17 @@ describe("@interactors/globals", () => {
     });
   });
 
-  describe("wrapInteraction", () => {
-    it("returns the same interaction without any change", () => {
-      let action = async () => {};
-      expect(globals.wrapAction("plain action", action, "interaction")).toBe(action);
-    });
+  describe("addInteractionWrapper", () => {
+    it("adds interaction wrapper to list", async () => {
+      let action: InteractionWrapper = function*(interactor, inner) {
+        return yield inner;
+      };
+      let removeWrapper = addInteractionWrapper(action);
 
-    it("applies defined interaction wrapper", async () => {
-      let action = async () => "foo";
-      let removeWrapper = addActionWrapper(() => async () => "bar");
-      let wrappedAction = globals.wrapAction("foo action", action, "interaction");
+      expect(globals.interactionWrappers.has(action)).toEqual(true);
 
       removeWrapper();
-
-      expect(await wrappedAction()).toEqual("bar");
+      expect(globals.interactionWrappers.has(action)).toEqual(false);
     });
   });
 });

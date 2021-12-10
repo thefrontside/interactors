@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Operation, Task, run } from '@effection/core';
 import { globals } from '@interactors/globals';
-import type { FilterObject } from './specification';
+import type { Interactor, FilterObject, FilterFn } from './specification';
 
 const interactionSymbol = Symbol.for('interaction');
 
-export function isInteraction(x: unknown): x is Interaction<unknown> {
+export type InteractionType = "action" | "assertion";
+
+export function isInteraction(x: unknown): x is Interaction<Element, unknown> {
   return typeof x === 'object' && x != null && interactionSymbol in x
 }
 
@@ -18,7 +22,12 @@ export function isInteraction(x: unknown): x is Interaction<unknown> {
  *
  * @typeParam T the return value of the promise that this interaction evaluates to.
  */
-export interface Interaction<T> extends Promise<T> {
+export interface Interaction<E extends Element, T = void> extends Promise<T> {
+  type: InteractionType;
+
+  interactor: Interactor<E, any>;
+  run: (interactor: Interactor<E, any>) => Operation<T>;
+  operation: Operation<T>;
   /**
    * Return a description of the interaction
    */
@@ -26,9 +35,18 @@ export interface Interaction<T> extends Promise<T> {
   /**
    * Perform the interaction
    */
-  action: () => Promise<T>;
+  action: () => Task<T>;
+
+  check?: () => Task<T>;
+
+  halt: () => Promise<void>;
 
   [interactionSymbol]: true
+}
+
+export interface ActionInteraction<E extends Element, T = void> extends Interaction<E, T> {
+  type: "action";
+  check: undefined;
 }
 
 /**
@@ -36,47 +54,70 @@ export interface Interaction<T> extends Promise<T> {
  *
  * @typeParam T the return value of the promise that this interaction evaluates to.
  */
-export interface ReadonlyInteraction<T> extends Interaction<T> {
+export interface AssertionInteraction<E extends Element, T = void> extends Interaction<E, T> {
+  type: "assertion";
   /**
    * Perform the check
    */
-  check: () => Promise<T>;
+  check: () => Task<T>;
 }
 
-function createInteraction<T>(description: string, action: () => Promise<T>): Interaction<T> {
-  let promise: Promise<T>;
-  return {
-    description,
+type InteractionOptions<E extends Element, T> = {
+  description: string;
+  interactor: Interactor<E, any>;
+  run: (interactor: Interactor<E, any>) => Operation<T>;
+}
+
+export function createInteraction<E extends Element, T>(type: 'action', options: InteractionOptions<E, T>): ActionInteraction<E, T>
+export function createInteraction<E extends Element, T>(type: 'assertion', options: InteractionOptions<E, T>): AssertionInteraction<E, T>
+export function createInteraction<E extends Element, T, Q>(type: 'action', options: InteractionOptions<E, T>, apply: FilterFn<Q, Element>): ActionInteraction<E, T> & FilterObject<Q, Element>
+export function createInteraction<E extends Element, T, Q>(type: 'assertion', options: InteractionOptions<E, T>, apply: FilterFn<Q, Element>): AssertionInteraction<E, T> & FilterObject<Q, Element>
+export function createInteraction<E extends Element, T, Q>(type: InteractionType, options: InteractionOptions<E, T>, apply?: FilterFn<Q, Element>): Interaction<E, T> {
+  let task: Task<T>;
+
+  function operation(): Operation<T> {
+    let operation = options.run(options.interactor);
+
+    for(let wrapper of globals.interactionWrappers) {
+      operation = wrapper(interaction, operation);
+    };
+
+    return operation;
+  };
+
+  function action(): Task<T> {
+    if(!task) {
+      task = run(operation());
+    }
+    return task;
+  };
+
+  let interaction: Interaction<E, T> = {
+    type,
+    description: options.description,
+    interactor: options.interactor,
+    run: options.run,
+    get operation() { return operation() },
     action,
+    halt: () => action().halt(),
     [interactionSymbol]: true,
-    [Symbol.toStringTag]: `[interaction ${description}]`,
+    [Symbol.toStringTag]: `[interaction ${options.description}]`,
     then(onFulfill, onReject) {
-      if(!promise) { promise = this.action(); }
-      return promise.then(onFulfill, onReject);
+      return action().then(onFulfill, onReject);
     },
     catch(onReject) {
-      if(!promise) { promise = this.action(); }
-      return promise.catch(onReject);
+      return action().catch(onReject);
     },
     finally(handler) {
-      if(!promise) { promise = this.action(); }
-      return promise.finally(handler);
+      return action().finally(handler);
     }
   }
-}
-
-export function interaction<T>(description: string, action: () => Promise<T>): Interaction<T> {
-  return createInteraction(description, globals.wrapAction(description, action, 'interaction'))
-}
-
-export function check<T>(description: string, check: () => Promise<T>): ReadonlyInteraction<T> {
-  return { check() { return this.action() }, ...createInteraction(description, globals.wrapAction(description, check, 'check')) };
-}
-
-export function interactionFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
-  return { apply: filter, ...interaction(description, action) };
-}
-
-export function checkFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
-  return { apply: filter , ...check(description, action) };
+  if(type === 'assertion') {
+    interaction.check = interaction.action;
+  }
+  if(apply) {
+    return Object.assign(interaction, { apply });
+  } else {
+    return interaction;
+  }
 }

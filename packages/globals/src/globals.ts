@@ -1,14 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Operation } from '@effection/core';
 import { KeyboardLayout } from './keyboard-layout';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type ActionType = "interaction" | "check";
+type InteractionType = "action" | "assertion";
+
+interface Interaction {
+  type: InteractionType;
+  description: string;
+  interactor: unknown; // we can't type this any better here
+}
+
+export type InteractionWrapper = <R>(interaction: Interaction, inner: Operation<R>) => Operation<R>
 
 interface Globals {
   readonly document: Document;
-  readonly wrapAction: <T>(description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>;
-  readonly actionWrappers: Set<
-    <T>(description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
-  >;
+  readonly interactionWrappers: Set<InteractionWrapper>;
   readonly interactorTimeout: number;
   readonly reset: () => void;
   readonly keyboardLayout: KeyboardLayout
@@ -37,17 +43,7 @@ if (!globalThis.__interactors) {
           enumerable: true,
           configurable: true,
         },
-        wrapAction: {
-          value: <T>(description: string, action: () => Promise<T>, type: ActionType): (() => Promise<T>) => {
-            let wrappedAction = action;
-            for (let wrapper of getGlobals().actionWrappers) {
-              wrappedAction = wrapper(description, wrappedAction, type);
-            }
-            return wrappedAction;
-          },
-          enumerable: true,
-        },
-        actionWrappers: {
+        interactionWrappers: {
           value: new Set(),
         },
         interactorTimeout: {
@@ -69,7 +65,7 @@ if (!globalThis.__interactors) {
 
 const getGlobals = () => globalThis.__interactors as Globals;
 
-export const globals = getGlobals() as Omit<Globals, "actionWrappers">;
+export const globals = getGlobals();
 
 export function setDocumentResolver(resolver: () => Document): void {
   Object.defineProperty(getGlobals(), "document", {
@@ -87,12 +83,9 @@ export function setInteractorTimeout(ms: number): void {
   });
 }
 
-export function addActionWrapper<T>(
-  wrapper: (description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
-): () => boolean {
-  getGlobals().actionWrappers.add(wrapper as any);
-
-  return () => getGlobals().actionWrappers.delete(wrapper as any);
+export function addInteractionWrapper(wrapper: InteractionWrapper): () => boolean {
+  getGlobals().interactionWrappers.add(wrapper);
+  return () => getGlobals().interactionWrappers.delete(wrapper);
 }
 
 export function setKeyboardLayout(layout: KeyboardLayout): void {

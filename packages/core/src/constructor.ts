@@ -21,7 +21,7 @@ import { Locator } from './locator';
 import { MatchFilter, applyFilter } from './match';
 import { formatTable } from './format-table';
 import { FilterNotMatchingError } from './errors';
-import { interaction, interactionFilter, check, checkFilter, Interaction, ReadonlyInteraction } from './interaction';
+import { createInteraction, AssertionInteraction, ActionInteraction } from './interaction';
 import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
@@ -150,32 +150,38 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return description(options);
     },
 
-    perform<T>(fn: (element: E) => T): Interaction<T> {
-      return interaction(`run perform on ${description(options)}`, () => converge(() => fn(resolver(options))))
-    },
-
-    assert(fn: (element: E) => void): ReadonlyInteraction<void> {
-      return check(`${description(options)} asserts`, () => {
-        return converge(() => {
-          fn(resolver(options));
-        });
+    perform<T>(fn: (element: E) => T): ActionInteraction<E, T> {
+      return createInteraction('action', {
+        interactor,
+        description: `run perform on ${description(options)}`,
+        run: (interactor) => converge(() => fn(resolver(interactor.options))),
       });
     },
 
-    has(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
+    assert(fn: (element: E) => void): AssertionInteraction<E> {
+      return createInteraction('assertion', {
+        interactor,
+        description: `${description(options)} asserts`,
+        run: (interactor) => converge(() => { fn(resolver(interactor.options)) }),
+      });
+    },
+
+    has(filters: FilterParams<E, F>): AssertionInteraction<E> {
       return interactor.is(filters);
     },
 
-    is(filters: FilterParams<E, F>): ReadonlyInteraction<void> {
+    is(filters: FilterParams<E, F>): AssertionInteraction<E> {
       let filter = new FilterSet(options.specification, filters);
-      return check(`${description(options)} matches filters: ${filter.description}`, () => {
-        return converge(() => {
-          let element = resolver({...options, filter: getLookupFilterForAssertion(options.filter, filters) });
+      return createInteraction('assertion', {
+        interactor,
+        description: `${description(options)} matches filters: ${filter.description}`,
+        run: (interactor) => converge(() => {
+          let element = resolver({...interactor.options, filter: getLookupFilterForAssertion(interactor.options.filter, filters) });
           let match = new MatchFilter(element, filter);
           if (!match.matches) {
-            throw new FilterNotMatchingError(`${description(options)} does not match filters:\n\n${match.formatAsExpectations()}`);
+            throw new FilterNotMatchingError(`${description(interactor.options)} does not match filters:\n\n${match.formatAsExpectations()}`);
           }
-        });
+        }),
       });
     },
 
@@ -186,21 +192,25 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       }, resolver) as unknown as T;
     },
 
-    exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${description(options)} exists`, () => {
-        return converge(() => {
-          resolveNonEmpty(unsafeSyncResolveParent(options), options);
-        });
+    exists(): AssertionInteraction<E> & FilterObject<boolean, Element> {
+      return createInteraction('assertion', {
+        interactor,
+        description: `${description(options)} exists`,
+        run: (interactor) => converge(() => {
+          resolveNonEmpty(unsafeSyncResolveParent(interactor.options), options);
+        }),
       }, (element) => {
         return findMatchesMatching(element, options).length > 0;
       });
     },
 
-    absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element> {
-      return checkFilter(`${description(options)} does not exist`, () => {
-        return converge(() => {
-          resolveEmpty(unsafeSyncResolveParent(options), options);
-        });
+    absent(): AssertionInteraction<E> & FilterObject<boolean, Element> {
+      return createInteraction('assertion', {
+        interactor,
+        description: `${description(options)} does not exist`,
+        run: (interactor) => converge(() => {
+          resolveEmpty(unsafeSyncResolveParent(interactor.options), options);
+        }),
       }, (element) => {
         return findMatchesMatching(element, options).length === 0;
       });
@@ -220,10 +230,11 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           if (args.length) {
             actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
-          return interaction(
-            `${actionDescription} on ${description(options)}`,
-            () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args)
-          );
+          return createInteraction('action', {
+            interactor,
+            description: `${actionDescription} on ${description(options)}`,
+            run: (interactor) => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args)
+          });
         },
         configurable: true,
         writable: true,
@@ -236,8 +247,10 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     if (!interactor.hasOwnProperty(filterName)) {
       Object.defineProperty(interactor, filterName, {
         value: function() {
-          return interactionFilter(`${filterName} of ${description(options)}`, async () => {
-            return converge(() => applyFilter(filter,  resolver(options)));
+          return createInteraction('assertion', {
+            interactor,
+            description: `${filterName} of ${description(options)}`,
+            run: (interactor) => converge(() => applyFilter(filter,  resolver(interactor.options))),
           }, (parentElement) => {
             let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
             return applyFilter(filter, element);
