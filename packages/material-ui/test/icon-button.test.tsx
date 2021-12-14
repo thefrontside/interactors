@@ -1,5 +1,5 @@
 import { test, visit } from "bigtest";
-import { createInteractor, including } from "@interactors/core";
+import { createInteractor, including } from "@interactors/html";
 import { Button } from "../src";
 import { IconButton as Component } from "@material-ui/core";
 import { PhotoCamera } from '@material-ui/icons';

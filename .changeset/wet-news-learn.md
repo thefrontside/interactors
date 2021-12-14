@@ -8,3 +8,4 @@
 ---
 
 Pin versions for internal @interactors/\* dependencies
+Remove `@interactors/html` re-export from `with-cypress` package
