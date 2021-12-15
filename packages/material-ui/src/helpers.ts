@@ -1,4 +1,4 @@
-import { Interactor } from "@interactors/core";
+import { Interactor } from "@interactors/html";
 
 type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
 

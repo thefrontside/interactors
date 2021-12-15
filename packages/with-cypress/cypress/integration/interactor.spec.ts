@@ -1,4 +1,4 @@
-import { Button, including, matching } from '../../src';
+import { Button, including, matching } from '@interactors/html';
 
 describe('Cypress with Interactors', () => {
   beforeEach(() => {
