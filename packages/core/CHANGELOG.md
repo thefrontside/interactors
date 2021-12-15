@@ -1,5 +1,16 @@
 # @interactors/core
 
+## 1.0.0-rc1.1
+
+### Patch Changes
+
+- 57b2a27: wait for element resolving in filter methods
+- d859e16: Pin versions for internal @interactors/\* dependencies
+  Remove `@interactors/html` re-export from `with-cypress` package
+- 4538b92: Matchers can return their code representation
+- Updated dependencies [d859e16]
+  - @interactors/globals@1.0.0-rc1.1
+
 ## 1.0.0-rc1.0
 
 ### Major Changes

@@ -10,6 +10,10 @@
     "@interactors/with-cypress": "0.3.0"
   },
   "changesets": [
-    "tough-carpets-build"
+    "dry-baboons-learn",
+    "neat-cameras-carry",
+    "tough-carpets-build",
+    "wet-news-learn",
+    "wild-needles-relax"
   ]
 }
