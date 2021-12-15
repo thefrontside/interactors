@@ -1,5 +1,11 @@
 # @interactors/core
 
+## 1.0.0-rc1.2
+
+### Patch Changes
+
+- 27c4059: Make filter and action methods available in actions
+
 ## 1.0.0-rc1.1
 
 ### Patch Changes
