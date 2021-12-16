@@ -1,6 +1,6 @@
 {
   "name": "@interactors/html",
-  "version": "1.0.0-rc1.1",
+  "version": "1.0.0-rc1.2",
   "description": "Interactors for working with applications",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -33,8 +33,8 @@
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@interactors/core": "1.0.0-rc1.1",
-    "@interactors/keyboard": "1.0.0-rc1.1"
+    "@interactors/core": "1.0.0-rc1.2",
+    "@interactors/keyboard": "1.0.0-rc1.2"
   },
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
