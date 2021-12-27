@@ -1,6 +1,6 @@
 {
   "name": "@interactors/globals",
-  "version": "1.0.0-rc1.0",
+  "version": "1.0.0-rc1.1",
   "description": "Global variable accessors for interactors",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",

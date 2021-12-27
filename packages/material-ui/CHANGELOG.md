@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.0.0-rc1.2
+
+### Patch Changes
+
+- @interactors/html@1.0.0-rc1.2
+
+## 5.0.0-rc1.1
+
+### Patch Changes
+
+- d859e16: Pin versions for internal @interactors/\* dependencies
+  Remove `@interactors/html` re-export from `with-cypress` package
+- Updated dependencies [d859e16]
+  - @interactors/html@1.0.0-rc1.1
+
 ## 5.0.0-rc1.0
 
 ### Major Changes

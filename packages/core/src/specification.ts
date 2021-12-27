@@ -129,7 +129,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
   apply: FilterFn<string, Element>;
 }
 
-export type ActionFn<E extends Element> = (interactor: Interactor<E, EmptyObject>, ...args: any[]) => Operation<unknown>;
+export type ActionFn<E extends Element, I extends Interactor<E, any>> = (interactor: I, ...args: any[]) => Operation<unknown>;
 
 export type FilterFn<T, E extends Element> = (element: E) => T;
 
@@ -142,11 +142,11 @@ export type FilterDefinition<T, E extends Element> = FilterFn<T, E> | FilterObje
 
 export type Filters<E extends Element> = Record<string, FilterDefinition<unknown, E>>;
 
-export type Actions<E extends Element> = Record<string, ActionFn<E>>;
+export type Actions<E extends Element, I extends Interactor<E, any>> = Record<string, ActionFn<E, I>>;
 
 export type SelectorFn<E extends Element> = (parentElement: Element) => E[];
 
-export type InteractorSpecification<E extends Element, F extends Filters<E>, A extends Actions<E>> = {
+export type InteractorSpecification<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, EmptyObject>>> = {
   /**
    * The CSS selector that this interactor uses to find matching elements
    */
@@ -162,8 +162,8 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
   locator?: FilterDefinition<string, E>;
 }
 
-export type ActionMethods<E extends Element, A extends Actions<E>> = {
-  [P in keyof A]: A[P] extends ((interactor: Interactor<E, EmptyObject>, ...args: infer TArgs) => Operation<infer TReturn>)
+export type ActionMethods<E extends Element, A extends Actions<E, I>, I extends Interactor<E, any>> = {
+  [P in keyof A]: A[P] extends ((interactor: I, ...args: infer TArgs) => Operation<infer TReturn>)
     ? ((...args: TArgs) => ActionInteraction<E, TReturn>)
     : never;
 }
@@ -198,11 +198,11 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
  * @typeParam F the filters of this interactor, this is usually inferred from the specification
  * @typeParam A the actions of this interactor, this is usually inferred from the specification
  */
-export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>> {
+export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>> {
   selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
   locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
-  actions<AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>>;
+  actions<I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>>;
   extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
 
   /**
@@ -240,7 +240,7 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
   (value: MaybeMatcher<string>, filters?: FP): Interactor<E, FP> & FM & AM;
 }
 
-export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E>> = {
+export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, EmptyObject>>> = {
   name: string;
   specification: InteractorSpecification<E, F, A>;
   locator?: Locator<E>;

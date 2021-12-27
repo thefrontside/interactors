@@ -139,10 +139,10 @@ export function unsafeSyncResolveUnique<E extends Element>(options: InteractorOp
   return resolveUnique(unsafeSyncResolveParent(options), options) as E;
 }
 
-export function instantiateInteractor<E extends Element, F extends Filters<E>, A extends Actions<E>>(
+export function instantiateInteractor<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, FilterParams<E, F>>>>(
   options: InteractorOptions<E, F, A>,
   resolver: (options: InteractorOptions<E, F, A>) => E
-): Interactor<E, FilterParams<E, F>> & ActionMethods<E, A> {
+): Interactor<E, FilterParams<E, F>> & FilterMethods<E, F> & ActionMethods<E, A, Interactor<E, FilterParams<E, F>>> {
   let interactor = {
     options,
 
@@ -233,7 +233,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           return createInteraction('action', {
             interactor,
             description: `${actionDescription} on ${description(options)}`,
-            run: (interactor) => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args)
+            run: (interactor) => action(interactor as Interactor<E, FilterParams<E, F>> & FilterMethods<E, F> & ActionMethods<E, A, Interactor<E, FilterParams<E, F>>>, ...args)
           });
         },
         configurable: true,
@@ -263,10 +263,10 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     }
   }
 
-  return interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>;
+  return interactor as Interactor<E, FilterParams<E, F>> & FilterMethods<E, F> & ActionMethods<E, A, Interactor<E, FilterParams<E, F>>>;
 }
 
-export function createConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any>>(
+export function createConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>>(
   name: string,
   specification: InteractorSpecification<E, any, any>,
 ): InteractorConstructor<E, FP, FM, AM> {
@@ -292,7 +292,7 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     filters: <FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM> => {
       return createConstructor(name, { ...specification, filters: { ...specification.filters, ...filters } });
     },
-    actions: <AR extends Actions<E>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR>>> => {
+    actions: <I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>> => {
       return createConstructor(name, { ...specification, actions: Object.assign({}, specification.actions, actions) });
     },
     extend: <ER extends Element = E>(newName: string): InteractorConstructor<ER, FP, FM, AM> => {

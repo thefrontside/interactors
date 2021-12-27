@@ -1,5 +1,4 @@
-import { createInteractor, including, Interaction, Interactor, not } from "@interactors/core";
-import { click, HTML } from "@interactors/html";
+import { click, HTML, createInteractor, including, Interaction, Interactor, not } from "@interactors/html";
 import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 

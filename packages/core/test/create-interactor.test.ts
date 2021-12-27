@@ -41,6 +41,9 @@ const TextField = createInteractor<HTMLInputElement>('text field')
     fillIn: ({ perform }, value: string) => perform((element) => { element.value = value }),
     click: ({ perform }) => perform(element => { element.click() })
   })
+  .actions({
+    append: async ({ value: currentValue, fillIn }, value: string) => fillIn(`${await currentValue()}${value}`)
+  })
 
 const Datepicker = createInteractor<HTMLDivElement>("datepicker")
   .selector("div.datepicker")
@@ -547,6 +550,18 @@ describe('createInteractor', () => {
       `);
 
       await expect(TextField('Password').value()).resolves.toEqual('test1234')
+      await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email')
+    })
+
+    it('can be used in actions', async () => {
+      dom(`
+        <input id="Email" value='jonas@'/>
+        <input id="Password" value='test'/>
+      `);
+
+      await expect(TextField('Password').append('1234')).resolves.toBeUndefined();
+      await expect(TextField('Password').value()).resolves.toEqual('test1234')
+      await expect(TextField({ value: 'jonas@' }).append('example.com')).resolves.toBeUndefined();
       await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email')
     })
   })
