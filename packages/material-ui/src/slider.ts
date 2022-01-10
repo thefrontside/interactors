@@ -20,7 +20,7 @@ function parseValue(stringValue?: string | null) {
   return Number.isNaN(value) ? undefined : value;
 }
 
-export const Thumb = HTML.extend<HTMLElement>("MUI Slider Thumb")
+export const Thumb = HTML.extend<HTMLElement>("MUISliderThumb")
   .locator((element) => element.getAttribute("aria-label") ?? element.getAttribute("aria-valuetext") ?? "")
   .selector('[role="slider"][class*="MuiSlider-thumb"]')
   .filters({
@@ -109,7 +109,7 @@ export const Thumb = HTML.extend<HTMLElement>("MUI Slider Thumb")
       }),
   });
 
-const SliderInteractor = HTML.extend("MUI Slider")
+const SliderInteractor = HTML.extend("MUISlider")
   .selector('[class*="MuiSlider-root"]')
   .locator((element) => {
     let thumb = getThumb(element);

@@ -1,7 +1,7 @@
 import { HTML } from "@interactors/html";
 import { isDisabled } from "./helpers";
 
-const ButtonInteractor = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUI Button")
+const ButtonInteractor = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUIButton")
   .selector(
     ["button", "a[href]", '[role="button"]']
       .map((selector) => `${selector}[class*="MuiButton-root"], ${selector}[class*="MuiIconButton-root"]`)

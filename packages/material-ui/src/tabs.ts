@@ -1,7 +1,7 @@
 import { HTML } from "@interactors/html";
 import { isDisabled, isHTMLElement } from "./helpers";
 
-const TabInteractor = HTML.extend<HTMLElement>("MUI Tab")
+const TabInteractor = HTML.extend<HTMLElement>("MUITab")
   .selector('[class*="MuiTab-root"][role="tab"]')
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
@@ -12,7 +12,7 @@ const TabInteractor = HTML.extend<HTMLElement>("MUI Tab")
     },
   });
 
-const TabsInteractor = HTML.extend<HTMLElement>("MUI Tabs")
+const TabsInteractor = HTML.extend<HTMLElement>("MUITabs")
   .selector('[class*="MuiTabs-root"]')
   .locator(
     (element) =>

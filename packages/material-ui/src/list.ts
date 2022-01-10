@@ -1,10 +1,10 @@
 import { HTML } from "@interactors/html";
 
-const ListInteractor = HTML.extend<HTMLElement>("MUI List")
+const ListInteractor = HTML.extend<HTMLElement>("MUIList")
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .selector('[class*="MuiList-root"]');
 
-const ListItemInteractor = HTML.extend<HTMLElement>("MUI ListItem")
+const ListItemInteractor = HTML.extend<HTMLElement>("MUIListItem")
   .selector('[class*="MuiListItem-root"]')
   .filters({
     disabled: {

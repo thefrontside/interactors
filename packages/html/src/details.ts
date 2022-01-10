@@ -1,8 +1,8 @@
 import { HTML } from './html';
 
-const SummaryInteractor = HTML.extend('summary').selector('summary');
+const SummaryInteractor = HTML.extend('Summary').selector('summary');
 
-const DetailsInteractor = HTML.extend<HTMLDetailsElement>('details')
+const DetailsInteractor = HTML.extend<HTMLDetailsElement>('Details')
   .locator(SummaryInteractor().text())
   .selector('details')
   .filters({

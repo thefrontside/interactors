@@ -2,10 +2,10 @@ import { Select, MultiSelect } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { GetElementType } from "./types";
 
-const NativeSelectInteractor = Select.extend("MUI Native Select").filters(
+const NativeSelectInteractor = Select.extend("MUINativeSelect").filters(
   createFormFieldFilters<GetElementType<typeof Select>>()
 );
-const NativeMultiSelectInteractor = MultiSelect.extend("MUI Native MultiSelect").filters(
+const NativeMultiSelectInteractor = MultiSelect.extend("MUINativeMultiSelect").filters(
   createFormFieldFilters<GetElementType<typeof Select>>()
 );
 

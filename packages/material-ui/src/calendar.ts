@@ -148,7 +148,7 @@ export function createCalendar(utils: DatePickerUtils) {
   });
 }
 
-const CalendarInteractor = createInteractor<HTMLElement>("MUI Calendar")
+const CalendarInteractor = createInteractor<HTMLElement>("MUICalendar")
   .selector('[class*="MuiPickersCalendar-transitionContainer"]')
   .locator(calendarLocator)
   .filters({

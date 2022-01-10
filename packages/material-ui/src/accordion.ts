@@ -4,7 +4,7 @@ import { applyGetter, isDisabled, isHTMLElement } from "./helpers";
 const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
 
-const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
+const AccordionSummary = HTML.extend<HTMLElement>("MUIAccordionSummary")
   .selector('[class*="MuiAccordionSummary-root"]')
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({
@@ -15,7 +15,7 @@ const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
     },
   });
 
-const AccordionInteractor = HTML.extend<HTMLElement>("MUI Accordion")
+const AccordionInteractor = HTML.extend<HTMLElement>("MUIAccordion")
   .selector('[class*="MuiAccordion-root"]')
   .locator((element) => {
     let summary = getSummary(element);

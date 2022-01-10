@@ -3,7 +3,7 @@ import { getSelect } from './get-select';
 import { HTML } from './html';
 import { FormField } from './form-field';
 
-const MultiSelectOption = HTML.extend<HTMLOptionElement>('option')
+const MultiSelectOption = HTML.extend<HTMLOptionElement>('MultiSelectOption')
   .selector('option')
   .locator((element) => element.label)
   .filters({
@@ -42,7 +42,7 @@ const MultiSelectOption = HTML.extend<HTMLOptionElement>('option')
     }),
   })
 
-const MultiSelectInteractor = FormField.extend<HTMLSelectElement>('select box')
+const MultiSelectInteractor = FormField.extend<HTMLSelectElement>('MultiSelect')
   .selector('select[multiple]')
   .filters({
     values: (element) => Array.from(element.selectedOptions).map((o) => o.label),

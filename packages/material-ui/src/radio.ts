@@ -2,7 +2,7 @@ import { isVisible } from "@interactors/core";
 import { RadioButton } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
-const RadioInteractor = RadioButton.extend("radio")
+const RadioInteractor = RadioButton.extend("Radio")
   .selector('[class*="MuiRadio-root"] input[type=radio]')
   .filters({
     visible: {
