@@ -44,7 +44,7 @@ describe("@interactors/globals", () => {
           description: "plain action",
           action,
           options: {
-            type: "interaction",
+            type: "action",
             actionName: "plain",
             code: "",
             interactor: { interactorName: "Interactor", code: "" },
@@ -61,7 +61,7 @@ describe("@interactors/globals", () => {
         description: "foo action",
         action,
         options: {
-          type: "interaction",
+          type: "action",
           actionName: "foo",
           code: "",
           interactor: { interactorName: "Interactor", code: "" },

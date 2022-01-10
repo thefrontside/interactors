@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { KeyboardLayout } from "./keyboard-layout";
 
-export type ActionType = "interaction" | "check";
+export type InteractionType = "action" | "assertion";
 
 interface Globals {
   readonly document: Document;
@@ -23,7 +23,7 @@ export type InteractorOptions = {
 export type ActionOptions = {
   interactor: InteractorOptions;
   actionName: string;
-  type: ActionType;
+  type: InteractionType;
   code: string;
   args?: unknown[];
 };
@@ -36,7 +36,7 @@ export interface ActionEvent<T> {
 
 export type ActionWrapper<T = any> =
   | ((event: ActionEvent<T>) => () => Promise<T>)
-  | ((description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>);
+  | ((description: string, action: () => Promise<T>, type: InteractionType) => () => Promise<T>);
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -121,7 +121,7 @@ export function setInteractorTimeout(ms: number): void {
 
 export function addActionWrapper<T>(wrapper: (event: ActionEvent<T>) => () => Promise<T>): () => boolean;
 export function addActionWrapper<T>(
-  wrapper: (description: string, action: () => Promise<T>, type: ActionType) => () => Promise<T>
+  wrapper: (description: string, action: () => Promise<T>, type: InteractionType) => () => Promise<T>
 ): () => boolean;
 export function addActionWrapper<T>(wrapper: ActionWrapper<T>): () => boolean {
   getGlobals().actionWrappers.add(wrapper);

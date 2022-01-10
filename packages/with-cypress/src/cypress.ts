@@ -18,7 +18,7 @@ type CypressCommand = 'expect' | 'do'
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
 addActionWrapper((event: ActionEvent<unknown>) => {
   return async () => {
-    if (event.options.type == 'interaction' && cypressCommand == 'expect')
+    if (event.options.type == 'action' && cypressCommand == 'expect')
       throw new Error(`tried to ${event.description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
     return event.action()
   }

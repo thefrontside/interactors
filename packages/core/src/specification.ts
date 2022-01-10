@@ -248,12 +248,12 @@ export type InteractorOptions<E extends Element, F extends Filters<E>, A extends
 };
 
 export type ActionOptions = {
-  type: "interaction";
+  type: "action";
   actionName: string;
   options: InteractorOptions<any, any, any>;
   args?: unknown[];
 } | {
-  type: "check";
+  type: "assertion";
   actionName: string;
   options: InteractorOptions<any, any, any>;
   filters?: FilterParams<any, any>;

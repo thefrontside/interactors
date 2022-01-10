@@ -155,7 +155,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return interaction(
         `run perform on ${description(options)}`,
         () => converge(() => fn(resolver(options))),
-        serializeActionOptions({ type: "interaction", actionName: "perform", options })
+        serializeActionOptions({ type: "action", actionName: "perform", options })
       )
     },
 
@@ -164,7 +164,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} asserts`,
           () => converge(() => { fn(resolver(options)) }),
-          serializeActionOptions({ type: "check", actionName: "assert", options }),
+          serializeActionOptions({ type: "assertion", actionName: "assert", options }),
         )
       );
     },
@@ -185,7 +185,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
               throw new FilterNotMatchingError(`${description(options)} does not match filters:\n\n${match.formatAsExpectations()}`);
             }
           }),
-          serializeActionOptions({ type: "check", actionName: "is", options, filters }),
+          serializeActionOptions({ type: "assertion", actionName: "is", options, filters }),
         )
       );
     },
@@ -202,7 +202,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} exists`,
           () => converge(() => { resolveNonEmpty(unsafeSyncResolveParent(options), options) }),
-          serializeActionOptions({ type: "check", actionName: "exists", options }),
+          serializeActionOptions({ type: "assertion", actionName: "exists", options }),
         ),
         (element) => findMatchesMatching(element, options).length > 0);
     },
@@ -212,7 +212,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} does not exist`,
           () => converge(() => { resolveEmpty(unsafeSyncResolveParent(options), options) }),
-          serializeActionOptions({ type: "check", actionName: "absent", options }),
+          serializeActionOptions({ type: "assertion", actionName: "absent", options }),
         ),
         (element) => findMatchesMatching(element, options).length === 0);
     },
@@ -234,7 +234,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           return interaction(
             `${actionDescription} on ${description(options)}`,
             () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args),
-            serializeActionOptions({ type: "interaction", actionName, options, args })
+            serializeActionOptions({ type: "action", actionName, options, args })
           );
         },
         configurable: true,
@@ -252,7 +252,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
             interaction(
               `${filterName} of ${description(options)}`,
               async () => converge(() => applyFilter(filter,  resolver(options))),
-              serializeActionOptions({ type: "check", actionName: filterName, options }),
+              serializeActionOptions({ type: "assertion", actionName: filterName, options }),
             ),
             (parentElement) => {
               let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
