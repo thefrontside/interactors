@@ -1,4 +1,4 @@
-import { click, createInteractor } from "@interactors/core";
+import { click, createInteractor } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUIBottomNavigationAction")

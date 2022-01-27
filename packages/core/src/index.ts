@@ -1,4 +1,4 @@
-export { Interactor, InteractorConstructor, InteractorSpecification } from './specification';
+export { Interactor, InteractorConstructor, InteractorSpecification, EmptyObject, FilterMethods, ActionMethods } from './specification';
 export { Interaction, ReadonlyInteraction, isInteraction } from './interaction';
 export { createInteractor } from './create-interactor';
 export { createInspector } from './inspector'
@@ -14,3 +14,5 @@ export { some } from './matchers/some';
 export { every } from './matchers/every';
 
 export { click } from './element/click';
+export { MergeObjects } from './merge-objects'
+export { MaybeMatcher } from './matcher'

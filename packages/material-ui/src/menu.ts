@@ -1,5 +1,4 @@
-import { createInteractor } from "@interactors/core";
-import { click, HTML } from "@interactors/html";
+import { click, HTML, createInteractor } from "@interactors/html";
 import { Button } from "./button";
 import { applyGetter, isDisabled } from "./helpers";
 
