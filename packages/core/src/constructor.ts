@@ -26,7 +26,6 @@ import { Match } from './match';
 import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
 import { isMatcher } from './matcher';
 import { matching } from './matchers/matching';
-import { serializeActionOptions } from './serialize';
 
 const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
 const defaultSelector = 'div';
@@ -155,7 +154,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return interaction(
         `run perform on ${description(options)}`,
         () => converge(() => fn(resolver(options))),
-        serializeActionOptions({ type: "action", actionName: "perform", options })
+        { type: "action", actionName: "perform", options }
       )
     },
 
@@ -164,7 +163,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} asserts`,
           () => converge(() => { fn(resolver(options)) }),
-          serializeActionOptions({ type: "assertion", actionName: "assert", options }),
+          { type: "assertion", actionName: "assert", options },
         )
       );
     },
@@ -185,7 +184,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
               throw new FilterNotMatchingError(`${description(options)} does not match filters:\n\n${match.formatAsExpectations()}`);
             }
           }),
-          serializeActionOptions({ type: "assertion", actionName: "is", options, filters }),
+          { type: "assertion", actionName: "is", options, filters },
         )
       );
     },
@@ -202,7 +201,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} exists`,
           () => converge(() => { resolveNonEmpty(unsafeSyncResolveParent(options), options) }),
-          serializeActionOptions({ type: "assertion", actionName: "exists", options }),
+          { type: "assertion", actionName: "exists", options },
         ),
         (element) => findMatchesMatching(element, options).length > 0);
     },
@@ -212,7 +211,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
         interaction(
           `${description(options)} does not exist`,
           () => converge(() => { resolveEmpty(unsafeSyncResolveParent(options), options) }),
-          serializeActionOptions({ type: "assertion", actionName: "absent", options }),
+          { type: "assertion", actionName: "absent", options },
         ),
         (element) => findMatchesMatching(element, options).length === 0);
     },
@@ -234,7 +233,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           return interaction(
             `${actionDescription} on ${description(options)}`,
             () => action(interactor as Interactor<E, FilterParams<E, F>> & ActionMethods<E, A>, ...args),
-            serializeActionOptions({ type: "action", actionName, options, args })
+            { type: "action", actionName, options, args }
           );
         },
         configurable: true,
@@ -252,7 +251,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
             interaction(
               `${filterName} of ${description(options)}`,
               async () => converge(() => applyFilter(filter,  resolver(options))),
-              serializeActionOptions({ type: "assertion", actionName: filterName, options }),
+              { type: "assertion", actionName: filterName, options },
             ),
             (parentElement) => {
               let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);

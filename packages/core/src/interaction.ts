@@ -1,5 +1,6 @@
-import { ActionEvent, ActionOptions, globals } from '@interactors/globals';
-import type { FilterObject } from './specification';
+import { ActionEvent, globals } from '@interactors/globals';
+import { serializeActionOptions } from './serialize';
+import type { FilterObject, ActionOptions } from './specification';
 
 const interactionSymbol = Symbol.for('interaction');
 
@@ -69,7 +70,7 @@ export function interaction<T>(description: string, action: () => Promise<T>, op
   return createInteraction(
     description,
     globals.wrapAction(
-      Object.assign(new String(description), { description, action, options }) as string & ActionEvent<T>,
+      Object.assign(new String(description), { description, action, options: serializeActionOptions(options) }) as string & ActionEvent<T>,
       action,
       options.type
     )
