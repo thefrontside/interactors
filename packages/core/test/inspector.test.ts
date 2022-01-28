@@ -2,10 +2,8 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInspector, createInteractor, including } from '../src/index';
-
-const Div = createInteractor('div').selector('div');
-const Link = createInteractor<HTMLAnchorElement>('link').selector('a').filters({ href: (e) => e.href });
+import { createInspector, including } from '../src';
+import { Div, Link } from './fixtures';
 
 describe('inspector', () => {
   it('.find', async () => {

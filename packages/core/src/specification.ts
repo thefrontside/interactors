@@ -225,6 +225,7 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
    *
    * ``` typescript
    * Link('Home');
+   * Link(/^home/i);
    * ```
    *
    * Or with a locator and options:
@@ -236,7 +237,7 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
    * @param value The locator value, which should match the value of applying the locator function defined in the {@link InteractorSpecification} to the element.
    * @param filters An object describing a set of filters to apply, which should match the value of applying the filters defined in the {@link InteractorSpecification} to the element.
    */
-  (value: MaybeMatcher<string>, filters?: FP): Interactor<E, FP> & FM & AM;
+  (value: MaybeMatcher<string> | RegExp, filters?: FP): Interactor<E, FP> & FM & AM;
 }
 
 export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, EmptyObject>>> = {

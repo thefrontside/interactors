@@ -1,4 +1,4 @@
-import { ActionEvent, globals } from '@interactors/globals';
+import { ActionEvent, ActionOptions as SerializedActionOptions, globals } from '@interactors/globals';
 import { serializeActionOptions } from './serialize';
 import type { FilterObject, ActionOptions } from './specification';
 
@@ -25,6 +25,10 @@ export interface Interaction<T> extends Promise<T> {
    */
   description: string;
   /**
+   * Return a serialized options of the interaction
+   */
+  options: SerializedActionOptions;
+  /**
    * Perform the interaction
    */
   action: () => Promise<T>;
@@ -44,37 +48,33 @@ export interface ReadonlyInteraction<T> extends Interaction<T> {
   check: () => Promise<T>;
 }
 
-function createInteraction<T>(description: string, action: () => Promise<T>): Interaction<T> {
+export function interaction<T>(description: string, action: () => Promise<T>, options: ActionOptions): Interaction<T> {
   let promise: Promise<T>;
+  let serializedOptions = serializeActionOptions(options)
+  let wrappedAction = globals.wrapAction(
+    Object.assign(new String(description), { description, action, options: serializedOptions }) as string & ActionEvent<T>,
+    action,
+    options.type
+  )
   return {
     description,
-    action,
+    options: serializedOptions,
+    action: wrappedAction,
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
     then(onFulfill, onReject) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = wrappedAction(); }
       return promise.then(onFulfill, onReject);
     },
     catch(onReject) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = wrappedAction(); }
       return promise.catch(onReject);
     },
     finally(handler) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = wrappedAction(); }
       return promise.finally(handler);
     }
   }
-}
-
-export function interaction<T>(description: string, action: () => Promise<T>, options: ActionOptions): Interaction<T> {
-  return createInteraction(
-    description,
-    globals.wrapAction(
-      Object.assign(new String(description), { description, action, options: serializeActionOptions(options) }) as string & ActionEvent<T>,
-      action,
-      options.type
-    )
-  )
 }
 
 export function check<T>(interaction: Interaction<T>): ReadonlyInteraction<T> {

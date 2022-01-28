@@ -3,6 +3,7 @@ import {
   ActionOptions as SerializedActionOptions,
   InteractorOptions as SerializedInteractorOptions,
 } from "@interactors/globals";
+import { pascalCase } from "change-case";
 import { matcherCode } from "./matcher";
 import { ActionOptions, InteractorOptions } from "./specification";
 
@@ -13,8 +14,9 @@ export function serializeInteractorOptions(options: InteractorOptions<any, any, 
     filter: options.filter.all,
     locator,
     get code() {
+      let interactorName = pascalCase(options.name);
       let filters = Object.entries(options.filter.all).map(([name, filter]) => `"${name}": ${matcherCode(filter)}`);
-      return `${options.name}(${[locator, filters.length && `{ ${filters.join(", ")} }`].filter(Boolean).join(", ")})`
+      return `${interactorName}(${[locator, filters.length && `{ ${filters.join(", ")} }`].filter(Boolean).join(", ")})`;
     },
   };
 }
@@ -34,14 +36,14 @@ export function serializeActionOptions({
     args: "filters" in restOptions ? [restOptions.filters] : "args" in restOptions ? restOptions.args : undefined,
     get code() {
       let args = "";
-  if ("filters" in restOptions) {
-    let filters = Object.entries(restOptions.filters ?? {}).map(
-      ([name, filter]) => `"${name}": ${matcherCode(filter)}`
-    );
-    args = `{ ${filters.join(", ")} }`;
-  } else if ("args" in restOptions) {
-    args = (restOptions.args ?? []).map((arg) => JSON.stringify(arg)).join(", ");
-  }
+      if ("filters" in restOptions) {
+        let filters = Object.entries(restOptions.filters ?? {}).map(
+          ([name, filter]) => `"${name}": ${matcherCode(filter)}`
+        );
+        args = `{ ${filters.join(", ")} }`;
+      } else if ("args" in restOptions) {
+        args = (restOptions.args ?? []).map((arg) => JSON.stringify(arg)).join(", ");
+      }
       return `${[...ancestors, interactor]
         .map(({ code }, index) => (index == 0 ? code : `${code})`))
         .join(".find(")}.${actionName}(${args})`;

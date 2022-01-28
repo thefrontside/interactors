@@ -1,76 +1,9 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
-import { ActionEvent, addActionWrapper } from '@interactors/globals';
 import { dom } from './helpers';
-
-import { createInteractor } from '../src';
-
-const Link = createInteractor<HTMLLinkElement>('link')
-  .selector('a')
-  .filters({
-    href: (element) => element.href,
-    title: (element) => element.title,
-  })
-  .actions({
-    click: ({ perform }) => perform(element => { element.click() }),
-    setHref: ({ perform }, value: string) => perform((element) => { element.href = value })
-  })
-
-const Header = createInteractor('header')
-  .selector('h1,h2,h3,h4,h5,h6')
-
-const Div = createInteractor('div')
-  .locator((element) => element.id || "")
-
-const Details = createInteractor<HTMLDetailsElement>('details')
-  .selector('details')
-  .locator((element) => element.querySelector('summary')?.textContent || '')
-
-const TextField = createInteractor<HTMLInputElement>('text field')
-  .selector('input')
-  .locator((element) => element.id)
-  .filters({
-    id: element => element.id,
-    placeholder: element => element.placeholder,
-    enabled: {
-      apply: (element) => !element.disabled,
-      default: true
-    },
-    value: (element) => element.value
-  })
-  .actions({
-    fillIn: ({ perform }, value: string) => perform((element) => { element.value = value }),
-    click: ({ perform }) => perform(element => { element.click() })
-  })
-  .actions({
-    append: async ({ value: currentValue, fillIn }, value: string) => fillIn(`${await currentValue()}${value}`)
-  })
-
-const Datepicker = createInteractor<HTMLDivElement>("datepicker")
-  .selector("div.datepicker")
-  .locator(element => element.querySelector("label")?.textContent || "")
-  .filters({
-    open: element => !!element.querySelector("div.calendar"),
-    month: element => element.querySelector<HTMLElement>("div.calendar h4")?.textContent
-  })
-  .actions({
-    toggle: async interactor => {
-      await interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
-    }
-  });
-
-const MainNav = createInteractor('main nav')
-  .selector('nav')
+import { Datepicker, Details, Div, Header, Link, MainNav, TextField } from './fixtures';
 
 describe('createInteractor', () => {
-  let actionCode = ''
-  before(() => {
-    addActionWrapper((actionEvent: ActionEvent<unknown>) => {
-      actionCode = actionEvent.options.code
-      return actionEvent.action
-    })
-  })
-
   describe('.exists', () => {
     it('can determine whether an element exists based on the interactor', async () => {
       dom(`
@@ -143,14 +76,6 @@ describe('createInteractor', () => {
     it('can return description', () => {
       expect(Link('Foo Bar').exists().description).toEqual('link "Foo Bar" exists')
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`<p><a href="/foobar">Foo Bar</a></p>`);
-
-      Link('Foo Bar').exists()
-
-      expect(actionCode).toBe('link("Foo Bar").exists()');
-    })
   });
 
   describe('.absent', () => {
@@ -203,14 +128,6 @@ describe('createInteractor', () => {
     it('can return description', () => {
       expect(Link('Foo Bar').absent().description).toEqual('link "Foo Bar" does not exist')
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`<p><a href="/foobar">Foo Bar</a></p>`);
-
-      Link('Blah').absent()
-
-      expect(actionCode).toBe('link("Blah").absent()');
-    })
   });
 
   describe('.find', () => {
@@ -313,18 +230,6 @@ describe('createInteractor', () => {
 
       await expect(Div("foo").find(Div("bar")).exists()).rejects.toHaveProperty('message', 'did not find div "bar" within div "foo"');
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`
-        <div id="foo">
-          <a href="/foo">Foo</a>
-        </div>
-      `);
-
-      Div("foo").find(Link("Foo")).exists()
-
-      expect(actionCode).toBe('div("foo").find(link("Foo")).exists()');
-    })
   });
 
   describe('.is', () => {
@@ -341,14 +246,6 @@ describe('createInteractor', () => {
         '└─ Received: "jonas@example.com"',
       ].join('\n'))
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`<input id="Email" value='jonas@example.com'/>`);
-
-      TextField('Email').is({ value: 'jonas@example.com' })
-
-      expect(actionCode).toBe('text field("Email", { "enabled": true }).is({ "value": "jonas@example.com" })');
-    })
   });
 
   describe('.has', () => {
@@ -365,14 +262,6 @@ describe('createInteractor', () => {
         '└─ Received: "jonas@example.com"',
       ].join('\n'))
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`<input id="Email" value='jonas@example.com'/>`);
-
-      TextField('Email').has({ value: 'jonas@example.com' })
-
-      expect(actionCode).toBe('text field("Email", { "enabled": true }).is({ "value": "jonas@example.com" })');
-    })
   });
 
   describe('actions', () => {
@@ -491,16 +380,6 @@ describe('createInteractor', () => {
         '- <a href="/bar&quot;">',
       ].join('\n'))
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`
-        <a id="foo" href="/foobar">Foo Bar</a>
-      `);
-
-      Link('Foo Bar').setHref('/monkey');
-
-      expect(actionCode).toBe('link("Foo Bar").setHref("/monkey")');
-    })
   });
 
   describe('filters', () => {
@@ -603,16 +482,6 @@ describe('createInteractor', () => {
       ].join('\n'))
       await expect(TextField('Password', { enabled: false, value: 'test1234' }).exists()).resolves.toBeUndefined();
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`
-        <input id="Email" value='jonas@example.com'/>
-      `);
-
-      TextField('Email', { value: 'jonas@example.com' }).exists();
-
-      expect(actionCode).toBe('text field("Email", { "value": "jonas@example.com", "enabled": true }).exists()');
-    })
   });
 
   describe('getters', () => {
@@ -637,16 +506,5 @@ describe('createInteractor', () => {
       await expect(TextField({ value: 'jonas@' }).append('example.com')).resolves.toBeUndefined();
       await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email');
     });
-
-    it("can be serialized to code representation for action wrapper", () => {
-      dom(`
-        <input id="Email" value='jonas@example.com'/>
-        <input id="Password" value='test1234'/>
-      `);
-
-      TextField('Password').value()
-
-      expect(actionCode).toBe('text field("Password", { "enabled": true }).value()');
-    })
   })
 });
