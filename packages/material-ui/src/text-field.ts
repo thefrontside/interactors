@@ -3,7 +3,7 @@ import { createFormFieldFilters } from "./form-field-filters";
 import { isHTMLElement } from "./helpers";
 import { GetElementType } from "./types";
 
-const TextFieldInteractor = BaseTextField.extend("MUI TextField")
+const TextFieldInteractor = BaseTextField.extend("MUITextField")
   .selector(["input", "textarea"].map((tag) => `${tag}[class*="MuiInputBase-input"]`).join(", "))
   .locator((element) => {
     let label = element.labels?.[0] ?? element.parentElement?.previousElementSibling;

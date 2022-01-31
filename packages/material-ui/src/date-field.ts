@@ -1,7 +1,7 @@
 import { TextField } from "@interactors/html";
 import { dispatchChange, setValue } from "./helpers";
 
-const DateFieldInteractor = TextField.extend<HTMLInputElement>("date field")
+const DateFieldInteractor = TextField.extend<HTMLInputElement>("DateField")
   .selector('input[type="date"]')
   .filters({
     date: (element) => element.valueAsDate,

@@ -2,40 +2,7 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInteractor } from '../src/index';
-
-const HTML = createInteractor<HTMLElement>('element')
-  .filters({
-    title: (element) => element.title,
-  })
-  .actions({
-    click: ({ perform }) => perform(element => { element.click() }),
-  });
-
-const Link = HTML.extend<HTMLLinkElement>('link')
-  .selector('a')
-  .filters({
-    href: (element) => element.href,
-  })
-  .actions({
-    setHref: ({ perform }, value: string) => perform((element) => { element.href = value })
-  })
-
-const Thing = HTML.extend<HTMLLinkElement>('div')
-  .selector('div')
-  .filters({
-    title: (element) => parseInt(element.dataset.title || '0'),
-  })
-  .actions({
-    click(interactor, value: number) {
-      return interactor.perform((element) => {
-        element.dataset.title = value.toString();
-      });
-    }
-  })
-
-const Header = createInteractor('header')
-  .selector('h1,h2,h3,h4,h5,h6')
+import { Header, Link, Thing, HTML } from './fixtures';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore

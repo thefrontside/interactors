@@ -2,13 +2,8 @@ import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
 
-import { createInteractor, Matcher } from '../src/index';
-
-const Link = createInteractor<HTMLLinkElement>('link')
-  .selector('a')
-  .filters({
-    title: (element) => element.title,
-  })
+import { Matcher } from '../src';
+import { Link } from './fixtures';
 
 function shouted(value: string): Matcher<string> {
   return {

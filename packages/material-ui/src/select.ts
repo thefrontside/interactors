@@ -2,7 +2,7 @@ import { click, HTML, createInteractor, Interactor } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
 
-export const SelectOption = HTML.extend<HTMLLIElement>("MUI Option")
+export const SelectOption = HTML.extend<HTMLLIElement>("MUISelectOption")
   .selector('li[role="option"]')
   .filters({
     selected: (element) => element.getAttribute("aria-selected") == "true",
@@ -15,7 +15,7 @@ export const SelectOption = HTML.extend<HTMLLIElement>("MUI Option")
     choose: ({ perform }) => perform((element) => click(element)),
   });
 
-const SelectOptionsList = createInteractor<HTMLElement>("MUI OptionsList")
+const SelectOptionsList = createInteractor<HTMLElement>("MUISelectOptionsList")
   .selector("ul")
   .locator((element) => element.getAttribute("aria-labelledby") ?? "");
 
@@ -67,7 +67,7 @@ async function openSelectOptionsList<T>(interactor: Interactor<HTMLInputElement,
   return labelId;
 }
 
-const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
+const BaseSelect = createInteractor<HTMLInputElement>("MUIBaseSelect")
   .selector('[class*="MuiSelect-root"] + input[class*="MuiSelect-nativeInput"]')
   .locator((element) => getInputLabel(element)?.innerText ?? "")
   .filters({
@@ -89,7 +89,7 @@ const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
       }),
   });
 
-const SelectInteractor = BaseSelect.extend("MUI Select")
+const SelectInteractor = BaseSelect.extend("MUISelect")
   .filters({ value: getValueText })
   .actions({
     choose: async (interactor, value: string) => {
@@ -100,7 +100,7 @@ const SelectInteractor = BaseSelect.extend("MUI Select")
     },
   });
 
-const MultiSelectInteractor = BaseSelect.extend("MUI MultiSelect")
+const MultiSelectInteractor = BaseSelect.extend("MUIMultiSelect")
   .filters({ values: getChipLabels })
   .actions({
     choose: async (interactor, value: string) => {

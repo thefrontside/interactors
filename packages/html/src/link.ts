@@ -1,6 +1,6 @@
 import { HTML } from './html';
 
-const LinkInteractor = HTML.extend<HTMLLinkElement>('link')
+const LinkInteractor = HTML.extend<HTMLLinkElement>('Link')
   .selector('a[href]')
   .filters({
     href: (element) => element.href,

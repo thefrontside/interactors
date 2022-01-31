@@ -1,5 +1,6 @@
-import { globals } from '@interactors/globals';
-import type { FilterObject } from './specification';
+import { ActionEvent, ActionOptions as SerializedActionOptions, globals } from '@interactors/globals';
+import { serializeActionOptions } from './serialize';
+import type { FilterObject, ActionOptions } from './specification';
 
 const interactionSymbol = Symbol.for('interaction');
 
@@ -24,6 +25,14 @@ export interface Interaction<T> extends Promise<T> {
    */
   description: string;
   /**
+   * Return a code representation of the interaction
+   */
+  code: () => string;
+  /**
+   * Return a serialized options of the interaction
+   */
+  options: SerializedActionOptions;
+  /**
    * Perform the interaction
    */
   action: () => Promise<T>;
@@ -43,40 +52,44 @@ export interface ReadonlyInteraction<T> extends Interaction<T> {
   check: () => Promise<T>;
 }
 
-function createInteraction<T>(description: string, action: () => Promise<T>): Interaction<T> {
+export function interaction<T>(description: string, action: () => Promise<T>, options: ActionOptions): Interaction<T> {
   let promise: Promise<T>;
+  let serializedOptions = serializeActionOptions(options)
+  let wrappedAction = globals.wrapAction(
+    Object.assign(new String(description), { description, action, options: serializedOptions }) as string & ActionEvent<T>,
+    action,
+    options.type
+  )
   return {
     description,
-    action,
+    options: serializedOptions,
+    code() { return serializedOptions.code },
+    action: wrappedAction,
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
     then(onFulfill, onReject) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = wrappedAction(); }
       return promise.then(onFulfill, onReject);
     },
     catch(onReject) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = wrappedAction(); }
       return promise.catch(onReject);
     },
     finally(handler) {
-      if(!promise) { promise = this.action(); }
+      if(!promise) { promise = wrappedAction(); }
       return promise.finally(handler);
     }
   }
 }
 
-export function interaction<T>(description: string, action: () => Promise<T>): Interaction<T> {
-  return createInteraction(description, globals.wrapAction(description, action, 'interaction'))
+export function check<T>(interaction: Interaction<T>): ReadonlyInteraction<T> {
+  return { check() { return interaction.action() }, ...interaction };
 }
 
-export function check<T>(description: string, check: () => Promise<T>): ReadonlyInteraction<T> {
-  return { check() { return this.action() }, ...createInteraction(description, globals.wrapAction(description, check, 'check')) };
+export function interactionFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
+  return { apply: filter, ...interaction };
 }
 
-export function interactionFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
-  return { apply: filter, ...interaction(description, action) };
-}
-
-export function checkFilter<T, Q>(description: string, action: () => Promise<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
-  return { apply: filter , ...check(description, action) };
+export function checkFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
+  return { apply: filter , ...check(interaction) };
 }

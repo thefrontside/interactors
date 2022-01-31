@@ -1,7 +1,7 @@
 import { HTML } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
-const PopoverInteractor = HTML.extend("MUI Popover")
+const PopoverInteractor = HTML.extend("MUIPopover")
   .selector('[class*="MuiPopover-root"][role="presentation"]')
   .actions({
     close: ({ perform }) =>

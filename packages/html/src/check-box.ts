@@ -2,7 +2,7 @@ import { click } from '@interactors/core';
 import { isVisible } from 'element-is-visible';
 import { FormField } from './form-field';
 
-const CheckBoxInteractor = FormField.extend<HTMLInputElement>('check box')
+const CheckBoxInteractor = FormField.extend<HTMLInputElement>('CheckBox')
   .selector('input[type=checkbox]')
   .filters({
     checked: (element) => element.checked,

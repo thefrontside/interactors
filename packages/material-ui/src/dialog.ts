@@ -1,7 +1,7 @@
 import { click, HTML } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
-const DialogInteractor = HTML.extend("MUI Dialog")
+const DialogInteractor = HTML.extend("MUIDialog")
   .selector('[class*="MuiDialog-root"][role="presentation"]:not([aria-hidden="true"])')
   .locator((element) => {
     let labelId = element.querySelector('[class*="MuiDialog-paper"][role="dialog"]')?.getAttribute("aria-labelledby");

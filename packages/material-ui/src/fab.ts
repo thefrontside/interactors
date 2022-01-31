@@ -1,6 +1,6 @@
 import { Button } from "@interactors/html";
 
-const FabInteractor = Button.extend<HTMLButtonElement>("MUI Fab Button")
+const FabInteractor = Button.extend<HTMLButtonElement>("MUIFabButton")
   .selector('button[class*="MuiFab-root"]')
   .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
   .filters({

@@ -6,7 +6,7 @@ const selector = 'textarea, input' + [
   'image', 'month', 'radio', 'range', 'reset', 'submit', 'time', 'datetime'
 ].map((t) => `:not([type=${t}])`).join('');
 
-const TextFieldInteractor = FormField.extend<HTMLInputElement | HTMLTextAreaElement>('text field')
+const TextFieldInteractor = FormField.extend<HTMLInputElement | HTMLTextAreaElement>('TextField')
   .selector(selector)
   .filters({
     value: (element) => element.value,

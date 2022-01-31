@@ -4,7 +4,7 @@ function isButtonElement(element: HTMLInputElement | HTMLButtonElement): element
   return element.tagName === 'BUTTON';
 }
 
-const ButtonInteractor = HTML.extend<HTMLInputElement | HTMLButtonElement>('button')
+const ButtonInteractor = HTML.extend<HTMLInputElement | HTMLButtonElement>('Button')
   .selector('button,input[type=button],input[type=submit],input[type=reset],input[type=image]')
   .locator((element) => {
     if(isButtonElement(element)) {

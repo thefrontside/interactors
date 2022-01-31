@@ -3,37 +3,7 @@ import expect from 'expect';
 import { dom } from './helpers';
 
 import { createInteractor } from '../src/index';
-
-const Header = createInteractor('header')
-  .filters({
-    text: (e) => e.textContent
-  })
-  .selector('h1,h2,h3,h4,h5,h6')
-
-const Calendar = createInteractor<HTMLElement>("calendar")
-  .selector("div.calendar")
-
-const TextField = createInteractor<HTMLInputElement>('text field')
-  .selector('input')
-  .filters({
-    placeholder: element => element.placeholder,
-  })
-  .actions({
-    click: ({ perform }) => perform((e) => e.click())
-  });
-
-const Datepicker = createInteractor<HTMLDivElement>("datepicker")
-  .selector("div.datepicker")
-  .locator(element => element.querySelector("label")?.textContent || "")
-  .filters({
-    open: Calendar().exists(),
-    month: Calendar().find(Header()).text(),
-  })
-  .actions({
-    toggle: async interactor => {
-      await interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
-    }
-  });
+import { Datepicker } from './fixtures';
 
 describe('filters delegation', () => {
   it('delegates the filter to a child element', async () => {
