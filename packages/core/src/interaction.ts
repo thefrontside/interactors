@@ -25,6 +25,10 @@ export interface Interaction<T> extends Promise<T> {
    */
   description: string;
   /**
+   * Return a code representation of the interaction
+   */
+  code: () => string;
+  /**
    * Return a serialized options of the interaction
    */
   options: SerializedActionOptions;
@@ -59,6 +63,7 @@ export function interaction<T>(description: string, action: () => Promise<T>, op
   return {
     description,
     options: serializedOptions,
+    code() { return serializedOptions.code },
     action: wrappedAction,
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${description}]`,
