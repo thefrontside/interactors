@@ -1,65 +1,7 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
-
-import { createInteractor } from '../src';
-
-const Link = createInteractor<HTMLLinkElement>('link')
-  .selector('a')
-  .filters({
-    href: (element) => element.href,
-    title: (element) => element.title,
-  })
-  .actions({
-    click: ({ perform }) => perform(element => { element.click() }),
-    setHref: ({ perform }, value: string) => perform((element) => { element.href = value })
-  })
-
-const Header = createInteractor('header')
-  .selector('h1,h2,h3,h4,h5,h6')
-
-const Div = createInteractor('div')
-  .locator((element) => element.id || "")
-
-const Details = createInteractor<HTMLDetailsElement>('details')
-  .selector('details')
-  .locator((element) => element.querySelector('summary')?.textContent || '')
-
-const TextField = createInteractor<HTMLInputElement>('text field')
-  .selector('input')
-  .locator((element) => element.id)
-  .filters({
-    id: element => element.id,
-    placeholder: element => element.placeholder,
-    enabled: {
-      apply: (element) => !element.disabled,
-      default: true
-    },
-    value: (element) => element.value
-  })
-  .actions({
-    fillIn: ({ perform }, value: string) => perform((element) => { element.value = value }),
-    click: ({ perform }) => perform(element => { element.click() })
-  })
-  .actions({
-    append: async ({ value: currentValue, fillIn }, value: string) => fillIn(`${await currentValue()}${value}`)
-  })
-
-const Datepicker = createInteractor<HTMLDivElement>("datepicker")
-  .selector("div.datepicker")
-  .locator(element => element.querySelector("label")?.textContent || "")
-  .filters({
-    open: element => !!element.querySelector("div.calendar"),
-    month: element => element.querySelector<HTMLElement>("div.calendar h4")?.textContent
-  })
-  .actions({
-    toggle: function*(interactor) {
-      yield interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
-    }
-  });
-
-const MainNav = createInteractor('main nav')
-  .selector('nav')
+import { Datepicker, Details, Div, Header, Link, MainNav, TextField } from './fixtures';
 
 describe('createInteractor', () => {
   describe('.exists', () => {
@@ -560,9 +502,9 @@ describe('createInteractor', () => {
       `);
 
       await expect(TextField('Password').append('1234')).resolves.toBeUndefined();
-      await expect(TextField('Password').value()).resolves.toEqual('test1234')
+      await expect(TextField('Password').value()).resolves.toEqual('test1234');
       await expect(TextField({ value: 'jonas@' }).append('example.com')).resolves.toBeUndefined();
-      await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email')
-    })
+      await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email');
+    });
   })
 });

@@ -12,7 +12,7 @@ export type KeyOptions = {
   repeat?: boolean;
 }
 
-const KeyboardInteractor = createInteractor('keyboard')
+const KeyboardInteractor = createInteractor('Keyboard')
   .selector(':root')
   .actions({
     async press(interactor, options: KeyOptions = {}) {

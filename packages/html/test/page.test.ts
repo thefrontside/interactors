@@ -13,7 +13,7 @@ describe('Page', () => {
 
       await expect(Page.has({ title: 'Hello World' })).resolves.toBeUndefined();
       await expect(Page.has({ title: 'Does Not Exist' })).rejects.toHaveProperty('message', [
-        'page does not match filters:', '',
+        'Page does not match filters:', '',
         '╒═ Filter:   title',
         '├─ Expected: "Does Not Exist"',
         '└─ Received: "Hello World"',
@@ -27,7 +27,7 @@ describe('Page', () => {
 
       await expect(Page.has({ url: 'about:blank' })).resolves.toBeUndefined();
       await expect(Page.has({ url: 'does-not-exist' })).rejects.toHaveProperty('message', [
-        'page does not match filters:', '',
+        'Page does not match filters:', '',
         '╒═ Filter:   url',
         '├─ Expected: "does-not-exist"',
         '└─ Received: "about:blank"',

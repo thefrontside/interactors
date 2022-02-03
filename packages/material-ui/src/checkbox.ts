@@ -1,6 +1,6 @@
 import { isVisible, click, CheckBox as BaseCheckbox, innerText } from "@interactors/html";
 
-const CheckboxInteractor = BaseCheckbox.extend("MUI Checkbox")
+const CheckboxInteractor = BaseCheckbox.extend("MUICheckbox")
   .selector('[class*="MuiCheckbox-root"] input[type=checkbox]')
   .locator((element) => element.labels ? innerText(Array.from(element.labels)[0]) : (element.getAttribute("aria-label") ?? ""))
   .filters({

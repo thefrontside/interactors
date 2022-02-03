@@ -152,6 +152,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
 
     perform<T>(fn: (element: E) => T): ActionInteraction<E, T> {
       return createInteraction('action', {
+        name: "perform",
         interactor,
         description: `run perform on ${description(options)}`,
         run: (interactor) => converge(() => fn(resolver(interactor.options))),
@@ -160,6 +161,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
 
     assert(fn: (element: E) => void): AssertionInteraction<E> {
       return createInteraction('assertion', {
+        name: "assert",
         interactor,
         description: `${description(options)} asserts`,
         run: (interactor) => converge(() => { fn(resolver(interactor.options)) }),
@@ -173,7 +175,9 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
     is(filters: FilterParams<E, F>): AssertionInteraction<E> {
       let filter = new FilterSet(options.specification, filters);
       return createInteraction('assertion', {
+        name: "is",
         interactor,
+        filters,
         description: `${description(options)} matches filters: ${filter.description}`,
         run: (interactor) => converge(() => {
           let element = resolver({...interactor.options, filter: getLookupFilterForAssertion(interactor.options.filter, filters) });
@@ -194,6 +198,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
 
     exists(): AssertionInteraction<E> & FilterObject<boolean, Element> {
       return createInteraction('assertion', {
+        name: 'exists',
         interactor,
         description: `${description(options)} exists`,
         run: (interactor) => converge(() => {
@@ -206,6 +211,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
 
     absent(): AssertionInteraction<E> & FilterObject<boolean, Element> {
       return createInteraction('assertion', {
+        name: 'absent',
         interactor,
         description: `${description(options)} does not exist`,
         run: (interactor) => converge(() => {
@@ -231,7 +237,9 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
             actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
           }
           return createInteraction('action', {
+            name: actionName,
             interactor,
+            args,
             description: `${actionDescription} on ${description(options)}`,
             run: (interactor) => action(interactor as Interactor<E, FilterParams<E, F>> & FilterMethods<E, F> & ActionMethods<E, A, Interactor<E, FilterParams<E, F>>>, ...args)
           });
@@ -248,9 +256,10 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       Object.defineProperty(interactor, filterName, {
         value: function() {
           return createInteraction('assertion', {
+            name: filterName,
             interactor,
             description: `${filterName} of ${description(options)}`,
-            run: (interactor) => converge(() => applyFilter(filter,  resolver(interactor.options))),
+            run: (interactor) => converge(() => applyFilter(filter, resolver(interactor.options))),
           }, (parentElement) => {
             let element = [...options.ancestors, options].reduce(resolveUnique, parentElement);
             return applyFilter(filter, element);

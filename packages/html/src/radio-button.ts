@@ -2,7 +2,7 @@ import { click } from '@interactors/core';
 import { isVisible } from 'element-is-visible';
 import { FormField } from './form-field';
 
-const RadioButtonInteractor = FormField.extend<HTMLInputElement>('radio button')
+const RadioButtonInteractor = FormField.extend<HTMLInputElement>('RadioButton')
   .selector('input[type=radio]')
   .filters({
     checked: (element) => element.checked,

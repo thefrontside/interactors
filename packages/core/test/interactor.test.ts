@@ -1,12 +1,7 @@
 import { describe, it } from 'mocha';
 import expect from 'expect';
 import { dom } from './helpers';
-
-import { createInteractor } from '../src';
-
-const MainNav = createInteractor<HTMLElement>('main nav').selector('nav');
-const Link = createInteractor<HTMLAnchorElement>('link').selector('a');
-const Heading = createInteractor<HTMLHeadingElement>('heading').selector('h1');
+import { Header, Link, MainNav } from './fixtures';
 
 describe('Interactor', () => {
   describe('instantiation', () => {
@@ -34,7 +29,7 @@ describe('Interactor', () => {
       `);
 
       await Link('Foo Bar').perform((e) => e.click());
-      await Heading('Hello!').exists();
+      await Header('Hello!').exists();
     });
 
     it('does nothing unless awaited', async () => {
@@ -49,7 +44,7 @@ describe('Interactor', () => {
       `);
 
       Link('Foo Bar').perform((e) => e.click());
-      await Heading('Hello!').absent();
+      await Header('Hello!').absent();
     });
 
     it('can return description of interaction', () => {

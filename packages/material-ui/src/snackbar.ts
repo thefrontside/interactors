@@ -1,7 +1,7 @@
 import { HTML } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
-const SnackbarInteractor = HTML.extend("MUI Snackbar")
+const SnackbarInteractor = HTML.extend("MUISnackbar")
   .selector('[class*="MuiSnackbar-root"]')
   .locator((element) => {
     let messageElement = element.querySelector('[class*="MuiSnackbarContent-message"]');

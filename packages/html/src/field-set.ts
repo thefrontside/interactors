@@ -2,7 +2,7 @@ import { HTML } from './html';
 
 const LegendInteractor = HTML.extend<HTMLLegendElement>('legend').selector('legend');
 
-const FieldSetInteractor = HTML.extend<HTMLHeadingElement>('fieldset')
+const FieldSetInteractor = HTML.extend<HTMLHeadingElement>('FieldSet')
   .selector('fieldset')
   .locator(LegendInteractor().text());
 

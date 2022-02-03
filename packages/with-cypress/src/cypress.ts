@@ -16,11 +16,11 @@ let cypressCommand: CypressCommand | null = null
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-addInteractionWrapper((interaction, action) =>
+addInteractionWrapper((interaction, operation) =>
   () => {
     if (interaction.type == 'action' && cypressCommand == 'expect')
       throw new Error(`tried to ${interaction.description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
-    return action
+    return operation
   }
 );
 

@@ -1,7 +1,7 @@
 import { click, createInteractor } from '@interactors/core';
 import { isVisible } from 'element-is-visible';
 
-const HTMLInteractor = createInteractor<HTMLElement>('element')
+const HTMLInteractor = createInteractor<HTMLElement>('HTML')
   .selector('*')
   .locator(innerText)
   .filters({

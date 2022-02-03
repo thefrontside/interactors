@@ -6,7 +6,7 @@ function getLabelElement(root: HTMLElement) {
   return isHTMLElement(label) ? label : null;
 }
 
-const FormControlInteractor = HTML.extend("MUI Form Control")
+const FormControlInteractor = HTML.extend("MUIFormControl")
   .selector('[class*="MuiFormControl-root"]')
   .locator((element) => getLabelElement(element)?.innerText ?? "")
   .filters({

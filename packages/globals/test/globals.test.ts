@@ -2,7 +2,7 @@ import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
 
-import { globals, InteractionWrapper, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -35,14 +35,44 @@ describe("@interactors/globals", () => {
     });
   });
 
-  describe("addInteractionWrapper", () => {
-    it("adds interaction wrapper to list", async () => {
-      let action: InteractionWrapper = function*(interactor, inner) {
-        return yield inner;
-      };
-      let removeWrapper = addInteractionWrapper(action);
+  describe("wrapInteraction", () => {
+    it("returns the same interaction without any change", () => {
+      let action = async () => {};
+      expect(
+        // @ts-expect-error `wrapInteraction` accepts string as first argument for back compatibility
+        globals.wrapInteraction(
+          {
+            description: "plain action",
+            action,
+            options: {
+              type: "action",
+              actionName: "plain",
+              code: "",
+              interactor: { interactorName: "Interactor", code: "" },
+            },
+          },
+          action
+        )
+      ).toBe(action);
+    });
 
-      expect(globals.interactionWrappers.has(action)).toEqual(true);
+    it("applies defined interaction wrapper", async () => {
+      let action = async () => "foo";
+      let removeWrapper = addInteractionWrapper(() => async () => "bar");
+      // @ts-expect-error `wrapInteraction` accepts string as first argument for back compatibility
+      globals.wrapInteraction(
+        {
+          description: "foo action",
+          action,
+          options: {
+            type: "action",
+            actionName: "foo",
+            code: "",
+            interactor: { interactorName: "Interactor", code: "" },
+          },
+        },
+        action
+      );
 
       removeWrapper();
       expect(globals.interactionWrappers.has(action)).toEqual(false);

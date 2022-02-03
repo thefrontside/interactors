@@ -1,6 +1,6 @@
 import { Link as BaseLink } from "@interactors/html";
 
-const LinkInteractor = BaseLink.extend("MUI Link").selector(
+const LinkInteractor = BaseLink.extend("MUILink").selector(
   `${BaseLink().options.specification.selector as string}[class*="MuiLink-root"]`
 );
 

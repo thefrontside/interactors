@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Operation, Task, run } from '@effection/core';
-import { globals } from '@interactors/globals';
-import type { Interactor, FilterObject, FilterFn } from './specification';
+import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
+import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
+import { serializeInteractionOptions } from './serialize';
 
 const interactionSymbol = Symbol.for('interaction');
-
-export type InteractionType = "action" | "assertion";
 
 export function isInteraction(x: unknown): x is Interaction<Element, unknown> {
   return typeof x === 'object' && x != null && interactionSymbol in x
@@ -27,11 +26,19 @@ export interface Interaction<E extends Element, T = void> extends Promise<T> {
 
   interactor: Interactor<E, any>;
   run: (interactor: Interactor<E, any>) => Operation<T>;
-  operation: Operation<T>;
+  operation: () => Operation<T>;
   /**
    * Return a description of the interaction
    */
   description: string;
+  /**
+   * Return a code representation of the interaction
+   */
+  code: () => string;
+  /**
+   * Return a serialized options of the interaction
+   */
+  options: SerializedInteractionOptions;
   /**
    * Perform the interaction
    */
@@ -62,8 +69,11 @@ export interface AssertionInteraction<E extends Element, T = void> extends Inter
   check: () => Task<T>;
 }
 
-type InteractionOptions<E extends Element, T> = {
+export type InteractionOptions<E extends Element, T> = {
+  name: string;
   description: string;
+  filters?: FilterParams<any, any>;
+  args?: unknown[];
   interactor: Interactor<E, any>;
   run: (interactor: Interactor<E, any>) => Operation<T>;
 }
@@ -76,11 +86,11 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
   let task: Task<T>;
 
   function operation(): Operation<T> {
-    let operation = options.run(options.interactor);
-
-    for(let wrapper of globals.interactionWrappers) {
-      operation = wrapper(interaction, operation);
-    };
+    let operation = globals.wrapInteraction(
+      Object.assign(new String(options.description), interaction) as string & Interaction<E, T>,
+      options.run(options.interactor),
+      type
+    )
 
     return operation;
   };
@@ -92,13 +102,16 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
     return task;
   };
 
+  let serializedOptions = serializeInteractionOptions(type, options)
   let interaction: Interaction<E, T> = {
     type,
+    options: serializedOptions,
     description: options.description,
     interactor: options.interactor,
     run: options.run,
-    get operation() { return operation() },
     action,
+    operation() { return operation() },
+    code() { return serializedOptions.code() },
     halt: () => action().halt(),
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${options.description}]`,

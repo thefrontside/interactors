@@ -1,24 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Operation } from '@effection/core';
-import { KeyboardLayout } from './keyboard-layout';
+import type { Operation } from "@effection/core";
+import { KeyboardLayout } from "./keyboard-layout";
 
-type InteractionType = "action" | "assertion";
+export type InteractionType = "action" | "assertion";
 
-interface Interaction {
+interface Interaction<T = any> {
   type: InteractionType;
   description: string;
+  options: InteractionOptions;
+  operation: Operation<T>;
   interactor: unknown; // we can't type this any better here
 }
 
-export type InteractionWrapper = <R>(interaction: Interaction, inner: Operation<R>) => Operation<R>
-
 interface Globals {
   readonly document: Document;
+  /**
+   * @deprecated Use `wrapInteraction` instead
+   */
+  readonly wrapAction: InteractionWrapper;
+  readonly wrapInteraction: InteractionWrapper;
   readonly interactionWrappers: Set<InteractionWrapper>;
   readonly interactorTimeout: number;
   readonly reset: () => void;
-  readonly keyboardLayout: KeyboardLayout
+  readonly keyboardLayout: KeyboardLayout;
 }
+
+export type InteractorOptions = {
+  interactor: string;
+  code: () => string;
+  locator?: string;
+  filter?: Record<string, unknown>;
+};
+
+export type InteractionOptions = InteractorOptions & {
+  name: string;
+  type: InteractionType;
+  code: () => string;
+  args?: unknown[];
+  ancestors?: InteractorOptions[];
+};
+
+export type InteractionWrapper<T = any> =
+  | ((interaction: Interaction, operation: Operation<T>) => Operation<T>)
+  | ((description: string, operation: Operation<T>, type: InteractionType) => Operation<T>);
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -29,6 +53,16 @@ declare global {
 }
 
 if (!globalThis.__interactors) {
+  let wrapInteraction = <T>(interaction: Interaction<T>, operation: Operation<T>): Operation<T> => {
+    for (let wrapper of getGlobals().interactionWrappers) {
+      operation = wrapper(
+        Object.assign(new String(interaction.description), interaction) as string & Interaction<T>,
+        operation,
+        interaction.options.type
+      );
+    }
+    return operation;
+  };
   Object.defineProperty(globalThis, "__interactors", {
     value: Object.defineProperties(
       {},
@@ -42,6 +76,14 @@ if (!globalThis.__interactors) {
           get: () => undefined,
           enumerable: true,
           configurable: true,
+        },
+        wrapAction: {
+          value: wrapInteraction,
+          enumerable: true,
+        },
+        wrapInteraction: {
+          value: wrapInteraction,
+          enumerable: true,
         },
         interactionWrappers: {
           value: new Set(),
@@ -83,10 +125,24 @@ export function setInteractorTimeout(ms: number): void {
   });
 }
 
-export function addInteractionWrapper(wrapper: InteractionWrapper): () => boolean {
+/**
+ * @deprecated Use `addInteractionWrapper` instead
+ */
+export function addActionWrapper<T>(
+  wrapper: (interaction: Interaction<T>, operation: Operation<T>) => Operation<T>
+): () => boolean;
+export function addActionWrapper<T>(
+  wrapper: (description: string, operation: Operation<T>, type: InteractionType) => Operation<T>
+): () => boolean;
+export function addActionWrapper<T>(wrapper: InteractionWrapper<T>): () => boolean {
   getGlobals().interactionWrappers.add(wrapper);
+
   return () => getGlobals().interactionWrappers.delete(wrapper);
 }
+
+export const addInteractionWrapper = addActionWrapper as <T>(
+  wrapper: (interaction: Interaction<T>, operation: Operation<T>) => Operation<T>
+) => () => boolean;
 
 export function setKeyboardLayout(layout: KeyboardLayout): void {
   Object.defineProperty(getGlobals(), "keyboardLayout", {
@@ -95,4 +151,3 @@ export function setKeyboardLayout(layout: KeyboardLayout): void {
     configurable: true,
   });
 }
-

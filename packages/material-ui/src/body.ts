@@ -1,6 +1,6 @@
 import { HTML } from "@interactors/html";
 
-export const Body = HTML.extend<HTMLBodyElement>("body")
+export const Body = HTML.extend<HTMLBodyElement>("Body")
   .selector("body")
   .actions({
     click: ({ perform }) =>

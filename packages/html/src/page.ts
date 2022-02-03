@@ -1,6 +1,6 @@
 import { createInteractor } from '@interactors/core';
 
-const PageInteractor = createInteractor<HTMLHtmlElement>('page')
+const PageInteractor = createInteractor<HTMLHtmlElement>('Page')
   .selector(':root')
   .filters({
     title: (element) => element.ownerDocument.title,

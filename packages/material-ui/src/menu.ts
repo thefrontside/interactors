@@ -2,7 +2,7 @@ import { click, HTML, createInteractor } from "@interactors/html";
 import { Button } from "./button";
 import { applyGetter, isDisabled } from "./helpers";
 
-const MenuItemInteractor = HTML.extend<HTMLElement>("MUI MenuItem")
+const MenuItemInteractor = HTML.extend<HTMLElement>("MUIMenuItem")
   .selector('[class*="MuiMenuItem-root"][role="menuitem"]')
   .filters({
     disabled: {
@@ -12,13 +12,13 @@ const MenuItemInteractor = HTML.extend<HTMLElement>("MUI MenuItem")
   })
   .actions({ click: ({ perform }) => perform((element) => click(element)) });
 
-const MenuListInteractor = createInteractor<HTMLElement>("MUI MenuList")
+const MenuListInteractor = createInteractor<HTMLElement>("MUIMenuList")
   .selector(
     '[class*="MuiPopover-root"][role="presentation"] > [class*="MuiMenu-paper"] > [class*="MuiMenu-list"][role="menu"]'
   )
   .locator((element) => element.parentElement?.parentElement?.id ?? "");
 
-const MenuInteractor = Button.extend("MUI Menu")
+const MenuInteractor = Button.extend("MUIMenu")
   .selector(`${Button().options.specification.selector as string}[aria-haspopup="true"]`)
   .actions({
     open: async ({ perform }) => perform((element) => click(element)),

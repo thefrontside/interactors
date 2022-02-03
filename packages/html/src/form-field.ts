@@ -6,7 +6,7 @@ function isElement<T extends keyof HTMLElementTagNameMap>(element: Element, tagN
   return element.tagName.toLowerCase() === tagName;
 }
 
-const LabelInteractor = HTML.extend<HTMLLabelElement>('label')
+const LabelInteractor = HTML.extend<HTMLLabelElement>('Label')
   .selector((element) => {
     if(isElement(element, 'input') || isElement(element, 'select') || isElement(element, 'textarea')) {
       return Array.from(element.labels || []);
@@ -15,7 +15,7 @@ const LabelInteractor = HTML.extend<HTMLLabelElement>('label')
     }
   })
 
-const FormFieldInteractor = HTML.extend<FieldTypes>('form field')
+const FormFieldInteractor = HTML.extend<FieldTypes>('FormField')
   .locator(LabelInteractor().text())
   .filters({
     valid: (element) => element.validity.valid,
