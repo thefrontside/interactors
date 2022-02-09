@@ -1,6 +1,6 @@
 import { click, HTML, createInteractor, Interactor } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
-import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
+import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, isDisabled } from "./helpers";
 
 export const SelectOption = HTML.extend<HTMLLIElement>("MUISelectOption")
   .selector('li[role="option"]')
@@ -93,7 +93,7 @@ const SelectInteractor = BaseSelect.extend("MUISelect")
   .filters({ value: getValueText })
   .actions({
     choose: async (interactor, value: string) => {
-      if ((await applyGetter(interactor, getValueText)) == value) return;
+      if ((await interactor.value()) == value) return;
 
       let labelId = await openSelectOptionsList(interactor);
       await SelectOptionsList(labelId).find(SelectOption(value)).choose();
@@ -104,7 +104,7 @@ const MultiSelectInteractor = BaseSelect.extend("MUIMultiSelect")
   .filters({ values: getChipLabels })
   .actions({
     choose: async (interactor, value: string) => {
-      let selected = await applyGetter(interactor, getChipLabels);
+      let selected = await interactor.values();
 
       if (selected.length == 1 && selected[0] == value) return;
 
@@ -114,7 +114,7 @@ const MultiSelectInteractor = BaseSelect.extend("MUIMultiSelect")
       await closeSelectOptionsList(labelId);
     },
     select: async (interactor, value: string) => {
-      let selected = await applyGetter(interactor, getChipLabels);
+      let selected = await interactor.values();
 
       if (selected.includes(value)) return;
 
@@ -123,7 +123,7 @@ const MultiSelectInteractor = BaseSelect.extend("MUIMultiSelect")
       await closeSelectOptionsList(labelId);
     },
     deselect: async (interactor, value: string) => {
-      let selected = await applyGetter(interactor, getChipLabels);
+      let selected = await interactor.values();
 
       if (!selected.includes(value)) return;
 

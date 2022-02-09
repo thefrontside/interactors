@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Operation, Task, run } from '@effection/core';
+import { Operation, Task, run, Symbol as OperationSymbol } from '@effection/core';
 import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
 import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
 import { serializeInteractionOptions } from './serialize';
@@ -26,7 +26,6 @@ export interface Interaction<E extends Element, T = void> extends Promise<T> {
 
   interactor: Interactor<E, any>;
   run: (interactor: Interactor<E, any>) => Operation<T>;
-  operation: () => Operation<T>;
   /**
    * Return a description of the interaction
    */
@@ -82,13 +81,13 @@ export function createInteraction<E extends Element, T>(type: 'action', options:
 export function createInteraction<E extends Element, T>(type: 'assertion', options: InteractionOptions<E, T>): AssertionInteraction<E, T>
 export function createInteraction<E extends Element, T, Q>(type: 'action', options: InteractionOptions<E, T>, apply: FilterFn<Q, Element>): ActionInteraction<E, T> & FilterObject<Q, Element>
 export function createInteraction<E extends Element, T, Q>(type: 'assertion', options: InteractionOptions<E, T>, apply: FilterFn<Q, Element>): AssertionInteraction<E, T> & FilterObject<Q, Element>
-export function createInteraction<E extends Element, T, Q>(type: InteractionType, options: InteractionOptions<E, T>, apply?: FilterFn<Q, Element>): Interaction<E, T> {
+export function createInteraction<E extends Element, T, Q>(type: InteractionType, options: InteractionOptions<E, T>, apply?: FilterFn<Q, Element>): Interaction<E, T> & Operation<T> {
   let task: Task<T>;
 
   function operation(): Operation<T> {
-    let operation = globals.wrapInteraction(
-      Object.assign(new String(options.description), interaction) as string & Interaction<E, T>,
-      options.run(options.interactor),
+    let operation = globals.wrapAction(
+      Object.assign(new String(options.description), interaction) as string & Interaction<E, T> & Operation<T>,
+      () => options.run(options.interactor),
       type
     )
 
@@ -103,18 +102,19 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
   };
 
   let serializedOptions = serializeInteractionOptions(type, options)
-  let interaction: Interaction<E, T> = {
+  let interaction: Interaction<E, T> & Operation<T> = {
     type,
     options: serializedOptions,
     description: options.description,
     interactor: options.interactor,
     run: options.run,
     action,
-    operation() { return operation() },
-    code() { return serializedOptions.code() },
+    check: type === 'assertion' ? action : undefined,
+    code: () => serializedOptions.code(),
     halt: () => action().halt(),
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${options.description}]`,
+    [OperationSymbol.operation]: operation,
     then(onFulfill, onReject) {
       return action().then(onFulfill, onReject);
     },
@@ -125,10 +125,7 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
       return action().finally(handler);
     }
   }
-  if(type === 'assertion') {
-    interaction.check = interaction.action;
-  }
-  if(apply) {
+  if (apply) {
     return Object.assign(interaction, { apply });
   } else {
     return interaction;

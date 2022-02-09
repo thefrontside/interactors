@@ -4,11 +4,10 @@ import { KeyboardLayout } from "./keyboard-layout";
 
 export type InteractionType = "action" | "assertion";
 
-interface Interaction<T = any> {
+type Interaction<T = any> = Operation<T> & {
   type: InteractionType;
   description: string;
   options: InteractionOptions;
-  operation: Operation<T>;
   interactor: unknown; // we can't type this any better here
 }
 

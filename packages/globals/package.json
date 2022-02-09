@@ -39,6 +39,6 @@
     "yarn": "1.22.11"
   },
   "dependencies": {
-    "@effection/core": "^2.0.1"
+    "@effection/core": "2.1.0-add-operation-object.1643201536852"
   }
 }
