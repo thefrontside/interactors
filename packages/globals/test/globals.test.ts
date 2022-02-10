@@ -1,6 +1,7 @@
 import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
+import { Symbol as SymbolOperation } from "@effection/core";
 
 import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
@@ -39,17 +40,19 @@ describe("@interactors/globals", () => {
     it("returns the same interaction without any change", () => {
       let action = async () => {};
       expect(
-        // @ts-expect-error `wrapInteraction` accepts string as first argument for back compatibility
         globals.wrapInteraction(
           {
+            type: "action",
+            interactor: "Interactor",
             description: "plain action",
             action,
             options: {
+              interactor: "Interactor",
+              name: "plain",
               type: "action",
-              actionName: "plain",
-              code: "",
-              interactor: { interactorName: "Interactor", code: "" },
+              code: () => "",
             },
+            [SymbolOperation.operation]: Promise.resolve(),
           },
           action
         )
@@ -59,17 +62,19 @@ describe("@interactors/globals", () => {
     it("applies defined interaction wrapper", async () => {
       let action = async () => "foo";
       let removeWrapper = addInteractionWrapper(() => async () => "bar");
-      // @ts-expect-error `wrapInteraction` accepts string as first argument for back compatibility
       globals.wrapInteraction(
         {
+          type: "action",
+          interactor: "Interactor",
           description: "foo action",
           action,
           options: {
+            interactor: "Interactor",
+            name: "foo",
             type: "action",
-            actionName: "foo",
-            code: "",
-            interactor: { interactorName: "Interactor", code: "" },
+            code: () => "",
           },
+          [SymbolOperation.operation]: Promise.resolve(),
         },
         action
       );
