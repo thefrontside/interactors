@@ -85,18 +85,35 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
   let task: Task<T>;
 
   function operation(): Operation<T> {
-    let operation = globals.wrapAction(
-      Object.assign(new String(options.description), interaction) as string & Interaction<E, T> & Operation<T>,
-      () => options.run(options.interactor),
-      type
-    )
+    let operation = globals.wrapInteraction
+      ? globals.wrapInteraction(interaction, () => options.run(options.interactor))
+      : globals.wrapAction(interaction.description, () => options.run(options.interactor), type)
 
-    return operation;
+    return function* () {
+      while (true) {
+        try {
+          // NOTE: If effection gets Promise it will fulfill and treat the result as ended value
+          // NOTE: Sometimes original interaction function might be wrapped multiple times into async function
+          // NOTE: That means effection returns the original interaction function from a wrapped one instead of executing it
+          // NOTE: We `yield` operation until we get `unknown type of operation` error or falsy value
+          // NOTE: That allows us to guarantee that interaction was executed
+          operation = yield operation
+        } catch (error) {
+          if (error instanceof Error && error.message.includes('type of operation')) {
+            return operation
+          } else {
+            throw error
+          }
+        }
+        // NOTE: Falsy value is treated by effection as suspended operation, so we exit early
+        if (!operation) return operation;
+      }
+    } as Operation<T>;
   };
 
   function action(): Task<T> {
     if(!task) {
-      task = run(operation());
+      task = run(operation);
     }
     return task;
   };
