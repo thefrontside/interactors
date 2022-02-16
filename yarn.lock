@@ -1335,10 +1335,10 @@
     get-source "^2.0.11"
     istanbul-lib-coverage "^3.0.0"
 
-"@bigtest/bundler@0.16.1-add-rollup-json-plugin.0", "@bigtest/bundler@^0.16.0":
-  version "0.16.1-add-rollup-json-plugin.0"
-  resolved "https://registry.yarnpkg.com/@bigtest/bundler/-/bundler-0.16.1-add-rollup-json-plugin.0.tgz#f5a65a5ee3dca4fd278da7e01293fe4fd18f4e60"
-  integrity sha512-a6JLNgnJM29AitmTKZ5uRKjuKzIwlD8d0CnwgFgfFDqFzWzglX7eJ0v+ukgT7cwnNwkLzooj1xy3MD+wvfjneQ==
+"@bigtest/bundler@^0.16.0":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@bigtest/bundler/-/bundler-0.16.1.tgz#354215c433474cad767b71418afabc246fa75c2d"
+  integrity sha512-Cw7rJe9b74prMcSwfMOHQdU53YLzHzdo5UFYIGx210bOly3NCDZBAt/O0xcpHVTo76fTdSenLw/kEtRTi0WNXg==
   dependencies:
     "@babel/core" "^7.12.9"
     "@babel/plugin-transform-runtime" "^7.12.1"
@@ -1808,10 +1808,10 @@
   resolved "https://registry.yarnpkg.com/@effection/core/-/core-2.0.1.tgz#f200e4df020666ec5dc232da3057bafb63aa19af"
   integrity sha512-Bl2pfu9gbTwlieTgcEhFOwz70QDPXpyVRuOiOqccGVBvZpa3/mzepH6LFZSCyothnc7YO0b31xXV551POiLEow==
 
-"@effection/core@2.1.0-add-operation-object.1643201536852":
-  version "2.1.0-add-operation-object.1643201536852"
-  resolved "https://registry.yarnpkg.com/@effection/core/-/core-2.1.0-add-operation-object.1643201536852.tgz#7cfa4fd25c48260b8edcefe96fd0fc52f3d3509d"
-  integrity sha512-ifN+BzpHZvnnp1zEo3spqa6Lj9wPZC/YYwYRpADfIPhpMAb2qeaRj4KD1dUV6dBaz0YJObapvlRMAk3N7s+w+w==
+"@effection/core@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@effection/core/-/core-2.2.0.tgz#4d11d7948144aecd70a26daf8abaa29ee89bc259"
+  integrity sha512-1RBMrDS0Ya02NEM0TQQRwzlGDSZmwoHhuD3qmWp9NLjZowhO1gJBZ16fQL2NbKvcpS71xho+oZsDedId+C1q8Q==
   dependencies:
     abort-controller "^3.0.0"
 

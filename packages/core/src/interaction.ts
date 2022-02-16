@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Operation, Task, run, Symbol as OperationSymbol } from '@effection/core';
+import { Operation, Task, run, Symbol } from '@effection/core';
 import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
 import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
 import { serializeInteractionOptions } from './serialize';
 
-const interactionSymbol = Symbol.for('interaction');
+const interactionSymbol: unique symbol = Symbol.for('interaction') as any;
 
 export function isInteraction(x: unknown): x is Interaction<Element, unknown> {
   return typeof x === 'object' && x != null && interactionSymbol in x
@@ -47,7 +47,7 @@ export interface Interaction<E extends Element, T = void> extends Promise<T> {
 
   halt: () => Promise<void>;
 
-  [interactionSymbol]: true
+  [interactionSymbol]: true;
 }
 
 export interface ActionInteraction<E extends Element, T = void> extends Interaction<E, T> {
@@ -131,7 +131,7 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
     halt: () => action().halt(),
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${options.description}]`,
-    [OperationSymbol.operation]: operation,
+    [Symbol.operation]: operation,
     then(onFulfill, onReject) {
       return action().then(onFulfill, onReject);
     },

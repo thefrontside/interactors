@@ -1,7 +1,7 @@
 import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
-import { Symbol as SymbolOperation } from "@effection/core";
+import { Symbol } from "@effection/core";
 
 import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
@@ -52,7 +52,7 @@ describe("@interactors/globals", () => {
               type: "action",
               code: () => "",
             },
-            [SymbolOperation.operation]: Promise.resolve(),
+            [Symbol.operation]: Promise.resolve(),
           },
           action
         )
@@ -74,7 +74,7 @@ describe("@interactors/globals", () => {
             type: "action",
             code: () => "",
           },
-          [SymbolOperation.operation]: Promise.resolve(),
+          [Symbol.operation]: Promise.resolve(),
         },
         action
       );

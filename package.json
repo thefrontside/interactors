@@ -47,7 +47,6 @@
   },
   "resolutions": {
     "@definitelytyped/typescript-versions": "^0.0.40",
-    "@bigtest/bundler": "0.16.1-add-rollup-json-plugin.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "chromedriver": "96.0.0",
     "typescript": "^4.1.3",
