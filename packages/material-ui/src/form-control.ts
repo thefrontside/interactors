@@ -1,4 +1,4 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 function getLabelElement(root: HTMLElement) {
@@ -8,12 +8,12 @@ function getLabelElement(root: HTMLElement) {
 
 const FormControlInteractor = HTML.extend("MUIFormControl")
   .selector('[class*="MuiFormControl-root"]')
-  .locator((element) => getLabelElement(element)?.innerText ?? "")
+  .locator((element) => innerText(getLabelElement(element)))
   .filters({
     valid: (element) => !getLabelElement(element)?.classList.toString().includes("Mui-error"),
     description: (element) => {
       let descriptionElement = element?.lastElementChild;
-      return isHTMLElement(descriptionElement) ? descriptionElement.innerText : "";
+      return isHTMLElement(descriptionElement) ? innerText(descriptionElement) : "";
     },
   });
 

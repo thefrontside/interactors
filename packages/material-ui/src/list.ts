@@ -1,7 +1,7 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 
 const ListInteractor = HTML.extend<HTMLElement>("MUIList")
-  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .locator((element) => element.getAttribute("aria-label") ?? innerText(element))
   .selector('[class*="MuiList-root"]');
 
 const ListItemInteractor = HTML.extend<HTMLElement>("MUIListItem")

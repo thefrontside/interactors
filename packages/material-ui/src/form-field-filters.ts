@@ -1,3 +1,4 @@
+import { innerText } from "@interactors/html";
 import { getInputLabel, isHTMLElement } from "./helpers";
 
 export const createFormFieldFilters = <E extends HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(): {
@@ -12,6 +13,6 @@ export const createFormFieldFilters = <E extends HTMLInputElement | HTMLSelectEl
     let descriptionElement = descriptionId
       ? element.ownerDocument.getElementById(descriptionId)
       : getInputLabel(element)?.parentElement?.lastElementChild;
-    return isHTMLElement(descriptionElement) ? descriptionElement.innerText : "";
+    return isHTMLElement(descriptionElement) ? innerText(descriptionElement) : "";
   },
 });

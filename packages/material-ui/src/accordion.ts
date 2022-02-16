@@ -1,4 +1,4 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 import { applyGetter, isDisabled, isHTMLElement } from "./helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
@@ -6,7 +6,7 @@ const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("
 
 const AccordionSummary = HTML.extend<HTMLElement>("MUIAccordionSummary")
   .selector('[class*="MuiAccordionSummary-root"]')
-  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .locator((element) => element.getAttribute("aria-label") ?? innerText(element))
   .filters({
     expanded: (element) => element.getAttribute("aria-expanded") == "true",
     disabled: {
@@ -19,7 +19,7 @@ const AccordionInteractor = HTML.extend<HTMLElement>("MUIAccordion")
   .selector('[class*="MuiAccordion-root"]')
   .locator((element) => {
     let summary = getSummary(element);
-    return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? summary.innerText : "";
+    return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? innerText(summary) : "";
   })
   .filters({
     expanded: isExpanded,

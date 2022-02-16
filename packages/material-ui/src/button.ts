@@ -1,4 +1,4 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 import { isDisabled } from "./helpers";
 
 const ButtonInteractor = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUIButton")
@@ -7,7 +7,7 @@ const ButtonInteractor = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUIBu
       .map((selector) => `${selector}[class*="MuiButton-root"], ${selector}[class*="MuiIconButton-root"]`)
       .join(", ")
   )
-  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .locator((element) => element.getAttribute("aria-label") ?? innerText(element))
   .filters({
     href: (element) => element.getAttribute("href"),
     disabled: {
