@@ -99,11 +99,60 @@ export type KeyCode =
   | "Slash"
   | "Backquote"
   | "BracketLeft"
-  | "Backslack"
+  | "Backslash"
   | "BracketRight"
   | "Quote";
 
+export const FunctionalKeys: KeyCode[] = [
+  "Backspace",
+  "Tab",
+  "Enter",
+  "ShiftLeft",
+  "ShiftRight",
+  "ControlLeft",
+  "ControlRight",
+  "AltLeft",
+  "AltRight",
+  "Pause",
+  "CapsLock",
+  "Escape",
+  "PageUp",
+  "PageDown",
+  "End",
+  "Home",
+  "ArrowLeft",
+  "ArrowUp",
+  "ArrowRight",
+  "ArrowDown",
+  "PrintScreen",
+  "Insert",
+  "Delete",
+  "MetaLeft",
+  "MetaRight",
+  "ContextMenu",
+  "F1",
+  "F2",
+  "F3",
+  "F4",
+  "F5",
+  "F6",
+  "F7",
+  "F8",
+  "F9",
+  "F10",
+  "F11",
+  "F12",
+  "NumLock",
+  "ScrollLock",
+];
+
+export interface Key {
+  code: KeyCode;
+  key: string;
+  shiftKey?: true;
+}
+
 export interface KeyboardLayout {
-  getKey(code: KeyCode): string | undefined;
-  getCode(key: string): KeyCode | undefined;
+  getByCode(code: KeyCode): Key | undefined;
+  getByKey(key: string): Key | undefined;
 }

@@ -1,2 +1,2 @@
 export * from './globals'
-export { KeyboardLayout, KeyCode } from './keyboard-layout'
+export * from './keyboard-layout'
