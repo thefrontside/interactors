@@ -87,19 +87,19 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
   function operation(): Operation<T> {
     let run = () => options.run(options.interactor);
     let operation = globals.wrapInteraction
-      ? globals.wrapInteraction(interaction, run)
-      : globals.wrapAction(interaction.description, run, type)
+      ? globals.wrapInteraction(interaction, async () => run)
+      : globals.wrapAction(interaction.description, async () => run, type)
 
     return function* () {
       // NOTE: If effection gets Promise it will fulfill and treat the result as ended value
       // NOTE: Sometimes original interaction function might be wrapped multiple times into async function
       // NOTE: That means effection returns the original interaction function from a wrapped one instead of executing it
       // NOTE: We `yield` operation until we get the `run` function which returns a generator
-      // NOTE: Then we execute it yield the generator and return a result
+      // NOTE: Then we yield it and return a result
       while (operation != run) {
         operation = yield operation
       }
-      return yield run()
+      return yield operation;
     } as Operation<T>;
   };
 
