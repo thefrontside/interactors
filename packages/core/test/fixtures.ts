@@ -42,9 +42,9 @@ export const TextField = createInteractor<HTMLInputElement>("text field")
       default: true,
     },
     value: (element) => element.value,
-    focused: (element) => document.activeElement == element,
+    focused: (element) => element.ownerDocument.activeElement == element,
     body: (element) => element.ownerDocument.body,
-    scroll: (element) => element.scrollIntoView,
+    attributeSetter: (element) => element.setAttribute,
     rect: (element) => element.getBoundingClientRect(),
   })
   .actions({
