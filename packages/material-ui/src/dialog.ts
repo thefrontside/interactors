@@ -1,4 +1,4 @@
-import { click, HTML } from "@interactors/html";
+import { click, HTML, innerText } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 const DialogInteractor = HTML.extend("MUIDialog")
@@ -8,7 +8,7 @@ const DialogInteractor = HTML.extend("MUIDialog")
     let titleElement = labelId
       ? element.querySelector(`#${labelId}`)
       : element.querySelector('[class*="MuiDialogTitle-root"]');
-    return isHTMLElement(titleElement) ? titleElement.innerText : "";
+    return isHTMLElement(titleElement) ? innerText(titleElement) : "";
   })
   .actions({
     close: ({ perform }) =>

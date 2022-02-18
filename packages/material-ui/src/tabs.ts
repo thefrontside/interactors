@@ -1,9 +1,9 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 import { isDisabled, isHTMLElement } from "./helpers";
 
 const TabInteractor = HTML.extend<HTMLElement>("MUITab")
   .selector('[class*="MuiTab-root"][role="tab"]')
-  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .locator((element) => element.getAttribute("aria-label") ?? innerText(element))
   .filters({
     active: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
@@ -21,7 +21,7 @@ const TabsInteractor = HTML.extend<HTMLElement>("MUITabs")
   .filters({
     value: (element) => {
       let active = element.querySelector('[class*="MuiTab-root"][role="tab"][aria-selected="true"]');
-      return isHTMLElement(active) ? active.getAttribute("aria-label") ?? active.innerText : "";
+      return isHTMLElement(active) ? active.getAttribute("aria-label") ?? innerText(active) : "";
     },
   })
   .actions({

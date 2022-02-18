@@ -1,4 +1,4 @@
-import { click, HTML, createInteractor, including, Interaction, Interactor, not } from "@interactors/html";
+import { click, HTML, createInteractor, including, Interaction, Interactor, not, innerText } from "@interactors/html";
 import { applyGetter, delay, isHTMLElement } from "./helpers";
 import { DatePickerUtils } from "./types";
 
@@ -23,20 +23,20 @@ function getSelectedElement(element: HTMLElement) {
 }
 
 function calendarLocator(element: HTMLElement) {
-  let header = getTitleElement(element)?.innerText;
-  let selectedDay = getSelectedElement(element)?.innerText;
+  let header = innerText(getTitleElement(element));
+  let selectedDay = innerText(getSelectedElement(element));
   return [selectedDay, header].filter(Boolean).join(" ");
 }
 
 export const getDay = (element: HTMLElement): number | undefined => {
-  let text = getSelectedElement(element)?.innerText;
+  let text = innerText(getSelectedElement(element));
   let day = text ? parseInt(text) : NaN;
   return Number.isNaN(day) ? undefined : day;
 };
 export const getMonth = (element: HTMLElement): string | undefined =>
-  getTitleElement(element)?.innerText.replace(/\s[0-9]{4}$/, "");
+  innerText(getTitleElement(element)).replace(/\s[0-9]{4}$/, "");
 export const getYear = (element: HTMLElement): number | undefined => {
-  let yearString = getTitleElement(element)?.innerText.replace(/.*\s([0-9]{4})$/, "$1");
+  let yearString = innerText(getTitleElement(element)).replace(/.*\s([0-9]{4})$/, "$1");
   let year = yearString ? parseInt(yearString) : NaN;
   return Number.isNaN(year) ? undefined : year;
 };
@@ -117,8 +117,8 @@ async function goToDay<T>(interactor: Interactor<HTMLElement, T>, day: number) {
 export function createCalendar(utils: DatePickerUtils) {
   return Calendar.filters({
     date: (element) => {
-      let header = getTitleElement(element)?.innerText;
-      let selectedDay = getSelectedElement(element)?.innerText;
+      let header = innerText(getTitleElement(element));
+      let selectedDay = innerText(getSelectedElement(element));
       let monthAndYear = header ? utils.parse(header, "MMMM yyyy") ?? new Date() : new Date();
       let day = selectedDay ? parseInt(selectedDay) : NaN;
       let month = monthAndYear.getMonth() + 1;
@@ -154,14 +154,14 @@ const CalendarInteractor = createInteractor<HTMLElement>("MUICalendar")
     year: getYear,
     month: getMonth,
     day: getDay,
-    title: (element) => getTitleElement(element)?.innerText,
+    title: (element) => innerText(getTitleElement(element)),
     weekDay: (element) => {
       let rootDayElement = getSelectedElement(element)?.parentElement;
       let weekIndex = rootDayElement
         ? Array.from(rootDayElement?.parentElement?.children ?? []).indexOf(rootDayElement)
         : -1;
       let weekDayElement = weekIndex != -1 ? getWeekDaysElement(element)?.children.item(weekIndex) : null;
-      return isHTMLElement(weekDayElement) ? weekDayElement.innerText : undefined;
+      return isHTMLElement(weekDayElement) ? innerText(weekDayElement) : undefined;
     },
   })
   .actions({

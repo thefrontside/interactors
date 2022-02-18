@@ -1,11 +1,11 @@
-import { click, createInteractor } from "@interactors/html";
+import { click, createInteractor, innerText } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
 const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUIBottomNavigationAction")
   .selector('button[class*="MuiBottomNavigationAction-root"]')
   .locator((element) => {
     let label = element.querySelector('[class*="MuiBottomNavigationAction-label"]');
-    return isHTMLElement(label) ? label.innerText : "";
+    return isHTMLElement(label) ? innerText(label) : "";
   })
   .actions({ click: ({ perform }) => perform((element) => click(element)) });
 
@@ -14,7 +14,7 @@ const BottomNavigationInteractor = createInteractor<HTMLElement>("MUIBottomNavig
   .filters({
     value: (element) => {
       let selected = element.querySelector('[class*="MuiBottomNavigationAction-label"][class*="Mui-selected"]');
-      return isHTMLElement(selected) ? selected.innerText : "";
+      return isHTMLElement(selected) ? innerText(selected) : "";
     },
   })
   .actions({

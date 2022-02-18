@@ -1,4 +1,4 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 import { isDefined } from "./helpers";
 
 function isDisabled(element: Element) {
@@ -115,7 +115,7 @@ const SliderInteractor = HTML.extend("MUISlider")
     let thumb = getThumb(element);
     let labelId = thumb?.getAttribute("aria-labelledby");
     let label = labelId ? document.getElementById(labelId) : null;
-    return label?.innerText ?? thumb.getAttribute("aria-label") ?? "";
+    return label ? innerText(label) : thumb.getAttribute("aria-label") ?? "";
   })
   .filters({
     orientation: (element) => getThumb(element)?.getAttribute("aria-orientation") as SliderOrientation | null,
