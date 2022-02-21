@@ -1,4 +1,4 @@
-import { click, HTML, createInteractor, Interactor } from "@interactors/html";
+import { click, HTML, createInteractor, Interactor, innerText } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
 import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, isDisabled } from "./helpers";
 
@@ -31,14 +31,14 @@ async function closeSelectOptionsList(labelId: string) {
 
 function getValueText(element: HTMLInputElement) {
   let select = element.previousElementSibling;
-  return isHTMLElement(select) ? select.innerText : "";
+  return isHTMLElement(select) ? innerText(select) : "";
 }
 
 function getChipLabels(element: HTMLInputElement) {
   return Array.from(
     element.previousElementSibling?.querySelectorAll('[class*="MuiChip-root"] > [class*="MuiChip-label"]') ?? []
   )
-    .map((chip) => (isHTMLElement(chip) ? chip.innerText : null))
+    .map((chip) => (isHTMLElement(chip) ? innerText(chip) : null))
     .filter(isDefined);
 }
 
@@ -49,7 +49,7 @@ async function clearSelection(labelId: string) {
     (element) =>
       (selected = Array.from(element.querySelectorAll("li"))
         .filter((option) => option.getAttribute("aria-selected") == "true")
-        .map((option) => option.innerText))
+        .map((option) => innerText(option)))
   );
   for (let option of selected) {
     await SelectOptionsList(labelId).find(SelectOption(option)).choose();
@@ -69,7 +69,7 @@ async function openSelectOptionsList<T>(interactor: Interactor<HTMLInputElement,
 
 const BaseSelect = createInteractor<HTMLInputElement>("MUIBaseSelect")
   .selector('[class*="MuiSelect-root"] + input[class*="MuiSelect-nativeInput"]')
-  .locator((element) => getInputLabel(element)?.innerText ?? "")
+  .locator((element) => innerText(getInputLabel(element)))
   .filters({
     ...createFormFieldFilters<HTMLInputElement>(),
     id: (element) => element.previousElementSibling?.id,
