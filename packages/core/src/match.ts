@@ -9,7 +9,6 @@ const check = (value: unknown): string => value ? "✓" : "⨯";
 export class Match<E extends Element, F extends Filters<E>> {
   public matchLocator?: MatchLocator<E>;
   public matchFilter: MatchFilter<E, F>;
-  public matches: boolean;
 
   constructor(
     public element: E,
@@ -18,7 +17,10 @@ export class Match<E extends Element, F extends Filters<E>> {
   ) {
     this.matchLocator = locator && new MatchLocator(element, locator);
     this.matchFilter = new MatchFilter(element, filterSet);
-    this.matches = (this.matchLocator ? this.matchLocator.matches : true) && this.matchFilter.matches;
+  }
+
+  get matches(): boolean {
+    return (this.matchLocator ? this.matchLocator.matches : true) && this.matchFilter.matches;
   }
 
   asTableHeader(name: string): string[] {
@@ -51,7 +53,6 @@ export class Match<E extends Element, F extends Filters<E>> {
 }
 
 export class MatchLocator<E extends Element> {
-  public matches: boolean;
   public expected: MaybeMatcher<string> | null;
   public actual: string | null;
 
@@ -61,7 +62,10 @@ export class MatchLocator<E extends Element> {
   ) {
     this.expected = locator.value;
     this.actual = locator.apply(element);
-    this.matches = applyMatcher(this.expected, this.actual);
+  }
+
+  get matches(): boolean {
+    return applyMatcher(this.expected, this.actual)
   }
 
   formatActual(): string {
@@ -78,7 +82,6 @@ export class MatchLocator<E extends Element> {
 }
 
 export class MatchFilter<E extends Element, F extends Filters<E>> {
-  public matches: boolean;
   public items: MatchFilterItem<unknown, E, F>[];
 
   constructor(
@@ -88,7 +91,10 @@ export class MatchFilter<E extends Element, F extends Filters<E>> {
     this.items = Object.entries(filter.all).map(([key, expected]) => {
       return new MatchFilterItem(element, filter, key, expected)
     });
-    this.matches = this.items.every((match) => match.matches)
+  }
+
+  get matches(): boolean {
+    return this.items.every((match) => match.matches)
   }
 
   asTableRow(): string[] {
@@ -114,23 +120,25 @@ export function applyFilter<T>(definition: FilterDefinition<T, any>, element: El
 }
 
 export class MatchFilterItem<T, E extends Element, F extends Filters<E>> {
-  public actual: T;
-  public matches: boolean;
-
   constructor(
     public element: E,
     public filter: FilterSet<E, F>,
     public key: string,
     public expected: MaybeMatcher<T>,
-  ) {
-    if(this.filter.specification.filters && this.filter.specification.filters[this.key]) {
+  ) {}
+
+  get matches(): boolean {
+    return applyMatcher(this.expected, this.actual);
+  }
+
+  get actual(): T {
+    if (this.filter.specification.filters && this.filter.specification.filters[this.key]) {
       let definition = this.filter.specification.filters[this.key];
-      if(typeof(definition) === 'function') {
-        this.actual = definition(this.element) as T;
+      if (typeof definition === 'function') {
+        return definition(this.element) as T;
       } else {
-        this.actual = definition.apply(this.element) as T;
+        return definition.apply(this.element) as T;
       }
-      this.matches = applyMatcher(this.expected, this.actual);
     } else {
       throw new Error(`interactor does not define a filter named ${JSON.stringify(this.key)}`);
     }
