@@ -50,12 +50,14 @@ declare global {
 }
 
 if (!globalThis.__interactors) {
-  let wrapInteraction = function <T>(interaction: Interaction<T>, operation: Operation<T>): Operation<T> {
-    return function*(scope) {
+  let wrapInteraction = <T>(interaction: Interaction<T>, next: () => Promise<T>): Operation<T> => {
+    return (scope) => {
+      let current = next;
       for (let wrapper of getGlobals().interactionWrappers) {
-        operation = yield wrapper(interaction, () => scope.run(operation));
+        let operation = wrapper(interaction, current);
+        current = () => scope.run(operation);
       }
-      return yield operation;
+      return current;
     }
   };
   Object.defineProperty(globalThis, "__interactors", {

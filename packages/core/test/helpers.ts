@@ -11,7 +11,7 @@ export function dom(html: string): DOMWindow {
   jsdom = new JSDOM(`<!doctype html><html><body>${html}</body></html>`, { runScripts: "dangerously" });
 
   setDocumentResolver(() => jsdom.window.document);
-  removeWrapper = addInteractionWrapper((_, oper) => () => oper);
+  removeWrapper = addInteractionWrapper((_, oper) => oper);
   // removeWrapper2 = addInteractionWrapper((_, oper) => () => oper);
 
   return jsdom.window;
