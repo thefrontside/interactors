@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { Button, Dialog, matching, some, Page, including } from "../src";
+import { test, visit } from "bigtest";
+import { Button, Dialog, matching, some, including } from "../src";
 import { Button as ButtonComponent, Dialog as Component, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useCallback, useState } from "react";
@@ -25,7 +25,7 @@ const renderDialog = createRenderStep(Component, {
 const dialog = Dialog("dialog");
 
 export default test("Dialog")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderDialog())
   .assertion(dialog.exists())
   .assertion(dialog.has({ text: including('Content') }))

@@ -1,6 +1,6 @@
-import { test } from "bigtest";
+import { test, visit } from "bigtest";
 import { Calendar as Component } from "@material-ui/pickers";
-import { Calendar, createCalendar, Page } from "../src";
+import { Calendar, createCalendar } from "../src";
 import { createPickerRenderStep } from "./helpers";
 import DateFnsUtils from "@date-io/date-fns";
 
@@ -9,7 +9,7 @@ const CalendarWithUtils = createCalendar(new DateFnsUtils());
 const calendar = Calendar("18 August 2014");
 
 export default test("Calendar")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .child("default render", (test) =>
     test
       .step(renderCalendar())

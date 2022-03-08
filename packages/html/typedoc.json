@@ -2,7 +2,7 @@
   "out": "docs/api/v1",
   "name": "@interactors/html",
   "entryPoints": "src/index.ts",
-  "readme": "API.md",
   "includeVersion": true,
-  "excludePrivate": true
+  "excludePrivate": true,
+  "readme": "none"
 }

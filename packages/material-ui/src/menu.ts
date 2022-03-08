@@ -1,9 +1,8 @@
-import { createInteractor, HTML } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { click, HTML, createInteractor } from "@interactors/html";
 import { Button } from "./button";
-import { applyGetter, isDisabled } from "./helpers";
+import { isDisabled } from "./helpers";
 
-const MenuItemInteractor = HTML.extend<HTMLElement>("MUI MenuItem")
+const MenuItemInteractor = HTML.extend<HTMLElement>("MUIMenuItem")
   .selector('[class*="MuiMenuItem-root"][role="menuitem"]')
   .filters({
     disabled: {
@@ -11,24 +10,23 @@ const MenuItemInteractor = HTML.extend<HTMLElement>("MUI MenuItem")
       default: false,
     },
   })
-  .actions({ click: ({ perform }) => perform((element) => userEvent.click(element)) });
+  .actions({ click: ({ perform }) => perform((element) => click(element)) });
 
-const MenuListInteractor = createInteractor<HTMLElement>("MUI MenuList")
+const MenuListInteractor = createInteractor<HTMLElement>("MUIMenuList")
   .selector(
     '[class*="MuiPopover-root"][role="presentation"] > [class*="MuiMenu-paper"] > [class*="MuiMenu-list"][role="menu"]'
   )
   .locator((element) => element.parentElement?.parentElement?.id ?? "");
 
-const MenuInteractor = Button.extend("MUI Menu")
+const MenuInteractor = Button.extend("MUIMenu")
   .selector(`${Button().options.specification.selector as string}[aria-haspopup="true"]`)
+  .filters({ menuId: (element) => element.getAttribute("aria-controls") ?? "" })
   .actions({
-    open: async ({ perform }) => perform((element) => userEvent.click(element)),
+    open: async ({ perform }) => perform((element) => click(element)),
     click: async (interactor, value: string) => {
-      await interactor.perform((element) => userEvent.click(element));
+      await interactor.perform((element) => click(element));
 
-      let menuId = await applyGetter(interactor, (element) => element.getAttribute("aria-controls") ?? "");
-
-      await MenuListInteractor(menuId).find(MenuItemInteractor(value)).click();
+      await MenuListInteractor(await interactor.menuId()).find(MenuItemInteractor(value)).click();
     },
   });
 

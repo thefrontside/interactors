@@ -1,12 +1,12 @@
-import { HTML } from "@interactors/html";
-import { applyGetter, isDisabled, isHTMLElement } from "./helpers";
+import { HTML, innerText } from "@interactors/html";
+import { isDisabled, isHTMLElement } from "./helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
 
-const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
+const AccordionSummary = HTML.extend<HTMLElement>("MUIAccordionSummary")
   .selector('[class*="MuiAccordionSummary-root"]')
-  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .locator((element) => element.getAttribute("aria-label") ?? innerText(element))
   .filters({
     expanded: (element) => element.getAttribute("aria-expanded") == "true",
     disabled: {
@@ -15,11 +15,11 @@ const AccordionSummary = HTML.extend<HTMLElement>("MUI Accordion Summary")
     },
   });
 
-const AccordionInteractor = HTML.extend<HTMLElement>("MUI Accordion")
+const AccordionInteractor = HTML.extend<HTMLElement>("MUIAccordion")
   .selector('[class*="MuiAccordion-root"]')
   .locator((element) => {
     let summary = getSummary(element);
-    return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? summary.innerText : "";
+    return isHTMLElement(summary) ? summary.getAttribute("aria-label") ?? innerText(summary) : "";
   })
   .filters({
     expanded: isExpanded,
@@ -30,16 +30,18 @@ const AccordionInteractor = HTML.extend<HTMLElement>("MUI Accordion")
   })
   .actions({
     expand: async (interactor) => {
-      if (await applyGetter(interactor, isExpanded)) return;
+      if (await interactor.expanded()) return;
 
       await interactor.find(AccordionSummary()).click();
     },
     collapse: async (interactor) => {
-      if (!(await applyGetter(interactor, isExpanded))) return;
+      if (!(await interactor.expanded())) return;
 
       await interactor.find(AccordionSummary()).click();
     },
-    toggle: (interactor) => interactor.find(AccordionSummary()).click(),
+    toggle: async (interactor) => {
+      await interactor.find(AccordionSummary()).click();
+    }
   });
 
 /**

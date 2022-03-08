@@ -1,11 +1,8 @@
-import { CheckBox as BaseCheckbox, isVisible } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { isVisible, click, CheckBox as BaseCheckbox, innerText } from "@interactors/html";
 
-const CheckboxInteractor = BaseCheckbox.extend("MUI Checkbox")
+const CheckboxInteractor = BaseCheckbox.extend("MUICheckbox")
   .selector('[class*="MuiCheckbox-root"] input[type=checkbox]')
-  .locator(
-    (element) => (BaseCheckbox().options.specification.locator?.(element) || element.getAttribute("aria-label")) ?? ""
-  )
+  .locator((element) => element.labels ? innerText(Array.from(element.labels)[0]) : (element.getAttribute("aria-label") ?? ""))
   .filters({
     /**
      * Checkbox component does not set the native input element to indeterminate due to inconsistent behavior across browsers.
@@ -24,7 +21,7 @@ const CheckboxInteractor = BaseCheckbox.extend("MUI Checkbox")
     click: ({ perform }) =>
       perform((element) => {
         element.focus();
-        userEvent.click(element);
+        click(element);
       }),
   });
 

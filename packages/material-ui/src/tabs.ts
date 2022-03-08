@@ -1,9 +1,9 @@
-import { HTML } from "@interactors/html";
+import { HTML, innerText } from "@interactors/html";
 import { isDisabled, isHTMLElement } from "./helpers";
 
-const TabInteractor = HTML.extend<HTMLElement>("MUI Tab")
+const TabInteractor = HTML.extend<HTMLElement>("MUITab")
   .selector('[class*="MuiTab-root"][role="tab"]')
-  .locator((element) => element.getAttribute("aria-label") ?? element.innerText)
+  .locator((element) => element.getAttribute("aria-label") ?? innerText(element))
   .filters({
     active: (element) => element.getAttribute("aria-selected") == "true",
     disabled: {
@@ -12,7 +12,7 @@ const TabInteractor = HTML.extend<HTMLElement>("MUI Tab")
     },
   });
 
-const TabsInteractor = HTML.extend<HTMLElement>("MUI Tabs")
+const TabsInteractor = HTML.extend<HTMLElement>("MUITabs")
   .selector('[class*="MuiTabs-root"]')
   .locator(
     (element) =>
@@ -21,10 +21,15 @@ const TabsInteractor = HTML.extend<HTMLElement>("MUI Tabs")
   .filters({
     value: (element) => {
       let active = element.querySelector('[class*="MuiTab-root"][role="tab"][aria-selected="true"]');
-      return isHTMLElement(active) ? active.getAttribute("aria-label") ?? active.innerText : "";
+      return isHTMLElement(active) ? active.getAttribute("aria-label") ?? innerText(active) : "";
     },
   })
-  .actions({ click: (interactor, value: string) => interactor.find(TabInteractor(value)).click() });
+  .actions({
+    async click(interactor, value: string) {
+      await interactor.find(TabInteractor(value)).click();
+    }
+  });
+
 
 /**
  * Call this {@link InteractorConstructor} to initialize a tab {@link Interactor}.

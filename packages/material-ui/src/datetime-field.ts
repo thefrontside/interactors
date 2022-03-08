@@ -1,7 +1,7 @@
 import { TextField } from "@interactors/html";
 import { dispatchChange, setValue } from "./helpers";
 
-const DateTimeFieldInteractor = TextField.extend<HTMLInputElement>("datetime field")
+const DateTimeFieldInteractor = TextField.extend<HTMLInputElement>("DateTimeField")
   .selector('input[type="datetime-local"]')
   .filters({ timestamp: (element) => element.valueAsNumber })
   .actions({

@@ -5,6 +5,9 @@
       "path": "./packages/globals"
     },
     {
+      "path": "./packages/core"
+    },
+    {
       "path": "./packages/html"
     },
     {

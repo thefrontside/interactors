@@ -5,7 +5,7 @@ import vars, {
 } from "../../css/frontside-theme.css";
 import { globalStyle, style, styleVariants } from "@vanilla-extract/css";
 import { layoutWrap } from "../../css/page.css";
-import { headingMd, textBlue, textGradientPinkViolet, textGradientSkybluePink, textGradientPurpleViolet, textSm } from "../../css/typography.css";
+import { headingMd, textBlue, textGradientPinkViolet, textGradientSkybluePink, textGradientPurpleViolet, textSm, textXs } from "../../css/typography.css";
 import { calc } from "@vanilla-extract/css-utils";
 
 const navWrap = style([
@@ -27,7 +27,7 @@ const navWrap = style([
         marginTop: vars.space.xs,
         borderRadius: vars.radius.md,
         paddingRight: vars.space.md,
-        paddingLeft: vars.space.md,
+        paddingLeft: vars.space.sm,
       },
       [darkThemeQuery]: {
         boxShadow: `0 3px 6px rgba(0, 0, 0, 0.5)`,
@@ -54,6 +54,37 @@ export const navBar = styleVariants({
   'Bigtest': [navWrap, bigtestNav],
   default: [navWrap]
 });
+
+export const navDropdown = style({
+  fontWeight: vars.fontWeights.bold,
+  fontSize: vars.fontSize.xs,
+  letterSpacing: vars.letterSpacing.xs,
+  color: vars.colors.white,
+  display: "inline-block",
+  position: "relative",
+  marginLeft: vars.space.sm,
+  padding: 0,
+
+  "@media": {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    },
+  },
+  selectors: {
+    '&:hover': {
+      color: vars.colors.white,
+    },
+  },
+});
+
+export const navbarDropdownOffset = style({
+  marginLeft: vars.space.sm,
+  "@media": {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    },
+  },
+})
 
 export const navLink = style({
   fontWeight: vars.fontWeights.bold,
@@ -137,6 +168,7 @@ export const projectsList = style({
   padding: 0,
   borderRadius: vars.radius.sm,
   top: calc(vars.space.sm).subtract(vars.space['2xs']).toString(),
+  left: vars.space.sm,
   boxShadow: `0 2px 15px rgba(0, 0, 0, 0.10)`,
   zIndex: 350,
   '@media': {
@@ -164,6 +196,16 @@ export const projectItem = style({
   }
 });
 
+export const projectLink = style({
+  display: 'flex',
+  flexFlow: 'row nowrap',
+});
+
+export const projectLogo = style({
+  marginRight: vars.space['2xs'],
+  width: '34px',
+});
+
 export const projectItemHighlighted = style([projectItem, {
   background: 'rgba(38, 171, 232, 0.10);',
 }]);
@@ -172,6 +214,17 @@ export const projectTitle = style([headingMd, textBlue, {
   marginBottom: 0,
   letterSpacing: vars.letterSpacing["2xl"],
   display: 'block',
+}]);
+
+export const logoTitle = style([projectTitle, {
+  color: vars.colors.white,
+  paddingTop: '0.2rem',
+}]);
+
+export const projectVersion = style([textXs, {
+  fontWeight: vars.fontWeights.normal,
+  marginLeft: vars.space['3xs'],
+  textTransform: 'none',
 }]);
 
 export const projectCurrent = styleVariants({
@@ -185,3 +238,49 @@ export const projectDescription = style([textSm, textBlue, {
   marginBottom: 0,
   display: 'block',
 }]);
+
+
+globalStyle(`${navWrap} .dropdown`, {
+  padding: 0,
+  marginLeft: vars.space.sm,
+  '@media': {
+    [laptopQuery]: {
+      marginLeft: vars.space.md,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown > .navbar__link`, {
+  marginLeft: 0,
+  '@media': {
+    [laptopQuery]: {
+      marginLeft: 0,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown__menu`, {
+  padding: 0,
+  borderRadius: vars.radius.sm,
+  left: calc(vars.space.xs).multiply(-1).toString(),
+});
+
+globalStyle(`${navWrap} .dropdown__link`, {
+  color: vars.colors.blue,
+  padding: vars.space['2xs'],
+  margin: 0,
+  '@media': {
+    [darkThemeQuery]: {
+      color: vars.colors.white,
+    }
+  }
+});
+
+globalStyle(`${navWrap} .dropdown__link:hover`, {
+  background: 'rgba(38, 171, 232, 0.10)',
+});
+
+globalStyle(`${navWrap} .dropdown__link svg`, {
+  display: 'none',
+});
+

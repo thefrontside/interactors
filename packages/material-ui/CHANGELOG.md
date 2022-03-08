@@ -1,5 +1,73 @@
 # Changelog
 
+## 5.0.0-rc1.2
+
+### Patch Changes
+
+- @interactors/html@1.0.0-rc1.2
+
+## 5.0.0-rc1.1
+
+### Patch Changes
+
+- d859e16: Pin versions for internal @interactors/\* dependencies
+  Remove `@interactors/html` re-export from `with-cypress` package
+- Updated dependencies [d859e16]
+  - @interactors/html@1.0.0-rc1.1
+
+## 5.0.0-rc1.0
+
+### Major Changes
+
+- dfcbf1a: Release 1.0 RC1
+
+### Patch Changes
+
+- Updated dependencies [dfcbf1a]
+  - @interactors/core@1.0.0-rc1.0
+  - @interactors/html@1.0.0-rc1.0
+
+## 4.2.2
+
+### Patch Changes
+
+- Updated dependencies [891af02]
+- Updated dependencies [76215cc]
+- Updated dependencies [53f1980]
+- Updated dependencies [f06c7fe]
+- Updated dependencies [960da4e]
+  - @interactors/html@0.37.0
+  - @interactors/core@0.4.0
+
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies [53dea63]
+- Updated dependencies [af252a3]
+  - @interactors/core@0.3.0
+  - @interactors/html@0.36.0
+
+## 4.2.0
+
+### Minor Changes
+
+- 3648853: Remove deprecated app interactor
+- 47f1478: Split off core into own package
+
+### Patch Changes
+
+- a277aa0: Don't access locator option of another interactor
+- Updated dependencies [3648853]
+- Updated dependencies [47f1478]
+- Updated dependencies [735b68d]
+- Updated dependencies [80b72fe]
+- Updated dependencies [31367d7]
+- Updated dependencies [0c96dab]
+- Updated dependencies [f4949ac]
+  - @interactors/html@0.35.0
+  - @interactors/core@0.2.0
+
 ## 4.1.0
 
 ### Minor Changes

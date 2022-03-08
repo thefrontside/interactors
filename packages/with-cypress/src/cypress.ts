@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
-import { Interaction, isInteraction, ReadonlyInteraction, setDocumentResolver, addActionWrapper } from '@interactors/html';
+import { setDocumentResolver, addInteractionWrapper } from '@interactors/globals';
+import { Interaction, isInteraction, AssertionInteraction } from '@interactors/core';
 
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
-      do(interaction: Interaction<void> | Interaction<void>[]): Chainable<Subject>;
-      expect(interaction: ReadonlyInteraction<void> | ReadonlyInteraction<void>[]): Chainable<Subject>;
+      do(interaction: Interaction<Element> | Interaction<Element>[]): Chainable<Subject>;
+      expect(interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[]): Chainable<Subject>;
     }
   }
 }
@@ -15,15 +16,15 @@ let cypressCommand: CypressCommand | null = null
 type CypressCommand = 'expect' | 'do'
 
 setDocumentResolver(() => cy.$$('body')[0].ownerDocument);
-addActionWrapper((description, action, type) =>
-  async () => {
-    if (type == 'interaction' && cypressCommand == 'expect')
-      throw new Error(`tried to ${description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
-    return action()
+addInteractionWrapper((interaction, operation) =>
+  () => {
+    if (interaction.type == 'action' && cypressCommand == 'expect')
+      throw new Error(`tried to ${interaction.description} in \`cy.expect\`, actions/perform should only be run in \`cy.do\``);
+    return operation
   }
 );
 
-function interact(interactions: Interaction<void>[], command: CypressCommand): void {
+function interact(interactions: Interaction<Element>[], command: CypressCommand): void {
   interactions
     .reduce((cy: Cypress.Chainable<void>, interaction) =>
       cy
@@ -38,21 +39,21 @@ function interact(interactions: Interaction<void>[], command: CypressCommand): v
     ).then(() => (cypressCommand = null))
 };
 
-function isInteractions(interactions: unknown[]): interactions is ReadonlyInteraction<void>[] {
+function isInteractions(interactions: unknown[]): interactions is AssertionInteraction<Element>[] {
   return interactions.every(isInteraction)
 }
 
 if (typeof Cypress !== 'undefined' ) {
-  Cypress.Commands.add('do', (interaction: Interaction<void> | Interaction<void>[]) =>
-    interact(([] as Interaction<void>[]).concat(interaction), 'do')
+  Cypress.Commands.add('do', (interaction: Interaction<Element> | Interaction<Element>[]) =>
+    interact(([] as Interaction<Element>[]).concat(interaction), 'do')
   );
 
   // NOTE: Save the original `expect` assertion method
   let chaiExpect = cy.expect as (value: unknown) => unknown
 
   // NOTE: Add interaction assertion function, Cypress also overrides `expect` method to a wrapper function
-  Cypress.Commands.add('expect', (interaction: ReadonlyInteraction<void> | ReadonlyInteraction<void>[]) =>
-    interact(([] as ReadonlyInteraction<void>[]).concat(interaction), 'expect')
+  Cypress.Commands.add('expect', (interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[]) =>
+    interact(([] as AssertionInteraction<Element>[]).concat(interaction), 'expect')
   )
 
   // NOTE: Save the new `expect` method in which is wrapped our assertion function
@@ -61,7 +62,7 @@ if (typeof Cypress !== 'undefined' ) {
   // NOTE: Override Cypress's wrapper to our combined `expect`
   // @ts-expect-error TypeScript complains that signature doesn't match with declared one
   cy.expect = (
-    interaction: ReadonlyInteraction<void> | ReadonlyInteraction<void>[] | unknown
+    interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[] | unknown
   ) => {
     let interactions = Array.isArray(interaction) ? interaction : [interaction]
     if (isInteractions(interactions)) {

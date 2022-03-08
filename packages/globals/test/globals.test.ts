@@ -1,8 +1,9 @@
 import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
+import { Symbol } from "@effection/core";
 
-import { globals, setDocumentResolver, addActionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -38,17 +39,48 @@ describe("@interactors/globals", () => {
   describe("wrapInteraction", () => {
     it("returns the same interaction without any change", () => {
       let action = async () => {};
-      expect(globals.wrapAction("plain action", action, "interaction")).toBe(action);
+      expect(
+        globals.wrapInteraction(
+          {
+            type: "action",
+            interactor: "Interactor",
+            description: "plain action",
+            action,
+            options: {
+              interactor: "Interactor",
+              name: "plain",
+              type: "action",
+              code: () => "",
+            },
+            [Symbol.operation]: Promise.resolve(),
+          },
+          action
+        )
+      ).toBe(action);
     });
 
     it("applies defined interaction wrapper", async () => {
       let action = async () => "foo";
-      let removeWrapper = addActionWrapper(() => async () => "bar");
-      let wrappedAction = globals.wrapAction("foo action", action, "interaction");
+      let removeWrapper = addInteractionWrapper(() => async () => "bar");
+      globals.wrapInteraction(
+        {
+          type: "action",
+          interactor: "Interactor",
+          description: "foo action",
+          action,
+          options: {
+            interactor: "Interactor",
+            name: "foo",
+            type: "action",
+            code: () => "",
+          },
+          [Symbol.operation]: Promise.resolve(),
+        },
+        action
+      );
 
       removeWrapper();
-
-      expect(await wrappedAction()).toEqual("bar");
+      expect(globals.interactionWrappers.has(action)).toEqual(false);
     });
   });
 });

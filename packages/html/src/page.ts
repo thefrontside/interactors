@@ -1,10 +1,6 @@
-import { bigtestGlobals } from '@bigtest/globals';
-import { interaction, Interaction } from './interaction';
-import { createInteractor } from './create-interactor';
+import { createInteractor } from '@interactors/core';
 
-let visitCounter = 1;
-
-const PageInteractor = createInteractor('page')
+const PageInteractor = createInteractor<HTMLHtmlElement>('Page')
   .selector(':root')
   .filters({
     title: (element) => element.ownerDocument.title,
@@ -16,42 +12,6 @@ const PageInteractor = createInteractor('page')
       return url.toString();
     },
   });
-
-const PageInteractorInstance = Object.assign(PageInteractor(), {
-  /**
-   * @deprecated `visit` method will be removed soon, please use `visit` function from `bigtest` instead
-   */
-  visit(path = '/'): Interaction<void> {
-    return interaction(`visiting ${JSON.stringify(path)}`, async () => {
-      // eslint-disable-next-line prefer-let/prefer-let
-      const { appUrl, testFrame } = bigtestGlobals;
-
-      if(!appUrl) throw new Error('no app url defined');
-      if(!testFrame) throw new Error('no test frame defined');
-
-      let url = new URL(appUrl);
-      let [pathname = '', hash = ''] = path.split('#');
-      url.pathname = pathname;
-      url.hash = hash;
-      url.searchParams.set('bigtest-interactor-page-number', String(visitCounter));
-      visitCounter += 1;
-      testFrame.src = url.toString();
-      await new Promise<void>((resolve, reject) => {
-        let listener = () => {
-          clearTimeout(timeout);
-          testFrame.removeEventListener('load', listener);
-          resolve();
-        }
-        testFrame.addEventListener('load', listener);
-        let timeout = setTimeout(() => {
-          clearTimeout(timeout);
-          testFrame.removeEventListener('load', listener);
-          reject(new Error('timed out trying to load application'));
-        }, bigtestGlobals.defaultAppTimeout);
-      });
-    });
-  }
-});
 
 /**
  * This {@link Interactor} can be used to assert on global properties of the
@@ -81,4 +41,4 @@ const PageInteractorInstance = Object.assign(PageInteractor(), {
  *
  * @category Interactor
  */
-export const Page = PageInteractorInstance;
+export const Page = PageInteractor();

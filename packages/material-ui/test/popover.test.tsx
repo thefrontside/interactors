@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { Popover, Page } from "../src";
+import { test, visit } from "bigtest";
+import { Popover } from "../src";
 import { Button, Popover as Component } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement, useRef, useState } from "react";
@@ -25,7 +25,7 @@ const renderPopover = createRenderStep(Component, { children: 'Content' }, ({ pr
 const popover = Popover("Content");
 
 export default test("Popover")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderPopover())
   .assertion(popover.exists())
   .child('test `close` action', (test) =>

@@ -24,8 +24,22 @@ module.exports = {
       items: [
         {
           to: "/docs",
-          label: "Docs",
+          label: "Guides",
           position: "right",
+        },
+        {
+          label: "API",
+          position: "left",
+          items: [
+            {
+              label: "@interactors/html",
+              href: "https://frontside.com/interactors/html/api"
+            },
+            {
+              label: "@interactors/material-ui",
+              href: "https://frontside.com/interactors/mui/api"
+            }
+          ]
         },
         {
           href: "https://github.com/thefrontside/interactors",

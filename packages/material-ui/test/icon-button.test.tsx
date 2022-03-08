@@ -1,5 +1,6 @@
-import { test } from "bigtest";
-import { Button, Page, createInteractor, including } from "../src";
+import { test, visit } from "bigtest";
+import { createInteractor, including } from "@interactors/html";
+import { Button } from "../src";
 import { IconButton as Component } from "@material-ui/core";
 import { PhotoCamera } from '@material-ui/icons';
 import { createRenderStep } from "./helpers";
@@ -10,7 +11,7 @@ const button = Button('upload picture');
 const SVG = createInteractor<SVGElement>('svg').selector('svg').filters({ className: element => element.classList.toString() });
 
 export default test("IconButton")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderIconButton())
   .assertion(button.exists())
   .assertion(button.find(SVG()).has({ className: including('MuiSvgIcon-root') }));

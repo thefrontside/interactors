@@ -1,5 +1,5 @@
-import { test } from "bigtest";
-import { List, ListItem, Page } from "../src";
+import { test, visit } from "bigtest";
+import { List, ListItem } from "../src";
 import { List as Component, ListItem as ComponentItem } from "@material-ui/core";
 import { createRenderStep } from "./helpers";
 import { cloneElement } from "react";
@@ -18,7 +18,7 @@ const renderList = createRenderStep(Component, { 'aria-label': 'Three items list
 const list = List("Three items list");
 
 export default test("List")
-  .step(Page.visit("/"))
+  .step(visit("/"))
   .step(renderList())
   .assertion(list.exists())
   .assertion(list.find(ListItem('One')).exists())

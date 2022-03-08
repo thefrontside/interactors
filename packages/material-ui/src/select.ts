@@ -1,9 +1,8 @@
-import { createInteractor, HTML, Interactor } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { click, HTML, createInteractor, Interactor, innerText } from "@interactors/html";
 import { createFormFieldFilters } from "./form-field-filters";
-import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, applyGetter, isDisabled } from "./helpers";
+import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, isDisabled } from "./helpers";
 
-export const SelectOption = HTML.extend<HTMLLIElement>("MUI Option")
+export const SelectOption = HTML.extend<HTMLLIElement>("MUISelectOption")
   .selector('li[role="option"]')
   .filters({
     selected: (element) => element.getAttribute("aria-selected") == "true",
@@ -13,10 +12,10 @@ export const SelectOption = HTML.extend<HTMLLIElement>("MUI Option")
     },
   })
   .actions({
-    choose: ({ perform }) => perform((element) => userEvent.click(element)),
+    choose: ({ perform }) => perform((element) => click(element)),
   });
 
-const SelectOptionsList = createInteractor<HTMLElement>("MUI OptionsList")
+const SelectOptionsList = createInteractor<HTMLElement>("MUISelectOptionsList")
   .selector("ul")
   .locator((element) => element.getAttribute("aria-labelledby") ?? "");
 
@@ -32,14 +31,14 @@ async function closeSelectOptionsList(labelId: string) {
 
 function getValueText(element: HTMLInputElement) {
   let select = element.previousElementSibling;
-  return isHTMLElement(select) ? select.innerText : "";
+  return isHTMLElement(select) ? innerText(select) : "";
 }
 
 function getChipLabels(element: HTMLInputElement) {
   return Array.from(
     element.previousElementSibling?.querySelectorAll('[class*="MuiChip-root"] > [class*="MuiChip-label"]') ?? []
   )
-    .map((chip) => (isHTMLElement(chip) ? chip.innerText : null))
+    .map((chip) => (isHTMLElement(chip) ? innerText(chip) : null))
     .filter(isDefined);
 }
 
@@ -50,7 +49,7 @@ async function clearSelection(labelId: string) {
     (element) =>
       (selected = Array.from(element.querySelectorAll("li"))
         .filter((option) => option.getAttribute("aria-selected") == "true")
-        .map((option) => option.innerText))
+        .map((option) => innerText(option)))
   );
   for (let option of selected) {
     await SelectOptionsList(labelId).find(SelectOption(option)).choose();
@@ -68,9 +67,9 @@ async function openSelectOptionsList<T>(interactor: Interactor<HTMLInputElement,
   return labelId;
 }
 
-const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
+const BaseSelect = createInteractor<HTMLInputElement>("MUIBaseSelect")
   .selector('[class*="MuiSelect-root"] + input[class*="MuiSelect-nativeInput"]')
-  .locator((element) => getInputLabel(element)?.innerText ?? "")
+  .locator((element) => innerText(getInputLabel(element)))
   .filters({
     ...createFormFieldFilters<HTMLInputElement>(),
     id: (element) => element.previousElementSibling?.id,
@@ -90,22 +89,22 @@ const BaseSelect = createInteractor<HTMLInputElement>("MUI BaseSelect")
       }),
   });
 
-const SelectInteractor = BaseSelect.extend("MUI Select")
+const SelectInteractor = BaseSelect.extend("MUISelect")
   .filters({ value: getValueText })
   .actions({
     choose: async (interactor, value: string) => {
-      if ((await applyGetter(interactor, getValueText)) == value) return;
+      if ((await interactor.value()) == value) return;
 
       let labelId = await openSelectOptionsList(interactor);
       await SelectOptionsList(labelId).find(SelectOption(value)).choose();
     },
   });
 
-const MultiSelectInteractor = BaseSelect.extend("MUI MultiSelect")
+const MultiSelectInteractor = BaseSelect.extend("MUIMultiSelect")
   .filters({ values: getChipLabels })
   .actions({
     choose: async (interactor, value: string) => {
-      let selected = await applyGetter(interactor, getChipLabels);
+      let selected = await interactor.values();
 
       if (selected.length == 1 && selected[0] == value) return;
 
@@ -115,7 +114,7 @@ const MultiSelectInteractor = BaseSelect.extend("MUI MultiSelect")
       await closeSelectOptionsList(labelId);
     },
     select: async (interactor, value: string) => {
-      let selected = await applyGetter(interactor, getChipLabels);
+      let selected = await interactor.values();
 
       if (selected.includes(value)) return;
 
@@ -124,7 +123,7 @@ const MultiSelectInteractor = BaseSelect.extend("MUI MultiSelect")
       await closeSelectOptionsList(labelId);
     },
     deselect: async (interactor, value: string) => {
-      let selected = await applyGetter(interactor, getChipLabels);
+      let selected = await interactor.values();
 
       if (!selected.includes(value)) return;
 

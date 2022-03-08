@@ -1,21 +1,20 @@
-import { HTML } from "@interactors/html";
-import { userEvent } from "@interactors/html/testing-library";
+import { click, HTML, innerText } from "@interactors/html";
 import { isHTMLElement } from "./helpers";
 
-const DialogInteractor = HTML.extend("MUI Dialog")
+const DialogInteractor = HTML.extend("MUIDialog")
   .selector('[class*="MuiDialog-root"][role="presentation"]:not([aria-hidden="true"])')
   .locator((element) => {
     let labelId = element.querySelector('[class*="MuiDialog-paper"][role="dialog"]')?.getAttribute("aria-labelledby");
     let titleElement = labelId
       ? element.querySelector(`#${labelId}`)
       : element.querySelector('[class*="MuiDialogTitle-root"]');
-    return isHTMLElement(titleElement) ? titleElement.innerText : "";
+    return isHTMLElement(titleElement) ? innerText(titleElement) : "";
   })
   .actions({
     close: ({ perform }) =>
       perform((element) => {
         let backdrop = element.querySelector('[class*="MuiBackdrop-root"]');
-        if (isHTMLElement(backdrop)) userEvent.click(backdrop);
+        if (isHTMLElement(backdrop)) click(backdrop);
       }),
   });
 

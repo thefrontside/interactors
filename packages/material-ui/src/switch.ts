@@ -1,6 +1,6 @@
 import { Checkbox } from "./checkbox";
 
-const SwitchInteractor = Checkbox.extend("MUI Switch").selector('[class*="MuiSwitch-input"]');
+const SwitchInteractor = Checkbox.extend("MUISwitch").selector('[class*="MuiSwitch-input"]');
 
 /**
  * Call this {@link InteractorConstructor} to initialize a switch {@link Interactor}.

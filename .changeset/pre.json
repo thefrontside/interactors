@@ -1,0 +1,20 @@
+{
+  "mode": "pre",
+  "tag": "rc1",
+  "initialVersions": {
+    "@interactors/core": "0.4.0",
+    "@interactors/globals": "0.2.0",
+    "@interactors/html": "0.37.0",
+    "@interactors/keyboard": "0.1.1",
+    "@interactors/material-ui": "4.2.2",
+    "@interactors/with-cypress": "0.3.0"
+  },
+  "changesets": [
+    "dry-baboons-learn",
+    "dry-turtles-wonder",
+    "neat-cameras-carry",
+    "tough-carpets-build",
+    "wet-news-learn",
+    "wild-needles-relax"
+  ]
+}
