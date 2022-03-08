@@ -39,7 +39,7 @@ export type InteractionOptions = InteractorOptions & {
   ancestors?: InteractorOptions[];
 };
 
-export type InteractionWrapper<T = any> = (interaction: Interaction, operation: Operation<T>) => Operation<T>;
+export type InteractionWrapper<T = any> = (interaction: Interaction, next: () => Promise<T>) => Operation<T>;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -50,11 +50,13 @@ declare global {
 }
 
 if (!globalThis.__interactors) {
-  let wrapInteraction = <T>(interaction: Interaction<T>, operation: Operation<T>): Operation<T> => {
-    for (let wrapper of getGlobals().interactionWrappers) {
-      operation = wrapper(interaction, operation);
+  let wrapInteraction = function <T>(interaction: Interaction<T>, operation: Operation<T>): Operation<T> {
+    return function*(scope) {
+      for (let wrapper of getGlobals().interactionWrappers) {
+        operation = yield wrapper(interaction, () => scope.run(operation));
+      }
+      return yield operation;
     }
-    return operation;
   };
   Object.defineProperty(globalThis, "__interactors", {
     value: Object.defineProperties(
@@ -131,7 +133,7 @@ export function addActionWrapper<T>(
 }
 
 export function addInteractionWrapper<T>(
-  wrapper: (interaction: Interaction<T>, operation: Operation<T>) => Operation<T>
+  wrapper: InteractionWrapper<T>
 ): () => boolean {
   getGlobals().interactionWrappers.add(wrapper);
 

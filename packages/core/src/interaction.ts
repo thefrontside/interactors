@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Operation, Task, run, Symbol } from '@effection/core';
-import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
+import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType, InteractionWrapper } from '@interactors/globals';
 import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
 import { serializeInteractionOptions } from './serialize';
 
@@ -84,23 +84,27 @@ export function createInteraction<E extends Element, T, Q>(type: 'assertion', op
 export function createInteraction<E extends Element, T, Q>(type: InteractionType, options: InteractionOptions<E, T>, apply?: FilterFn<Q, Element>): Interaction<E, T> & Operation<T> {
   let task: Task<T>;
 
-  function operation(): Operation<T> {
+  function operation(scope: Task): Operation<T> {
     let run = () => options.run(options.interactor);
-    let operation = globals.wrapInteraction
-      ? globals.wrapInteraction(interaction, async () => run)
-      : globals.wrapAction(interaction.description, async () => run, type)
 
-    return function* () {
-      // NOTE: If effection gets Promise it will fulfill and treat the result as ended value
-      // NOTE: Sometimes original interaction function might be wrapped multiple times into async function
-      // NOTE: That means effection returns the original interaction function from a wrapped one instead of executing it
-      // NOTE: We `yield` operation until we get the `run` function which returns a generator
-      // NOTE: Then we yield it and return a result
-      while (operation != run) {
-        operation = yield operation
-      }
-      return yield operation;
-    } as Operation<T>;
+    // function execute(task: Task): Task<T> {
+    //   return task.run(options.run(options.interactor));
+    // }
+    return (globals.wrapInteraction
+      ? globals.wrapInteraction(interaction, () => scope.run(run))
+      : globals.wrapAction(interaction.description, () => scope.run(run), type)) as Operation<T>;
+
+    // return function* () {
+    //   // NOTE: If effection gets Promise it will fulfill and treat the result as ended value
+    //   // NOTE: Sometimes original interaction function might be wrapped multiple times into async function
+    //   // NOTE: That means effection returns the original interaction function from a wrapped one instead of executing it
+    //   // NOTE: We `yield` operation until we get the `run` function which returns a generator
+    //   // NOTE: Then we yield it and return a result
+    //   while (operation != run) {
+    //     operation = yield operation
+    //   }
+    //   return yield operation;
+    // } as Operation<T>;
   };
 
   function action(): Task<T> {
