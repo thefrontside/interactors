@@ -9,7 +9,7 @@ export function dom(html: string): DOMWindow {
   jsdom = new JSDOM(`<!doctype html><html><body>${html}</body></html>`, { runScripts: "dangerously" });
 
   setDocumentResolver(() => jsdom.window.document);
-  removeWrapper = addInteractionWrapper(async (_, oper) => oper());
+  removeWrapper = addInteractionWrapper(async (perform) => perform());
 
   return jsdom.window;
 }

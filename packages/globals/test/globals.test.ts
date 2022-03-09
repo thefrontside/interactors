@@ -41,11 +41,14 @@ describe("@interactors/globals", () => {
       let action = async () => {};
       expect(
         (globals.wrapInteraction(
+          action,
           {
             type: "action",
             interactor: "Interactor",
             description: "plain action",
             action,
+            code: () => "",
+            halt: () => {},
             options: {
               interactor: "Interactor",
               name: "plain",
@@ -53,8 +56,7 @@ describe("@interactors/globals", () => {
               code: () => "",
             },
             [Symbol.operation]: Promise.resolve(),
-          },
-          action
+          }
         ) as () => unknown)()
       ).toBe(action);
     });
@@ -63,11 +65,14 @@ describe("@interactors/globals", () => {
       let action = async () => "foo";
       let removeWrapper = addInteractionWrapper(() => async () => "bar");
       globals.wrapInteraction(
+        action,
         {
           type: "action",
           interactor: "Interactor",
           description: "foo action",
           action,
+          code: () => "",
+          halt: () => {},
           options: {
             interactor: "Interactor",
             name: "foo",
@@ -76,7 +81,6 @@ describe("@interactors/globals", () => {
           },
           [Symbol.operation]: Promise.resolve(),
         },
-        action
       );
 
       removeWrapper();

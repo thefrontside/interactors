@@ -9,6 +9,8 @@ type Interaction<T = any> = Operation<T> & {
   description: string;
   options: InteractionOptions;
   interactor: unknown; // we can't type this any better here
+  code: () => string,
+  halt: () => void,
 };
 
 interface Globals {
@@ -16,7 +18,7 @@ interface Globals {
   /**
    * @deprecated Use `wrapInteraction` instead
    */
-  readonly wrapAction: <T>(description: string, next: () => Promise<T>, type: InteractionType) => Operation<T>;
+  readonly wrapAction: <T>(description: string, perform: () => Promise<T>, type: InteractionType) => Operation<T>;
   readonly wrapInteraction: InteractionWrapper;
   readonly interactionWrappers: Set<InteractionWrapper>;
   readonly interactorTimeout: number;
@@ -39,7 +41,7 @@ export type InteractionOptions = InteractorOptions & {
   ancestors?: InteractorOptions[];
 };
 
-export type InteractionWrapper<T = any> = (interaction: Interaction, next: () => Promise<T>) => Operation<T>;
+export type InteractionWrapper<T = any> = (perform: () => Promise<T>, interaction: Interaction<T>) => Operation<T>;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -50,11 +52,11 @@ declare global {
 }
 
 if (!globalThis.__interactors) {
-  let wrapInteraction = <T>(interaction: Interaction<T>, next: () => Promise<T>): Operation<T> => {
+  let wrapInteraction = <T>(perform: () => Promise<T>, interaction: Interaction<T>): Operation<T> => {
     return (scope) => {
-      let current = next;
+      let current = perform;
       for (let wrapper of getGlobals().interactionWrappers) {
-        let operation = wrapper(interaction, current);
+        let operation = wrapper(current, interaction);
         current = () => scope.run(operation);
       }
       return current;
@@ -126,11 +128,11 @@ export function setInteractorTimeout(ms: number): void {
  * @deprecated Use `addInteractionWrapper` instead
  */
 export function addActionWrapper<T>(
-  wrapper: (description: string, next: () => Promise<T>, type: InteractionType) => Operation<T>
+  wrapper: (description: string, perform: () => Promise<T>, type: InteractionType) => Operation<T>
 ): () => boolean {
   return addInteractionWrapper(
-    (interaction: Interaction<T>, next: () => Promise<T>): Operation<T> =>
-      wrapper(interaction.description, next, interaction.type)
+    (perform: () => Promise<T>, interaction: Interaction<T>): Operation<T> =>
+      wrapper(interaction.description, perform, interaction.type)
   );
 }
 

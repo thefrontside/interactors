@@ -88,7 +88,7 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
     let run = () => options.run(options.interactor);
 
     return (globals.wrapInteraction
-      ? globals.wrapInteraction(interaction, () => scope.run(run))
+      ? globals.wrapInteraction(() => scope.run(run), interaction)
       : globals.wrapAction(interaction.description, () => scope.run(run), type)) as Operation<T>;
   };
 
