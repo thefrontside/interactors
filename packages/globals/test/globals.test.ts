@@ -40,7 +40,7 @@ describe("@interactors/globals", () => {
     it("returns the same interaction without any change", () => {
       let action = async () => {};
       expect(
-        globals.wrapInteraction(
+        (globals.wrapInteraction(
           {
             type: "action",
             interactor: "Interactor",
@@ -55,7 +55,7 @@ describe("@interactors/globals", () => {
             [Symbol.operation]: Promise.resolve(),
           },
           action
-        )
+        ) as () => unknown)()
       ).toBe(action);
     });
 
