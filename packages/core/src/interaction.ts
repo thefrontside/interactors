@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Operation, Task, run, Symbol } from '@effection/core';
-import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType, InteractionWrapper } from '@interactors/globals';
+import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
 import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
 import { serializeInteractionOptions } from './serialize';
 
@@ -91,8 +91,8 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
     //   return task.run(options.run(options.interactor));
     // }
     return (globals.wrapInteraction
-      ? globals.wrapInteraction(interaction, () => scope.run(run()))
-      : globals.wrapAction(interaction.description, () => scope.run(run()), type)) as Operation<T>;
+      ? globals.wrapInteraction(interaction, () => scope.run(run))
+      : globals.wrapAction(interaction.description, () => scope.run(run), type)) as Operation<T>;
 
     // return function* () {
     //   // NOTE: If effection gets Promise it will fulfill and treat the result as ended value

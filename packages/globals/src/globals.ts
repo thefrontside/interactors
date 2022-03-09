@@ -16,7 +16,7 @@ interface Globals {
   /**
    * @deprecated Use `wrapInteraction` instead
    */
-  readonly wrapAction: <T>(description: string, operation: Operation<T>, type: InteractionType) => Operation<T>;
+  readonly wrapAction: <T>(description: string, next: () => Promise<T>, type: InteractionType) => Operation<T>;
   readonly wrapInteraction: InteractionWrapper;
   readonly interactionWrappers: Set<InteractionWrapper>;
   readonly interactorTimeout: number;
@@ -58,7 +58,7 @@ if (!globalThis.__interactors) {
         current = () => scope.run(operation);
       }
       return current;
-    }
+    };
   };
   Object.defineProperty(globalThis, "__interactors", {
     value: Object.defineProperties(
@@ -126,17 +126,15 @@ export function setInteractorTimeout(ms: number): void {
  * @deprecated Use `addInteractionWrapper` instead
  */
 export function addActionWrapper<T>(
-  wrapper: (description: string, operation: Operation<T>, type: InteractionType) => Operation<T>
+  wrapper: (description: string, next: () => Promise<T>, type: InteractionType) => Operation<T>
 ): () => boolean {
   return addInteractionWrapper(
-    (interaction: Interaction<T>, operation: Operation<T>): Operation<T> =>
-      wrapper(interaction.description, operation, interaction.type)
+    (interaction: Interaction<T>, next: () => Promise<T>): Operation<T> =>
+      wrapper(interaction.description, next, interaction.type)
   );
 }
 
-export function addInteractionWrapper<T>(
-  wrapper: InteractionWrapper<T>
-): () => boolean {
+export function addInteractionWrapper<T>(wrapper: InteractionWrapper<T>): () => boolean {
   getGlobals().interactionWrappers.add(wrapper);
 
   return () => getGlobals().interactionWrappers.delete(wrapper);
