@@ -1,9 +1,9 @@
-import { FunctionalKeys, globals, KeyCode } from '@interactors/globals';
+import { FunctionalKeys, globals, KeyCode, KeyValue } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
 import { dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch';
 
-export type KeyOptions = {
-  key?: string;
+export interface KeyOptions<K extends string> {
+  key?: K;
   code?: KeyCode;
   ctrlKey?: boolean;
   shiftKey?: boolean;
@@ -15,7 +15,7 @@ export type KeyOptions = {
 const KeyboardInteractor = createInteractor('Keyboard')
   .selector(':root')
   .actions({
-    async press(interactor, options: KeyOptions = {}) {
+    async press(interactor, options: KeyOptions<string> | KeyOptions<KeyValue> = {}) {
       await interactor.perform((element) => {
         let activeElement = (element.ownerDocument.activeElement || element.ownerDocument.body) as HTMLElement;
         if(options.key && !options.code) {

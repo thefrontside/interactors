@@ -73,7 +73,7 @@ export const defaultKeyMap = [
   { code: "NumpadDivide", key: "/" },
 ] as Key[];
 
-export function createKeyboardLayout(override: Key[] = []): KeyboardLayout {
+export function createKeyboardLayout(override: (Key)[] = []): KeyboardLayout {
   let codeMap = new Map<KeyCode, Key[]>();
   let keyMap = new Map<string, Key[]>();
 
