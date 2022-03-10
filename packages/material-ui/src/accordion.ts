@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isDisabled, isHTMLElement } from "./helpers";
+import { applyGetter, isDisabled, isHTMLElement } from "./helpers";
 
 const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";
@@ -30,12 +30,12 @@ const AccordionInteractor = HTML.extend<HTMLElement>("MUIAccordion")
   })
   .actions({
     expand: async (interactor) => {
-      if (await interactor.expanded) return;
+      if (await applyGetter(interactor, isExpanded)) return;
 
       await interactor.find(AccordionSummary()).click();
     },
     collapse: async (interactor) => {
-      if (!(await interactor.expanded)) return;
+      if (!(await applyGetter(interactor, isExpanded))) return;
 
       await interactor.find(AccordionSummary()).click();
     },

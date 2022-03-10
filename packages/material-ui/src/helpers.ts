@@ -1,3 +1,5 @@
+import { Interactor } from "@interactors/html";
+
 type HTMLTypes<T> = T extends `HTML${infer C}Element` ? C : never;
 
 type HTMLElementTypes = HTMLTypes<keyof typeof window>;
@@ -42,6 +44,17 @@ export function getInputLabel(
       .map((element) => (isHTMLElement(element, "Label") ? element : null))
       .find(isDefined)
   );
+}
+
+export async function applyGetter<E extends Element, I, R>(
+  interactor: Interactor<E, I>,
+  getter: (element: E) => R
+): Promise<R> {
+  let value: unknown;
+
+  await interactor.perform((element) => (value = getter(element)));
+
+  return value as R;
 }
 
 // NOTE: Copy-paste from https://github.com/thefrontside/bigtest/blob/v0/packages/interactor/src/fill-in.ts
