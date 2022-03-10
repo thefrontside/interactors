@@ -30,12 +30,12 @@ const AccordionInteractor = HTML.extend<HTMLElement>("MUIAccordion")
   })
   .actions({
     expand: async (interactor) => {
-      if (await interactor.expanded()) return;
+      if (await interactor.expanded) return;
 
       await interactor.find(AccordionSummary()).click();
     },
     collapse: async (interactor) => {
-      if (!(await interactor.expanded())) return;
+      if (!(await interactor.expanded)) return;
 
       await interactor.find(AccordionSummary()).click();
     },
