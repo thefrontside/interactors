@@ -1,4 +1,4 @@
-import { FunctionalKeys, globals, KeyCode, KeyValue } from '@interactors/globals';
+import { NonPrintableKeys, globals, KeyCode, KeyValue } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
 import { dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch';
 
@@ -24,7 +24,7 @@ const KeyboardInteractor = createInteractor('Keyboard')
         if(options.code && !options.key) {
           options = { ...options, ...globals.keyboardLayout.getByCode(options.code) };
         }
-        let isFunctionalKey = options.code ? FunctionalKeys.includes(options.code) : false;
+        let isFunctionalKey = options.key ? NonPrintableKeys.has(options.key as KeyValue) : false;
         if(dispatchKeyDown(activeElement, options) && isTextElement(activeElement) && !isFunctionalKey) {
           // don't change the value if the keydown event was stopped
           setValue(activeElement, activeElement.value + options.key);

@@ -93,6 +93,17 @@ describe('Keyboard', () => {
       await Keyboard.press({ code: 'Enter' });
       await Heading({ id: 'keydown' }).has({ text: 'success hello Enter Enter' });
       await Heading({ id: 'keyup' }).has({ text: 'success hello Enter Enter' });
+      await Heading({ id: "input" }).has({ text: "" });
+    });
+
+    it("dispatches events with the `Dead` key value to the active element", async () => {
+      dom(domFixture);
+
+      await TextField({ id: 'nameField' }).focus();
+      await Keyboard.press({ key: 'Dead' });
+      await Heading({ id: 'keydown' }).has({ text: 'success hello Dead ' });
+      await Heading({ id: 'keyup' }).has({ text: 'success hello Dead ' });
+      await Heading({ id: "input" }).has({ text: "" });
     });
 
     it("dispatches events with the uppercased `w` to the active element", async () => {
