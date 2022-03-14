@@ -1,6 +1,7 @@
-import { NonPrintableKeys, globals, KeyCode, KeyValue } from '@interactors/globals';
+import { globals, KeyCode, KeyValue } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
 import { dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch';
+import { NonPrintableKeys } from './keys';
 
 export interface KeyOptions<K extends string> {
   key?: K;
