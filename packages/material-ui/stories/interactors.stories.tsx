@@ -151,17 +151,17 @@ export const Checkbox: ComponentStory<typeof CheckboxLabels> = {
   render: () => <CheckboxLabels />,
   async play(): Promise<void> {
     await CheckboxInteractor("Secondary").click();
-    await delay(500);
+    // await delay(500);
     await CheckboxInteractor("Primary").click();
-    await delay(500);
+    // await delay(500);
     await CheckboxInteractor("Uncontrolled").click();
-    await delay(500);
+    // await delay(500);
     await CheckboxInteractor("Indeterminate").click();
-    await delay(500);
+    // await delay(500);
     await CheckboxInteractor("Custom color").click();
-    await delay(500);
+    // await delay(500);
     await CheckboxInteractor("Custom icon").click();
-    await delay(500);
+    // await delay(500);
     await CheckboxInteractor("Custom size").click();
   },
   parameters: {

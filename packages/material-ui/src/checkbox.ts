@@ -18,7 +18,7 @@ const CheckboxInteractor = BaseCheckbox.extend("MUICheckbox")
     },
   })
   .actions({
-    click: ({ perform }) =>
+    click: async ({ perform }) =>
       perform((element) => {
         element.focus();
         click(element);

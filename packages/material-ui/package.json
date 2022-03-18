@@ -43,12 +43,13 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.3.10",
     "@material-ui/styles": "^4.11.4",
-    "@storybook/addon-docs": "6.4.0-alpha.30",
-    "@storybook/addon-essentials": "6.4.0-alpha.30",
+    "@storybook/addon-docs": "6.4.19",
+    "@storybook/addon-essentials": "6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
     "@storybook/addon-postcss": "^2.0.0",
-    "@storybook/builder-webpack5": "6.4.0-alpha.30",
-    "@storybook/manager-webpack5": "6.4.0-alpha.30",
-    "@storybook/react": "6.4.0-alpha.30",
+    "@storybook/builder-webpack5": "6.4.19",
+    "@storybook/manager-webpack5": "6.4.19",
+    "@storybook/react": "6.4.19",
     "@testing-library/react": "^12.0.0",
     "@types/react": "^17.0.19",
     "bigtest": "^0.16.0",
@@ -64,6 +65,7 @@
     "webpack": "^5.53.0"
   },
   "dependencies": {
+    "effection": "^2.0.4",
     "@interactors/html": "1.0.0-rc1.2"
   }
 }

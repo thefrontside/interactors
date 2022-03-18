@@ -3,4 +3,5 @@ module.exports = {
   addons: ["@storybook/addon-postcss", "@storybook/addon-essentials"],
   features: { previewCsfV3: true },
   core: { builder: "webpack5" },
+  typescript: { reactDocgen: false },
 };
