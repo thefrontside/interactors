@@ -47,15 +47,12 @@ import { SimpleTabs } from "./tabs";
 import { BasicTextFields } from "./text-field";
 import { TimePickers } from "./time-field";
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export default { title: "Interactors" };
 
 export const Accordion: ComponentStory<typeof SimpleAccordion> = {
   render: () => <SimpleAccordion />,
   async play(): Promise<void> {
     await AccordionInteractor("Accordion 1").toggle();
-    await delay(500);
     await AccordionInteractor("Accordion 2").toggle();
   },
   parameters: {
@@ -63,7 +60,6 @@ export const Accordion: ComponentStory<typeof SimpleAccordion> = {
       source: {
         code: `
 await AccordionInteractor("Accordion 1").toggle();
-await delay(500);
 await AccordionInteractor("Accordion 2").toggle();
 `,
       },
@@ -74,7 +70,6 @@ export const BottomNavigation: ComponentStory<typeof SimpleBottomNavigation> = {
   render: () => <SimpleBottomNavigation />,
   async play(): Promise<void> {
     await BottomNavigationInteractor().navigate("Favorites");
-    await delay(500);
     await BottomNavigationInteractor().navigate("Nearby");
   },
   parameters: {
@@ -82,7 +77,6 @@ export const BottomNavigation: ComponentStory<typeof SimpleBottomNavigation> = {
       source: {
         code: `
 await BottomNavigationInteractor().navigate("Favorites");
-await delay(500);
 await BottomNavigationInteractor().navigate("Nearby");
 `,
       },
@@ -90,16 +84,12 @@ await BottomNavigationInteractor().navigate("Nearby");
   },
 };
 
-// TODO Show clicks somehow
 export const Button: ComponentStory<typeof ContainedButtons> = {
   render: () => <ContainedButtons />,
   async play(): Promise<void> {
     await ButtonInteractor("DEFAULT").click();
-    await delay(100);
     await ButtonInteractor("PRIMARY").click();
-    await delay(100);
     await ButtonInteractor("SECONDARY").click();
-    await delay(100);
     await ButtonInteractor("LINK").click();
   },
   parameters: {
@@ -107,11 +97,8 @@ export const Button: ComponentStory<typeof ContainedButtons> = {
       source: {
         code: `
 await ButtonInteractor("DEFAULT").click();
-await delay(100);
 await ButtonInteractor("PRIMARY").click();
-await delay(100);
 await ButtonInteractor("SECONDARY").click();
-await delay(100);
 await ButtonInteractor("LINK").click();
 `,
       },
@@ -123,11 +110,8 @@ export const Calendar: ComponentStory<typeof StaticDatePicker> = {
   render: () => <StaticDatePicker />,
   async play(): Promise<void> {
     await CalendarInteractor().nextMonth();
-    await delay(500);
     await CalendarInteractor().prevMonth();
-    await delay(500);
     await CalendarInteractor().prevMonth();
-    await delay(500);
     await CalendarInteractor().setDay(23);
   },
   parameters: {
@@ -135,11 +119,8 @@ export const Calendar: ComponentStory<typeof StaticDatePicker> = {
       source: {
         code: `
 await CalendarInteractor().nextMonth();
-await delay(500);
 await CalendarInteractor().prevMonth();
-await delay(500);
 await CalendarInteractor().prevMonth();
-await delay(500);
 await CalendarInteractor().setDay(23);
 `,
       },
@@ -151,17 +132,11 @@ export const Checkbox: ComponentStory<typeof CheckboxLabels> = {
   render: () => <CheckboxLabels />,
   async play(): Promise<void> {
     await CheckboxInteractor("Secondary").click();
-    // await delay(500);
     await CheckboxInteractor("Primary").click();
-    // await delay(500);
     await CheckboxInteractor("Uncontrolled").click();
-    // await delay(500);
     await CheckboxInteractor("Indeterminate").click();
-    // await delay(500);
     await CheckboxInteractor("Custom color").click();
-    // await delay(500);
     await CheckboxInteractor("Custom icon").click();
-    // await delay(500);
     await CheckboxInteractor("Custom size").click();
   },
   parameters: {
@@ -169,17 +144,11 @@ export const Checkbox: ComponentStory<typeof CheckboxLabels> = {
       source: {
         code: `
 await CheckboxInteractor("Secondary").click();
-await delay(500);
 await CheckboxInteractor("Primary").click();
-await delay(500);
 await CheckboxInteractor("Uncontrolled").click();
-await delay(500);
 await CheckboxInteractor("Indeterminate").click();
-await delay(500);
 await CheckboxInteractor("Custom color").click();
-await delay(500);
 await CheckboxInteractor("Custom icon").click();
-await delay(500);
 await CheckboxInteractor("Custom size").click();
 `,
       },
@@ -219,7 +188,6 @@ export const Dialog: ComponentStory<typeof FormDialog> = {
   render: () => <FormDialog />,
   async play(): Promise<void> {
     await ButtonInteractor("OPEN FORM DIALOG").click();
-    await delay(1000);
     await DialogInteractor().close();
   },
   parameters: {
@@ -227,7 +195,6 @@ export const Dialog: ComponentStory<typeof FormDialog> = {
       source: {
         code: `
 await ButtonInteractor("OPEN FORM DIALOG").click();
-await delay(1000);
 await DialogInteractor().close();
 `,
       },
@@ -239,9 +206,7 @@ export const Fab: ComponentStory<typeof FloatingActionButtons> = {
   render: () => <FloatingActionButtons />,
   async play(): Promise<void> {
     await FabInteractor("add").click();
-    await delay(100);
     await FabInteractor("edit").click();
-    await delay(100);
     await FabInteractor("NAVIGATE").click();
   },
   parameters: {
@@ -249,9 +214,7 @@ export const Fab: ComponentStory<typeof FloatingActionButtons> = {
       source: {
         code: `
 await FabInteractor("add").click();
-await delay(100);
 await FabInteractor("edit").click();
-await delay(100);
 await FabInteractor("NAVIGATE").click();
 `,
       },
@@ -263,9 +226,7 @@ export const Link: ComponentStory<typeof Links> = {
   render: () => <Links />,
   async play(): Promise<void> {
     await LinkInteractor("Link").click();
-    await delay(100);
     await LinkInteractor('color="inherit"').click();
-    await delay(100);
     await LinkInteractor('variant="body2"').click();
   },
   parameters: {
@@ -273,9 +234,7 @@ export const Link: ComponentStory<typeof Links> = {
       source: {
         code: `
 await LinkInteractor("Link").click();
-await delay(100);
 await LinkInteractor('color="inherit"').click();
-await delay(100);
 await LinkInteractor('variant="body2"').click();
 `,
       },
@@ -287,7 +246,6 @@ export const List: ComponentStory<typeof NestedList> = {
   render: () => <NestedList />,
   async play(): Promise<void> {
     await ListItemInteractor("Inbox").click();
-    await delay(1000);
     await ListItemInteractor("Inbox").click();
   },
   parameters: {
@@ -295,7 +253,6 @@ export const List: ComponentStory<typeof NestedList> = {
       source: {
         code: `
 await ListItemInteractor('Inbox').click();
-await delay(1000);
 await ListItemInteractor('Inbox').click();
 `,
       },
@@ -307,7 +264,6 @@ export const Menu: ComponentStory<typeof SimpleMenu> = {
   render: () => <SimpleMenu />,
   async play(): Promise<void> {
     await MenuInteractor("OPEN MENU").open();
-    await delay(1000);
     await MenuItemInteractor("Profile").click();
   },
   parameters: {
@@ -315,7 +271,6 @@ export const Menu: ComponentStory<typeof SimpleMenu> = {
       source: {
         code: `
 await MenuInteractor("OPEN MENU").open();
-await delay(1000);
 await MenuItemInteractor("Profile").click();
 `,
       },
@@ -327,7 +282,6 @@ export const Popover: ComponentStory<typeof SimplePopover> = {
   render: () => <SimplePopover />,
   async play(): Promise<void> {
     await ButtonInteractor("OPEN POPOVER").click();
-    await delay(1000);
     await PopoverInteractor().close();
   },
   parameters: {
@@ -335,7 +289,6 @@ export const Popover: ComponentStory<typeof SimplePopover> = {
       source: {
         code: `
 await ButtonInteractor("OPEN POPOVER").click();
-await delay(1000);
 await PopoverInteractor().close();
 `,
       },
@@ -347,7 +300,6 @@ export const Radio: ComponentStory<typeof RadioButtonsGroup> = {
   render: () => <RadioButtonsGroup />,
   async play(): Promise<void> {
     await RadioInteractor("Male").choose();
-    await delay(500);
     await RadioInteractor("Other").choose();
   },
   parameters: {
@@ -355,7 +307,6 @@ export const Radio: ComponentStory<typeof RadioButtonsGroup> = {
       source: {
         code: `
 await RadioInteractor("Male").choose();
-await delay(500);
 await RadioInteractor("Other").choose();
 `,
       },
@@ -367,15 +318,10 @@ export const Select: ComponentStory<typeof SimpleSelect> = {
   render: () => <SimpleSelect />,
   async play(): Promise<void> {
     await SelectInteractor("Age").choose("Ten");
-    await delay(500);
     await SelectInteractor("Age").choose("Twenty");
-    await delay(500);
     await SelectInteractor("Age").choose("Thirty");
-    await delay(500);
     await MultiSelectInteractor("Name").select("Oliver Hansen");
-    await delay(500);
     await MultiSelectInteractor("Name").select("April Tucker");
-    await delay(500);
     await MultiSelectInteractor("Name").select("Omar Alexander");
     // TODO For some unknown reason options "Ralph Hubbard", "Omar Alexander" and "Carlos Abbott" aren't visible
   },
@@ -384,15 +330,10 @@ export const Select: ComponentStory<typeof SimpleSelect> = {
       source: {
         code: `
 await SelectInteractor("Age").choose("Ten");
-await delay(500);
 await SelectInteractor("Age").choose("Twenty");
-await delay(500);
 await SelectInteractor("Age").choose("Thirty");
-await delay(500);
 await MultiSelectInteractor("Name").select("Oliver Hansen");
-await delay(500);
 await MultiSelectInteractor("Name").select("April Tucker");
-await delay(500);
 await MultiSelectInteractor("Name").select("Omar Alexander");
         `,
       },
@@ -404,17 +345,11 @@ export const Slider: ComponentStory<typeof Sliders> = {
   render: () => <Sliders />,
   async play(): Promise<void> {
     await SliderInteractor("Volume").increase(10);
-    await delay(500);
     await SliderInteractor("Volume").setMax();
-    await delay(500);
     await SliderInteractor("Volume").decrease(25);
-    await delay(500);
     await ThumbInteractor("1").increase(10);
-    await delay(500);
     await ThumbInteractor("1").decrease(20);
-    await delay(500);
     await ThumbInteractor("0").increase(30);
-    await delay(500);
     await ThumbInteractor("0").decrease(10);
   },
   parameters: {
@@ -422,17 +357,11 @@ export const Slider: ComponentStory<typeof Sliders> = {
       source: {
         code: `
 await SliderInteractor("Volume").increase(10);
-await delay(500);
 await SliderInteractor("Volume").setMax();
-await delay(500);
 await SliderInteractor("Volume").decrease(25);
-await delay(500);
 await ThumbInteractor("1").increase(10);
-await delay(500);
 await ThumbInteractor("1").decrease(20);
-await delay(500);
 await ThumbInteractor("0").increase(30);
-await delay(500);
 await ThumbInteractor("0").decrease(10);
 `,
       },
@@ -444,7 +373,6 @@ export const Snackbar: ComponentStory<typeof SimpleSnackbar> = {
   render: () => <SimpleSnackbar />,
   async play(): Promise<void> {
     await ButtonInteractor("OPEN SIMPLE SNACKBAR").click();
-    await delay(1000);
     await SnackbarInteractor().find(ButtonInteractor("UNDO")).click();
   },
   parameters: {
@@ -452,7 +380,6 @@ export const Snackbar: ComponentStory<typeof SimpleSnackbar> = {
       source: {
         code: `
 await ButtonInteractor("OPEN SIMPLE SNACKBAR").click();
-await delay(1000);
 await SnackbarInteractor().find(ButtonInteractor('UNDO')).click();
 `,
       },
@@ -464,9 +391,7 @@ export const Switch: ComponentStory<typeof SwitchLabels> = {
   render: () => <SwitchLabels />,
   async play(): Promise<void> {
     await SwitchInteractor("Secondary").toggle();
-    await delay(500);
     await SwitchInteractor("Primary").toggle();
-    await delay(500);
     await SwitchInteractor("Uncontrolled").toggle();
   },
   parameters: {
@@ -474,9 +399,7 @@ export const Switch: ComponentStory<typeof SwitchLabels> = {
       source: {
         code: `
 await SwitchInteractor("Secondary").toggle();
-await delay(500);
 await SwitchInteractor("Primary").toggle();
-await delay(500);
 await SwitchInteractor("Uncontrolled").toggle();
 `,
       },
@@ -488,7 +411,6 @@ export const Tabs: ComponentStory<typeof SimpleTabs> = {
   render: () => <SimpleTabs />,
   async play(): Promise<void> {
     await TabsInteractor("simple tabs example").click("ITEM TWO");
-    await delay(500);
     await TabsInteractor("simple tabs example").click("ITEM THREE");
   },
   parameters: {
@@ -496,7 +418,6 @@ export const Tabs: ComponentStory<typeof SimpleTabs> = {
       source: {
         code: `
 await TabsInteractor("simple tabs example").click("ITEM TWO");
-await delay(500);
 await TabsInteractor("simple tabs example").click("ITEM THREE");
 `,
       },
@@ -508,9 +429,7 @@ export const TextField: ComponentStory<typeof BasicTextFields> = {
   render: () => <BasicTextFields />,
   async play(): Promise<void> {
     await TextFieldInteractor("Standard").fillIn("Hello World");
-    await delay(500);
     await TextFieldInteractor("Filled").fillIn("Hello World");
-    await delay(500);
     await TextFieldInteractor("Outlined").fillIn("Hello World");
   },
   parameters: {
@@ -518,9 +437,7 @@ export const TextField: ComponentStory<typeof BasicTextFields> = {
       source: {
         code: `
 await TextFieldInteractor("Standard").fillIn("Hello World");
-await delay(500);
 await TextFieldInteractor("Filled").fillIn("Hello World");
-await delay(500);
 await TextFieldInteractor("Outlined").fillIn("Hello World");
 `,
       },

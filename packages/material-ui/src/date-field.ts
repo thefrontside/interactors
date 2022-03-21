@@ -8,7 +8,7 @@ const DateFieldInteractor = TextField.extend<HTMLInputElement>("DateField")
     timestamp: (element) => element.valueAsNumber,
   })
   .actions({
-    fillIn: ({ perform }, value: string | Date) =>
+    fillIn: async ({ perform }, value: string | Date) =>
       perform((element) => {
         setValue(element, typeof value == "string" ? value : value.toISOString().replace(/T.*$/, ""));
         dispatchChange(element);

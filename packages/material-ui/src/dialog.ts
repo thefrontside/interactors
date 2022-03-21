@@ -11,7 +11,7 @@ const DialogInteractor = HTML.extend("MUIDialog")
     return isHTMLElement(titleElement) ? innerText(titleElement) : "";
   })
   .actions({
-    close: ({ perform }) =>
+    close: async ({ perform }) =>
       perform((element) => {
         let backdrop = element.querySelector('[class*="MuiBackdrop-root"]');
         if (isHTMLElement(backdrop)) click(backdrop);

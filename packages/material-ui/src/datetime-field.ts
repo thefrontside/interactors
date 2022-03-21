@@ -5,7 +5,7 @@ const DateTimeFieldInteractor = TextField.extend<HTMLInputElement>("DateTimeFiel
   .selector('input[type="datetime-local"]')
   .filters({ timestamp: (element) => element.valueAsNumber })
   .actions({
-    fillIn: ({ perform }, value: string | Date) =>
+    fillIn: async ({ perform }, value: string | Date) =>
       perform((element) => {
         setValue(element, typeof value == "string" ? value : value.toISOString().replace(/Z$/, ""));
         dispatchChange(element);

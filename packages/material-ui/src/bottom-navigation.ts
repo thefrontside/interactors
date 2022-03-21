@@ -7,7 +7,7 @@ const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUIBottomNav
     let label = element.querySelector('[class*="MuiBottomNavigationAction-label"]');
     return isHTMLElement(label) ? innerText(label) : "";
   })
-  .actions({ click: ({ perform }) => perform((element) => click(element)) });
+  .actions({ click: async ({ perform }) => perform((element) => click(element)) });
 
 const BottomNavigationInteractor = createInteractor<HTMLElement>("MUIBottomNavigation")
   .selector('[class*="MuiBottomNavigation-root"]')
@@ -18,7 +18,7 @@ const BottomNavigationInteractor = createInteractor<HTMLElement>("MUIBottomNavig
     },
   })
   .actions({
-    navigate: (interactor, value: string) => interactor.find(BottomNavigationAction(value)).click(),
+    navigate: async (interactor, value: string) => interactor.find(BottomNavigationAction(value)).click(),
   });
 
 /**
