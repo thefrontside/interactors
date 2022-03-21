@@ -10,8 +10,7 @@ type Interaction<T = any> = Operation<T> & {
   options: InteractionOptions;
   interactor: unknown; // we can't type this any better here
   code: () => string;
-  catchHalt: () => void;
-  halt: () => void;
+  halt: () => Promise<void>;
 };
 
 interface Globals {

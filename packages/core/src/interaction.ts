@@ -46,7 +46,6 @@ export interface Interaction<E extends Element, T = void> extends Promise<T> {
   check?: () => Task<T>;
 
   halt: () => Promise<void>;
-  catchHalt: () => void;
 
   [interactionSymbol]: true;
 }
@@ -122,8 +121,10 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
     action,
     check: type === 'assertion' ? action : undefined,
     code: () => serializedOptions.code(),
-    halt: () => action().halt(),
-    catchHalt: () => shouldCatchHalt = true,
+    halt: () => {
+      shouldCatchHalt = true
+      return action().halt()
+    },
     [interactionSymbol]: true,
     [Symbol.toStringTag]: `[interaction ${options.description}]`,
     [Symbol.operation]: operation,

@@ -48,7 +48,7 @@ describe("@interactors/globals", () => {
             description: "plain action",
             action,
             code: () => "",
-            halt: () => {},
+            halt: () => Promise.resolve(),
             options: {
               interactor: "Interactor",
               name: "plain",
@@ -72,7 +72,7 @@ describe("@interactors/globals", () => {
           description: "foo action",
           action,
           code: () => "",
-          halt: () => {},
+          halt: () => Promise.resolve(),
           options: {
             interactor: "Interactor",
             name: "foo",
