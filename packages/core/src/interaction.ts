@@ -1,10 +1,12 @@
-import { ActionEvent, ActionOptions as SerializedActionOptions, globals } from '@interactors/globals';
-import { serializeActionOptions } from './serialize';
-import type { FilterObject, ActionOptions } from './specification';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Operation, Task, run, Symbol } from '@effection/core';
+import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
+import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
+import { serializeInteractionOptions } from './serialize';
 
-const interactionSymbol = Symbol.for('interaction');
+const interactionSymbol: unique symbol = Symbol.for('interaction') as any;
 
-export function isInteraction(x: unknown): x is Interaction<unknown> {
+export function isInteraction(x: unknown): x is Interaction<Element, unknown> {
   return typeof x === 'object' && x != null && interactionSymbol in x
 }
 
@@ -19,7 +21,11 @@ export function isInteraction(x: unknown): x is Interaction<unknown> {
  *
  * @typeParam T the return value of the promise that this interaction evaluates to.
  */
-export interface Interaction<T> extends Promise<T> {
+export interface Interaction<E extends Element, T = void> extends Promise<T> {
+  type: InteractionType;
+
+  interactor: Interactor<E, any>;
+  run: (interactor: Interactor<E, any>) => Operation<T>;
   /**
    * Return a description of the interaction
    */
@@ -31,13 +37,23 @@ export interface Interaction<T> extends Promise<T> {
   /**
    * Return a serialized options of the interaction
    */
-  options: SerializedActionOptions;
+  options: SerializedInteractionOptions;
   /**
    * Perform the interaction
    */
-  action: () => Promise<T>;
+  action: () => Task<T>;
 
-  [interactionSymbol]: true
+  check?: () => Task<T>;
+
+  halt: () => Promise<void>;
+  catchHalt: () => void;
+
+  [interactionSymbol]: true;
+}
+
+export interface ActionInteraction<E extends Element, T = void> extends Interaction<E, T> {
+  type: "action";
+  check: undefined;
 }
 
 /**
@@ -45,51 +61,85 @@ export interface Interaction<T> extends Promise<T> {
  *
  * @typeParam T the return value of the promise that this interaction evaluates to.
  */
-export interface ReadonlyInteraction<T> extends Interaction<T> {
+export interface AssertionInteraction<E extends Element, T = void> extends Interaction<E, T> {
+  type: "assertion";
   /**
    * Perform the check
    */
-  check: () => Promise<T>;
+  check: () => Task<T>;
 }
 
-export function interaction<T>(description: string, action: () => Promise<T>, options: ActionOptions): Interaction<T> {
-  let promise: Promise<T>;
-  let serializedOptions = serializeActionOptions(options)
-  let wrappedAction = globals.wrapAction(
-    Object.assign(new String(description), { description, action, options: serializedOptions }) as string & ActionEvent<T>,
-    action,
-    options.type
-  )
-  return {
-    description,
-    options: serializedOptions,
-    code() { return serializedOptions.code },
-    action: wrappedAction,
-    [interactionSymbol]: true,
-    [Symbol.toStringTag]: `[interaction ${description}]`,
-    then(onFulfill, onReject) {
-      if(!promise) { promise = wrappedAction(); }
-      return promise.then(onFulfill, onReject);
-    },
-    catch(onReject) {
-      if(!promise) { promise = wrappedAction(); }
-      return promise.catch(onReject);
-    },
-    finally(handler) {
-      if(!promise) { promise = wrappedAction(); }
-      return promise.finally(handler);
+export type InteractionOptions<E extends Element, T> = {
+  name: string;
+  description: string;
+  filters?: FilterParams<any, any>;
+  args?: unknown[];
+  interactor: Interactor<E, any>;
+  run: (interactor: Interactor<E, any>) => Operation<T>;
+}
+
+export function createInteraction<E extends Element, T>(type: 'action', options: InteractionOptions<E, T>): ActionInteraction<E, T>
+export function createInteraction<E extends Element, T>(type: 'assertion', options: InteractionOptions<E, T>): AssertionInteraction<E, T>
+export function createInteraction<E extends Element, T, Q>(type: 'action', options: InteractionOptions<E, T>, apply: FilterFn<Q, Element>): ActionInteraction<E, T> & FilterObject<Q, Element>
+export function createInteraction<E extends Element, T, Q>(type: 'assertion', options: InteractionOptions<E, T>, apply: FilterFn<Q, Element>): AssertionInteraction<E, T> & FilterObject<Q, Element>
+export function createInteraction<E extends Element, T, Q>(type: InteractionType, options: InteractionOptions<E, T>, apply?: FilterFn<Q, Element>): Interaction<E, T> & Operation<T> {
+  let task: Task<T>;
+  let shouldCatchHalt = false
+
+  function operation(scope: Task): Operation<T> {
+    let run = () => options.run(options.interactor);
+
+    return (globals.wrapInteraction
+      ? globals.wrapInteraction(() => scope.run(run), interaction)
+      : globals.wrapAction(interaction.description, () => scope.run(run), type)) as Operation<T>;
+  };
+
+  function action(): Task<T> {
+    if(!task) {
+      task = run(operation);
+    }
+    return task;
+  };
+
+  function catchHalt<T extends (reason: any) => any>(onReject?: T | null) {
+    return (reason: any) => {
+      if (shouldCatchHalt && reason instanceof Error && reason.message == 'halted') {
+        return reason
+      } else {
+        onReject?.(reason)
+        return reason
+      }
     }
   }
-}
 
-export function check<T>(interaction: Interaction<T>): ReadonlyInteraction<T> {
-  return { check() { return interaction.action() }, ...interaction };
-}
-
-export function interactionFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): Interaction<T> & FilterObject<Q, Element> {
-  return { apply: filter, ...interaction };
-}
-
-export function checkFilter<T, Q>(interaction: Interaction<T>, filter: (element: Element) => Q): ReadonlyInteraction<T> & FilterObject<Q, Element> {
-  return { apply: filter , ...check(interaction) };
+  let serializedOptions = serializeInteractionOptions(type, options)
+  let interaction: Interaction<E, T> & Operation<T> = {
+    type,
+    options: serializedOptions,
+    description: options.description,
+    interactor: options.interactor,
+    run: options.run,
+    action,
+    check: type === 'assertion' ? action : undefined,
+    code: () => serializedOptions.code(),
+    halt: () => action().halt(),
+    catchHalt: () => shouldCatchHalt = true,
+    [interactionSymbol]: true,
+    [Symbol.toStringTag]: `[interaction ${options.description}]`,
+    [Symbol.operation]: operation,
+    then(onFulfill, onReject) {
+      return action().then(onFulfill, catchHalt(onReject));
+    },
+    catch(onReject) {
+      return action().catch(catchHalt(onReject));
+    },
+    finally(handler) {
+      return action().finally(handler);
+    }
+  }
+  if (apply) {
+    return Object.assign(interaction, { apply });
+  } else {
+    return interaction;
+  }
 }

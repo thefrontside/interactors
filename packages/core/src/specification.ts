@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { Operation } from '@effection/core';
 import { FilterSet } from './filter-set';
 import { Locator } from './locator';
-import { Interaction, ReadonlyInteraction } from './interaction';
+import { ActionInteraction, AssertionInteraction } from './interaction';
 import { MergeObjects } from './merge-objects';
 import { MaybeMatcher } from './matcher';
 
@@ -38,7 +39,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * await Link('Next').perform((e) => e.click());
    * ```
    */
-  perform(fn: (element: E) => void): Interaction<void>;
+  perform(fn: (element: E) => void): ActionInteraction<E, void>;
 
   /**
    * Perform a one-off assertion on the given interactor. Takes a function which
@@ -54,7 +55,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * await Link('Next').assert((e) => assert(e.tagName === 'A'));
    * ```
    */
-  assert(fn: (element: E) => void): ReadonlyInteraction<void>;
+  assert(fn: (element: E) => void): AssertionInteraction<E, void>;
 
   /**
    * An assertion which checks that an element matching the interactor exists.
@@ -66,7 +67,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * await Link('Next').exists();
    * ```
    */
-  exists(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
+  exists(): AssertionInteraction<E, void> & FilterObject<boolean, Element>;
 
   /**
    * An assertion which checks that an element matching the interactor does not
@@ -78,7 +79,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * await Link('Next').absent();
    * ```
    */
-  absent(): ReadonlyInteraction<void> & FilterObject<boolean, Element>;
+  absent(): AssertionInteraction<E, void> & FilterObject<boolean, Element>;
 
   /**
    * Checks that there is one element matching the interactor, and that this
@@ -91,7 +92,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * await Link('Home').has({ href: '/' })
    * ```
    */
-  has(filters: F): ReadonlyInteraction<void>;
+  has(filters: F): AssertionInteraction<E, void>;
 
   /**
    * Identical to {@link has}, but reads better with some filters.
@@ -102,7 +103,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
    * await CheckBox('Accept conditions').is({ checked: true })
    * ```
    */
-  is(filters: F): ReadonlyInteraction<void>;
+  is(filters: F): AssertionInteraction<E, void>;
 
   /**
    * Returns a copy of the given interactor which is scoped to this interactor.
@@ -128,7 +129,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
   apply: FilterFn<string, Element>;
 }
 
-export type ActionFn<E extends Element, I extends Interactor<E, any>> = (interactor: I, ...args: any[]) => Promise<unknown>;
+export type ActionFn<E extends Element, I extends Interactor<E, any>> = (interactor: I, ...args: any[]) => Operation<unknown>;
 
 export type FilterFn<T, E extends Element> = (element: E) => T;
 
@@ -162,15 +163,15 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
 }
 
 export type ActionMethods<E extends Element, A extends Actions<E, I>, I extends Interactor<E, any>> = {
-  [P in keyof A]: A[P] extends ((interactor: I, ...args: infer TArgs) => Promise<infer TReturn>)
-    ? ((...args: TArgs) => Interaction<TReturn>)
+  [P in keyof A]: A[P] extends ((interactor: I, ...args: infer TArgs) => Operation<infer TReturn>)
+    ? ((...args: TArgs) => ActionInteraction<E, TReturn>)
     : never;
 }
 
 export type FilterMethods<E extends Element, F extends Filters<E>> = {
   [P in keyof F]:
-    F[P] extends FilterFn<infer TReturn, any> ? (() => Interaction<TReturn> & FilterObject<TReturn, Element>) :
-    F[P] extends FilterObject<infer TReturn, any> ? (() => Interaction<TReturn> & FilterObject<TReturn, Element>) :
+    F[P] extends FilterFn<infer TReturn, any> ? (() => AssertionInteraction<E, TReturn> & FilterObject<TReturn, Element>) :
+    F[P] extends FilterObject<infer TReturn, any> ? (() => AssertionInteraction<E, TReturn> & FilterObject<TReturn, Element>) :
     never;
 }
 
@@ -247,15 +248,3 @@ export type InteractorOptions<E extends Element, F extends Filters<E>, A extends
   filter: FilterSet<E, F>;
   ancestors: InteractorOptions<any, any, any>[];
 };
-
-export type ActionOptions = {
-  type: "action";
-  actionName: string;
-  options: InteractorOptions<any, any, any>;
-  args?: unknown[];
-} | {
-  type: "assertion";
-  actionName: string;
-  options: InteractorOptions<any, any, any>;
-  filters?: FilterParams<any, any>;
-}
