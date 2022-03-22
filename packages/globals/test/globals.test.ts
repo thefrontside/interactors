@@ -1,9 +1,8 @@
 import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
-import { Symbol } from "@effection/core";
 
-import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout, CommonInteraction } from "../src";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -46,7 +45,6 @@ describe("@interactors/globals", () => {
             type: "action",
             interactor: "Interactor",
             description: "plain action",
-            action,
             code: () => "",
             halt: () => Promise.resolve(),
             options: {
@@ -55,8 +53,7 @@ describe("@interactors/globals", () => {
               type: "action",
               code: () => "",
             },
-            [Symbol.operation]: Promise.resolve(),
-          }
+          } as unknown as CommonInteraction
         ) as () => unknown)()
       ).toBe(action);
     });
@@ -70,7 +67,6 @@ describe("@interactors/globals", () => {
           type: "action",
           interactor: "Interactor",
           description: "foo action",
-          action,
           code: () => "",
           halt: () => Promise.resolve(),
           options: {
@@ -79,8 +75,7 @@ describe("@interactors/globals", () => {
             type: "action",
             code: () => "",
           },
-          [Symbol.operation]: Promise.resolve(),
-        },
+        } as unknown as CommonInteraction,
       );
 
       removeWrapper();

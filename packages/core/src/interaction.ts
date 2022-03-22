@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Operation, Task, run, Symbol } from '@effection/core';
-import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
+import { globals, CommonInteraction, InteractionType } from '@interactors/globals';
 import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
 import { serializeInteractionOptions } from './serialize';
 
@@ -21,36 +21,19 @@ export function isInteraction(x: unknown): x is Interaction<Element, unknown> {
  *
  * @typeParam T the return value of the promise that this interaction evaluates to.
  */
-export interface Interaction<E extends Element, T = void> extends Promise<T> {
-  type: InteractionType;
-
+export type Interaction<E extends Element, T = void> = CommonInteraction<T> & {
   interactor: Interactor<E, any>;
+
   run: (interactor: Interactor<E, any>) => Operation<T>;
-  /**
-   * Return a description of the interaction
-   */
-  description: string;
-  /**
-   * Return a code representation of the interaction
-   */
-  code: () => string;
-  /**
-   * Return a serialized options of the interaction
-   */
-  options: SerializedInteractionOptions;
   /**
    * Perform the interaction
    */
   action: () => Task<T>;
-
   check?: () => Task<T>;
-
-  halt: () => Promise<void>;
-
   [interactionSymbol]: true;
 }
 
-export interface ActionInteraction<E extends Element, T = void> extends Interaction<E, T> {
+export type ActionInteraction<E extends Element, T = void> = Interaction<E, T> & {
   type: "action";
   check: undefined;
 }
@@ -60,7 +43,7 @@ export interface ActionInteraction<E extends Element, T = void> extends Interact
  *
  * @typeParam T the return value of the promise that this interaction evaluates to.
  */
-export interface AssertionInteraction<E extends Element, T = void> extends Interaction<E, T> {
+export type AssertionInteraction<E extends Element, T = void> = Interaction<E, T> & {
   type: "assertion";
   /**
    * Perform the check
