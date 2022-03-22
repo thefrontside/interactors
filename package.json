@@ -13,7 +13,8 @@
       "packages/keyboard",
       "packages/html",
       "packages/material-ui",
-      "packages/with-cypress"
+      "packages/with-cypress",
+      "packages/with-storybook"
     ]
   },
   "scripts": {

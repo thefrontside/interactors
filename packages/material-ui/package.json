@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "effection": "^2.0.4",
-    "@interactors/html": "1.0.0-rc1.2"
+    "@interactors/html": "1.0.0-rc1.2",
+    "@interactors/with-storybook": "1.0.0-rc1.2"
   }
 }

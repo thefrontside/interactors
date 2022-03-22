@@ -3,7 +3,7 @@ id: storybook
 title: Storybook
 ---
 
-Interactors not only make writing tests easier, it can also help you develop UI components. With the upcoming release of [`Component Story Format 3.0`](https://storybook.js.org/blog/component-story-format-3-0/), you will be able to use Interactors in [`Storybook`](https://storybook.js.org/).
+Interactors not only make writing tests easier, it can also help you develop UI components. Since [`Storybook`](https://storybook.js.org/) 6.4 you will be able to write [`interactive stories`](https://storybook.js.org/blog/interactive-stories-beta/) and use Interactors for them.
 
 This requires no additional setup. Just install `@interactors/html` to your project, and then you can use interactors in your stories immediately.
 
@@ -34,6 +34,36 @@ export const FormSignIn = {
     await TextField('Email').fillIn('homer@gmail.com');
     await TextField('Password').fillIn('donuts123');
     await Button('Sign In').click();
+  }
+};
+```
+
+## Interaction testing
+
+You can go further and use Interactors to write tests for your stories in Storybook with [interaction testing](https://storybook.js.org/blog/interaction-testing-with-storybook/) feature.
+
+To use it install `@storybook/addon-interactions` and `@interactors/with-storybook` storybook addons. Add them to your storybook config and enable interactions debugger feature:
+
+```js
+// .storybook/main.js
+module.exports = {
+  addons: ['@storybook/addon-interactions', '@interactors/with-storybook']
+  features: { interactionsDebugger: true },
+};
+```
+
+Then you are able to extend previous example by adding `Heading('Welcome Homer!').exists()` assertion
+
+
+```js
+import { Button, Heading, TextField } from '@interactors/html';
+
+export const FormSignIn = {
+  play: async () => {
+    await TextField('Email').fillIn('homer@gmail.com');
+    await TextField('Password').fillIn('donuts123');
+    await Button('Sign In').click();
+    await Heading('Welcome Homer!').exists();
   }
 };
 ```

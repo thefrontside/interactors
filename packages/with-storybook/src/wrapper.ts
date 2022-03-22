@@ -13,8 +13,8 @@ addInteractionWrapper((perform, interaction) => {
     return perform;
   }
   return async () => {
-    const channel = addons.getChannel();
-    const cancel = (event) => {
+    let channel = addons.getChannel();
+    let cancel = (event: { newPhase?: 'aborted' | 'errored' }) => {
       if (!event.newPhase || event.newPhase == "aborted" || event.newPhase == "errored") {
         channel.off(Events.FORCE_REMOUNT, cancel);
         channel.off(Events.STORY_RENDER_PHASE_CHANGED, cancel);
@@ -25,9 +25,10 @@ addInteractionWrapper((perform, interaction) => {
     channel.on(Events.FORCE_REMOUNT, cancel);
     channel.on(Events.STORY_RENDER_PHASE_CHANGED, cancel);
     try {
+      // @ts-expect-error Storybook hasn't exposed instrumenter's API to public, yet
       return await global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__.track(
         interaction.code(),
-        perform,
+        async () => perform(),
         [],
         { intercept: () => !(isRoot = false) }
       );

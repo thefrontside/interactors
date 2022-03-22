@@ -6,11 +6,9 @@
     "declarationDir": "dist"
   },
   "include": [
-    "src/**/*.ts",
-    "types"
+    "src/**/*.ts"
   ],
   "references": [
-    { "path": "../globals/tsconfig.build.json" },
-    { "path": "../html/tsconfig.build.json" }
+    { "path": "../globals/tsconfig.build.json" }
   ]
 }
