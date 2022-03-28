@@ -506,5 +506,11 @@ describe('createInteractor', () => {
       await expect(TextField({ value: 'jonas@' }).append('example.com')).resolves.toBeUndefined();
       await expect(TextField({ value: 'jonas@example.com' }).id()).resolves.toEqual('Email');
     });
+
+    it('should return function rather than execute it', async () => {
+      let window = dom('<input id="Login" value="jonas@example.com" />');
+
+      await expect(TextField('Login').attributeSetter()).resolves.toEqual(window.document.documentElement.setAttribute)
+    })
   })
 });

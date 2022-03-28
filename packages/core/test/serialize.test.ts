@@ -45,12 +45,12 @@ describe("serialize", () => {
       TextField("Login")
         .has({
           body: window.document.body,
-          scroll: function scrollIntoView() {},
+          attributeSetter: function attributeSetter() {},
           rect: window.document.documentElement.getBoundingClientRect(),
         })
         .code()
     ).toEqual(
-      'TextField("Login", { "enabled": true }).is({ "body": {}, "scroll": undefined, "rect": {"x":0,"y":0,"bottom":0,"height":0,"left":0,"right":0,"top":0,"width":0} })'
+      'TextField("Login", { "enabled": true }).is({ "body": {}, "attributeSetter": undefined, "rect": {"x":0,"y":0,"bottom":0,"height":0,"left":0,"right":0,"top":0,"width":0} })'
     );
   });
 

@@ -1,11 +1,8 @@
+import { Operation, sleep } from '@effection/core';
 import { performance } from 'performance-api';
 import { globals } from '@interactors/globals'
 
-function wait(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-export async function converge<T>(fn: () => T): Promise<T> {
+export function* converge<T>(fn: () => T): Operation<T> {
   let startTime = performance.now();
   while(true) {
     try {
@@ -15,7 +12,7 @@ export async function converge<T>(fn: () => T): Promise<T> {
       if(diff > globals.interactorTimeout) {
         throw e;
       } else {
-        await wait(1);
+        yield sleep(1);
       }
     }
   }

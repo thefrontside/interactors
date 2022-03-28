@@ -44,7 +44,7 @@ export const getYear = (element: HTMLElement): number | undefined => {
 async function goToMonth(
   interactor: ReturnType<typeof Calendar>,
   targetMonth: string,
-  directionStep: () => Interaction<void>,
+  directionStep: () => Interaction<HTMLElement>,
   currentYear?: number
 ) {
   let currentMonth = await interactor.month();
@@ -171,12 +171,12 @@ const CalendarInteractor = createInteractor<HTMLElement>("MUICalendar")
 
       let directions = [() => interactor.prevMonth(), () => interactor.nextMonth()];
       directions = Math.round(Math.random()) ? directions : directions.reverse();
-      let directionStep = directions.shift() as () => Interaction<void>;
+      let directionStep = directions.shift() as () => Interaction<HTMLElement>;
 
       try {
         await goToMonth(interactor as ReturnType<typeof Calendar>, targetMonth, directionStep, currentYear);
       } catch (_) {
-        directionStep = directions.shift() as () => Interaction<void>;
+        directionStep = directions.shift() as () => Interaction<HTMLElement>;
         await goToMonth(interactor as ReturnType<typeof Calendar>, targetMonth, directionStep, currentYear);
       }
     },

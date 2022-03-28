@@ -1,8 +1,9 @@
 import { describe, it } from "mocha";
 import expect from "expect";
 import { JSDOM } from "jsdom";
+import { Symbol } from "@effection/core";
 
-import { globals, setDocumentResolver, addActionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -39,38 +40,51 @@ describe("@interactors/globals", () => {
     it("returns the same interaction without any change", () => {
       let action = async () => {};
       expect(
-        // @ts-expect-error `wrapAction` accepts string as first argument for back compatibility
-        globals.wrapAction({
-          description: "plain action",
+        (globals.wrapInteraction(
           action,
-          options: {
+          {
             type: "action",
-            actionName: "plain",
-            code: "",
-            interactor: { interactorName: "Interactor", code: "" },
-          },
-        })
+            interactor: "Interactor",
+            description: "plain action",
+            action,
+            code: () => "",
+            halt: () => Promise.resolve(),
+            options: {
+              interactor: "Interactor",
+              name: "plain",
+              type: "action",
+              code: () => "",
+            },
+            [Symbol.operation]: Promise.resolve(),
+          }
+        ) as () => unknown)()
       ).toBe(action);
     });
 
     it("applies defined interaction wrapper", async () => {
       let action = async () => "foo";
-      let removeWrapper = addActionWrapper(() => async () => "bar");
-      // @ts-expect-error `wrapAction` accepts string as first argument for back compatibility
-      let wrappedAction = globals.wrapAction({
-        description: "foo action",
+      let removeWrapper = addInteractionWrapper(() => async () => "bar");
+      globals.wrapInteraction(
         action,
-        options: {
+        {
           type: "action",
-          actionName: "foo",
-          code: "",
-          interactor: { interactorName: "Interactor", code: "" },
+          interactor: "Interactor",
+          description: "foo action",
+          action,
+          code: () => "",
+          halt: () => Promise.resolve(),
+          options: {
+            interactor: "Interactor",
+            name: "foo",
+            type: "action",
+            code: () => "",
+          },
+          [Symbol.operation]: Promise.resolve(),
         },
-      });
+      );
 
       removeWrapper();
-
-      expect(await wrappedAction()).toEqual("bar");
+      expect(globals.interactionWrappers.has(action)).toEqual(false);
     });
   });
 });

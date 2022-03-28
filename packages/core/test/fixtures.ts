@@ -42,9 +42,9 @@ export const TextField = createInteractor<HTMLInputElement>("text field")
       default: true,
     },
     value: (element) => element.value,
-    focused: (element) => document.activeElement == element,
+    focused: (element) => element.ownerDocument.activeElement == element,
     body: (element) => element.ownerDocument.body,
-    scroll: (element) => element.scrollIntoView,
+    attributeSetter: (element) => element.setAttribute,
     rect: (element) => element.getBoundingClientRect(),
   })
   .actions({
@@ -71,8 +71,8 @@ export const Datepicker = createInteractor<HTMLDivElement>("datepicker")
     month: Calendar().find(Header()).text(),
   })
   .actions({
-    toggle: async (interactor) => {
-      await interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
+    toggle: function* (interactor) {
+      yield interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
     },
   });
 
