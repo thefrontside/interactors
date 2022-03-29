@@ -1,4 +1,4 @@
-import { ComponentStory } from "@storybook/react";
+import { ComponentStoryObj } from "@storybook/react";
 import {
   Accordion as AccordionInteractor,
   BottomNavigation as BottomNavigationInteractor,
@@ -25,31 +25,33 @@ import {
   TextField as TextFieldInteractor,
   TimeField as TimeFieldInteractor,
 } from "../src";
-import { SimpleAccordion } from "./accordion";
-import { SimpleBottomNavigation } from "./bottom-navigation";
-import { ContainedButtons } from "./button";
-import { StaticDatePicker } from "./calendar";
-import { CheckboxLabels } from "./checkbox";
-import { DateFields } from "./data-field";
-import { DateTimeFields } from "./datatime-field";
-import { FormDialog } from "./dialog";
-import { FloatingActionButtons } from "./fab";
-import { Links } from "./link";
-import { NestedList } from "./list";
-import { SimpleMenu } from "./menu";
-import { SimplePopover } from "./popover";
-import { RadioButtonsGroup } from "./radio";
-import { SimpleSelect } from "./select";
-import { Sliders } from "./slider";
-import { SimpleSnackbar } from "./snackbar";
-import { SwitchLabels } from "./switch";
-import { SimpleTabs } from "./tabs";
-import { BasicTextFields } from "./text-field";
-import { TimePickers } from "./time-field";
+import {
+  SimpleAccordion,
+  SimpleBottomNavigation,
+  ContainedButtons,
+  StaticDatePicker,
+  CheckboxLabels,
+  DateFields,
+  DateTimeFields,
+  FormDialog,
+  FloatingActionButtons,
+  Links,
+  NestedList,
+  SimpleMenu,
+  SimplePopover,
+  RadioButtonsGroup,
+  SimpleSelect,
+  Sliders,
+  SimpleSnackbar,
+  SwitchLabels,
+  SimpleTabs,
+  BasicTextFields,
+  TimePickers,
+} from "./components";
 
-export default { title: "Interactors" };
+export default { title: "Showcase" };
 
-export const Accordion: ComponentStory<typeof SimpleAccordion> = {
+export const Accordion: ComponentStoryObj<typeof SimpleAccordion> = {
   render: () => <SimpleAccordion />,
   async play(): Promise<void> {
     await AccordionInteractor("Accordion 1").toggle();
@@ -66,7 +68,7 @@ await AccordionInteractor("Accordion 2").toggle();
     },
   },
 };
-export const BottomNavigation: ComponentStory<typeof SimpleBottomNavigation> = {
+export const BottomNavigation: ComponentStoryObj<typeof SimpleBottomNavigation> = {
   render: () => <SimpleBottomNavigation />,
   async play(): Promise<void> {
     await BottomNavigationInteractor().navigate("Favorites");
@@ -84,7 +86,7 @@ await BottomNavigationInteractor().navigate("Nearby");
   },
 };
 
-export const Button: ComponentStory<typeof ContainedButtons> = {
+export const Button: ComponentStoryObj<typeof ContainedButtons> = {
   render: () => <ContainedButtons />,
   async play(): Promise<void> {
     await ButtonInteractor("DEFAULT").click();
@@ -106,7 +108,7 @@ await ButtonInteractor("LINK").click();
   },
 };
 
-export const Calendar: ComponentStory<typeof StaticDatePicker> = {
+export const Calendar: ComponentStoryObj<typeof StaticDatePicker> = {
   render: () => <StaticDatePicker />,
   async play(): Promise<void> {
     await CalendarInteractor().nextMonth();
@@ -128,7 +130,7 @@ await CalendarInteractor().setDay(23);
   },
 };
 
-export const Checkbox: ComponentStory<typeof CheckboxLabels> = {
+export const Checkbox: ComponentStoryObj<typeof CheckboxLabels> = {
   render: () => <CheckboxLabels />,
   async play(): Promise<void> {
     await CheckboxInteractor("Secondary").click();
@@ -156,7 +158,7 @@ await CheckboxInteractor("Custom size").click();
   },
 };
 
-export const DateField: ComponentStory<typeof DateFields> = {
+export const DateField: ComponentStoryObj<typeof DateFields> = {
   render: () => <DateFields />,
   async play(): Promise<void> {
     await DateFieldInteractor().fillIn("1999-08-17");
@@ -170,7 +172,7 @@ export const DateField: ComponentStory<typeof DateFields> = {
   },
 };
 
-export const DateTimeField: ComponentStory<typeof DateTimeFields> = {
+export const DateTimeField: ComponentStoryObj<typeof DateTimeFields> = {
   render: () => <DateTimeFields />,
   async play(): Promise<void> {
     await DateTimeFieldInteractor().fillIn("1999-08-17T13:24:35");
@@ -184,7 +186,7 @@ export const DateTimeField: ComponentStory<typeof DateTimeFields> = {
   },
 };
 
-export const Dialog: ComponentStory<typeof FormDialog> = {
+export const Dialog: ComponentStoryObj<typeof FormDialog> = {
   render: () => <FormDialog />,
   async play(): Promise<void> {
     await ButtonInteractor("OPEN FORM DIALOG").click();
@@ -202,7 +204,7 @@ await DialogInteractor().close();
   },
 };
 
-export const Fab: ComponentStory<typeof FloatingActionButtons> = {
+export const Fab: ComponentStoryObj<typeof FloatingActionButtons> = {
   render: () => <FloatingActionButtons />,
   async play(): Promise<void> {
     await FabInteractor("add").click();
@@ -222,7 +224,7 @@ await FabInteractor("NAVIGATE").click();
   },
 };
 
-export const Link: ComponentStory<typeof Links> = {
+export const Link: ComponentStoryObj<typeof Links> = {
   render: () => <Links />,
   async play(): Promise<void> {
     await LinkInteractor("Link").click();
@@ -242,7 +244,7 @@ await LinkInteractor('variant="body2"').click();
   },
 };
 
-export const List: ComponentStory<typeof NestedList> = {
+export const List: ComponentStoryObj<typeof NestedList> = {
   render: () => <NestedList />,
   async play(): Promise<void> {
     await ListItemInteractor("Inbox").click();
@@ -260,7 +262,7 @@ await ListItemInteractor('Inbox').click();
   },
 };
 
-export const Menu: ComponentStory<typeof SimpleMenu> = {
+export const Menu: ComponentStoryObj<typeof SimpleMenu> = {
   render: () => <SimpleMenu />,
   async play(): Promise<void> {
     await MenuInteractor("OPEN MENU").open();
@@ -278,7 +280,7 @@ await MenuItemInteractor("Profile").click();
   },
 };
 
-export const Popover: ComponentStory<typeof SimplePopover> = {
+export const Popover: ComponentStoryObj<typeof SimplePopover> = {
   render: () => <SimplePopover />,
   async play(): Promise<void> {
     await ButtonInteractor("OPEN POPOVER").click();
@@ -296,7 +298,7 @@ await PopoverInteractor().close();
   },
 };
 
-export const Radio: ComponentStory<typeof RadioButtonsGroup> = {
+export const Radio: ComponentStoryObj<typeof RadioButtonsGroup> = {
   render: () => <RadioButtonsGroup />,
   async play(): Promise<void> {
     await RadioInteractor("Male").choose();
@@ -314,7 +316,7 @@ await RadioInteractor("Other").choose();
   },
 };
 
-export const Select: ComponentStory<typeof SimpleSelect> = {
+export const Select: ComponentStoryObj<typeof SimpleSelect> = {
   render: () => <SimpleSelect />,
   async play(): Promise<void> {
     await SelectInteractor("Age").choose("Ten");
@@ -341,7 +343,7 @@ await MultiSelectInteractor("Name").select("Omar Alexander");
   },
 };
 
-export const Slider: ComponentStory<typeof Sliders> = {
+export const Slider: ComponentStoryObj<typeof Sliders> = {
   render: () => <Sliders />,
   async play(): Promise<void> {
     await SliderInteractor("Volume").increase(10);
@@ -369,7 +371,7 @@ await ThumbInteractor("0").decrease(10);
   },
 };
 
-export const Snackbar: ComponentStory<typeof SimpleSnackbar> = {
+export const Snackbar: ComponentStoryObj<typeof SimpleSnackbar> = {
   render: () => <SimpleSnackbar />,
   async play(): Promise<void> {
     await ButtonInteractor("OPEN SIMPLE SNACKBAR").click();
@@ -387,7 +389,7 @@ await SnackbarInteractor().find(ButtonInteractor('UNDO')).click();
   },
 };
 
-export const Switch: ComponentStory<typeof SwitchLabels> = {
+export const Switch: ComponentStoryObj<typeof SwitchLabels> = {
   render: () => <SwitchLabels />,
   async play(): Promise<void> {
     await SwitchInteractor("Secondary").toggle();
@@ -407,7 +409,7 @@ await SwitchInteractor("Uncontrolled").toggle();
   },
 };
 
-export const Tabs: ComponentStory<typeof SimpleTabs> = {
+export const Tabs: ComponentStoryObj<typeof SimpleTabs> = {
   render: () => <SimpleTabs />,
   async play(): Promise<void> {
     await TabsInteractor("simple tabs example").click("ITEM TWO");
@@ -425,7 +427,7 @@ await TabsInteractor("simple tabs example").click("ITEM THREE");
   },
 };
 
-export const TextField: ComponentStory<typeof BasicTextFields> = {
+export const TextField: ComponentStoryObj<typeof BasicTextFields> = {
   render: () => <BasicTextFields />,
   async play(): Promise<void> {
     await TextFieldInteractor("Standard").fillIn("Hello World");
@@ -445,7 +447,7 @@ await TextFieldInteractor("Outlined").fillIn("Hello World");
   },
 };
 
-export const TimeField: ComponentStory<typeof TimePickers> = {
+export const TimeField: ComponentStoryObj<typeof TimePickers> = {
   render: () => <TimePickers />,
   async play(): Promise<void> {
     await TimeFieldInteractor().fillIn("13:24:35");

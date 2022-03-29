@@ -40,9 +40,16 @@ export const FormSignIn = {
 
 ## Interaction testing
 
-You can go further and use Interactors to write tests for your stories in Storybook with [interaction testing](https://storybook.js.org/blog/interaction-testing-with-storybook/) feature.
+You can also use Interactors as part of your [Storybook interaction testing](https://storybook.js.org/blog/interaction-testing-with-storybook/).
 
-To use it install `@storybook/addon-interactions` and `@interactors/with-storybook` storybook addons. Add them to your storybook config and enable interactions debugger feature:
+To use Interactors to test your Storybook interactions, install the following Storybook addons:
+
+```sh
+yarn add -D @storybook/addon-interactions
+yarn add -D @interactors/with-storybook
+```
+
+Add them to your Storybook config and enable the Interactions debugger feature:
 
 ```js
 // .storybook/main.js
@@ -52,8 +59,7 @@ module.exports = {
 };
 ```
 
-Then you are able to extend previous example by adding `Heading('Welcome Homer!').exists()` assertion
-
+Now, you'll be able to start asserting with Interactors within Storybook. Check out what the example from the previous section looks like after adding a `Heading('Welcome Homer!').exists()` assertion:
 
 ```js
 import { Button, Heading, TextField } from '@interactors/html';
