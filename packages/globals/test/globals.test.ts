@@ -54,6 +54,7 @@ describe("@interactors/globals", () => {
               name: "plain",
               type: "action",
               code: () => "",
+              args: [],
             },
             [Symbol.operation]: Promise.resolve(),
           }
@@ -78,6 +79,7 @@ describe("@interactors/globals", () => {
             name: "foo",
             type: "action",
             code: () => "",
+            args: [],
           },
           [Symbol.operation]: Promise.resolve(),
         },

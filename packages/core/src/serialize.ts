@@ -37,7 +37,7 @@ export function serializeInteractionOptions<E extends Element, T>(
     ancestors,
     name,
     type,
-    args: filters ? [filters] : args ? args : undefined,
+    args,
     code() {
       let serializedArgs = "";
       if (filters) {
