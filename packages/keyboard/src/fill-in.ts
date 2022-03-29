@@ -7,7 +7,7 @@ type TextFieldElement = HTMLInputElement | HTMLTextAreaElement;
 /**
  * Fill in text into an element by emulating how a user would do it, first
  * focusing the element, then filling in the text letter by letter, generating
- * the appropriate keyboard events.aa
+ * the appropriate keyboard events.
  *
  * @param element The element to fill in text in
  * @param value The text value to fill in
