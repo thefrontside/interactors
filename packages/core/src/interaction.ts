@@ -72,7 +72,7 @@ export type InteractionOptions<E extends Element, T> = {
   name: string;
   description: string;
   filters?: FilterParams<any, any>;
-  args?: unknown[];
+  args: unknown[];
   interactor: Interactor<E, any>;
   run: (interactor: Interactor<E, any>) => Operation<T>;
 }
@@ -118,6 +118,7 @@ export function createInteraction<E extends Element, T, Q>(type: InteractionType
     description: options.description,
     interactor: options.interactor,
     run: options.run,
+    args: options.args,
     action,
     check: type === 'assertion' ? action : undefined,
     code: () => serializedOptions.code(),

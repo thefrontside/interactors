@@ -37,7 +37,7 @@ export type InteractionOptions = InteractorOptions & {
   name: string;
   type: InteractionType;
   code: () => string;
-  args?: unknown[];
+  args: unknown[];
   ancestors?: InteractorOptions[];
 };
 

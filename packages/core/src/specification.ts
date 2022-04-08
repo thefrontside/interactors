@@ -199,6 +199,7 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
  * @typeParam A the actions of this interactor, this is usually inferred from the specification
  */
 export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>> {
+  interactorName: string;
   selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
   locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;

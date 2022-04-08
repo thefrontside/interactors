@@ -61,6 +61,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return createInteraction('action', {
         name: "perform",
         interactor,
+        args: [],
         description: `run perform on ${formatDescription(options)}`,
         run: (interactor) => converge(() => fn(resolver(interactor.options))),
       });
@@ -70,6 +71,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return createInteraction('assertion', {
         name: "assert",
         interactor,
+        args: [],
         description: `${formatDescription(options)} asserts`,
         run: (interactor) => converge(() => { fn(resolver(interactor.options)) }),
       });
@@ -84,6 +86,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return createInteraction('assertion', {
         name: "is",
         interactor,
+        args: [filters],
         filters,
         description: `${formatDescription(options)} matches filters: ${filter.description}`,
         run: (interactor) => converge(() => {
@@ -107,6 +110,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return createInteraction('assertion', {
         name: 'exists',
         interactor,
+        args: [],
         description: `${formatDescription(options)} exists`,
         run: (interactor) => converge(() => {
           resolveFirst(unsafeSyncResolveParent(interactor.options), options);
@@ -118,6 +122,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       return createInteraction('assertion', {
         name: 'absent',
         interactor,
+        args: [],
         description: `${formatDescription(options)} does not exist`,
         run: (interactor) => converge(() => {
           resolveEmpty(unsafeSyncResolveParent(interactor.options), options);
@@ -161,6 +166,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
           return createInteraction('assertion', {
             name: filterName,
             interactor,
+            args: [],
             description: `${filterName} of ${formatDescription(options)}`,
             run: (interactor) => converge(() => applyFilter(filter, resolver(interactor.options))),
           }, (parentElement) => {
@@ -195,6 +201,7 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
   }
 
   return Object.assign(initInteractor, {
+    interactorName: name,
     selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
       return createConstructor(name, { ...specification, selector: value });
     },
