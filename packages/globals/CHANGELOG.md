@@ -1,5 +1,16 @@
 # @interactors/globals
 
+## 1.0.0-rc1.2
+
+### Minor Changes
+
+- a3155cf: Store interactor name and interaction arguments for reflection
+- 968109e: Use effection for converge and interactions
+
+### Patch Changes
+
+- afcf87b: Add code representation for interactions
+
 ## 1.0.0-rc1.1
 
 ### Patch Changes
