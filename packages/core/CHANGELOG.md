@@ -1,5 +1,21 @@
 # @interactors/core
 
+## 1.0.0-rc1.3
+
+### Minor Changes
+
+- a3155cf: Store interactor name and interaction arguments for reflection
+- 968109e: Use effection for converge and interactions
+
+### Patch Changes
+
+- efecf56: Improve filter matching and reduce unnecessary calls
+- afcf87b: Add code representation for interactions
+- Updated dependencies [a3155cf]
+- Updated dependencies [968109e]
+- Updated dependencies [afcf87b]
+  - @interactors/globals@1.0.0-rc1.2
+
 ## 1.0.0-rc1.2
 
 ### Patch Changes
