@@ -1,0 +1,46 @@
+{
+  "name": "@interactors/with-storybook",
+  "version": "1.0.0-rc1.2",
+  "description": "Storybook addon integration for Interactors",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thefrontside/interactors.git"
+  },
+  "homepage": "https://frontside.com/interactors",
+  "author": "Frontside Engineering <engineering@frontside.com>",
+  "license": "MIT",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "preset.js",
+    "README.md"
+  ],
+  "dependencies": {
+    "@interactors/globals": "^1.0.0-rc1.1"
+  },
+  "peerDependencies": {
+    "@storybook/addon-interactions": "*"
+  },
+  "scripts": {
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "lint": "eslint \"src/**/*.ts\"",
+    "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
+    "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
+    "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
+  },
+  "devDependencies": {
+    "@frontside/eslint-config": "^2.1.0",
+    "@frontside/tsconfig": "^1.2.0",
+    "@frontside/typescript": "^1.1.1"
+  },
+  "volta": {
+    "node": "14.17.5",
+    "yarn": "1.22.11"
+  },
+  "keywords": ["storybook", "addons", "interactors", "testing", "debug"],
+  "displayName": "Interactors inspector",
+  "icon": "https://frontside.com/interactors/img/interactors-logo@4x.png"
+}

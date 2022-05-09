@@ -33,7 +33,7 @@
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
   },
   "dependencies": {
-    "@effection/core": "2.2.0",
+    "@effection/core": "^2.2.0",
     "@interactors/globals": "1.0.0-rc1.1",
     "@testing-library/dom": "^8.5.0",
     "@testing-library/user-event": "^13.2.1",

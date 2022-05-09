@@ -4,14 +4,25 @@ import { KeyboardLayout } from "./keyboard-layout";
 
 export type InteractionType = "action" | "assertion";
 
-type Interaction<T = any> = Operation<T> & {
+export type CommonInteraction<T = any> = Promise<T> & Operation<T> & {
   type: InteractionType;
+  /**
+   * Return a description of the interaction
+   */
   description: string;
-  options: InteractionOptions;
-  interactor: unknown; // we can't type this any better here
+  /**
+   * Return a code representation of the interaction
+   */
   code: () => string;
+  /**
+   * Return a serialized options of the interaction
+   */
+  options: InteractionOptions;
+  /**
+   * Cancel interaction execution
+   */
   halt: () => Promise<void>;
-};
+}
 
 interface Globals {
   readonly document: Document;
@@ -41,7 +52,7 @@ export type InteractionOptions = InteractorOptions & {
   ancestors?: InteractorOptions[];
 };
 
-export type InteractionWrapper<T = any> = (perform: () => Promise<T>, interaction: Interaction<T>) => Operation<T>;
+export type InteractionWrapper<T = any> = (perform: () => Promise<T>, interaction: CommonInteraction<T>) => Operation<T>;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
@@ -52,7 +63,7 @@ declare global {
 }
 
 if (!globalThis.__interactors) {
-  let wrapInteraction = <T>(perform: () => Promise<T>, interaction: Interaction<T>): Operation<T> => {
+  let wrapInteraction = <T>(perform: () => Promise<T>, interaction: CommonInteraction<T>): Operation<T> => {
     return (scope) => {
       let current = perform;
       for (let wrapper of getGlobals().interactionWrappers) {
@@ -131,7 +142,7 @@ export function addActionWrapper<T>(
   wrapper: (description: string, perform: () => Promise<T>, type: InteractionType) => Operation<T>
 ): () => boolean {
   return addInteractionWrapper(
-    (perform: () => Promise<T>, interaction: Interaction<T>): Operation<T> =>
+    (perform: () => Promise<T>, interaction: CommonInteraction<T>): Operation<T> =>
       wrapper(interaction.description, perform, interaction.type)
   );
 }
