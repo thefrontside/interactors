@@ -1,0 +1,7 @@
+{
+  "out": "docs/api/v1",
+  "name": "@interactors/html",
+  "entryPoints": "src/index.ts",
+  "includeVersion": true,
+  "excludePrivate": true
+}
