@@ -7,7 +7,7 @@
 
 [Interactors][] are Page Objects for component libraries and design systems.
 This package lets you use them seamlessly within [Cypress][]. Learn more at
-[https://frontside.com/interactors/docs/integrations#cypress](https://frontside.com/interactors/docs/integrations#cypress)
+[https://frontside.com/interactors/docs/cypress](https://frontside.com/interactors/docs/cypress)
 
 [Interactors]: https://frontside.com/interactors
 [Cypress]: https://cypress.io
