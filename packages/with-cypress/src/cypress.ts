@@ -49,26 +49,28 @@ if (typeof Cypress !== 'undefined' ) {
   );
 
   // NOTE: Save the original `expect` assertion method
-  let chaiExpect = cy.expect as (value: unknown) => unknown
+  let chaiExpect = cy.expect as (value: unknown, message?: string) => unknown
 
-  // NOTE: Add interaction assertion function, Cypress also overrides `expect` method to a wrapper function
-  Cypress.Commands.add('expect', (interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[]) =>
+  let interactionExpect = (interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[]) => (
     interact(([] as AssertionInteraction<Element>[]).concat(interaction), 'expect')
   )
-
-  // NOTE: Save the new `expect` method in which is wrapped our assertion function
-  let interactionExpect = cy.expect
+  // @ts-expect-error Cypress stores a reference to commands object and use it to check overwiritability of commands
+  // https://github.com/cypress-io/cypress/blob/d378ec423a4a2799f90a6536f82e4504bc8b3c9e/packages/driver/src/cypress/commands.ts#L155
+  Cypress.Commands._commands['expect'] = interactionExpect;
+  // NOTE: Add interaction assertion function, Cypress also overrides `expect` method to a wrapper function
+  Cypress.Commands.overwrite('expect', interactionExpect);
 
   // NOTE: Override Cypress's wrapper to our combined `expect`
   // @ts-expect-error TypeScript complains that signature doesn't match with declared one
   cy.expect = (
-    interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[] | unknown
+    interaction: AssertionInteraction<Element> | AssertionInteraction<Element>[] | unknown,
+    message?: string
   ) => {
     let interactions = Array.isArray(interaction) ? interaction : [interaction]
     if (isInteractions(interactions)) {
       return interactionExpect(interactions)
     } else {
-      return chaiExpect(interaction)
+      return chaiExpect(interaction, message)
     }
   }
 };
