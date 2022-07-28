@@ -10,9 +10,16 @@
     "@interactors/with-cypress": "0.3.0"
   },
   "changesets": [
+    "big-walls-sort",
     "dry-baboons-learn",
     "dry-turtles-wonder",
+    "empty-pans-laugh",
+    "late-plums-lick",
     "neat-cameras-carry",
+    "quick-actors-speak",
+    "rude-parents-worry",
+    "smart-flowers-confess",
+    "tidy-years-give",
     "tough-carpets-build",
     "wet-news-learn",
     "wild-needles-relax"
