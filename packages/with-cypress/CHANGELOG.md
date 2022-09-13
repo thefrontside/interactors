@@ -1,5 +1,19 @@
 # @interactors/with-cypress
 
+## 1.0.0-rc1.2
+
+### Patch Changes
+
+- 51344f0: Add support Cypress 10
+- 968109e: Use effection for converge and interactions
+- afcf87b: Add code representation for interactions
+- Updated dependencies [efecf56]
+- Updated dependencies [a3155cf]
+- Updated dependencies [968109e]
+- Updated dependencies [afcf87b]
+  - @interactors/core@1.0.0-rc1.3
+  - @interactors/globals@1.0.0-rc1.2
+
 ## 1.0.0-rc1.1
 
 ### Patch Changes

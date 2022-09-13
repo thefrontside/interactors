@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.0.0-rc1.3
+
+### Patch Changes
+
+- c7b2f5d: Fix getting innerText value in jsdom env
+- aba635a: Update material-ui interactors to use getters
+- 968109e: Use effection for converge and interactions
+  - @interactors/html@1.0.0-rc1.3
+
 ## 5.0.0-rc1.2
 
 ### Patch Changes
