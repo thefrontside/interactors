@@ -1,5 +1,11 @@
 # @interactors/core
 
+## 1.0.0-rc1.4
+
+### Patch Changes
+
+- 596dee1: bump @testing-library/dom to v8.18.1 fixes https://github.com/thefrontside/interactors/issues/212
+
 ## 1.0.0-rc1.3
 
 ### Minor Changes
