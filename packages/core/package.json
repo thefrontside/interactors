@@ -1,6 +1,6 @@
 {
   "name": "@interactors/core",
-  "version": "1.0.0-rc1.3",
+  "version": "1.0.0-rc1.4",
   "description": "Composable page objects for components",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",

@@ -1,5 +1,13 @@
 # @interactors/html
 
+## 1.0.0-rc1.4
+
+### Patch Changes
+
+- Updated dependencies [596dee1]
+  - @interactors/core@1.0.0-rc1.4
+  - @interactors/keyboard@1.0.0-rc1.4
+
 ## 1.0.0-rc1.3
 
 ### Patch Changes
