@@ -8,7 +8,7 @@
 [Interactors][] are Page Objects for component libraries and design systems.
 This package contains interactors for [Material-UI][]. Learn more about using
 Material UI Interactors at
-[https://frontside.com/interactors/docs/existing-interactors#material-ui](https://frontside.com/interactors/docs/existing-interactors#material-ui)
+[https://frontside.com/interactors/docs/library#material-ui](https://frontside.com/interactors/docs/library#material-ui)
 
 [Interactors]: https://frontside.com/interactors
 [Material-UI]: https://material-ui.com
