@@ -60,11 +60,13 @@ if (typeof Cypress !== 'undefined' ) {
     Cypress.Commands.add('expect', interactionExpect);
   }
   catch (e) {}
-  // @ts-expect-error Cypress stores a reference to commands object and use it to check overwiritability of commands
-  // https://github.com/cypress-io/cypress/blob/d378ec423a4a2799f90a6536f82e4504bc8b3c9e/packages/driver/src/cypress/commands.ts#L155
-  Cypress.Commands._commands['expect'] = interactionExpect;
-  // NOTE: Add interaction assertion function, Cypress also overrides `expect` method to a wrapper function
-  Cypress.Commands.overwrite('expect', interactionExpect);
+  if ('_commands' in Cypress.Commands) {
+    // @ts-expect-error Cypress stores a reference to commands object and use it to check overwiritability of commands
+    // https://github.com/cypress-io/cypress/blob/d378ec423a4a2799f90a6536f82e4504bc8b3c9e/packages/driver/src/cypress/commands.ts#L155
+    Cypress.Commands._commands['expect'] = interactionExpect;
+    // NOTE: Add interaction assertion function, Cypress also overrides `expect` method to a wrapper function
+    Cypress.Commands.overwrite('expect', interactionExpect);
+  }
 
   // NOTE: Override Cypress's wrapper to our combined `expect`
   // @ts-expect-error TypeScript complains that signature doesn't match with declared one
