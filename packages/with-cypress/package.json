@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "cd ../../sample/ && npm install && npm run start -- -p 3000",
-    "cypress:run": "npx cypress run --spec 'cypress/integration/*.spec.ts'",
+    "cypress:run": "npx cypress run",
     "test": "start-server-and-test 'npm run start' http://localhost:3000 cypress:run",
     "prepack": "tsc --build",
     "lint": "eslint \"src/**/*.ts\""
