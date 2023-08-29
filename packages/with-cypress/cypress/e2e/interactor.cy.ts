@@ -7,7 +7,7 @@ describe('Cypress with Interactors', () => {
   it('single interactor per command', () => {
     cy
       .do(Button('SIGN IN').click())
-      .expect(Button('LOG OUT').exists())
+      .expectInteractor(Button('LOG OUT').exists())
   });
   it('array of interactors', () => {
     cy
@@ -15,14 +15,14 @@ describe('Cypress with Interactors', () => {
         Button('SIGN IN').click(),
         Button('LOG OUT').click()
       ])
-      .expect([
+      .expectInteractor([
         Button('SIGN IN').exists(),
         Button('LOG OUT').absent()
       ]);
   });
   it('interactors with matchers', () => {
     cy
-      .expect([
+      .expectInteractor([
         Button(including('SIGN')).exists(),
         Button(matching(/SI(.*)IN/)).exists()
       ]);

@@ -6,8 +6,9 @@ import { Interaction, isInteraction, AssertionInteraction } from '@interactors/c
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
-      do(interaction: Interaction<Element, undefined> | Interaction<Element, undefined>[]): Chainable<Subject>;
-      expect(interaction: AssertionInteraction<Element, undefined> | AssertionInteraction<Element, undefined>[]): Chainable<Subject>;
+      do<E extends Element>(interaction: Interaction<E, void> | Interaction<E, void>[]): Chainable<Subject>;
+      expect<E extends Element>(interaction: AssertionInteraction<E, void> | AssertionInteraction<E, void>[]): Chainable<Subject>;
+      expectInteractor<E extends Element>(interaction: AssertionInteraction<E, void> | AssertionInteraction<E, void>[]): Chainable<Subject>;
     }
   }
 }
@@ -24,9 +25,10 @@ addInteractionWrapper((operation, interaction) =>
   }
 );
 
-function interact(interactions: Interaction<Element, undefined>[], command: CypressCommand): void {
+function interact(interactions: Interaction<Element, void>[], command: CypressCommand): void {
   interactions
-    .reduce((cy: Cypress.Chainable<undefined>, interaction) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .reduce((cy: Cypress.Chainable<any>, interaction) =>
       cy
         .then(() => interaction)
         .then(() => {
@@ -39,20 +41,20 @@ function interact(interactions: Interaction<Element, undefined>[], command: Cypr
     ).then(() => (cypressCommand = null))
 };
 
-function isInteractions(interactions: unknown[]): interactions is AssertionInteraction<Element, undefined>[] {
+function isInteractions(interactions: unknown[]): interactions is AssertionInteraction<Element, void>[] {
   return interactions.every(isInteraction)
 }
 
 if (typeof Cypress !== 'undefined' ) {
-  Cypress.Commands.add('do', (interaction: Interaction<Element, undefined> | Interaction<Element, undefined>[]) =>
-    interact(([] as Interaction<Element, undefined>[]).concat(interaction), 'do')
+  Cypress.Commands.add('do', (interaction: Interaction<Element, void> | Interaction<Element, void>[]) =>
+    interact(([] as Interaction<Element, void>[]).concat(interaction), 'do')
   );
 
   // NOTE: Save the original `expect` assertion method
   let chaiExpect = cy.expect as (value: unknown, message?: string) => unknown
 
-  let interactionExpect = (interaction: AssertionInteraction<Element, undefined> | AssertionInteraction<Element, undefined>[]) => (
-    interact(([] as AssertionInteraction<Element, undefined>[]).concat(interaction), 'expect')
+  let interactionExpect = (interaction: AssertionInteraction<Element, void> | AssertionInteraction<Element, void>[]) => (
+    interact(([] as AssertionInteraction<Element, void>[]).concat(interaction), 'expect')
   )
   try {
     // NOTE: Add interaction assertion function, Cypress also overrides `expect` method to a wrapper function
@@ -69,10 +71,13 @@ if (typeof Cypress !== 'undefined' ) {
     Cypress.Commands.overwrite('expect', interactionExpect);
   }
 
+  // NOTE: Fallback alias for `expect` assertion method
+  Cypress.Commands.add('expectInteractor', interactionExpect);
+
   // NOTE: Override Cypress's wrapper to our combined `expect`
   // @ts-expect-error TypeScript complains that signature doesn't match with declared one
   cy.expect = (
-    interaction: AssertionInteraction<Element, undefined> | AssertionInteraction<Element, undefined>[] | unknown,
+    interaction: AssertionInteraction<Element, void> | AssertionInteraction<Element, void>[] | unknown,
     message?: string
   ) => {
     let interactions = Array.isArray(interaction) ? interaction : [interaction]
