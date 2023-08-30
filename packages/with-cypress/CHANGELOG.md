@@ -1,5 +1,11 @@
 # @interactors/with-cypress
 
+## 1.0.0-rc1.3
+
+### Patch Changes
+
+- 2e854c9: Fix overwriting `expect` command for cypress@12
+
 ## 1.0.0-rc1.2
 
 ### Patch Changes
