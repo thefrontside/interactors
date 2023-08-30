@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: volta-cli/action@v3
+        with:
+          registry-url: https://registry.npmjs.org
       - name: Install Dependencies
         run: yarn
       - name: Create Release Pull Request
