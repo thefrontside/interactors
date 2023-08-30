@@ -8,7 +8,7 @@ declare global {
     interface Chainable<Subject> {
       do<E extends Element>(interaction: Interaction<E, void> | Interaction<E, void>[]): Chainable<Subject>;
       expect<E extends Element>(interaction: AssertionInteraction<E, void> | AssertionInteraction<E, void>[]): Chainable<Subject>;
-      expectInteractor<E extends Element>(interaction: AssertionInteraction<E, void> | AssertionInteraction<E, void>[]): Chainable<Subject>;
+      expectThat<E extends Element>(interaction: AssertionInteraction<E, void> | AssertionInteraction<E, void>[]): Chainable<Subject>;
     }
   }
 }
@@ -72,7 +72,7 @@ if (typeof Cypress !== 'undefined' ) {
   }
 
   // NOTE: Fallback alias for `expect` assertion method
-  Cypress.Commands.add('expectInteractor', interactionExpect);
+  Cypress.Commands.add('expectThat', interactionExpect);
 
   // NOTE: Override Cypress's wrapper to our combined `expect`
   // @ts-expect-error TypeScript complains that signature doesn't match with declared one
