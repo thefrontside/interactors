@@ -1,6 +1,6 @@
 {
   "name": "@interactors/with-cypress",
-  "version": "1.0.0-rc1.2",
+  "version": "1.0.0-rc1.3",
   "description": "Cypress Integration for Interactors",
   "main": "dist/index.js",
   "module": "dist/index.js",
