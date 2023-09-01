@@ -31,7 +31,7 @@ export function createInspector<IC extends InteractorConstructor<any, any, any, 
       let elements = findElements<GetElement<IC>>(parentElement ?? unsafeSyncResolveParent(options), options);
       return elements.map(
         element => (Object.assign(
-          instantiateInteractor(options, () => element) as (Interactor<GetElement<IC>, Filters<GetFilters<IC>>> & GetActions<IC>), {
+          instantiateInteractor(options, () => element) as unknown as (Interactor<GetElement<IC>, Filters<GetFilters<IC>>> & GetActions<IC>), {
           element,
           find<T extends InteractorConstructor<any, any, any, any>>(constructor: T): Inspector<T> {
             return createInspector(constructor, element)
