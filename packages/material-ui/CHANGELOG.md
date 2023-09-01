@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0-rc1.5
+
+### Patch Changes
+
+- @interactors/html@1.0.0-rc1.5
+
 ## 5.0.0-rc1.4
 
 ### Patch Changes

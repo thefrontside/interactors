@@ -1,5 +1,11 @@
 # @interactors/core
 
+## 1.0.0-rc1.5
+
+### Patch Changes
+
+- 5936572: Fix type checking
+
 ## 1.0.0-rc1.4
 
 ### Patch Changes
