@@ -1,6 +1,6 @@
 # Interactors
 
-[![CircleCI](https://circleci.com/gh/thefrontside/interactors.svg?style=shield)](https://circleci.com/gh/thefrontside/interactors)
+[![Github Actions](https://github.com/thefrontside/interactors/actions/workflows/test.yml/badge.svg)](https://github.com/thefrontside/interactors/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Created by Frontside](https://img.shields.io/badge/created%20by-frontside-26abe8.svg)](https://frontside.com)
 [![Chat on Discord](https://img.shields.io/discord/700803887132704931?Label=Discord)](https://discord.gg/mv4uxxcAKd)

@@ -38,7 +38,6 @@
     "ts-node": "^10.4.0"
   },
   "volta": {
-    "node": "14.17.5",
-    "yarn": "1.22.11"
+    "extends": "../../package.json"
   }
 }
