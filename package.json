@@ -31,7 +31,7 @@
     "docs:mui": "yarn workspace @interactors/material-ui run docs:netlify"
   },
   "volta": {
-    "node": "18.12.1",
+    "node": "21.7.0",
     "yarn": "1.22.11"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
   "resolutions": {
     "@definitelytyped/typescript-versions": "^0.0.40",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
-    "chromedriver": "118.0.0",
+    "chromedriver": "122.0.0",
     "typescript": "^4.1.3",
     "yargs-parser": "^13.1.2"
   }
