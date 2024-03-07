@@ -65,7 +65,7 @@ async function goToMonth(
       );
   }
 }
-async function goToDay<T>(interactor: Interactor<HTMLElement, T>, day: number) {
+async function goToDay<T extends Record<string, unknown>>(interactor: Interactor<HTMLElement, T>, day: number) {
   // NOTE: We can't find day if user has custom day render
   let dayInteractor = interactor.find(
     HTML.selector('[class*="MuiPickersCalendar-week"] > [role="presentation"]')(String(day))

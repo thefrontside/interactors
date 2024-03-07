@@ -29,7 +29,7 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "@frontside/eslint-config": "^2.0.0",
+    "@frontside/eslint-config": "^3.1.0",
     "eslint": "^7.18.0"
   },
   "eslintConfig": {

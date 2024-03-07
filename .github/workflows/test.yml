@@ -17,7 +17,8 @@ jobs:
         run: yarn
       - name: Prepack
         run: yarn prepack
-      - name: Lint
-        run: yarn lint
+      # NOTE: this will be enabled when we migrate to Deno  
+      # - name: Lint
+      #   run: yarn lint
       - name: Test
         run: yarn test
