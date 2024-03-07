@@ -18,7 +18,7 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "check:types": "tsc --noEmit",
-    "test": "mocha -r ts-node/register test/**/*.test.ts",
+    "test": "tsx --test --no-deprecation",
     "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
     "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
     "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
@@ -26,12 +26,10 @@
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
     "@types/jsdom": "^16.2.3",
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^14.17.5",
+    "@types/node": "^20.11.25",
+    "tsx": "^4.7.1",
     "expect": "^24.9.0",
     "jsdom": "^16.2.2",
-    "mocha": "^6.2.2",
-    "ts-node": "^10.4.0",
     "typescript": "~4.4.4"
   },
   "volta": {

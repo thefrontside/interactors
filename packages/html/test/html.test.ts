@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'node:test';
 import expect from 'expect';
 import { HTML } from '../src/index';
 import { dom } from './helpers';

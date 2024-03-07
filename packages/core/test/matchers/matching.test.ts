@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { beforeEach, describe, it } from 'node:test';
 import expect from 'expect';
 import { dom } from '../helpers';
 

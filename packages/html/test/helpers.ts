@@ -1,4 +1,4 @@
-import { beforeEach } from "mocha";
+import { afterEach, beforeEach } from "node:test";
 import { DOMWindow, JSDOM } from "jsdom";
 import { globals, setDocumentResolver, setInteractorTimeout } from "@interactors/globals";
 
