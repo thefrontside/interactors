@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'node:test';
 import expect from 'expect';
 import { dom } from './helpers';
 import { Datepicker, Details, Div, Header, Link, MainNav, TextField } from './fixtures';
