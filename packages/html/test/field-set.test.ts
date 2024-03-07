@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'node:test';
 import expect from 'expect';
 import { FieldSet } from '../src/index';
 import { dom } from './helpers';

@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'node:test';
 import { globals } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
 import { fillIn } from '../src';
