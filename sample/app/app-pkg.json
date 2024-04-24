@@ -35,7 +35,7 @@
     "react-test-renderer": "^17.0.1",
     "start-server-and-test": "^1.11.6",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.2.2"
+    "typescript": "^5.4.5"
   },
   "eslintConfig": {
     "extends": [

@@ -29,9 +29,8 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "devDependencies": {
-    "@frontside/eslint-config": "^2.1.0",
-    "@frontside/tsconfig": "^1.2.0",
-    "@frontside/typescript": "^1.1.1",
+    "@frontside/eslint-config": "^3.1.0",
+    "@frontside/tsconfig": "^3.0.0",
     "@interactors/html": "^1.0.0-rc1.3",
     "cypress": "^12.0.0",
     "start-server-and-test": "^1.11.7",

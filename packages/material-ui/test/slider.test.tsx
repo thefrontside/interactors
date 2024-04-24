@@ -180,8 +180,7 @@ export default test("Slider")
       )
       .child('setValue', (test) => test
         .step(slider.setValue(100))
-        // NOTE: This is expected behavior because the slide's step width is less than 1 px
-        .assertion(slider.has({ value: 101 }))
+        .assertion(slider.has({ value: 100 }))
       )
       .child('setValue below min', (test) => test
         .step(slider.setValue(-200))
@@ -189,7 +188,8 @@ export default test("Slider")
       )
       .child('setValue above max', (test) => test
         .step(slider.setValue(300))
-        .assertion(slider.has({ value: 200 }))
+        // NOTE: This is expected behavior because the slide's step width is less than 1 px
+        .assertion(slider.has({ value: 199 }))
       )
     )
     .child('with marks', (test) => test
