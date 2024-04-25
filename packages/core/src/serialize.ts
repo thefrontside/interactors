@@ -26,6 +26,8 @@ export function serializeInteractorOptions(options: InteractorOptions<any, any, 
   };
 }
 
+// NOTE: noop
+
 export function serializeInteractionOptions<E extends Element, T>(
   type: InteractionType,
   { name, interactor: { options }, args, filters }: InteractionOptions<E, T>

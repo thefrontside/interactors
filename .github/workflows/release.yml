@@ -18,6 +18,6 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Publish Releases
-      uses: thefrontside/actions/synchronize-with-npm@v2
+      uses: thefrontside/actions/synchronize-with-npm@dl/update-node-yarn
       env:
         GITHUB_TOKEN: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
