@@ -16,3 +16,4 @@ yarn-error.log
 .yarn/install-state.gz
 .pnp.*
 __generated__
+.parcel-cache
