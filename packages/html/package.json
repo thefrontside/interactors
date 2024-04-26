@@ -39,11 +39,11 @@
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
     "@types/node": "^20.11.25",
-    "tsx": "^4.7.1",
     "expect": "^24.9.0",
     "jsdom": "^16.2.2",
     "parcel": "^2.10.2",
-    "typedoc": "^0.22.7",
+    "tsx": "^4.7.1",
+    "typedoc": "^0.25.13",
     "typescript": "~5.4.5"
   },
   "volta": {

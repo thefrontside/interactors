@@ -27,9 +27,9 @@
     "@frontside/tsconfig": "^1.2.0",
     "@types/jsdom": "^16.2.3",
     "@types/node": "^20.11.25",
-    "tsx": "^4.7.1",
     "expect": "^24.9.0",
     "jsdom": "^16.2.2",
+    "tsx": "^4.7.1",
     "typescript": "~5.4.5"
   },
   "volta": {

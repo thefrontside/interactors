@@ -15,7 +15,7 @@
     "test": "bigtest ci",
     "build:cjs": "tsc --outdir dist/cjs --module commonjs --project tsconfig.build.json",
     "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
-    "prepack": "tsc --build tsconfig.build.json && run-p build:*",
+    "prepack": "tsc --build tsconfig.build.json && run-p \"build:*\"",
     "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
     "docs:netlify": "yarn prepack && yarn docs",
     "docs:preview": "yarn parcel docs/api/v4/index.html",
@@ -59,7 +59,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "tslib": "^2.3.1",
-    "typedoc": "^0.22.7",
+    "typedoc": "^0.25.13",
     "typescript": "~5.4.5",
     "webpack": "^5.53.0"
   },

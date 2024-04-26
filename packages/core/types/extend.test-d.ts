@@ -1,4 +1,5 @@
-import { createInteractor } from '../src/index';
+import { expectType, expectAssignable, expectError } from 'tsd';
+import { createInteractor, Interactor, ActionInteraction } from '../src/index';
 
 const HTML = createInteractor<HTMLElement>('html')
   .filters({
@@ -9,19 +10,16 @@ const HTML = createInteractor<HTMLElement>('html')
   });
 
 // cannot pass supertype
-// $ExpectError
-HTML.extend<Element>('foo');
+expectError(HTML.extend<Element>('foo'));
 
 // cannot pass other random type
-// $ExpectError
-HTML.extend<number>('div')
+expectError(HTML.extend<number>('div'))
 
 // without type parameter
 HTML.extend('div')
   .filters({
     id: (element) => {
-      // $ExpectType HTMLElement
-      element;
+      expectType<HTMLElement>(element);
       return element.id;
     }
   });
@@ -30,15 +28,13 @@ HTML.extend('div')
 HTML.extend<HTMLLinkElement>('link')
   .filters({
     href: (element) => {
-      // $ExpectType HTMLLinkElement
-      element;
+      expectType<HTMLLinkElement>(element);
       return element.href;
     }
   })
   .actions({
     setHref: (interactor, value: string) => interactor.perform((element) => {
-      // $ExpectType HTMLLinkElement
-      element;
+      expectType<HTMLLinkElement>(element);
       element.href = value;
     })
   });
@@ -57,15 +53,13 @@ const Thing = HTML.extend('thing')
   })
 
 // uses overridden type for filter
-Thing('thing', { id: 4 });
+expectAssignable<Interactor<HTMLElement, Record<string, unknown>>>(Thing('thing', { id: 4 }));
 
 // cannot use original type for filter
-// $ExpectError
-Thing('thing', { id: 'thing' });
+expectError(Thing('thing', { id: 'thing' }));
 
 // uses overridden type for action
-Thing('thing').click(5);
+expectType<(value: number) => ActionInteraction<HTMLElement, void>>(Thing('thing').click);
 
 // cannot use original type for action
-// $ExpectError
-Thing('thing').click();
+expectError(Thing('thing').click());

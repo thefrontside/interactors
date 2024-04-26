@@ -24,8 +24,8 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "check:types": "tsc --noEmit",
-    "test:unit": "tsx --test --no-deprecation",
-    "test:types": "dtslint types --localTs ../../node_modules/typescript/lib --expectOnly",
+    "test:unit": "tsx --test --test-reporter spec --no-deprecation test/**/*.test.ts",
+    "test:types": "tsd -f ./types/*.test-d.ts",
     "test": "yarn test:unit && yarn test:types",
     "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
     "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
@@ -48,13 +48,12 @@
     "@types/jsdom": "^16.2.3",
     "@types/lodash.isequal": "^4.5.5",
     "@types/node": "^20.11.25",
-    "tsx": "^4.7.1",
-    "dtslint": "^4.0.5",
     "expect": "^24.9.0",
     "express": "^4.17.1",
     "jsdom": "^24.0.0",
-
-    "typedoc": "^0.22.7",
+    "tsd": "^0.31.0",
+    "tsx": "^4.7.1",
+    "typedoc": "^0.25.13",
     "typescript": "~5.4.5"
   },
   "volta": {

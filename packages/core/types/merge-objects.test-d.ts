@@ -1,3 +1,4 @@
+import { expectError } from 'tsd';
 import { MergeObjects } from '../src/merge-objects';
 
 type Empty = Record<never, never>;
@@ -23,20 +24,16 @@ c.a = 4;
 c.b = 4;
 
 // cannot assign a string
-// $ExpectError
-c.a = "thing";
-// $ExpectError
-c.b = "thing";
+expectError(c.a = "thing");
+expectError(c.b = "thing");
 
 // can assign a string
 d.a = "foo";
 d.b = "foo";
 
 // cannot assign a number
-// $ExpectError
-d.a = 1;
-// $ExpectError
-d.b = 2;
+expectError(d.a = 1);
+expectError(d.b = 2);
 
 let e: MergeObjects<Empty, A> = { a: "foo", b: "bar" };
 

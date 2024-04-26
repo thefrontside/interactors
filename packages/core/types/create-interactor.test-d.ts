@@ -1,4 +1,5 @@
-import { createInteractor } from '../src/index';
+import { expectType, expectError } from 'tsd';
+import { createInteractor, ActionInteraction } from '../src/index';
 
 let Link = createInteractor<HTMLLinkElement>('link')
   .selector('a')
@@ -19,20 +20,16 @@ let Link = createInteractor<HTMLLinkElement>('link')
 const Div = createInteractor('div')
   .locator((element) => element.id || "")
 
-Link('foo').click();
+expectType<ActionInteraction<HTMLLinkElement, void>>(Link('foo').click());
 
-Link('foo').setHref('blah');
+expectType<ActionInteraction<HTMLLinkElement, void>>(Link('foo').setHref('blah'));
 
 // cannot use wrong type of argument on action
-// $ExpectError
-Link('foo').setHref(123);
+expectError(Link('foo').setHref(123));
 
 // cannot use action which is not defined
-// $ExpectError
-Div('foo').click();
+expectError(Div('foo').click());
 
-// $ExpectError
-Link('foo').blah();
+expectError(Link('foo').blah());
 
-// $ExpectError
-Div('foo').blah();
+expectError(Div('foo').blah());
