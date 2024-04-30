@@ -1,6 +1,12 @@
 {
-  "extends": "@frontside",
+  "extends": "plugin:@typescript-eslint/recommended",
+  "plugins": ["prefer-let"],
   "rules": {
+    "prefer-const": "off",
+    "prefer-let/prefer-let": "error",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-vars": "error",
     "eol-last": "off",
     "@typescript-eslint/no-extra-semi": "off",
     "no-multi-spaces": "off",

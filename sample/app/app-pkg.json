@@ -24,7 +24,7 @@
     "babel-jest": "^26.6.3",
     "bigtest": "0.14.4",
     "cypress": "^12.0.0",
-    "eslint": "^7.17.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-cypress": "^2.11.2",
     "jest": "^26.6.3",
     "jest-css-modules-transform": "4.1.0",
@@ -35,7 +35,7 @@
     "react-test-renderer": "^17.0.1",
     "start-server-and-test": "^1.11.6",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.2.2"
+    "typescript": "^5.4.5"
   },
   "eslintConfig": {
     "extends": [
@@ -68,7 +68,7 @@
     }
   },
   "volta": {
-    "node": "14.17.5",
-    "yarn": "1.22.11"
+    "node": "20.12.2",
+    "yarn": "4.1.1"
   }
 }

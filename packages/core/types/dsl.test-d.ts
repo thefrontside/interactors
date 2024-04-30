@@ -1,4 +1,5 @@
-import { test } from '@bigtest/suite';
+import { expectType, expectError } from 'tsd';
+import { test, TestBuilder } from '@bigtest/suite';
 import { createInteractor } from '../src/index';
 
 const TextField = createInteractor<HTMLInputElement>('text field')
@@ -15,12 +16,15 @@ const TextField = createInteractor<HTMLInputElement>('text field')
     fillIn: ({ perform }, value: string) => perform((element) => { element.value = value })
   });
 
-test("using interactors")
-  .step(TextField("username").fillIn("cowboyd"))
-  .step(TextField("password").fillIn("secret"))
-  .assertion(TextField("username").exists())
+expectType<TestBuilder<Record<string, unknown>>>(
+  test("using interactors")
+    .step(TextField("username").fillIn("cowboyd"))
+    .step(TextField("password").fillIn("secret"))
+    .assertion(TextField("username").exists())
+)
 
-test("bad interactor usage")
+expectError(
+  test("bad interactor usage")
   // cannot use side-effect interactions in an assertion
-  // $ExpectError
   .assertion(TextField("username").fillIn('cowboyd'))
+)

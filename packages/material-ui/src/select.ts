@@ -56,7 +56,7 @@ async function clearSelection(labelId: string) {
   }
 }
 
-async function openSelectOptionsList<T>(interactor: Interactor<HTMLInputElement, T>) {
+async function openSelectOptionsList<T extends Record<string, unknown>>(interactor: Interactor<HTMLInputElement, T>) {
   let labelId = "";
   await interactor.perform((element) => (labelId = getInputLabel(element)?.id ?? ""));
   await interactor.perform((element) => {

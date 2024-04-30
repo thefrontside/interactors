@@ -12,7 +12,7 @@ type TextFieldElement = HTMLInputElement | HTMLTextAreaElement;
  * @param element The element to fill in text in
  * @param value The text value to fill in
  */
-export async function fillIn(interactor: Interactor<TextFieldElement, any>, value: string): Promise<void> {
+export async function fillIn(interactor: Interactor<TextFieldElement, Record<string, unknown>>, value: string): Promise<void> {
   let originalValue
   await interactor.perform((element) => originalValue = element.value);
 

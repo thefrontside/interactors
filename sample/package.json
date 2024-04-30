@@ -29,8 +29,8 @@
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "@frontside/eslint-config": "^2.0.0",
-    "eslint": "^7.18.0"
+    "@frontside/eslint-config": "^3.1.1-dl-update-eslint.0",
+    "eslint": "^8.56.0"
   },
   "eslintConfig": {
     "extends": [
@@ -41,7 +41,7 @@
     }
   },
   "volta": {
-    "node": "14.17.5",
-    "yarn": "1.22.11"
+    "node": "20.12.2",
+    "yarn": "4.1.1"
   }
 }
