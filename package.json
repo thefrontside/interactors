@@ -43,7 +43,8 @@
     "@typescript-eslint/utils": "^7.7.1",
     "eslint": "^8.56.0",
     "node-gyp": "^10.1.0",
-    "patch-package": "^6.4.7"
+    "patch-package": "^6.4.7",
+    "typescript-language-server": "^4.3.3"
   },
   "resolutions": {
     "@definitelytyped/typescript-versions": "^0.0.40",
