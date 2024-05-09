@@ -1,5 +1,11 @@
 # @interactors/globals
 
+## 1.0.0-rc1.3
+
+### Patch Changes
+
+- 5386ccc: Update TypeScript to v5.4
+
 ## 1.0.0-rc1.2
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @interactors/core
 
+## 1.0.0-rc1.6
+
+### Patch Changes
+
+- 5386ccc: Update TypeScript to v5.4
+- Updated dependencies [5386ccc]
+  - @interactors/globals@1.0.0-rc1.3
+
 ## 1.0.0-rc1.5
 
 ### Patch Changes

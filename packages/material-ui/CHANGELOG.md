@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.0.0-rc1.6
+
+### Patch Changes
+
+- 5386ccc: Update TypeScript to v5.4
+- Updated dependencies [e156093]
+- Updated dependencies [5386ccc]
+  - @interactors/html@1.0.0-rc1.6
+
 ## 5.0.0-rc1.5
 
 ### Patch Changes

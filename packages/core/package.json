@@ -1,6 +1,6 @@
 {
   "name": "@interactors/core",
-  "version": "1.0.0-rc1.5",
+  "version": "1.0.0-rc1.6",
   "description": "Composable page objects for components",
   "main": "dist/cjs/index.js",
   "browser": "dist/esm/index.js",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@effection/core": "2.2.0",
-    "@interactors/globals": "1.0.0-rc1.2",
+    "@interactors/globals": "1.0.0-rc1.3",
     "@testing-library/dom": "^8.18.1",
     "@testing-library/user-event": "^13.2.1",
     "change-case": "^4.1.1",
