@@ -1,29 +1,43 @@
-import { HTML } from './html';
+import { HTML, innerText } from './html';
+
 
 type FieldTypes = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-function isElement<T extends keyof HTMLElementTagNameMap>(element: Element, tagName: T): element is HTMLElementTagNameMap[T] {
-  return element.tagName.toLowerCase() === tagName;
-}
-
-const LabelInteractor = HTML.extend<HTMLLabelElement>('Label')
-  .selector((element) => {
-    if(isElement(element, 'input') || isElement(element, 'select') || isElement(element, 'textarea')) {
-      return Array.from(element.labels || []);
-    } else {
-      return [];
+const FormFieldInteractor = HTML.extend<FieldTypes>('FormField')
+  .locator((element) => {
+    let ariaLabel = getAriaLabel(element);
+    if (ariaLabel) {
+      return ariaLabel;
+    } else if (element.labels && element.labels.length > 0) {
+      let { labels } = element;
+      if (labels.length == 1) {
+	let [label] = labels;
+	return innerText(label);
+      } else {
+	let error = new Error(`Form field has multiple labels: ${[...labels].map(l => JSON.stringify(l)).join(" and ")}`);
+	error.name = 'AmbiguousElementError';
+	throw error;
+      }
+    } else if ((element as HTMLInputElement).placeholder) {
+      return (element as HTMLInputElement).placeholder;
     }
   })
-
-const FormFieldInteractor = HTML.extend<FieldTypes>('FormField')
-  .locator(LabelInteractor().text())
   .filters({
     valid: (element) => element.validity.valid,
     disabled: {
       apply: (element) => element.disabled,
       default: false
     },
-  })
+  });
+
+function getAriaLabel(element: HTMLElement): string | null {
+  if (element.ariaLabel) {
+    return element.ariaLabel;
+  } else {
+    let ariaLabel = element.getAttribute('aria-label');
+    return ariaLabel
+  }
+}
 
 /**
  * Use this {@link InteractorConstructor} as a base for creating interactors which
