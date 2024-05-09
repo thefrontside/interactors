@@ -30,5 +30,6 @@ jobs:
         with:
           commit: "Version packages"
           title: "Version packages"
+          version: yarn changeset version && yarn install
         env:
           GITHUB_TOKEN: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
