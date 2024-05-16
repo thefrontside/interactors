@@ -1,0 +1,6 @@
+.bigtest
+.cache
+dist
+node_modules
+*.tgz
+storybook-static/
