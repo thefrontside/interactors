@@ -1,9 +1,10 @@
-import { globals, KeyCode } from '@interactors/globals';
+import { globals, KeyCode, KeyValue } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
 import { dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch';
+import { NonPrintableKeys } from './keys';
 
-export type KeyOptions = {
-  key?: string;
+export interface KeyOptions<K extends string> {
+  key?: K;
   code?: KeyCode;
   ctrlKey?: boolean;
   shiftKey?: boolean;
@@ -15,16 +16,17 @@ export type KeyOptions = {
 const KeyboardInteractor = createInteractor('Keyboard')
   .selector(':root')
   .actions({
-    async press(interactor, options: KeyOptions = {}) {
+    async press(interactor, options: KeyOptions<string> | KeyOptions<KeyValue> = {}) {
       await interactor.perform((element) => {
         let activeElement = (element.ownerDocument.activeElement || element.ownerDocument.body) as HTMLElement;
         if(options.key && !options.code) {
-          options.code = globals.keyboardLayout.getCode(options.key);
+          options = { ...options, ...globals.keyboardLayout.getByKey(options.key) };
         }
         if(options.code && !options.key) {
-          options.key = globals.keyboardLayout.getKey(options.code);
+          options = { ...options, ...globals.keyboardLayout.getByCode(options.code) };
         }
-        if(dispatchKeyDown(activeElement, options) && isTextElement(activeElement)) {
+        let isFunctionalKey = options.key ? NonPrintableKeys.has(options.key as KeyValue) : false;
+        if(dispatchKeyDown(activeElement, options) && isTextElement(activeElement) && !isFunctionalKey) {
           // don't change the value if the keydown event was stopped
           setValue(activeElement, activeElement.value + options.key);
           // input is not dispatched if the keydown event was stopped
