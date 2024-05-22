@@ -1,15 +1,9 @@
-import { Matcher, matcherCode} from '../matcher';
+import { Matcher, createMatcher, matcherCode} from '../matcher';
 
-export function including(subString: string): Matcher<string> {
-  return {
-    match(actual: string): boolean {
-      return actual.includes(subString);
-    },
-    description(): string {
-      return `including ${JSON.stringify(subString)}`;
-    },
-    code(): string {
-      return `including(${matcherCode(subString)})`
-    }
-  }
-}
+export const including = createMatcher(
+  (subString: string): Matcher<string> => ({
+    match: (actual: string): boolean => actual.includes(subString),
+    description: (): string => `including ${JSON.stringify(subString)}`,
+    code: (): string => `including(${matcherCode(subString)})`
+  })
+)
