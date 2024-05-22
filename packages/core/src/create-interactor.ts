@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ActionMethods, Actions, FilterDefinition, FilterMethods, FilterParams, Filters, Interactor, InteractorConstructor, InteractorSpecification } from './specification';
+import { ActionMethods, Actions, EmptyObject, FilterDefinition, FilterMethods, FilterParams, Filters, Interactor, InteractorConstructor, InteractorSpecification } from './specification';
 import { instantiateInteractor } from './constructor';
 import { matching } from './matchers/matching';
 import { isMatcher } from './matcher';
@@ -23,7 +23,7 @@ import { MergeObjects } from './merge-objects';
  * @typeParam E The type of DOM Element that this interactor operates on. By specifying the element type, actions and filters defined for the interactor can be type checked against the actual element type.
  * @returns You will need to call the returned builder to create an interactor.
  */
-export function createInteractor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>>(
+export function createInteractor<E extends Element, FP extends FilterParams<any, any> = EmptyObject, FM extends FilterMethods<any, any> = EmptyObject, AM extends ActionMethods<any, any, any> = EmptyObject>(
   name: string,
   specification: InteractorSpecification<E, any, any> = {},
 ): InteractorConstructor<E, FP, FM, AM> {
