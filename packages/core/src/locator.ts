@@ -13,3 +13,5 @@ export class Locator<E extends Element> {
     return applyFilter(this.definition, element);
   }
 }
+
+export const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";

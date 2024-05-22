@@ -1,31 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { converge } from './converge.ts';
-import type { MergeObjects } from './merge-objects.ts';
 import type {
   InteractorOptions,
   ActionMethods,
-  InteractorConstructor,
   Interactor,
   Filters,
   Actions,
-  FilterDefinition,
   FilterParams,
   FilterMethods,
-  InteractorSpecification,
   FilterObject,
-} from './specification.ts';
+} from "./specification.ts";
 import { FilterSet } from './filter-set.ts';
-import { Locator } from './locator.ts';
 import { MatchFilter, applyFilter } from './match.ts';
 import { formatDescription } from './format.ts';
 import { FilterNotMatchingError } from './errors.ts';
-import { createInteraction, type AssertionInteraction, type ActionInteraction } from './interaction.ts';
-import { isMatcher } from './matcher.ts';
-import { matching } from './matchers/matching.ts';
-import { hasMatchMatching, resolveEmpty, resolveFirst, resolveUnique, unsafeSyncResolveParent, unsafeSyncResolveUnique } from './resolvers.ts';
-
-const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
+import { createInteraction, type AssertionInteraction, type ActionInteraction } from "./interaction.ts";
+import { hasMatchMatching, resolveEmpty, resolveFirst, resolveUnique, unsafeSyncResolveParent } from './resolvers.ts';
+import { defaultLocator } from './locator.ts';
 
 /**
  * Removes any default values for a filter from the lookup if that filter is present in the
@@ -99,6 +89,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
       });
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     find<T extends Interactor<any, any>>(child: T): T {
       return instantiateInteractor({
         ...child.options,
@@ -182,40 +173,4 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
   }
 
   return interactor as Interactor<E, FilterParams<E, F>> & FilterMethods<E, F> & ActionMethods<E, A, Interactor<E, FilterParams<E, F>>>;
-}
-
-export function createConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>>(
-  name: string,
-  specification: InteractorSpecification<E, any, any>,
-): InteractorConstructor<E, FP, FM, AM> {
-  function initInteractor(...args: any[]) {
-    let locator, filter;
-    let locatorValue = args[0] instanceof RegExp ? matching(args[0]) : args[0]
-    if (typeof(locatorValue) === 'string' || isMatcher(locatorValue)) {
-      locator = new Locator(specification.locator || defaultLocator, locatorValue);
-      filter = new FilterSet(specification, args[1] || {});
-    } else {
-      filter = new FilterSet(specification, args[0] || {});
-    }
-    return instantiateInteractor({ name, specification, filter, locator, ancestors: [] }, unsafeSyncResolveUnique);
-  }
-
-  return Object.assign(initInteractor, {
-    interactorName: name,
-    selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
-      return createConstructor(name, { ...specification, selector: value });
-    },
-    locator: (value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM> => {
-      return createConstructor(name, { ...specification, locator: value });
-    },
-    filters: <FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM> => {
-      return createConstructor(name, { ...specification, filters: { ...specification.filters, ...filters } });
-    },
-    actions: <I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>> => {
-      return createConstructor(name, { ...specification, actions: Object.assign({}, specification.actions, actions) });
-    },
-    extend: <ER extends Element = E>(newName: string): InteractorConstructor<ER, FP, FM, AM> => {
-      return createConstructor(newName, specification) as unknown as InteractorConstructor<ER, FP, FM, AM>;
-    },
-  }) as unknown as InteractorConstructor<E, FP, FM, AM>;
 }

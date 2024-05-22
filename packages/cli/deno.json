@@ -1,0 +1,20 @@
+{
+  "name": "@interactors/cli",
+  "version": "1.0.0",
+  "tasks": {
+    "test": "deno test --allow-run=deno --allow-env --allow-read",
+    "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"
+  },
+  "exports": "./mod.ts",
+  "imports": {
+    "effection": "^3.0.3"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "prefer-const",
+        "require-yield"
+      ]
+    }
+  }
+}

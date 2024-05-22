@@ -1,15 +1,9 @@
-import { type Matcher, type MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher.ts';
+import { type Matcher, type MaybeMatcher, matcherDescription, applyMatcher, matcherCode, createMatcher } from "../matcher.ts";
 
-export function and<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
-  return {
-    match(actual: T): boolean {
-      return args.every((matcher) => applyMatcher(matcher, actual));
-    },
-    description(): string {
-      return args.map(matcherDescription).join(' and ');
-    },
-    code(): string {
-      return `and(${args.map(arg => matcherCode(arg)).join(', ')})`
-    }
-  }
-}
+export const and = createMatcher(
+  <T>(...args: MaybeMatcher<T>[]): Matcher<T> => ({
+    match: (actual: T): boolean => args.every((matcher) => applyMatcher(matcher, actual)),
+    description: (): string => args.map(matcherDescription).join(" and "),
+    code: (): string => `and(${args.map((arg) => matcherCode(arg)).join(", ")})`,
+  })
+);
