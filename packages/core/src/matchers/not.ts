@@ -1,15 +1,9 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher';
+import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode, createMatcher } from '../matcher';
 
-export function not<T>(matcher: MaybeMatcher<T>): Matcher<T> {
-  return {
-    match(actual: T): boolean {
-      return !applyMatcher(matcher, actual);
-    },
-    description(): string {
-      return `not ${matcherDescription(matcher)}`;
-    },
-    code(): string {
-      return `not(${matcherCode(matcher)})`
-    }
-  }
-}
+export const not = createMatcher(
+  <T>(matcher: MaybeMatcher<T>): Matcher<T> => ({
+    match: (actual: T): boolean => !applyMatcher(matcher, actual),
+    description: (): string => `not ${matcherDescription(matcher)}`,
+    code: (): string => `not(${matcherCode(matcher)})`
+  })
+)

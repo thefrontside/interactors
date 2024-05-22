@@ -6,6 +6,14 @@ export interface Matcher<T> {
   code?(): string;
 }
 
+export abstract class MatcherConstructor {
+  static [Symbol.hasInstance](instance: () => Matcher<unknown>): boolean {
+    return Matchers.has(instance);
+  }
+}
+
+const Matchers = new WeakSet<() => Matcher<unknown>>();
+
 export type MaybeMatcher<T> = Matcher<T> | T;
 
 export function isMatcher<T>(value: MaybeMatcher<T>): value is Matcher<T> {
@@ -36,4 +44,11 @@ export function matcherCode<T>(value: MaybeMatcher<T>): string {
   } else {
     return JSON.stringify(value);
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createMatcher<F extends (...args: any) => Matcher<any>>(fn: F): F {
+  Matchers.add(fn);
+
+  return fn;
 }

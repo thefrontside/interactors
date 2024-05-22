@@ -1,15 +1,9 @@
-import { Matcher, matcherCode } from '../matcher';
+import { Matcher, createMatcher, matcherCode } from '../matcher';
 
-export function matching(regexp: RegExp): Matcher<string> {
-  return {
-    match(actual: string): boolean {
-      return actual.match(regexp) != null;
-    },
-    description(): string {
-      return `matching ${regexp}`;
-    },
-    code(): string {
-      return `matching(${matcherCode(regexp)})`
-    }
-  }
-}
+export const matching = createMatcher(
+  (regexp: RegExp): Matcher<string> => ({
+    match: (actual: string): boolean => actual.match(regexp) != null,
+    description: (): string => `matching ${regexp}`,
+    code: (): string => `matching(${matcherCode(regexp)})`
+  })
+)

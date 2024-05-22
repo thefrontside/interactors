@@ -1,0 +1,104 @@
+/* eslint-disable */
+// import { err, ok } from '../result.ts';
+
+export interface Matcher<T> {
+  matchtype: string;
+  args: unknown[];
+  description: string;
+}
+
+export type Match<T> = Partial<{
+  [K in keyof T]: T[K] | Matcher<T[K]>;
+}>
+
+export type Interactor<T, Actions, TInteraction = Interaction> = Actions & InteractorMethods<T, TInteraction>;
+
+export interface InteractorMethods<T, TInteraction> {
+  path: InteractorMatch[];
+  has(attrs: Match<T>): TInteraction;
+  is(attrs: Match<T>): TInteraction;
+  exists(): TInteraction;
+  find<T, A, D>(interactor: Interactor<T, A, D>): Interactor<T, A, D>;
+}
+
+export interface InteractorMatch {
+  typename: string;
+  args: unknown[];
+  description: string;
+}
+
+export interface Interaction {
+  path: InteractorMatch[];
+  description: string;
+  readonly: boolean,
+  method: {
+    name: string;
+    args: unknown[];
+  };
+}
+
+
+globalThis['interact'] = async (interaction: Interaction) => {
+  try {
+    const [start, ...rest] = interaction.path.map(lookup);
+    const interactor = rest.reduce((i, curr) => i.find(curr), start);
+    await interactor[interaction.method.name](...interaction.method.args.map(rematch));
+    return ok();
+  } catch (error) {
+    if (typeof error === 'string') {
+      return err({ name: 'InteractionError', message: error });
+    } else {
+      return err(error);
+    }
+  }
+};
+
+Object.assign(globalThis['interact'], InteractorTable);
+Object.assign(globalThis['interact'], MatcherTable);
+
+function lookup(segment: InteractorMatch): Implementation {
+  const constructor = InteractorTable[segment.typename];
+  if (!constructor) {
+    const error = new Error(segment.typename);
+    error.name = `NoSuchInteractorError`;
+    throw error;
+  }
+  if (typeof constructor !== 'function') {
+    const error = new Error(
+      `expected ${segment.typename} interactor constructor to be a function, but was ${JSON.stringify(
+        constructor
+      )}`
+    );
+    error.name = `TypeError`;
+    throw error;
+  }
+  return constructor(...segment.args.map(rematch));
+}
+
+function rematch(arg: unknown) {
+  const matcher = arg as Matcher<unknown>;
+  if (matcher && typeof matcher.matchtype === 'string') {
+    const matchFn = MatcherTable[matcher.matchtype];
+    if (!matchFn) {
+      const error = new Error(matcher.matchtype);
+      error.name = `NoSuchMatcherError`;
+      throw error;
+    }
+    return matchFn(...matcher.args);
+  } else if (Array.isArray(arg)) {
+    return arg.map(rematch);
+  } else if (['string', 'boolean', 'number', 'symbol'].includes(typeof arg)) {
+    return arg;
+  } else {
+    return Object.entries(arg).reduce((replaced, [key, value]) => {
+      return {
+        ...replaced,
+        [key]: rematch(value)
+      };
+    }, {});
+  }
+}
+
+interface Implementation {
+  find(child: Implementation): Implementation;
+}

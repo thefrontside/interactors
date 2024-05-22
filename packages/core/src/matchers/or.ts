@@ -1,15 +1,9 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher';
+import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode, createMatcher } from '../matcher';
 
-export function or<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
-  return {
-    match(actual: T): boolean {
-      return args.some((matcher) => applyMatcher(matcher, actual));
-    },
-    description(): string {
-      return args.map(matcherDescription).join(' or ');
-    },
-    code(): string {
-      return `or(${args.map(arg => matcherCode(arg)).join(', ')})`
-    }
-  }
-}
+export const or = createMatcher(
+  <T>(...args: MaybeMatcher<T>[]): Matcher<T> => ({
+    match: (actual: T): boolean => args.some((matcher) => applyMatcher(matcher, actual)),
+    description: (): string => args.map(matcherDescription).join(' or '),
+    code: (): string => `or(${args.map((arg) => matcherCode(arg)).join(', ')})`,
+  })
+)
