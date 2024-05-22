@@ -9,6 +9,6 @@
     "src/**/*.ts"
   ],
   "references": [
-    { "path": "../globals/tsconfig.build.json" }
+    { "path": "../core/tsconfig.build.json" },
   ]
 }
