@@ -2,8 +2,7 @@
   "name": "@interactors/cli",
   "version": "1.0.0-rc1.6",
   "description": "Interactors CLI tool",
-  "main": "dist/cjs/index.js",
-  "browser": "dist/esm/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/thefrontside/interactors.git",
   "homepage": "https://frontside.com/interactors",
@@ -15,7 +14,7 @@
     "README.md"
   ],
   "bin": {
-    "interactors": "./dist/cjs/index.js"
+    "interactors": "./dist/index.js"
   },
   "scripts": {
     "clean": "rm -rf dist *.tsbuildinfo",
@@ -23,9 +22,7 @@
     "check:types": "tsc --noEmit",
     "test:unit": "tsx --test --test-reporter spec --no-deprecation test/**/*.test.ts",
     "test": "yarn test:unit",
-    "prepack": "tsc --build ./tsconfig.build.json && yarn prepack:es2015 && yarn prepack:commonjs",
-    "prepack:es2015": "tsc --project ./tsconfig.build.json --outdir dist/esm --module es2015",
-    "prepack:commonjs": "tsc --project ./tsconfig.build.json --outdir dist/cjs --module commonjs"
+    "prepack": "tsc --build ./tsconfig.build.json && tsc --project ./tsconfig.build.json"
   },
   "dependencies": {
     "@interactors/core": "1.0.0-rc1.6",
