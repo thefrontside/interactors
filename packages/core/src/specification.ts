@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { Operation } from '@effection/core';
 import type { FilterSet } from './filter-set.ts';
 import type { Locator } from './locator.ts';
-import type { ActionInteraction, AssertionInteraction } from './interaction.ts';
+import type { ActionInteraction, AssertionInteraction, Interaction } from './interaction.ts';
 import type { MergeObjects } from './merge-objects.ts';
 import type { MaybeMatcher } from './matcher.ts';
 
@@ -186,26 +185,7 @@ export type FilterParams<E extends Element, F extends Filters<E>> = keyof F exte
     never;
 }
 
-/**
- * An interactor constructor is a function which can be used to initialize an
- * {@link Interactor}. When calling {@link createInteractor}, you will get
- * back an interactor constructor.
- *
- * The constructor can be called with a locator value, and an object of
- * filters. Both are optional, and can be omitted.
- *
- * @typeParam E The type of DOM Element that this interactor operates on.
- * @typeParam F the filters of this interactor, this is usually inferred from the specification
- * @typeParam A the actions of this interactor, this is usually inferred from the specification
- */
-export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>> {
-  interactorName: string;
-  selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
-  locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
-  filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
-  actions<I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>>;
-  extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
-
+export interface InteractorConstructorFunction<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>> {
   /**
    * The constructor can be called with filters only:
    *
@@ -221,7 +201,7 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
    *
    * @param filters An object describing a set of filters to apply, which should match the value of applying the filters defined in the {@link InteractorSpecification} to the element.
    */
-  (filters?: FP): Interactor<E, FP> & FM & AM;
+    (filters?: FP): Interactor<E, FP> & FM & AM;
   /**
    * The constructor can be called with a locator:
    *
@@ -242,10 +222,82 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
   (value: MaybeMatcher<string> | RegExp, filters?: FP): Interactor<E, FP> & FM & AM;
 }
 
+/**
+ * An interactor constructor is a function which can be used to initialize an
+ * {@link Interactor}. When calling {@link createInteractor}, you will get
+ * back an interactor constructor.
+ *
+ * The constructor can be called with a locator value, and an object of
+ * filters. Both are optional, and can be omitted.
+ *
+ * @typeParam E The type of DOM Element that this interactor operates on.
+ * @typeParam F the filters of this interactor, this is usually inferred from the specification
+ * @typeParam A the actions of this interactor, this is usually inferred from the specification
+ */
+export interface InteractorConstructor<E extends Element, FP extends FilterParams<any, any>, FM extends FilterMethods<any, any>, AM extends ActionMethods<any, any, any>> extends InteractorConstructorFunction<E, FP, FM, AM> {
+  interactorName: string;
+  selector(value: string | SelectorFn<E>): InteractorConstructor<E, FP, FM, AM>;
+  locator(value: FilterDefinition<string, E>): InteractorConstructor<E, FP, FM, AM>;
+  filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
+  actions<I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>>;
+  extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
+}
+
 export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, EmptyObject>>> = {
   name: string;
   specification: InteractorSpecification<E, F, A>;
   locator?: Locator<E>;
   filter: FilterSet<E, F>;
   ancestors: InteractorOptions<any, any, any>[];
+};
+
+export interface TInteractorConstructor<I extends InteractorConstructorFunction<any, any, any, any>> {
+  (filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TFilterMethods<GetFilters<I>> & TActionMethods<GetActions<I>>
+  (locator: string | TMatcher<string> | RegExp, filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TFilterMethods<GetFilters<I>> & TActionMethods<GetActions<I>>
+}
+
+export interface TMatcher<T> {
+  typename: string;
+  description: string;
+  args: T[];
+}
+
+export type TMatch<T> = Partial<
+  {
+    [K in keyof T]: T[K] | TMatcher<T[K]>;
+  }
+>;
+
+export interface TInteractor<T> {
+  typename: string;
+  locator?: string | TMatcher<string> | RegExp;
+  match?: TMatch<T>;
+  ancestors: TInteractor<any>[];
+  description: string;
+
+  find<I extends TInteractor<any>>(interactor: I): I;
+  exists(): TInteraction;
+  absent(): TInteraction;
+  has<M>(match: TMatch<M>): TInteraction;
+  is<M>(match: TMatch<M>): TInteraction;
+}
+
+export interface TInteraction {
+  path: TInteractor<any>[];
+  description: string;
+  readonly: boolean;
+}
+
+type GetActions<T> = T extends InteractorConstructorFunction<any, any, any, infer AM> ? AM : never;
+type GetFilters<T> = T extends InteractorConstructorFunction<any, any, infer FM, any> ? FM : never;
+type GetMatcher<T> = T extends InteractorConstructorFunction<any, infer FP, any, any> ? FP : never;
+
+export type TActionMethods<AM extends ActionMethods<any, any, any>> = {
+  [P in keyof AM]: AM[P] extends (...args: infer TArgs) => Interaction<any, any>
+    ? (...args: TArgs) => TInteraction
+    : never;
+};
+
+export type TFilterMethods<FM extends FilterMethods<any, any>> = {
+  [P in keyof FM]: () => TInteraction;
 };

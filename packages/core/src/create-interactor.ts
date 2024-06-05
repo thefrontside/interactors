@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ActionMethods, Actions, EmptyObject, FilterDefinition, FilterMethods, FilterParams, Filters, Interactor, InteractorConstructor, InteractorSpecification } from "./specification.ts";
-import { instantiateInteractor } from "./constructor.ts";
+import type { ActionMethods, Actions, EmptyObject, FilterDefinition, FilterMethods, FilterParams, Filters, Interactor, InteractorConstructor, InteractorConstructorFunction, InteractorSpecification, TInteractorConstructor, TMatch, TInteractor, TActionMethods, TFilterMethods } from './specification.ts';
+import { instantiateInteractor } from './constructor.ts';
 import { matching } from './matchers/matching.ts';
-import { isMatcher } from './matcher.ts';
+import { isMatcher, matcherDescription } from './matcher.ts';
 import { Locator, defaultLocator } from './locator.ts';
-import { FilterSet } from './filter-set.ts';
+import { FilterSet, filtersDescription } from './filter-set.ts';
 import { unsafeSyncResolveUnique } from './resolvers.ts';
 import type { MergeObjects } from './merge-objects.ts';
 
@@ -58,6 +58,93 @@ export function createInteractor<E extends Element, FP extends FilterParams<any,
     extend: <ER extends Element = E>(newName: string): InteractorConstructor<ER, FP, FM, AM> => {
       return createInteractor(newName, specification) as unknown as InteractorConstructor<ER, FP, FM, AM>;
     },
+    constructor: (transform: <T>(interactor: TInteractor<T>) => TInteractor<T> = x => x): TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>> => {
+      return ((...args: Parameters<TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>>>) => transform({
+        typename: name,
+        locator: args[0],
+        ...(args[1] ? { match: args[1] } : {}),
+        ancestors: [],
+        get description() {
+          return [
+            this.match
+            ? `${this.typename} ${matcherDescription(this.locator)} ${filtersDescription(this.match)}`.trim()
+            : `${this.typename} ${matcherDescription(this.locator)}`.trim(),
+            ...this.ancestors.map((i) => i.description).reverse()
+          ].join(' within ');
+        },
+
+        find(i) {
+          return {
+            ...i,
+            ancestors: this.ancestors.concat(this, ...i.ancestors),
+          }
+        },
+        exists() {
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
+          let interactor: TInteractor<any> = this
+          return {
+            path: this.ancestors.concat(this),
+            get description() { return `${interactor.description} exists` },
+            readonly: true,
+          }
+        },
+        absent() {
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
+          let interactor: TInteractor<any> = this
+          return {
+            path: this.ancestors.concat(this),
+            get description() { return `${interactor.description} does not exist` },
+            readonly: true,
+          }
+        },
+        has<M>(match: TMatch<M>) {
+          return this.is(match);
+        },
+        is<M>(match: TMatch<M>) {
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
+          let interactor: TInteractor<any> = this
+          return {
+            path: this.ancestors.concat(this),
+            get description() { return `${interactor.description} matches filters: ${filtersDescription(match)}` },
+            readonly: true,
+          }
+        },
+
+        ...(Object.keys(specification.actions || {}).reduce((actions, name) => ({
+          ...actions,
+          [name]: function(...args: unknown[]) {
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
+            let interactor = this;
+            return {
+              path: this.ancestors.concat(this),
+              get description() {
+                let actionDescription = name;
+                if (args.length) {
+                  actionDescription += ` with ` + args.map((a) => JSON.stringify(a)).join(', ');
+                }
+                return `${actionDescription} on ${interactor.description}`;
+              },
+              readonly: false,
+            }
+          }
+        }), {} as TActionMethods<AM>)),
+
+        ...(Object.keys(specification.filters || {}).reduce((filters, name) => ({
+          ...filters,
+          [name]: function() {
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
+            let interactor = this;
+            return {
+              path: this.ancestors.concat(this),
+              get description() {
+                return `${name} of ${interactor.description}`;
+              },
+              readonly: true,
+            }
+          }
+        }), {} as TFilterMethods<FM>)),
+      })) as TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>>
+    }
   }) as unknown as InteractorConstructor<E, FP, FM, AM>;
 }
 
