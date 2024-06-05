@@ -1,16 +1,10 @@
 import { Filters, FilterFn, FilterObject, FilterParams, InteractorSpecification } from './specification';
 import { noCase } from 'change-case';
 import { matcherDescription } from './matcher';
+import { MaybeMatcher } from '../dist';
 
-export class FilterSet<E extends Element, F extends Filters<E>> {
-  constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public specification: InteractorSpecification<E, F, any>,
-    public filters: FilterParams<E, F>,
-  ) {};
-
-  get description(): string {
-    let entries = Object.entries(this.filters);
+export function filtersDescription(filters: Record<string, MaybeMatcher<unknown>>) {
+  let entries = Object.entries(filters);
     if(entries.length === 0) {
       return '';
     } else {
@@ -26,6 +20,17 @@ export class FilterSet<E extends Element, F extends Filters<E>> {
         }
       }).join(' and ');
     }
+}
+
+export class FilterSet<E extends Element, F extends Filters<E>> {
+  constructor(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public specification: InteractorSpecification<E, F, any>,
+    public filters: FilterParams<E, F>,
+  ) {};
+
+  get description(): string {
+    return filtersDescription(this.filters);
   }
 
   get all(): FilterParams<E, F> {
