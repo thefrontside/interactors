@@ -241,6 +241,7 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
   actions<I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>>;
   extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
+  builder(transformer: <T>(interactor: TInteractor<T>) => TInteractor<T>): TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>>;
 }
 
 export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, EmptyObject>>> = {

@@ -5,8 +5,8 @@ export function generateImports(modules: ImportedModules): string {
     ...Object.entries(modules).map(
       ([moduleName, { interactors, matchers }]) =>
         `import { ${[
-          ...interactors.map(({ oldName, newName }) => (oldName === newName ? newName : `${oldName} as ${newName}Interactor`)),
-          ...matchers.map(({ oldName, newName }) => (oldName === newName ? newName : `${oldName} as ${newName}Matcher`)),
+          ...interactors.map(({ oldName, newName }) => (`${oldName} as ${newName}Interactor`)),
+          ...matchers.map(({ oldName, newName }) => (`${oldName} as ${newName}Matcher`)),
         ].join(", ")} } from '${moduleName}'`
     ),
     `const InteractorTable = {${Object.values(modules)

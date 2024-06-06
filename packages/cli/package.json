@@ -17,6 +17,7 @@
     "interactors": "./dist/index.js"
   },
   "scripts": {
+    "interactors": "tsx ./src/index.ts build",
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "check:types": "tsc --noEmit",

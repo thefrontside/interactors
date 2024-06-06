@@ -58,7 +58,7 @@ export function createInteractor<E extends Element, FP extends FilterParams<any,
     extend: <ER extends Element = E>(newName: string): InteractorConstructor<ER, FP, FM, AM> => {
       return createInteractor(newName, specification) as unknown as InteractorConstructor<ER, FP, FM, AM>;
     },
-    constructor: (transform: <T>(interactor: TInteractor<T>) => TInteractor<T> = x => x): TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>> => {
+    builder: (transform: <T>(interactor: TInteractor<T>) => TInteractor<T> = x => x): TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>> => {
       return ((...args: Parameters<TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>>>) => transform({
         typename: name,
         locator: args[0],
