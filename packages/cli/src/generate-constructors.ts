@@ -9,11 +9,11 @@ export function generateConstructors(imports: string, modules: ImportedModules):
       [
         ...interactors.map(
           ({ newName }) =>
-            `export const ${newName} = ${newName}Interactor.constructor(i => ({ ...i, typename: "${newName}" }))`
+            `export const ${newName} = ${newName}Interactor.builder(i => ({ ...i, typename: "${newName}" }))`
         ),
         ...matchers.map(
           ({ newName }) =>
-            `export const ${newName} = ${newName}Matcher.constructor(m => ({ ...m, typename: "${newName}" }))`
+            `export const ${newName} = ${newName}Matcher.builder(m => ({ ...m, typename: "${newName}" }))`
         )
       ]
     ),

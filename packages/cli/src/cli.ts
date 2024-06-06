@@ -32,17 +32,18 @@ export function cli(argv: readonly string[]) {
     }
 
     let config: Config = defaultConfig;
-    try {
-      config = yield* call(import(args.config as string))
-    } catch (error) {
-      console.error(`Error loading config file: ${error.message}`);
-      console.error(`Using default config: ${JSON.stringify(defaultConfig)}`);
-    }
-    let outDir = config.outDir ?? args.outDir as string;
+    // try {
+    //   config = yield* call(import(args.config as string))
+    // } catch (error) {
+    //   console.error(`Error loading config file: ${String(error.message)}`);
+    //   console.error(`Using default config: ${JSON.stringify(defaultConfig)}`);
+    // }
+    let outDir = args.outDir;
 
     let modulesList = new Set([
       // NOTE: Include core by default
       '@interactors/core',
+      '@interactors/html',
       ...config.modules
     ])
 
@@ -52,11 +53,15 @@ export function cli(argv: readonly string[]) {
       imports[moduleName] = (yield* call(import(moduleName))) as Record<string, unknown>;
     }
 
-    let agentTemplate = yield* call(readFile('./templates/agent.ts.template', 'utf8'));
+    let templatePath = new URL("../src/templates/agent.ts.template", import.meta.url).pathname;
+    
+    let agentTemplate = yield* call(readFile(templatePath, 'utf8'));
 
     let importedModules = importInteractors(imports, config);
 
     let importCode = generateImports(importedModules);
+    
+    console.dir({ importedModules, importCode }, { depth: 5});
 
     let constructorsCode = generateConstructors(importCode, importedModules);
 
