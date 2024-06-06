@@ -1,13 +1,10 @@
 import { InitInteractor, MatcherConstructor } from "@interactors/core";
-import { Config } from "./types.ts";
+import { Config, ImportedModules } from "./types.ts";
 
-export function generateImports(modules: { [moduleName: string]: Record<string, unknown> }, config: Partial<Config> = {}): string {
+export function importInteractors(modules: { [moduleName: string]: Record<string, unknown> }, config: Partial<Config> = {}): ImportedModules {
   let uniqueNames = new Map<string, string>();
 
-  let imports: Record<string, {
-    interactors: { oldName: string, newName: string }[]
-    matchers: { oldName: string, newName: string }[]
-  }> = {}
+  let imports: ImportedModules = {}
 
   for (let moduleName in modules) {
     imports[moduleName] = {
@@ -17,6 +14,7 @@ export function generateImports(modules: { [moduleName: string]: Record<string, 
 
     let { interactors, matchers } = imports[moduleName];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     for (let [name, obj] of Object.entries<any>(modules[moduleName])) {
       if (obj instanceof InitInteractor) {
         let interactorName = config.overrides?.(moduleName, name) ?? name;
@@ -37,19 +35,5 @@ export function generateImports(modules: { [moduleName: string]: Record<string, 
     }
   }
 
-  return [
-    ...Object.entries(imports).map(
-      ([moduleName, { interactors, matchers }]) => `import { ${
-        [...interactors, ...matchers].map(
-          ({ oldName, newName }) => oldName === newName ? newName : `${oldName} as ${newName}`
-        ).join(', ')
-      } } from '${moduleName}'`
-    ),
-    `const InteractorTable = {${
-      Object.values(imports).flatMap(({ interactors }) => interactors.map(({ newName }) => newName)).join(', ')
-    }}`,
-    `const MatcherTable = {${
-      Object.values(imports).flatMap(({ matchers }) => matchers.map(({ newName }) => newName)).join(', ')
-    }}`,
-  ].join('\n')
+  return imports;
 }

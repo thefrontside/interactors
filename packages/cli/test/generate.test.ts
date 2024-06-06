@@ -3,6 +3,7 @@ import { expect } from "jsr:@std/expect";
 import { generateImports } from '../src/generate.ts';
 import { createInteractor, createMatcher } from '@interactors/core';
 import * as core from '@interactors/core';
+import { importInteractors } from '../src/import-interactors';
 
 const TextField = createInteractor('text field');
 const and = createMatcher(() => ({
@@ -19,7 +20,7 @@ describe('generateImports', () => {
       }
     };
 
-    let code = generateImports(imports);
+    let code = generateImports(importInteractors(imports));
 
     expect(code).toEqual(`import { TextField, and } from '@interactors/core'
 const InteractorTable = {TextField}
@@ -41,7 +42,7 @@ const MatcherTable = {and}`);
       }
     };
 
-    let code = generateImports(imports);
+    let code = generateImports(importInteractors(imports));
 
     expect(code).toEqual(`import { TextField, and } from '@interactors/core'
 const InteractorTable = {TextField}
@@ -53,7 +54,7 @@ const MatcherTable = {and}`);
       '@interactors/core': core,
     };
 
-    let code = generateImports(imports);
+    let code = generateImports(importInteractors(imports));
 
     expect(code).toEqual(`import { including, matching, and, or, not, some, every } from '@interactors/core'
 const InteractorTable = {}
@@ -67,7 +68,7 @@ const MatcherTable = {including, matching, and, or, not, some, every}`);
     };
 
     expect(() => {
-      generateImports(imports);
+      generateImports(importInteractors(imports));
     }).toThrowError('Interactor name TextField from @interactors/html is conflicted with named import from @interactors/core');
   })
 
@@ -77,9 +78,9 @@ const MatcherTable = {including, matching, and, or, not, some, every}`);
       '@interactors/html': { TextField }
     };
 
-    let code = generateImports(imports, {
+    let code = generateImports(importInteractors(imports, {
       overrides: (moduleName, name) => moduleName === '@interactors/html' ? `HTML${name}` : name
-    });
+    }));
 
     expect(code).toEqual(`import { TextField } from '@interactors/core'
 import { TextField as HTMLTextField } from '@interactors/html'
