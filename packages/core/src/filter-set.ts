@@ -1,7 +1,6 @@
 import { Filters, FilterFn, FilterObject, FilterParams, InteractorSpecification } from './specification';
 import { noCase } from 'change-case';
-import { matcherDescription } from './matcher';
-import { MaybeMatcher } from '../dist';
+import { MaybeMatcher, matcherDescription } from './matcher';
 
 export function filtersDescription(filters: Record<string, MaybeMatcher<unknown>>) {
   let entries = Object.entries(filters);
