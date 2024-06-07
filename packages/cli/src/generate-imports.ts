@@ -5,15 +5,15 @@ export function generateImports(modules: ImportedModules): string {
     ...Object.entries(modules).map(
       ([moduleName, { interactors, matchers }]) =>
         `import { ${[
-          ...interactors.map(({ oldName, newName }) => (`${oldName} as ${newName}Interactor`)),
-          ...matchers.map(({ oldName, newName }) => (`${oldName} as ${newName}Matcher`)),
+          ...interactors.map(({ name }) => (`${name} as ${name}Interactor`)),
+          ...matchers.map(({ name }) => (`${name} as ${name}Matcher`)),
         ].join(", ")} } from '${moduleName}'`
     ),
     `const InteractorTable = {${Object.values(modules)
-      .flatMap(({ interactors }) => interactors.map(({ newName }) => `${newName}: ${newName}Interactor`))
+      .flatMap(({ interactors }) => interactors.map(({ name }) => `${name}: ${name}Interactor`))
       .join(", ")}}`,
     `const MatcherTable = {${Object.values(modules)
-      .flatMap(({ matchers }) => matchers.map(({ newName }) => `${newName}: ${newName}Matcher`))
+      .flatMap(({ matchers }) => matchers.map(({ name }) => `${name}: ${name}Matcher`))
       .join(", ")}}`,
   ].join("\n");
 }

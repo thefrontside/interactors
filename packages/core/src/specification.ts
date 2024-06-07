@@ -241,7 +241,7 @@ export interface InteractorConstructor<E extends Element, FP extends FilterParam
   filters<FR extends Filters<E>>(filters: FR): InteractorConstructor<E, MergeObjects<FP, FilterParams<E, FR>>, MergeObjects<FM, FilterMethods<E, FR>>, AM>;
   actions<I extends Interactor<E, FP> & FM & AM, AR extends Actions<E, I>>(actions: AR): InteractorConstructor<E, FP, FM, MergeObjects<AM, ActionMethods<E, AR, I>>>;
   extend<ER extends E = E>(name: string): InteractorConstructor<ER, FP, FM, AM>;
-  builder(transformer: <T>(interactor: TInteractor<T>) => TInteractor<T>): TInteractorConstructor<InteractorConstructorFunction<E, FP, FM, AM>>;
+  builder<T>(transform: (interaction: TInteraction) => T): TInteractorConstructor<T, InteractorConstructorFunction<E, FP, FM, AM>>;
 }
 
 export type InteractorOptions<E extends Element, F extends Filters<E>, A extends Actions<E, Interactor<E, EmptyObject>>> = {
@@ -252,9 +252,9 @@ export type InteractorOptions<E extends Element, F extends Filters<E>, A extends
   ancestors: InteractorOptions<any, any, any>[];
 };
 
-export interface TInteractorConstructor<I extends InteractorConstructorFunction<any, any, any, any>> {
-  (filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TFilterMethods<GetFilters<I>> & TActionMethods<GetActions<I>>
-  (locator: string | TMatcher<string> | RegExp, filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TFilterMethods<GetFilters<I>> & TActionMethods<GetActions<I>>
+export interface TInteractorConstructor<T, I extends InteractorConstructorFunction<any, any, any, any>> {
+  (filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TInteractorMethods<T> & TFilterMethods<T, GetFilters<I>> & TActionMethods<T, GetActions<I>>
+  (locator: string | TMatcher<string> | RegExp, filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TInteractorMethods<T> & TFilterMethods<T, GetFilters<I>> & TActionMethods<T, GetActions<I>>
 }
 
 export interface TMatcher<T> {
@@ -269,36 +269,40 @@ export type TMatch<T> = Partial<
   }
 >;
 
+export interface TInteractorMethods<T> {
+  find<I extends TInteractor<any>>(interactor: I): I;
+  exists(): T;
+  absent(): T;
+  has<M>(match: TMatch<M>): T;
+  is<M>(match: TMatch<M>): T;
+}
+
 export interface TInteractor<T> {
   typename: string;
   locator?: string | TMatcher<string> | RegExp;
   match?: TMatch<T>;
-  ancestors: TInteractor<any>[];
   description: string;
-
-  find<I extends TInteractor<any>>(interactor: I): I;
-  exists(): TInteraction;
-  absent(): TInteraction;
-  has<M>(match: TMatch<M>): TInteraction;
-  is<M>(match: TMatch<M>): TInteraction;
+  ancestors: TInteractor<any>[];
 }
 
 export interface TInteraction {
-  path: TInteractor<any>[];
+  name: string;
+  path: Omit<TInteractor<any>, 'ancestors'>[];
   description: string;
   readonly: boolean;
+  args: unknown[];
 }
 
 type GetActions<T> = T extends InteractorConstructorFunction<any, any, any, infer AM> ? AM : never;
 type GetFilters<T> = T extends InteractorConstructorFunction<any, any, infer FM, any> ? FM : never;
 type GetMatcher<T> = T extends InteractorConstructorFunction<any, infer FP, any, any> ? FP : never;
 
-export type TActionMethods<AM extends ActionMethods<any, any, any>> = {
+export type TActionMethods<T, AM extends ActionMethods<any, any, any>> = {
   [P in keyof AM]: AM[P] extends (...args: infer TArgs) => Interaction<any, any>
-    ? (...args: TArgs) => TInteraction
+    ? (...args: TArgs) => T
     : never;
 };
 
-export type TFilterMethods<FM extends FilterMethods<any, any>> = {
-  [P in keyof FM]: () => TInteraction;
+export type TFilterMethods<T, FM extends FilterMethods<any, any>> = {
+  [P in keyof FM]: () => T;
 };

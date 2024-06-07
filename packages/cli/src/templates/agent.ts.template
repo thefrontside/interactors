@@ -1,9 +1,24 @@
 /* eslint-disable */
-// import { err, ok } from '../result.ts';
-import { InteractorConstructor } from '@interactors/core';
+import type { InteractorConstructor } from '@interactors/core';
+
+export function ok<TError extends { name: string; message: string }>(): Result<void, TError>;
+export function ok<T>(value: T): Result<T>;
+export function ok<T>(value?: T): Result<T> {
+  if (typeof value === 'undefined') {
+    return { ok: true } as Result<T>;
+  } else {
+    return { ok: true, value } as Result<T>;
+  }
+}
+
+export function err<T, TError extends { name: string; message: string } = { name: string; message: string }>(
+  error: TError
+): Result<T, TError> {
+  return { ok: false, error };
+}
 
 export interface Matcher<T> {
-  matchtype: string;
+  typename: string;
   args: unknown[];
   description: string;
 }
@@ -27,16 +42,15 @@ export interface InteractorMatch<T> {
   locator?: string | Matcher<string> | RegExp;
   filters?: Match<T>;
   description: string;
+  ancestors: InteractorMatch<any>[];
 }
 
 export interface Interaction<T> {
+  name: string;
   path: InteractorMatch<T>[];
   description: string;
   readonly: boolean,
-  method: {
-    name: string;
-    args: unknown[];
-  };
+  args: unknown[];
 }
 
 declare global {
@@ -49,14 +63,14 @@ declare global {
   }
 }
 
-window.interactorAgent = {
+globalThis.interactorAgent = {
   interactors: InteractorTable,
   matchers: MatcherTable,
   run: async <T>(interaction: Interaction<T>) => {
     try {
       const [start, ...rest] = interaction.path.map(lookup);
       const interactor = rest.reduce((i, curr) => i.find(curr), start);
-      await interactor[interaction.method.name](...interaction.method.args.map(handleArg));
+      await interactor[interaction.name](...interaction.args.map(handleArg));
       return ok();
     } catch (error) {
       if (typeof error === 'string') {
@@ -89,13 +103,13 @@ function lookup<T>(segment: InteractorMatch<T>): Implementation {
 }
 
 function isMatcher(value: unknown) {
-  return value && typeof value.matchtype === 'string'
+  return value && typeof value.typename === 'string'
 }
 
 function rematch(matcher: Matcher<unknown>) {
-  const matchFn = MatcherTable[matcher.matchtype];
+  const matchFn = MatcherTable[matcher.typename];
   if (!matchFn) {
-    const error = new Error(matcher.matchtype);
+    const error = new Error(matcher.typename);
     error.name = `NoSuchMatcherError`;
     throw error;
   }

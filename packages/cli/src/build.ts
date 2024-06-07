@@ -33,6 +33,8 @@ export function* build(options: BuildOptions): Operation<void> {
     >;
   }
 
+  // TODO use esbuild to agent
+
   let templatePath =
     new URL("../src/templates/agent.ts.template", import.meta.url).pathname;
 

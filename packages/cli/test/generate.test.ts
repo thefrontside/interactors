@@ -78,9 +78,7 @@ const MatcherTable = {including, matching, and, or, not, some, every}`);
       '@interactors/html': { TextField }
     };
 
-    let code = generateImports(importInteractors(imports, {
-      overrides: (moduleName, name) => moduleName === '@interactors/html' ? `HTML${name}` : name
-    }));
+    let code = generateImports(importInteractors(imports));
 
     expect(code).toEqual(`import { TextField } from '@interactors/core'
 import { TextField as HTMLTextField } from '@interactors/html'
