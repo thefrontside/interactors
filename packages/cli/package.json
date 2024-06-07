@@ -24,7 +24,8 @@
     "check:types": "tsc --noEmit",
     "test:unit": "tsx --test --test-reporter spec --no-deprecation test/**/*.test.ts",
     "test": "yarn test:unit",
-    "prepack": "tsc --build ./tsconfig.build.json && tsc --project ./tsconfig.build.json"
+    "prepack": "tsc --build ./tsconfig.build.json && tsc --project ./tsconfig.build.json",
+    "postinstall": "playwright install"
   },
   "dependencies": {
     "@interactors/core": "1.0.0-rc1.6",

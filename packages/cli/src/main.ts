@@ -21,7 +21,11 @@ main(function* (argv) {
       "continuously rebuild and test an agent.ts for interactors ",
       (yargs) =>
         yargs
-          .option(...outDirOption()),
+          .option(...outDirOption())
+	  .option('repl', {
+	    type: 'string',
+	    description: 'develop interactors on page at URL'
+	  }),
     )
     .help()
     .parse(argv);
