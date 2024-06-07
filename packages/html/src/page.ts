@@ -42,3 +42,5 @@ const PageInteractor = createInteractor<HTMLHtmlElement>('Page')
  * @category Interactor
  */
 export const Page = PageInteractor();
+
+export const Page = () => PageInteractor();
