@@ -51,6 +51,7 @@
   "resolutions": {
     "@definitelytyped/typescript-versions": "^0.0.40",
     "chromedriver": "123.0.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "unbox-primitive": "1.0.2"
   }
 }
