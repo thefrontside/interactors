@@ -21,7 +21,7 @@ export function importInteractors(modules: { [moduleName: string]: Record<string
         if (uniqueNames.has(interactorName)) {
           throw new Error(`Interactor name ${interactorName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(interactorName)}`);
         }
-        interactors.push({ oldName: name, newName: interactorName });
+        interactors.push({ name });
         uniqueNames.set(interactorName, moduleName);
       }
       if (obj instanceof MatcherConstructor) {
@@ -29,7 +29,7 @@ export function importInteractors(modules: { [moduleName: string]: Record<string
         if (uniqueNames.has(matcherName)) {
           throw new Error(`Matcher name ${matcherName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(matcherName)}`);
         }
-        matchers.push({ oldName: name, newName: matcherName });
+        matchers.push({ name });
         uniqueNames.set(matcherName, moduleName);
       }
     }
