@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@interactors/core": "1.0.0-rc1.6",
+    "chokidar": "^3.6.0",
     "effection": "^3.0.3",
     "yargs": "^17.7.2"
   },
