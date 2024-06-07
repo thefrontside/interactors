@@ -1,4 +1,8 @@
 {
   "extends": "@frontside/tsconfig",
-  "exclude": ["types/**/*.ts"]
+  "exclude": ["types/**/*.ts"],
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "esnext"
+  }
 }
