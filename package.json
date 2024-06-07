@@ -52,6 +52,7 @@
     "@definitelytyped/typescript-versions": "^0.0.40",
     "chromedriver": "126.0.4",
     "typescript": "^5.4.5",
-    "unbox-primitive": "1.0.2"
+    "unbox-primitive": "1.0.2",
+    "has-bigints": "1.0.2"
   }
 }

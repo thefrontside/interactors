@@ -18,6 +18,7 @@
   },
   "scripts": {
     "interactors": "tsx ./src/index.ts build",
+    "agent": "esbuild build/agent.ts --bundle --outfile=build/agent.js",
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "check:types": "tsc --noEmit",
@@ -35,7 +36,9 @@
   "devDependencies": {
     "@frontside/tsconfig": "^1.2.0",
     "@types/node": "^20.11.25",
+    "esbuild": "0.20.2",
     "expect": "^24.9.0",
+    "playwright": "^1.44.1",
     "tsx": "^4.7.1",
     "typescript": "~5.4.5"
   },
