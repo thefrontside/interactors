@@ -1,11 +1,12 @@
-import { createSignal, Operation, resource, Stream } from "effection";
-import chokidar from "chokidar";
+import { Operation } from "effection";
 import { build, BuildOptions, modulePaths } from "./build.ts";
-import { Stats } from "node:fs";
+import { useWatcher } from "./watcher.ts";
 
 export interface DevOptions extends BuildOptions {
   outDir: string;
+  repl?: string;
 }
+
 export function* dev(options: DevOptions): Operation<void> {
   let paths = modulePaths(options);
 
@@ -16,25 +17,4 @@ export function* dev(options: DevOptions): Operation<void> {
     yield* updates.next();
     console.log("changes detected, rebuilding...");
   }
-}
-
-export interface WatchEvent {
-  path: string;
-  stats?: Stats;
-}
-
-function useWatcher(paths: string[]): Stream<WatchEvent, never> {
-  return resource(function* (provide) {
-    let { send, ...subscribe } = createSignal<WatchEvent>();
-
-    let watcher = chokidar.watch(paths);
-
-    watcher.on("change", (path, stats) => send({ path, stats }));
-
-    try {
-      yield* provide(yield* subscribe);
-    } finally {
-      watcher.close();
-    }
-  });
 }
