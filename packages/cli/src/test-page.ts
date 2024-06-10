@@ -7,6 +7,7 @@ import {
   spawn,
 } from "effection";
 import { readFile } from "fs/promises";
+import { existsSync } from "fs";
 import { chromium, Page } from "playwright";
 import { buildAttrs, BuildOptions } from "./build.js";
 
@@ -24,6 +25,28 @@ export function useTestPage(
     let { browser, page } = yield* call(async () => {
       let browser = await chromium.launch({ headless: false });
       let context = await browser.newContext();
+
+      let digest = '';
+
+      await context.exposeBinding('$iagentupdate', async ({ page }, options = {} ) => {
+	let { init } = options;
+	if (existsSync(agentScriptPath)) {
+	  let decoder = new TextDecoder();
+	  let buffer = await readFile(agentScriptPath);
+
+	  let nextdigest = decoder.decode(await crypto.subtle.digest('SHA-1', buffer));
+	  if (init || digest !== nextdigest) {
+	    let source = decoder.decode(
+              buffer,
+	    );
+	    await page.evaluate(source);
+	    digest = nextdigest;
+	  }
+	} else {
+	  await page.evaluate(`console.log('agent script not found at "${agentScriptPath}"')`);
+	}
+      });
+      await context.addInitScript('$iagentupdate({ init: true })');
       let page = await context.newPage();
       await page.goto(url);
       return { browser, page };
@@ -34,14 +57,7 @@ export function useTestPage(
     try {
       yield* provide({
         *update() {
-          let decoder = new TextDecoder();
-          let source = decoder.decode(
-            yield* call(() => readFile(agentScriptPath)),
-          );
-          yield* call(async () => {
-            await page.addInitScript(source);
-            await page.evaluate(source);
-          });
+	  yield* call(() => page.evaluate('$iagentupdate()'));
           yield* repl.reset();
         },
       });
