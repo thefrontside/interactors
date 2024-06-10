@@ -8,7 +8,7 @@ import {
 } from "effection";
 import { readFile } from "fs/promises";
 import { chromium, Page } from "playwright";
-import { buildAttrs, BuildOptions } from "./build";
+import { buildAttrs, BuildOptions } from "./build.js";
 
 interface TestPage {
   update(): Operation<void>;
