@@ -2,9 +2,9 @@ import { call, Operation } from "effection";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import * as esbuild from "esbuild";
-import { generateImports } from "./generate-imports.ts";
-import { importInteractors } from "./import-interactors.ts";
-import { generateConstructors } from "./generate-constructors.ts";
+import { generateImports } from "./generate-imports.js";
+import { importInteractors } from "./import-interactors.js";
+import { generateConstructors } from "./generate-constructors.js";
 
 export interface BuildOptions {
   outDir: string;
@@ -16,11 +16,11 @@ export function* build(options: BuildOptions): Operation<void> {
 
   yield* call(() => mkdir(outDir, { recursive: true }));
 
-  const { modules, agentScriptPath, constructorsPath } = buildAttrs(options);
+  let { modules, agentScriptPath, constructorsPath } = buildAttrs(options);
 
   let modulesList = new Set([
     // NOTE: Include core by default
-    "@interactors/core",
+    // "@interactors/core",
     "@interactors/html",
     ...modules,
   ]);
@@ -37,7 +37,7 @@ export function* build(options: BuildOptions): Operation<void> {
   // TODO use esbuild to agent
 
   let templatePath =
-    new URL("../src/templates/agent.ts.template", import.meta.url).pathname;
+    require.resolve("../src/templates/agent.ts.template");
 
   let agentTemplate = yield* call(readFile(templatePath, "utf8"));
 
