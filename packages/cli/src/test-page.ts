@@ -40,6 +40,10 @@ export function useTestPage(
               buffer,
 	    );
 	    await page.evaluate(source);
+	    await page.evaluate(() => {
+	      Object.assign(globalThis, {...globalThis["interactorAgent"]["interactors"]});
+	      Object.assign(globalThis, globalThis["interactorAgent"]["matchers"]);
+	    });
 	    digest = nextdigest;
 	  }
 	} else {
