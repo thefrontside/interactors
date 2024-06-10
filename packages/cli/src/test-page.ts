@@ -41,7 +41,9 @@ export function useTestPage(
 	    );
 	    await page.evaluate(source);
 	    await page.evaluate(() => {
+	      //@ts-ignore-error this is ok. it only happens in dev mode
 	      Object.assign(globalThis, {...globalThis["interactorAgent"]["interactors"]});
+	      //@ts-ignore-error this is ok. it only happens in dev mode
 	      Object.assign(globalThis, globalThis["interactorAgent"]["matchers"]);
 	    });
 	    digest = nextdigest;
