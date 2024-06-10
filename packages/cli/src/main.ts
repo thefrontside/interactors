@@ -1,8 +1,8 @@
 import { main } from "effection";
 import yargs from "yargs";
 
-import { build } from "./build.ts";
-import { dev } from "./dev.ts";
+import { build } from "./build.js";
+import { dev } from "./dev.js";
 
 const commands = { build, dev } as const;
 

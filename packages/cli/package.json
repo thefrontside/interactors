@@ -2,6 +2,7 @@
   "name": "@interactors/cli",
   "version": "1.0.0-rc1.6",
   "description": "Interactors CLI tool",
+  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/thefrontside/interactors.git",
@@ -14,17 +15,17 @@
     "README.md"
   ],
   "bin": {
-    "interactors": "./dist/index.js"
+    "interactors": "./dist/main.js"
   },
   "scripts": {
-    "interactors": "tsx ./src/index.ts build",
+    "interactors": "tsx ./src/main.ts build",
     "agent": "esbuild build/agent.ts --bundle --outfile=build/agent.js",
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "check:types": "tsc --noEmit",
     "test:unit": "tsx --test --test-reporter spec --no-deprecation test/**/*.test.ts",
     "test": "yarn test:unit",
-    "prepack": "tsc --build ./tsconfig.build.json && tsc --project ./tsconfig.build.json",
+    "prepack": "tsc --build ./tsconfig.build.json && tsc --project ./tsconfig.build.json --module commonjs",
     "postinstall": "playwright install"
   },
   "dependencies": {
