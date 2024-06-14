@@ -15,7 +15,7 @@ export function generateConstructors(
       ([, { interactors, matchers }]) =>
         [
           ...interactors.map(({ name }) => `export const ${name} = ${name}Interactor.builder(${transformPath ? "transform" : "x => x"})`),
-          ...matchers.map(({ name }) => `export const ${name} = ${name}Matcher.builder(${transformPath ? "transform" : "x => x"})`)
+          ...matchers.map(({ name }) => `export const ${name} = ${name}Matcher.builder()`)
         ].join("\n")
     ),
   ].join("\n");
