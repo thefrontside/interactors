@@ -62,8 +62,8 @@ export function createInteractor<E extends Element, FP extends FilterParams<any,
       return ((...args: Parameters<TInteractorConstructor<T, InteractorConstructorFunction<E, FP, FM, AM>>>) => {
         let interactor = {
           typename: name,
-          locator: args[0],
-          match: args[1],
+          locator: args[1] ? args[0] : undefined,
+          match: args[1] ? args[1] : args[0],
           ancestors: [] as TInteractor<any>[],
           get description() {
             return [

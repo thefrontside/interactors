@@ -1,4 +1,4 @@
-export { Interactor, InteractorConstructor, InteractorSpecification, EmptyObject, FilterMethods, ActionMethods } from './specification';
+export { Interactor, InteractorConstructor, InteractorSpecification, EmptyObject, FilterMethods, ActionMethods, TMatcher, TMatch, TInteractor, TInteraction } from './specification';
 export { Interaction, ActionInteraction, AssertionInteraction, isInteraction } from './interaction';
 export { createInteractor, InitInteractor } from './create-interactor';
 export { createInspector } from './inspector'

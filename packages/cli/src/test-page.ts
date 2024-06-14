@@ -41,9 +41,9 @@ export function useTestPage(
 	    );
 	    await page.evaluate(source);
 	    await page.evaluate(() => {
-	      //@ts-ignore-error this is ok. it only happens in dev mode
+	      //@ts-expect-error this is ok. it only happens in dev mode
 	      Object.assign(globalThis, {...globalThis["interactorAgent"]["interactors"]});
-	      //@ts-ignore-error this is ok. it only happens in dev mode
+	      //@ts-expect-error this is ok. it only happens in dev mode
 	      Object.assign(globalThis, globalThis["interactorAgent"]["matchers"]);
 	    });
 	    digest = nextdigest;
@@ -109,7 +109,6 @@ export function useRepl(constructorsPath: string, page: Page): Operation<REPL> {
             let value = JSON.parse(JSON.stringify(interaction));
             yield* call(async () => {
               let result = await page.evaluate(
-                //@ts-expect-error nobody knows about 'interactorAgent' but us
                 (interaction) => window.interactorAgent.run(interaction),
                 value,
               );

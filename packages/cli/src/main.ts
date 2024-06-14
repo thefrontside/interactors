@@ -14,7 +14,8 @@ main(function* (argv) {
       "build an agent.ts for interactors found in MODULES",
       (yargs) =>
         yargs
-          .option(...outDirOption()),
+          .option(...outDirOption())
+          .option(...transformOption()),
     )
     .command(
       "dev [modules...]",
@@ -22,10 +23,11 @@ main(function* (argv) {
       (yargs) =>
         yargs
           .option(...outDirOption())
-	  .option('repl', {
-	    type: 'string',
-	    description: 'develop interactors on page at URL'
-	  }),
+          .option(...transformOption())
+          .option('repl', {
+            type: 'string',
+            description: 'develop interactors on page at URL'
+          }),
     )
     .help()
     .parse(argv);
@@ -42,5 +44,12 @@ function outDirOption() {
     alias: "o",
     default: "./build",
     desc: "the output directory for generated files",
+  }] as const;
+}
+
+function transformOption() {
+  return ["transform", {
+    alias: "t",
+    desc: "a path to the module with exported transform function for interactions",
   }] as const;
 }
