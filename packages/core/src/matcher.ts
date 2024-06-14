@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import isEqual from 'lodash.isequal';
 import { TMatcher } from './specification';
 
@@ -10,12 +11,12 @@ export interface Matcher<T> {
 type GetType<M> = M extends Matcher<infer T> ? T : never;
 
 export abstract class MatcherConstructor {
-  static [Symbol.hasInstance](instance: () => Matcher<unknown>): boolean {
+  static [Symbol.hasInstance](instance: (...args: any) => Matcher<unknown>): boolean {
     return Matchers.has(instance);
   }
 }
 
-const Matchers = new WeakSet<() => Matcher<unknown>>();
+const Matchers = new WeakSet<(...args: any) => Matcher<unknown>>();
 
 export type MaybeMatcher<T> = Matcher<T> | T;
 
