@@ -1,4 +1,5 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode, createMatcher } from "../matcher";
+import { matcherDescription, applyMatcher, matcherCode, createMatcher } from "../matcher";
+import { Matcher, MaybeMatcher } from "../specification";
 
 export const and = createMatcher(
   'and',

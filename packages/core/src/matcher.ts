@@ -1,24 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import isEqual from 'lodash.isequal';
-import { TMatcher } from './specification';
-
-export interface Matcher<T> {
-  match(actual: T): boolean;
-  description(): string;
-  code?(): string;
-}
+import { Matcher, TMatcher, MatcherConstructor, MaybeMatcher } from './specification';
 
 type GetType<M> = M extends Matcher<infer T> ? T : never;
 
-export abstract class MatcherConstructor {
-  static [Symbol.hasInstance](instance: (...args: any) => Matcher<unknown>): boolean {
-    return Matchers.has(instance);
-  }
-}
+type GetMaybeType<M> = M extends MaybeMatcher<infer T> ? T : never;
 
-const Matchers = new WeakSet<(...args: any) => Matcher<unknown>>();
-
-export type MaybeMatcher<T> = Matcher<T> | T;
+type UnwrapArray<T> = T extends (infer U)[] ? U : never;
 
 export function isMatcher<T>(value: MaybeMatcher<T>): value is Matcher<T> {
   return value && typeof (value as Matcher<T>).match === 'function' && typeof (value as Matcher<T>).description === 'function';
@@ -59,18 +47,18 @@ export function matcherCode<T>(value: MaybeMatcher<T>): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createMatcher<F extends (...args: any) => Matcher<any>, T extends GetType<ReturnType<F>>>(name: string, fn: F): F & { // eslint-disable-next-line @typescript-eslint/no-misused-new
-  builder(): (...args: Parameters<F>) => TMatcher<T> } {
-  Matchers.add(fn);
-
+export function createMatcher<F extends (...args: any) => Matcher<any>, A extends GetType<ReturnType<F>>>(name: string, fn: F): MatcherConstructor<GetMaybeType<UnwrapArray<Parameters<F>>>, A> {
   return Object.assign(
     fn,
     {
-      builder: () => (...args: Parameters<F>) => ({
+      get [Symbol.toStringTag]() {
+        return 'Matcher';
+      },
+      builder: () => (...args: GetMaybeType<UnwrapArray<Parameters<F>>>[]) => ({
         typename: name,
         get description() { return fn(...args).description() },
         args,
       })
     }
-  )
+  ) as MatcherConstructor<GetMaybeType<UnwrapArray<Parameters<F>>>, A>;
 }

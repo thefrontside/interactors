@@ -1,4 +1,5 @@
-import { Matcher, createMatcher, matcherCode} from '../matcher';
+import { createMatcher, matcherCode} from '../matcher';
+import { Matcher } from '../specification';
 
 export const including = createMatcher(
   'including',
