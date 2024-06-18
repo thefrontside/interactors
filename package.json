@@ -8,6 +8,7 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "packages/cli",
       "packages/globals",
       "packages/core",
       "packages/keyboard",
@@ -51,6 +52,7 @@
     "@definitelytyped/typescript-versions": "^0.0.40",
     "chromedriver": "123.0.4",
     "typescript": "^5.4.5",
-    "yargs-parser": "^13.1.2"
+    "unbox-primitive": "1.0.2",
+    "has-bigints": "1.0.2"
   }
 }

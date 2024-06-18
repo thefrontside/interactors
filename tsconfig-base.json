@@ -6,7 +6,9 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "module": "esnext",
     "paths": {
+      "@interactors/cli": ["packages/cli/src"],
       "@interactors/globals": ["packages/globals/src"],
       "@interactors/core": ["packages/core/src"],
       "@interactors/keyboard": ["packages/keyboard/src"],

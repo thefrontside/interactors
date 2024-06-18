@@ -1,0 +1,7 @@
+{
+  "extends": "@frontside/tsconfig",
+  "exclude": [
+    "types/**/*.ts",
+    "build/**/*.ts",
+  ],
+}
