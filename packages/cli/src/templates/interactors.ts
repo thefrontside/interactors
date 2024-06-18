@@ -1,4 +1,3 @@
-import { InitInteractor, MatcherConstructor } from "@interactors/core";
 import type { InteractorConstructor, Matcher } from "@interactors/core"
 import { modules } from './modules'
 
@@ -15,7 +14,7 @@ for (let moduleName in modules) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   for (let [name, obj] of Object.entries<any>(modules[moduleName])) {
-    if (obj instanceof InitInteractor) {
+    if (Object.prototype.toString.call(obj) === '[object Interactor]') {
       let interactorName = name;
       if (uniqueNames.has(interactorName)) {
         throw new Error(`Interactor name ${interactorName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(interactorName)}`);
@@ -28,7 +27,7 @@ for (let moduleName in modules) {
       imports[moduleName].interactors.push({ name });
       uniqueNames.set(interactorName, moduleName);
     }
-    if (obj instanceof MatcherConstructor) {
+    if (Object.prototype.toString.call(obj) === '[object Matcher]') {
       let matcherName = name;
       if (uniqueNames.has(matcherName)) {
         throw new Error(`Matcher name ${matcherName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(matcherName)}`);

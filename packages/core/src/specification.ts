@@ -5,7 +5,6 @@ import { FilterSet } from './filter-set';
 import { Locator } from './locator';
 import { ActionInteraction, AssertionInteraction, Interaction } from './interaction';
 import { MergeObjects } from './merge-objects';
-import { MaybeMatcher } from './matcher';
 
 export type EmptyObject = Record<never, never>;
 
@@ -257,6 +256,19 @@ export interface TInteractorConstructor<T, I extends InteractorConstructorFuncti
   (filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TInteractorMethods<T> & TFilterMethods<T, GetFilters<I>> & TActionMethods<T, GetActions<I>>
   (locator: string | TMatcher<string> | RegExp, filters?: TMatch<GetMatcher<I>>): TInteractor<GetMatcher<I>> & TInteractorMethods<T> & TFilterMethods<T, GetFilters<I>> & TActionMethods<T, GetActions<I>>
 }
+
+export interface Matcher<T> {
+  match(actual: T): boolean;
+  description(): string;
+  code?(): string;
+}
+
+export interface MatcherConstructor<E, A> {
+  (...args: MaybeMatcher<E>[]): Matcher<A>;
+  builder(): (...args: MaybeMatcher<E>[]) => TMatcher<A>;
+}
+
+export type MaybeMatcher<T> = Matcher<T> | T;
 
 export interface TMatcher<T> {
   typename: string;

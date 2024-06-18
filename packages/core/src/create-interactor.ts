@@ -39,9 +39,10 @@ export function createInteractor<E extends Element, FP extends FilterParams<any,
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] }, unsafeSyncResolveUnique);
   }
 
-  Interactors.add(initInteractor);
-
   return Object.assign(initInteractor, {
+    get [Symbol.toStringTag]() {
+      return "Interactor";
+    },
     interactorName: name,
     selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
       return createInteractor(name, { ...specification, selector: value });
@@ -154,11 +155,3 @@ export function createInteractor<E extends Element, FP extends FilterParams<any,
     }
   }) as unknown as InteractorConstructor<E, FP, FM, AM>;
 }
-
-export abstract class InitInteractor {
-  static [Symbol.hasInstance](instance: () => Interactor<any, any>): boolean {
-    return Interactors.has(instance);
-  }
-}
-
-const Interactors = new WeakSet<() => Interactor<any, any>>();

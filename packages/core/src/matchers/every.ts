@@ -1,4 +1,5 @@
-import { Matcher, MaybeMatcher, applyMatcher, matcherDescription, matcherCode, createMatcher } from '../matcher';
+import { applyMatcher, matcherDescription, matcherCode, createMatcher } from '../matcher';
+import { Matcher, MaybeMatcher } from '../specification';
 
 export const every = createMatcher(
   'every',
