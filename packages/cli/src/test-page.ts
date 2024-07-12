@@ -155,17 +155,17 @@ interface HistoryFile {
 
 function useHistoryFile(filepath: string): Operation<HistoryFile> {
   return resource(function* (provide) {
-    const signal = createSignal<string[]>();
+    let signal = createSignal<string[]>();
 
-    const fd = yield* call(() => fs.open(filepath, "a+"));
+    let fd = yield* call(() => fs.open(filepath, "a+"));
 
-    const contents = yield* call(() => fd.readFile());
-    const handle: HistoryFile = {
+    let contents = yield* call(() => fd.readFile());
+    let handle: HistoryFile = {
       current: contents.toString().split("\n"),
       update: signal.send,
     };
     yield* spawn(function* () {
-      for (const value of yield* each(signal)) {
+      for (let value of yield* each(signal)) {
         handle.current = value;
         yield* call(() => fd.truncate());
         yield* call(() => fd.write(new TextEncoder().encode(value.join("\n"))));
