@@ -61,16 +61,19 @@ export function createInteractor<E extends Element, FP extends FilterParams<any,
     },
     builder: <T>(transform: (interaction: TInteraction) => T = x => x as T): TInteractorConstructor<T, InteractorConstructorFunction<E, FP, FM, AM>> => {
       return ((...args: Parameters<TInteractorConstructor<T, InteractorConstructorFunction<E, FP, FM, AM>>>) => {
+        let isLocator = args[0] instanceof RegExp || typeof(args[0]) === 'string' || isMatcher(args[0]);
         let interactor = {
           typename: name,
-          locator: args[1] ? args[0] : undefined,
-          match: args[1] ? args[1] : args[0],
+          locator: isLocator ? args[0] : undefined,
+          match: isLocator ? args[1] : args[0],
           ancestors: [] as TInteractor<any>[],
           get description() {
             return [
-              interactor.match
-              ? `${interactor.typename} ${matcherDescription(interactor.locator)} ${filtersDescription(interactor.match)}`.trim()
-              : `${interactor.typename} ${matcherDescription(interactor.locator)}`.trim(),
+              [
+                interactor.typename,
+                interactor.locator ? matcherDescription(interactor.locator) : undefined,
+                interactor.match ? filtersDescription(interactor.match) : undefined
+              ].filter(Boolean).join(' '),
               ...interactor.ancestors.map((i) => i.description).reverse()
             ].join(' within ');
           },

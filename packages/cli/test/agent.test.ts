@@ -1,10 +1,9 @@
-/* eslint-disable prefer-let/prefer-let */
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import expect from 'expect';
 import { chromium, Browser } from 'playwright';
 import { HTML as $HTML } from '@interactors/html';
 
-const HTML = $HTML.builder();
+let HTML = $HTML.builder();
 
 let browser: Browser;
 let agent = {
@@ -14,11 +13,12 @@ let agent = {
 
 describe('Interactor Agent', () => {
   beforeEach(async function () {
-    browser = await chromium.launch();
-    const context = await browser.newContext();
-    await context.addInitScript({ path: './build/agent.js' });
-    const page = await context.newPage();
-    const url = new URL('./agent.test.html', import.meta.url);
+    browser = await chromium.launch({ args: ['--disable-web-security'] });
+    let context = await browser.newContext();
+    context.addListener('console', message => console.log(message))
+    // await context.addInitScript({ path: './build/agent.js' });
+    let page = await context.newPage();
+    let url = new URL('./agent.test.html', import.meta.url);
     await page.goto(String(url));
     agent.run = async (i) => page.evaluate(
       ({ interaction }) => {
@@ -31,23 +31,23 @@ describe('Interactor Agent', () => {
   });
 
   it('can recognize HTML', async function () {
-    const interaction = HTML('Hello world! This is HTML5 Boilerplate.').exists();
+    let interaction = HTML('Hello world! This is HTML5 Boilerplate.').exists();
     let result = await agent.run(interaction);
     expect(result).toEqual({ ok: true });
     expect(await agent.run(HTML('This text is nowhere').exists())).toMatchObject({ ok: false });
   });
 
   it('fails if a thing cannot be found', async function () {
-    const result = await agent.run(HTML('This is nowhere').exists());
+    let result = await agent.run(HTML('This is nowhere').exists());
     expect(result.ok).toBeFalsy();
     expect(await agent.run(HTML('This is nowhere').absent())).toEqual({ ok: true });
   });
 
   it('can call nested interactors', async function () {
-    const interaction = HTML({ title: 'greeting' })
+    let interaction = HTML({ title: 'greeting' })
       .find(HTML('Hello world! This is HTML5 Boilerplate.'))
       .exists();
-    const result = await agent.run(interaction);
+    let result = await agent.run(interaction);
     expect(result).toEqual({ ok: true });
   });
 

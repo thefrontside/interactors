@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { InteractorConstructor, TMatcher, TInteractor, TInteraction, Matcher, Interactor } from '@interactors/core';
-import { InteractorTable, MatcherTable } from './interactors';
 
 type Result<T, TError extends { name: string; message: string } = { name: string; message: string }> =
   | { ok: true; value?: T }
@@ -28,34 +27,36 @@ declare global {
     interactorAgent: {
       run(interaction: TInteraction): Promise<Result<void, Error>>;
       interactors: Record<string, InteractorConstructor<any, any, any, any>>;
-      matchers: Record<string, (...args: unknown[]) => unknown>;
+      matchers: Record<string, (...args: unknown[]) => Matcher<unknown>>;
     };
   }
 }
 
-window.interactorAgent = {
-  interactors: InteractorTable,
-  matchers: MatcherTable,
-  run: async (interaction: TInteraction) => {
-    try {
-      let [start, ...rest] = interaction.path.map(lookup);
-      let interactor = rest.reduce((i, curr) => i.find(curr), start);
-      // @ts-expect-error hope interactor has a method with this name
-      await interactor[interaction.name](...interaction.args.map(handleArg));
-      return ok();
-    } catch (error) {
-      // TODO Add additional info, like interaction
-      if (typeof error === 'string') {
-        return err({ name: 'InteractionError', message: error });
-      } else {
-        return err(error as Error);
+;(async () => {
+  window.interactorAgent = {
+    interactors: (await import('./interactors')).InteractorTable,
+    matchers: (await import('./interactors')).MatcherTable,
+    run: async (interaction: TInteraction) => {
+      try {
+        let [start, ...rest] = interaction.path.map(lookup);
+        let interactor = rest.reduce((i, curr) => i.find(curr), start);
+        // @ts-expect-error hope interactor has a method with this name
+        await interactor[interaction.name](...interaction.args.map(handleArg));
+        return ok();
+      } catch (error) {
+        // TODO Add additional info, like interaction
+        if (typeof error === 'string') {
+          return err({ name: 'InteractionError', message: error });
+        } else {
+          return err(error as Error);
+        }
       }
     }
   }
-}
+})()
 
 function lookup(segment: Omit<TInteractor<unknown>, "ancestors">): Interactor<any, any> {
-  let constructor = InteractorTable[segment.typename];
+  let constructor = window.interactorAgent.interactors[segment.typename];
   if (!constructor) {
     let error = new Error(segment.typename);
     error.name = `NoSuchInteractorError`;
@@ -80,7 +81,7 @@ function isMatcher(value: unknown): value is TMatcher<unknown> {
 }
 
 function rematch(matcher: TMatcher<unknown>): Matcher<unknown> {
-  let matchFn = MatcherTable[matcher.typename];
+  let matchFn = window.interactorAgent.matchers[matcher.typename];
   if (!matchFn) {
     let error = new Error(matcher.typename);
     error.name = `NoSuchMatcherError`;
