@@ -13,10 +13,10 @@ let agent = {
 
 describe('Interactor Agent', () => {
   beforeEach(async function () {
-    browser = await chromium.launch({ args: ['--disable-web-security'] });
+    browser = await chromium.launch();
     let context = await browser.newContext();
     context.addListener('console', message => console.log(message))
-    // await context.addInitScript({ path: './build/agent.js' });
+    await context.addInitScript({ path: './build/agent.js' });
     let page = await context.newPage();
     let url = new URL('./agent.test.html', import.meta.url);
     await page.goto(String(url));

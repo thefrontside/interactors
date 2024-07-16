@@ -28,9 +28,9 @@ export function* build(options: BuildOptions): Operation<void> {
     ...modules,
   ]);
 
-  let modulesSource = `export const modules = {
+  let modulesSource = `export const modules = async () => ({
   ${[...modulesList].map(moduleName => `["${moduleName}"]: await import("${resolveRelativePath(moduleName, outDir)}")`).join(",\n")}
-};
+});
 `
   yield* call(writeFile(`${outDir}/modules.ts`, modulesSource));
   yield* call(copyFile(require.resolve("../src/templates/agent.ts"), `${outDir}/agent.ts`))
@@ -56,9 +56,10 @@ globalThis.__dirname = path.dirname(__filename);
 `}
   }))
 
-  let { imports } = (yield* call(import(path.resolve(`${outDir}/interactors-node.mjs`)))) as {
-    imports: { [moduleName: string]: { interactors: { name: string }[], matchers: { name: string }[] } }
+  let { getImports } = (yield* call(import(path.resolve(`${outDir}/interactors-node.mjs`)))) as {
+    getImports: () => Promise<{ imports: { [moduleName: string]: { interactors: { name: string }[], matchers: { name: string }[] } } }>;
   }
+  let { imports } = yield* call(getImports())
 
   let constructorsCode = generateConstructors(imports, options.transform ? resolveRelativePath(options.transform, outDir) : undefined);
 
@@ -68,7 +69,6 @@ globalThis.__dirname = path.dirname(__filename);
       bundle: true,
       outfile: agentScriptPath,
       sourcemap: "inline",
-      format: "esm",
     })
   );
   console.log(agentScriptPath);

@@ -1,1 +1,1 @@
-export const modules = {} as { [moduleName: string]: Record<string, unknown> }
+export const modules = async () => ({}) as { [moduleName: string]: Record<string, unknown> }

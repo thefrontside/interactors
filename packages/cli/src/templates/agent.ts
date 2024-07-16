@@ -32,10 +32,13 @@ declare global {
   }
 }
 
+// NOTE: esbuild iief format doesn't support top-level await
 ;(async () => {
+  const { InteractorTable, MatcherTable } = await (await import('./interactors')).getImports()
+
   window.interactorAgent = {
-    interactors: (await import('./interactors')).InteractorTable,
-    matchers: (await import('./interactors')).MatcherTable,
+    interactors: InteractorTable,
+    matchers: MatcherTable,
     run: async (interaction: TInteraction) => {
       try {
         let [start, ...rest] = interaction.path.map(lookup);

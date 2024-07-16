@@ -1,43 +1,56 @@
 import type { InteractorConstructor, Matcher } from "@interactors/core"
-import { modules } from './modules'
 
+let isInitialized = false
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const InteractorTable: Record<string, InteractorConstructor<any, any, any, any>> = {}
+const InteractorTable: Record<string, InteractorConstructor<any, any, any, any>> = {}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const MatcherTable: Record<string, (...args: any) => Matcher<unknown>> = {}
+const MatcherTable: Record<string, (...args: any) => Matcher<unknown>> = {}
+const imports: { [moduleName: string]: { interactors: { name: string }[], matchers: { name: string }[] } } = {}
+const uniqueNames = new Map<string, string>();
 
-export const imports: { [moduleName: string]: { interactors: { name: string }[], matchers: { name: string }[] } } = {}
+export async function getImports() {
+  const result = {
+    InteractorTable,
+    MatcherTable,
+    imports
+  }
 
-let uniqueNames = new Map<string, string>();
+  if (isInitialized) return result
 
-for (let moduleName in modules) {
+  const modules = await (await import('./modules')).modules();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  for (let [name, obj] of Object.entries<any>(modules[moduleName])) {
-    if (Object.prototype.toString.call(obj) === '[object Interactor]') {
-      let interactorName = name;
-      if (uniqueNames.has(interactorName)) {
-        throw new Error(`Interactor name ${interactorName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(interactorName)}`);
+  for (let moduleName in modules) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    for (let [name, obj] of Object.entries<any>(modules[moduleName])) {
+      if (Object.prototype.toString.call(obj) === '[object Interactor]') {
+        let interactorName = name;
+        if (uniqueNames.has(interactorName)) {
+          throw new Error(`Interactor name ${interactorName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(interactorName)}`);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        InteractorTable[interactorName] = obj as InteractorConstructor<any, any, any, any>
+        if (imports[moduleName] === undefined) {
+          imports[moduleName] = { interactors: [], matchers: [] }
+        }
+        imports[moduleName].interactors.push({ name });
+        uniqueNames.set(interactorName, moduleName);
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      InteractorTable[interactorName] = obj as InteractorConstructor<any, any, any, any>
-      if (imports[moduleName] === undefined) {
-        imports[moduleName] = { interactors: [], matchers: [] }
+      if (Object.prototype.toString.call(obj) === '[object Matcher]') {
+        let matcherName = name;
+        if (uniqueNames.has(matcherName)) {
+          throw new Error(`Matcher name ${matcherName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(matcherName)}`);
+        }
+        MatcherTable[matcherName] = obj as () => Matcher<unknown>
+        if (imports[moduleName] === undefined) {
+          imports[moduleName] = { interactors: [], matchers: [] }
+        }
+        imports[moduleName].matchers.push({ name });
+        uniqueNames.set(matcherName, moduleName);
       }
-      imports[moduleName].interactors.push({ name });
-      uniqueNames.set(interactorName, moduleName);
-    }
-    if (Object.prototype.toString.call(obj) === '[object Matcher]') {
-      let matcherName = name;
-      if (uniqueNames.has(matcherName)) {
-        throw new Error(`Matcher name ${matcherName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(matcherName)}`);
-      }
-      MatcherTable[matcherName] = obj as () => Matcher<unknown>
-      if (imports[moduleName] === undefined) {
-        imports[moduleName] = { interactors: [], matchers: [] }
-      }
-      imports[moduleName].matchers.push({ name });
-      uniqueNames.set(matcherName, moduleName);
     }
   }
+
+  isInitialized = true
+
+  return result
 }
