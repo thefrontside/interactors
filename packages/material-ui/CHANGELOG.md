@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.0.0
+
+### Major Changes
+
+- 85da2e8: Release 1.0 RC1
+
+### Patch Changes
+
+- c7b2f5d: Fix getting innerText value in jsdom env
+- aba635a: Update material-ui interactors to use getters
+- 5386ccc: Update TypeScript to v5.4
+- 968109e: Use effection for converge and interactions
+- d859e16: Pin versions for internal @interactors/\* dependencies
+  Remove `@interactors/html` re-export from `with-cypress` package
+- Updated dependencies [e156093]
+- Updated dependencies [5386ccc]
+- Updated dependencies [85da2e8]
+- Updated dependencies [d859e16]
+  - @interactors/html@1.0.0
+
 ## 5.0.0-rc1.6
 
 ### Patch Changes

@@ -1,5 +1,23 @@
 # @interactors/globals
 
+## 1.0.0
+
+### Major Changes
+
+- 85da2e8: Release 1.0 RC1
+
+### Minor Changes
+
+- a3155cf: Store interactor name and interaction arguments for reflection
+- 968109e: Use effection for converge and interactions
+
+### Patch Changes
+
+- 5386ccc: Update TypeScript to v5.4
+- afcf87b: Add code representation for interactions
+- d859e16: Pin versions for internal @interactors/\* dependencies
+  Remove `@interactors/html` re-export from `with-cypress` package
+
 ## 1.0.0-rc1.3
 
 ### Patch Changes
