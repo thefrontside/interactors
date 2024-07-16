@@ -34,7 +34,7 @@ declare global {
 
 // NOTE: esbuild iief format doesn't support top-level await
 ;(async () => {
-  const { InteractorTable, MatcherTable } = await (await import('./interactors')).getImports()
+  let { InteractorTable, MatcherTable } = await (await import('./interactors')).getImports()
 
   window.interactorAgent = {
     interactors: InteractorTable,

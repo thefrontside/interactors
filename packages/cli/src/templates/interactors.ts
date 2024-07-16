@@ -9,7 +9,7 @@ const imports: { [moduleName: string]: { interactors: { name: string }[], matche
 const uniqueNames = new Map<string, string>();
 
 export async function getImports() {
-  const result = {
+  let result = {
     InteractorTable,
     MatcherTable,
     imports
@@ -17,7 +17,7 @@ export async function getImports() {
 
   if (isInitialized) return result
 
-  const modules = await (await import('./modules')).modules();
+  let modules = await (await import('./modules')).modules();
 
   for (let moduleName in modules) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
