@@ -1,9 +1,9 @@
-export { Interactor, InteractorConstructor, InteractorSpecification, EmptyObject, FilterMethods, ActionMethods } from './specification';
+export { Interactor, InteractorConstructor, InteractorSpecification, EmptyObject, FilterMethods, ActionMethods, TMatcher, TMatch, TInteractor, TInteraction, MatcherConstructor, Matcher, MaybeMatcher } from './specification';
 export { Interaction, ActionInteraction, AssertionInteraction, isInteraction } from './interaction';
 export { createInteractor } from './create-interactor';
 export { createInspector } from './inspector'
 export { isVisible } from 'element-is-visible';
-export { Matcher } from './matcher';
+export { createMatcher } from './matcher';
 
 export { including } from './matchers/including';
 export { matching } from './matchers/matching';
@@ -15,4 +15,3 @@ export { every } from './matchers/every';
 
 export { click } from './element/click';
 export { MergeObjects } from './merge-objects'
-export { MaybeMatcher } from './matcher'

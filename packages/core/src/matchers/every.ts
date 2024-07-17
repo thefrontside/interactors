@@ -1,15 +1,11 @@
-import { Matcher, MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher';
+import { applyMatcher, matcherDescription, matcherCode, createMatcher } from '../matcher';
+import { Matcher, MaybeMatcher } from '../specification';
 
-export function every<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
-  return {
-    match(actual: Iterable<T>): boolean {
-      return Array.from(actual).every((value) => applyMatcher(expected, value));
-    },
-    description(): string {
-      return `every item ${matcherDescription(expected)}`;
-    },
-    code(): string {
-      return `every(${matcherCode(expected)})`
-    }
-  }
-}
+export const every = createMatcher(
+  'every',
+  <T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> => ({
+    match: (actual: Iterable<T>): boolean => Array.from(actual).every((value) => applyMatcher(expected, value)),
+    description: (): string => `every item ${matcherDescription(expected)}`,
+    code: (): string => `every(${matcherCode(expected)})`
+  })
+)

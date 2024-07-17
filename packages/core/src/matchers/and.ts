@@ -1,15 +1,11 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher';
+import { matcherDescription, applyMatcher, matcherCode, createMatcher } from "../matcher";
+import { Matcher, MaybeMatcher } from "../specification";
 
-export function and<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
-  return {
-    match(actual: T): boolean {
-      return args.every((matcher) => applyMatcher(matcher, actual));
-    },
-    description(): string {
-      return args.map(matcherDescription).join(' and ');
-    },
-    code(): string {
-      return `and(${args.map(arg => matcherCode(arg)).join(', ')})`
-    }
-  }
-}
+export const and = createMatcher(
+  'and',
+  <T>(...args: MaybeMatcher<T>[]): Matcher<T> => ({
+    match: (actual: T): boolean => args.every((matcher) => applyMatcher(matcher, actual)),
+    description: (): string => args.map(matcherDescription).join(" and "),
+    code: (): string => `and(${args.map((arg) => matcherCode(arg)).join(", ")})`,
+  })
+);
