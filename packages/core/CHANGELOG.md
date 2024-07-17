@@ -1,5 +1,36 @@
 # @interactors/core
 
+## 1.0.0
+
+### Major Changes
+
+- 85da2e8: Release 1.0 RC1
+
+### Minor Changes
+
+- a3155cf: Store interactor name and interaction arguments for reflection
+- 968109e: Use effection for converge and interactions
+
+### Patch Changes
+
+- 27c4059: Make filter and action methods available in actions
+- efecf56: Improve filter matching and reduce unnecessary calls
+- 596dee1: bump @testing-library/dom to v8.18.1 fixes https://github.com/thefrontside/interactors/issues/212
+- 57b2a27: wait for element resolving in filter methods
+- 5386ccc: Update TypeScript to v5.4
+- 5936572: Fix type checking
+- afcf87b: Add code representation for interactions
+- d859e16: Pin versions for internal @interactors/\* dependencies
+  Remove `@interactors/html` re-export from `with-cypress` package
+- 4538b92: Matchers can return their code representation
+- Updated dependencies [5386ccc]
+- Updated dependencies [a3155cf]
+- Updated dependencies [968109e]
+- Updated dependencies [afcf87b]
+- Updated dependencies [85da2e8]
+- Updated dependencies [d859e16]
+  - @interactors/globals@1.0.0
+
 ## 1.0.0-rc1.6
 
 ### Patch Changes

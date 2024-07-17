@@ -2614,13 +2614,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@interactors/core@npm:1.0.0-rc1.6, @interactors/core@npm:^1.0.0-rc1.6, @interactors/core@workspace:packages/core":
+"@interactors/core@npm:1.0.0, @interactors/core@npm:^1.0.0, @interactors/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@interactors/core@workspace:packages/core"
   dependencies:
     "@effection/core": "npm:2.2.0"
     "@frontside/tsconfig": "npm:^1.2.0"
-    "@interactors/globals": "npm:1.0.0-rc1.3"
+    "@interactors/globals": "npm:1.0.0"
     "@testing-library/dom": "npm:^8.18.1"
     "@testing-library/user-event": "npm:^13.2.1"
     "@types/express": "npm:^4.17.6"
@@ -2648,14 +2648,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@interactors/globals@npm:1.0.0-rc1.0":
-  version: 1.0.0-rc1.0
-  resolution: "@interactors/globals@npm:1.0.0-rc1.0"
-  checksum: 10c0/db42a6c71839898152511cdc57e142f9a17cb5a777dd4ed59970bcf7e9499df38ccf7267ea69a3bdb85a90d76cde9fee081dccd2407217e3cc48e6408e84556f
-  languageName: node
-  linkType: hard
-
-"@interactors/globals@npm:1.0.0-rc1.3, @interactors/globals@npm:^1.0.0-rc1.3, @interactors/globals@workspace:packages/globals":
+"@interactors/globals@npm:1.0.0, @interactors/globals@npm:^1.0.0, @interactors/globals@workspace:packages/globals":
   version: 0.0.0-use.local
   resolution: "@interactors/globals@workspace:packages/globals"
   dependencies:
@@ -2670,13 +2663,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@interactors/html@npm:1.0.0-rc1.6, @interactors/html@npm:^1.0.0-rc1.0, @interactors/html@npm:^1.0.0-rc1.6, @interactors/html@workspace:packages/html":
+"@interactors/globals@npm:1.0.0-rc1.0":
+  version: 1.0.0-rc1.0
+  resolution: "@interactors/globals@npm:1.0.0-rc1.0"
+  checksum: 10c0/db42a6c71839898152511cdc57e142f9a17cb5a777dd4ed59970bcf7e9499df38ccf7267ea69a3bdb85a90d76cde9fee081dccd2407217e3cc48e6408e84556f
+  languageName: node
+  linkType: hard
+
+"@interactors/html@npm:1.0.0, @interactors/html@npm:^1.0.0, @interactors/html@npm:^1.0.0-rc1.0, @interactors/html@workspace:packages/html":
   version: 0.0.0-use.local
   resolution: "@interactors/html@workspace:packages/html"
   dependencies:
     "@frontside/tsconfig": "npm:^1.2.0"
-    "@interactors/core": "npm:1.0.0-rc1.6"
-    "@interactors/keyboard": "npm:1.0.0-rc1.6"
+    "@interactors/core": "npm:1.0.0"
+    "@interactors/keyboard": "npm:1.0.0"
     "@types/node": "npm:^20.11.25"
     expect: "npm:^24.9.0"
     jsdom: "npm:^16.2.2"
@@ -2687,13 +2687,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@interactors/keyboard@npm:1.0.0-rc1.6, @interactors/keyboard@workspace:packages/keyboard":
+"@interactors/keyboard@npm:1.0.0, @interactors/keyboard@workspace:packages/keyboard":
   version: 0.0.0-use.local
   resolution: "@interactors/keyboard@workspace:packages/keyboard"
   dependencies:
     "@frontside/tsconfig": "npm:^1.2.0"
-    "@interactors/core": "npm:1.0.0-rc1.6"
-    "@interactors/globals": "npm:1.0.0-rc1.3"
+    "@interactors/core": "npm:1.0.0"
+    "@interactors/globals": "npm:1.0.0"
     "@types/node": "npm:^20.11.25"
     expect: "npm:^24.9.0"
     jsdom: "npm:^16.2.2"
@@ -2710,7 +2710,7 @@ __metadata:
   dependencies:
     "@bigtest/cli": "npm:0.23.0"
     "@date-io/date-fns": "npm:^1.3.13"
-    "@interactors/html": "npm:1.0.0-rc1.6"
+    "@interactors/html": "npm:1.0.0"
     "@material-ui/core": "npm:^4.12.3"
     "@material-ui/icons": "npm:^4.11.2"
     "@material-ui/pickers": "npm:^3.3.10"
@@ -2743,9 +2743,9 @@ __metadata:
   dependencies:
     "@frontside/eslint-config": "npm:^3.1.1-dl-update-eslint.0"
     "@frontside/tsconfig": "npm:^3.0.0"
-    "@interactors/core": "npm:^1.0.0-rc1.6"
-    "@interactors/globals": "npm:^1.0.0-rc1.3"
-    "@interactors/html": "npm:^1.0.0-rc1.6"
+    "@interactors/core": "npm:^1.0.0"
+    "@interactors/globals": "npm:^1.0.0"
+    "@interactors/html": "npm:^1.0.0"
     cypress: "npm:^12.0.0"
     start-server-and-test: "npm:^1.11.7"
     ts-node: "npm:^10.4.0"
@@ -9073,9 +9073,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromedriver@npm:123.0.4":
-  version: 123.0.4
-  resolution: "chromedriver@npm:123.0.4"
+"chromedriver@npm:126.0.4":
+  version: 126.0.4
+  resolution: "chromedriver@npm:126.0.4"
   dependencies:
     "@testim/chrome-version": "npm:^1.1.4"
     axios: "npm:^1.6.7"
@@ -9086,7 +9086,7 @@ __metadata:
     tcp-port-used: "npm:^1.0.2"
   bin:
     chromedriver: bin/chromedriver
-  checksum: 10c0/896c7c15ccc83ba6499016e768337e2f07a12a5193752a01d16f58083eb3a81a7bcd05a69ed7e3a7032a49bc33b60b1ed64aa71c05fdb8570661a254b63ddbd0
+  checksum: 10c0/3d054712879cc977d7930fede836f9f7acd76bd88122ffabae56060bffd9c4ddf0536f700c5b39a6ff1000f920d8246d33597a545c13362af2dabc0c134b7fb0
   languageName: node
   linkType: hard
 
