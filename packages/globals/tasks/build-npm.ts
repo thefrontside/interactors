@@ -28,9 +28,9 @@ await build({
   },
   package: {
     // package.json properties
-    name: "@interactors/core",
+    name: "@interactors/globals",
     version,
-    description: "Composable page objects for components",
+    description: "Global variable accessors for interactors",
     license: "MIT",
     homepage: "https://frontside.com/interactors",
     author: "Frontside Engineering <engineering@frontside.com>",
@@ -44,7 +44,6 @@ await build({
     engines: {
       node: ">= 16",
     },
-    sideEffects: false,
   },
 });
 

@@ -1,9 +1,8 @@
-import { beforeEach, describe, it } from "node:test";
-import expect from "expect";
+import { expect, beforeEach, describe, it } from "./deps.ts";
 import { JSDOM } from "jsdom";
 import { Symbol } from "@effection/core";
 
-import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../mod.ts";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;

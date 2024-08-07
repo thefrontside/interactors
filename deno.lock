@@ -3758,6 +3758,12 @@
           "npm:tsd@^0.31.0",
           "npm:typedoc@^0.25.13"
         ]
+      },
+      "packages/globals": {
+        "dependencies": [
+          "npm:@effection/core@2.2.0",
+          "npm:jsdom@^24.0.0"
+        ]
       }
     }
   }

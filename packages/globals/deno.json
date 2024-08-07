@@ -1,0 +1,32 @@
+{
+  "name": "@interactors/globals",
+  "version": "1.0.0",
+  "tasks": {
+    "test": "deno test --allow-run=deno --allow-env --allow-read",
+    "build:npm": "deno run -A tasks/build-npm.ts"
+  },
+  "exports": "./mod.ts",
+  "imports": {
+    "@effection/core": "npm:@effection/core@2.2.0",
+    "jsdom": "npm:jsdom@^24.0.0"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["prefer-const", "require-yield"]
+    },
+    "exclude": [
+      "build"
+    ]
+  },
+  "fmt": {
+    "exclude": [
+      "build",
+      "README.md"
+    ]
+  },
+  "test": {
+    "exclude": [
+      "build"
+    ]
+  }
+}

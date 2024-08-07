@@ -1,2 +1,2 @@
-export * from './globals'
-export { KeyboardLayout, KeyCode } from './keyboard-layout'
+export * from './globals.ts'
+export type { KeyboardLayout, KeyCode } from './keyboard-layout.ts'
