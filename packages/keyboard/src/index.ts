@@ -1,8 +1,8 @@
-export { KeyOptions, Keyboard } from './keyboard';
-export { createKeyboardLayout, US_INTERNATIONAL } from './layout';
-export { fillIn } from './fill-in';
-
 import { setKeyboardLayout } from '@interactors/globals';
-import { US_INTERNATIONAL } from './layout';
+export { type KeyOptions, Keyboard } from './keyboard.ts';
+export { createKeyboardLayout, US_INTERNATIONAL } from './layout.ts';
+export { fillIn } from './fill-in.ts';
+
+import { US_INTERNATIONAL } from './layout.ts';
 
 setKeyboardLayout(US_INTERNATIONAL);

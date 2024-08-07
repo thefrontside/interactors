@@ -1,5 +1,4 @@
-import { describe, it } from "./deps.ts";
-import expect from "expect";
+import { expect, describe, it } from "./deps.ts";
 import { HTML, TextField } from "./fixtures.ts";
 import { including, or } from "../mod.ts";
 import { dom } from "./helpers.ts";

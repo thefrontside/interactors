@@ -1,8 +1,8 @@
-import { describe, it } from 'node:test';
+import { describe, it } from './deps.ts';
 import { globals } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
-import { fillIn } from '../src';
-import { dom } from './helpers';
+import { fillIn } from '../mod.ts';
+import { dom } from './helpers.ts';
 
 const TextField = createInteractor<HTMLInputElement | HTMLTextAreaElement>('text field')
   .selector('input')

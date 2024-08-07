@@ -1,7 +1,9 @@
 {
   "workspace": [
     "./packages/core",
-    "./packages/globals"
+    "./packages/globals",
+    "./packages/html",
+    "./packages/keyboard"
   ],
   "compilerOptions": {
     "lib": [

@@ -1,5 +1,4 @@
-import { describe, it } from './deps.ts';
-import expect from 'expect';
+import { expect, describe, it } from './deps.ts';
 import { dom } from './helpers.ts';
 
 import { Header, Link, Thing, HTML } from './fixtures.ts';

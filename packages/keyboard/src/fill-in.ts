@@ -1,6 +1,6 @@
-import { Interactor } from '@interactors/core';
-import { dispatchChange, dispatchInput } from './dispatch';
-import { Keyboard, setValue } from './keyboard';
+import type { Interactor } from '@interactors/core';
+import { dispatchChange, dispatchInput } from './dispatch.ts';
+import { Keyboard, setValue } from './keyboard.ts';
 
 type TextFieldElement = HTMLInputElement | HTMLTextAreaElement;
 

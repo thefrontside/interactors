@@ -1,4 +1,4 @@
-import { KeyCode, KeyboardLayout } from '@interactors/globals';
+import type { KeyCode, KeyboardLayout } from '@interactors/globals';
 
 export function createKeyboardLayout(map: Iterable<[KeyCode, string]>): KeyboardLayout {
   let keyMap = new Map(map);

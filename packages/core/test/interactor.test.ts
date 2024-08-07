@@ -1,5 +1,4 @@
-import { describe, it } from './deps.ts';
-import expect from 'expect';
+import { expect, describe, it } from './deps.ts';
 import { dom } from './helpers.ts';
 import { Header, Link, MainNav } from './fixtures.ts';
 
@@ -87,7 +86,7 @@ describe('Interactor', () => {
         <a data-foo="foo" href="/foobar">Foo Bar</a>
       `);
 
-      await expect(Link('Foo Bar').assert((e) => expect(e.dataset.foo).toEqual('incorrect'))).rejects;
+      await expect(Link('Foo Bar').assert((e) => expect(e.dataset.foo).toEqual('incorrect'))).rejects.toBeTruthy();
     });
 
     it('can return description of interaction', () => {
