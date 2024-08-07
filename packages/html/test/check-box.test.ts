@@ -1,7 +1,6 @@
-import { beforeEach, describe, it } from 'node:test';
-import expect from 'expect';
-import { CheckBox, Heading } from '../src/index';
-import { dom } from './helpers';
+import { expect, beforeEach, describe, it } from './deps.ts';
+import { CheckBox, Heading } from '../mod.ts';
+import { dom } from './helpers.ts';
 
 describe('@interactors/html', () => {
   describe('CheckBox', () => {

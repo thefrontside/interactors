@@ -1,7 +1,6 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { Details } from '../src/index';
-import { dom } from './helpers';
+import { expect, describe, it } from './deps.ts';
+import { Details } from '../mod.ts';
+import { dom } from './helpers.ts';
 
 describe('@interactors/html', () => {
   describe('Details', () => {

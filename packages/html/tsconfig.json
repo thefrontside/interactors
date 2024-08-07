@@ -1,4 +1,6 @@
 {
   "extends": "@frontside/tsconfig",
-  "exclude": ["types/**/*.ts"]
+  "compilerOptions": {
+    "allowImportingTsExtensions": true
+  }
 }

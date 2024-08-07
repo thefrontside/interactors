@@ -1,0 +1,38 @@
+{
+  "name": "@interactors/html",
+  "version": "1.0.0",
+  "tasks": {
+    "test": "deno test --allow-run=deno --allow-env --allow-read",
+    "build:npm": "deno run -A tasks/build-npm.ts",
+    "docs": "rm -rf docs && typedoc --options typedoc.json --tsconfig tsconfig.docs.json",
+    "preview": "deno task docs && parcel docs/api/v1/index.html"
+  },
+  "exports": "./mod.ts",
+  "imports": {
+    "jsdom": "npm:jsdom@^24.0.0",
+    "parcel": "npm:parcel@^2.10.2",
+    "typedoc": "npm:typedoc@^0.25.13"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["prefer-const", "require-yield"]
+    },
+    "exclude": [
+      "build",
+      "docs"
+    ]
+  },
+  "fmt": {
+    "exclude": [
+      "build",
+      "docs",
+      "README.md"
+    ]
+  },
+  "test": {
+    "exclude": [
+      "build",
+      "docs"
+    ]
+  }
+}

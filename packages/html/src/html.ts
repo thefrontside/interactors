@@ -1,5 +1,4 @@
-import { click, createInteractor } from '@interactors/core';
-import { isVisible } from 'element-is-visible';
+import { click, createInteractor, isVisible } from '@interactors/core';
 
 const HTMLInteractor = createInteractor<HTMLElement>('HTML')
   .selector('*')
@@ -14,7 +13,7 @@ const HTMLInteractor = createInteractor<HTMLElement>('HTML')
     focused: (element) => element.ownerDocument.activeElement === element
   })
   .actions({
-    click: ({ perform }, init?: MouseEventInit) => perform((element) => { click(element, init); }),
+    click: ({ perform }, init?: Parameters<typeof click>[1]) => perform((element) => { click(element, init); }),
     focus: ({ perform }) => perform((element) => { element.focus(); }),
     blur: ({ perform }) => perform((element) => { element.blur(); }),
   })
