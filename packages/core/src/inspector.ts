@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { instantiateInteractor } from "./constructor";
-import { findElements, unsafeSyncResolveParent } from './resolvers'
-import { Interactor, Filters, InteractorConstructor, FilterParams } from "./specification";
+import { instantiateInteractor } from "./constructor.ts";
+import { findElements, unsafeSyncResolveParent } from './resolvers.ts'
+import type { Interactor, Filters, InteractorConstructor, FilterParams } from "./specification.ts";
 
 type GetElement<I extends InteractorConstructor<any, any, any, any>> = I extends InteractorConstructor<infer E, any, any, any> ? E : never
 type GetFilters<I extends InteractorConstructor<any, any, any, any>> = I extends InteractorConstructor<any, infer F, any, any> ? F : never

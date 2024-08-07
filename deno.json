@@ -1,0 +1,14 @@
+{
+  "workspace": [
+    "./packages/core"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "deno.ns",
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable"
+    ]
+  }
+}

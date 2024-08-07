@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
+import { describe, it } from "./deps.ts";
 import expect from "expect";
-import { HTML, TextField } from "./fixtures";
-import { including, or } from "../src";
-import { dom } from "./helpers";
+import { HTML, TextField } from "./fixtures.ts";
+import { including, or } from "../mod.ts";
+import { dom } from "./helpers.ts";
 
 describe("serialize", () => {
   it("should serialize .exists()/.absent()", () => {

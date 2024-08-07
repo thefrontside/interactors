@@ -1,7 +1,7 @@
-import { describe, it } from 'node:test';
+import { describe, it } from './deps.ts';
 import expect from 'expect';
-import { dom } from './helpers';
-import { Header, Link, MainNav } from './fixtures';
+import { dom } from './helpers.ts';
+import { Header, Link, MainNav } from './fixtures.ts';
 
 describe('Interactor', () => {
   describe('instantiation', () => {

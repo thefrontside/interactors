@@ -1,4 +1,4 @@
-import { Operation, sleep } from '@effection/core';
+import { type Operation, sleep } from '@effection/core';
 import { performance } from 'performance-api';
 import { globals } from '@interactors/globals'
 

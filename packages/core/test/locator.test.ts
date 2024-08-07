@@ -1,8 +1,8 @@
-import { describe, it } from 'node:test';
+import { describe, it } from './deps.ts';
 import expect from 'expect';
-import { dom } from './helpers';
+import { dom } from './helpers.ts';
 
-import { createInteractor } from '../src';
+import { createInteractor } from '../mod.ts';
 
 describe('locator', () => {
   it('can use function as locator', async () => {

@@ -1,8 +1,8 @@
-import { describe, it } from 'node:test';
+import { describe, it } from './deps.ts';
 import expect from 'expect';
-import { dom } from './helpers';
+import { dom } from './helpers.ts';
 
-import { Header, Link, Thing, HTML } from './fixtures';
+import { Header, Link, Thing, HTML } from './fixtures.ts';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore

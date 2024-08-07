@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Operation } from '@effection/core';
-import { FilterSet } from './filter-set';
-import { Locator } from './locator';
-import { ActionInteraction, AssertionInteraction } from './interaction';
-import { MergeObjects } from './merge-objects';
-import { MaybeMatcher } from './matcher';
+import type { Operation } from '@effection/core';
+import type { FilterSet } from './filter-set.ts';
+import type { Locator } from './locator.ts';
+import type { ActionInteraction, AssertionInteraction } from './interaction.ts';
+import type { MergeObjects } from './merge-objects.ts';
+import type { MaybeMatcher } from './matcher.ts';
 
 export type EmptyObject = Record<never, never>;
 

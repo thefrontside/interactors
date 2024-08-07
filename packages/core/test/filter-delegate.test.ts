@@ -1,9 +1,9 @@
-import { describe, it } from 'node:test';
+import { describe, it } from './deps.ts';
 import expect from 'expect';
-import { dom } from './helpers';
+import { dom } from './helpers.ts';
 
-import { createInteractor } from '../src/index';
-import { Datepicker } from './fixtures';
+import { createInteractor } from '../mod.ts';
+import { Datepicker } from './fixtures.ts';
 
 describe('filters delegation', () => {
   it('delegates the filter to a child element', async () => {
