@@ -4,7 +4,7 @@ import { dom } from './helpers.ts';
 import { Header, Link, Thing, HTML } from './fixtures.ts';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
+//@ts-ignore Create HTML Instance without a name
 const HTMLWithNoLabel = HTML.extend()
 
 describe('Interactor.extend', () => {

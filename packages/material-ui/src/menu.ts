@@ -1,6 +1,6 @@
 import { click, HTML, createInteractor } from "@interactors/html";
-import { Button } from "./button";
-import { isDisabled } from "./helpers";
+import { Button } from "./button.ts";
+import { isDisabled } from "./helpers.ts";
 
 const MenuItemInteractor = HTML.extend<HTMLElement>("MUIMenuItem")
   .selector('[class*="MuiMenuItem-root"][role="menuitem"]')
@@ -22,7 +22,7 @@ const MenuInteractor = Button.extend("MUIMenu")
   .selector(`${Button().options.specification.selector as string}[aria-haspopup="true"]`)
   .filters({ menuId: (element) => element.getAttribute("aria-controls") ?? "" })
   .actions({
-    open: async ({ perform }) => perform((element) => click(element)),
+    open: async ({ perform }) => await perform((element) => click(element)),
     click: async (interactor, value: string) => {
       await interactor.perform((element) => click(element));
 

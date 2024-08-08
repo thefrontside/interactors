@@ -12,7 +12,7 @@ describe("@interactors/globals", () => {
   beforeEach(() => {
     globals.reset();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-ignore Reset jsdom state
     delete globalThis.document;
   });
 
@@ -61,9 +61,9 @@ describe("@interactors/globals", () => {
       ).toBe(action);
     });
 
-    it("applies defined interaction wrapper", async () => {
-      let action = async () => "foo";
-      let removeWrapper = addInteractionWrapper(() => async () => "bar");
+    it("applies defined interaction wrapper", () => {
+      let action = async () => await Promise.resolve("foo");
+      let removeWrapper = addInteractionWrapper(() => async () => await Promise.resolve("bar"));
       globals.wrapInteraction(
         action,
         {

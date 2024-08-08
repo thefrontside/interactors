@@ -1,5 +1,5 @@
 import { TextField } from "@interactors/html";
-import { dispatchChange, setValue } from "./helpers";
+import { dispatchChange, setValue } from "./helpers.ts";
 
 const DateTimeFieldInteractor = TextField.extend<HTMLInputElement>("DateTimeField")
   .selector('input[type="datetime-local"]')

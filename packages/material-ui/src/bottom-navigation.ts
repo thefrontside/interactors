@@ -1,5 +1,5 @@
 import { click, createInteractor, innerText } from "@interactors/html";
-import { isHTMLElement } from "./helpers";
+import { isHTMLElement } from "./helpers.ts";
 
 const BottomNavigationAction = createInteractor<HTMLButtonElement>("MUIBottomNavigationAction")
   .selector('button[class*="MuiBottomNavigationAction-root"]')

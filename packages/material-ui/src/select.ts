@@ -1,6 +1,6 @@
-import { click, HTML, createInteractor, Interactor, innerText } from "@interactors/html";
-import { createFormFieldFilters } from "./form-field-filters";
-import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, isDisabled } from "./helpers";
+import { click, HTML, createInteractor, type Interactor, innerText } from "@interactors/html";
+import { createFormFieldFilters } from "./form-field-filters.ts";
+import { isDefined, isHTMLElement, delay, dispatchMouseDown, getInputLabel, isDisabled } from "./helpers.ts";
 
 export const SelectOption = HTML.extend<HTMLLIElement>("MUISelectOption")
   .selector('li[role="option"]')

@@ -1,6 +1,6 @@
 import { Select, MultiSelect } from "@interactors/html";
-import { createFormFieldFilters } from "./form-field-filters";
-import { GetElementType } from "./types";
+import { createFormFieldFilters } from "./form-field-filters.ts";
+import type { GetElementType } from "./types.ts";
 
 const NativeSelectInteractor = Select.extend("MUINativeSelect").filters(
   createFormFieldFilters<GetElementType<typeof Select>>()

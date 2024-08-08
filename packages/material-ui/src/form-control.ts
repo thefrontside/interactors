@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isHTMLElement } from "./helpers";
+import { isHTMLElement } from "./helpers.ts";
 
 function getLabelElement(root: HTMLElement) {
   let label = root.querySelector('label[class*="MuiFormLabel-root"]');

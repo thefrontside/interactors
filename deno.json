@@ -3,7 +3,8 @@
     "./packages/core",
     "./packages/globals",
     "./packages/html",
-    "./packages/keyboard"
+    "./packages/keyboard",
+    "./packages/material-ui"
   ],
   "compilerOptions": {
     "lib": [

@@ -1,7 +1,7 @@
 import { innerText, TextField as BaseTextField } from "@interactors/html";
-import { createFormFieldFilters } from "./form-field-filters";
-import { isHTMLElement } from "./helpers";
-import { GetElementType } from "./types";
+import { createFormFieldFilters } from "./form-field-filters.ts";
+import { isHTMLElement } from "./helpers.ts";
+import type { GetElementType } from "./types.ts";
 
 const TextFieldInteractor = BaseTextField.extend("MUITextField")
   .selector(["input", "textarea"].map((tag) => `${tag}[class*="MuiInputBase-input"]`).join(", "))

@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isDisabled, isHTMLElement } from "./helpers";
+import { isDisabled, isHTMLElement } from "./helpers.ts";
 
 const TabInteractor = HTML.extend<HTMLElement>("MUITab")
   .selector('[class*="MuiTab-root"][role="tab"]')
