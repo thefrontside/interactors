@@ -1,5 +1,5 @@
 import { expectType, expectAssignable, expectError } from 'tsd';
-import { createInteractor, Interactor, AssertionInteraction } from '../src/index';
+import { createInteractor, type Interactor, type AssertionInteraction } from '../mod.ts';
 
 const TextField = createInteractor<HTMLInputElement>('text field')
   .selector('input')

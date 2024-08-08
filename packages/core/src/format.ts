@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Match } from "./match";
-import { InteractorOptions } from "./specification";
+import type { Match } from "./match.ts";
+import type { InteractorOptions } from "./specification.ts";
 
 export interface TableOptions {
   headers: string[];

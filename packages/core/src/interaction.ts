@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Operation, Task, run, Symbol } from '@effection/core';
-import { InteractionOptions as SerializedInteractionOptions, globals, InteractionType } from '@interactors/globals';
-import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification';
-import { serializeInteractionOptions } from './serialize';
+import { type Operation, type Task, run, Symbol } from '@effection/core';
+import { type InteractionOptions as SerializedInteractionOptions, globals, type InteractionType } from '@interactors/globals';
+import type { Interactor, FilterObject, FilterFn, FilterParams } from './specification.ts';
+import { serializeInteractionOptions } from './serialize.ts';
 
 const interactionSymbol: unique symbol = Symbol.for('interaction') as any;
 

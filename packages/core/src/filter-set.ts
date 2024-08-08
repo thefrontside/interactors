@@ -1,6 +1,6 @@
-import { Filters, FilterFn, FilterObject, FilterParams, InteractorSpecification } from './specification';
+import type { Filters, FilterFn, FilterObject, FilterParams, InteractorSpecification } from './specification.ts';
 import { noCase } from 'change-case';
-import { matcherDescription } from './matcher';
+import { matcherDescription } from './matcher.ts';
 
 export class FilterSet<E extends Element, F extends Filters<E>> {
   constructor(

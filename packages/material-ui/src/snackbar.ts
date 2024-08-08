@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isHTMLElement } from "./helpers";
+import { isHTMLElement } from "./helpers.ts";
 
 const SnackbarInteractor = HTML.extend("MUISnackbar")
   .selector('[class*="MuiSnackbar-root"]')

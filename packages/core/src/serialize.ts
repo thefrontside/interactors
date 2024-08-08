@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { InteractionOptions as SerializedInteractionOptions, InteractionType } from "@interactors/globals";
+import type { InteractionOptions as SerializedInteractionOptions, InteractionType } from "@interactors/globals";
 import { pascalCase } from "change-case";
-import { InteractionOptions } from "./interaction";
-import { matcherCode } from "./matcher";
-import { InteractorOptions } from "./specification";
+import type { InteractionOptions } from "./interaction.ts";
+import { matcherCode } from "./matcher.ts";
+import type { InteractorOptions } from "./specification.ts";
 
 export function serializeInteractorOptions(options: InteractorOptions<any, any, any>): {
   interactor: string;

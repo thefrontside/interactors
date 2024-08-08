@@ -1,4 +1,4 @@
-import { createInteractor } from "../src";
+import { createInteractor } from "../mod.ts";
 
 export const Link = createInteractor<HTMLLinkElement>("link")
   .selector("a")

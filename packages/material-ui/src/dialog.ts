@@ -1,5 +1,5 @@
 import { click, HTML, innerText } from "@interactors/html";
-import { isHTMLElement } from "./helpers";
+import { isHTMLElement } from "./helpers.ts";
 
 const DialogInteractor = HTML.extend("MUIDialog")
   .selector('[class*="MuiDialog-root"][role="presentation"]:not([aria-hidden="true"])')

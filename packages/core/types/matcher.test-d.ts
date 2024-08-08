@@ -1,5 +1,5 @@
 import { expectType, expectAssignable, expectError } from 'tsd';
-import { createInteractor, Matcher, Interactor, AssertionInteraction  } from '../src/index';
+import { createInteractor, type Matcher, type Interactor, type AssertionInteraction  } from '../mod.ts';
 
 function shouted(value: string): Matcher<string> {
   return {

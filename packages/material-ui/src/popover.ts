@@ -1,5 +1,5 @@
 import { HTML } from "@interactors/html";
-import { isHTMLElement } from "./helpers";
+import { isHTMLElement } from "./helpers.ts";
 
 const PopoverInteractor = HTML.extend("MUIPopover")
   .selector('[class*="MuiPopover-root"][role="presentation"]')

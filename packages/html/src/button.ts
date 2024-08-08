@@ -1,4 +1,4 @@
-import { HTML, innerText } from './html';
+import { HTML, innerText } from './html.ts';
 
 function isButtonElement(element: HTMLInputElement | HTMLButtonElement): element is HTMLButtonElement {
   return element.tagName === 'BUTTON';

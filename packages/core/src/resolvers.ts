@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { globals } from '@interactors/globals';
-import { Match } from './match';
-import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors';
-import { formatDescription, formatMatchesTable } from './format';
-import { InteractorOptions } from './specification';
+import { Match } from './match.ts';
+import { NoSuchElementError, NotAbsentError, AmbiguousElementError } from './errors.ts';
+import { formatDescription, formatMatchesTable } from './format.ts';
+import type { InteractorOptions } from './specification.ts';
 
 const defaultSelector = 'div';
 

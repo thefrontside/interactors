@@ -1,4 +1,4 @@
-import { HTML, innerText } from './html';
+import { HTML, innerText } from './html.ts';
 
 
 type FieldTypes = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;

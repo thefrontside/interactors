@@ -1,9 +1,8 @@
-import { beforeEach, describe, it } from "node:test";
-import expect from "expect";
+import { expect, beforeEach, describe, it } from "./deps.ts";
 import { JSDOM } from "jsdom";
 import { Symbol } from "@effection/core";
 
-import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../src";
+import { globals, setDocumentResolver, addInteractionWrapper, setInteractorTimeout } from "../mod.ts";
 
 function makeDocument(body = ""): Document {
   return new JSDOM(`<!doctype html><html><body>${body}</body></html>`).window.document;
@@ -13,7 +12,7 @@ describe("@interactors/globals", () => {
   beforeEach(() => {
     globals.reset();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-ignore Reset jsdom state
     delete globalThis.document;
   });
 
@@ -62,9 +61,9 @@ describe("@interactors/globals", () => {
       ).toBe(action);
     });
 
-    it("applies defined interaction wrapper", async () => {
-      let action = async () => "foo";
-      let removeWrapper = addInteractionWrapper(() => async () => "bar");
+    it("applies defined interaction wrapper", () => {
+      let action = async () => await Promise.resolve("foo");
+      let removeWrapper = addInteractionWrapper(() => async () => await Promise.resolve("bar"));
       globals.wrapInteraction(
         action,
         {

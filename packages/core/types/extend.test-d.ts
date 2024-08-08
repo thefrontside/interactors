@@ -1,5 +1,5 @@
 import { expectType, expectAssignable, expectError } from 'tsd';
-import { createInteractor, Interactor, ActionInteraction } from '../src/index';
+import { createInteractor, type Interactor, type ActionInteraction } from '../mod.ts';
 
 const HTML = createInteractor<HTMLElement>('html')
   .filters({
@@ -46,7 +46,7 @@ const Thing = HTML.extend('thing')
   })
   .actions({
     click: async (interactor, value: number) => {
-      interactor.perform((element) => {
+      await interactor.perform((element) => {
         element.textContent = `Value: ${value}`;
       });
     }

@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isDisabled } from "./helpers";
+import { isDisabled } from "./helpers.ts";
 
 const ButtonInteractor = HTML.extend<HTMLButtonElement | HTMLLinkElement>("MUIButton")
   .selector(

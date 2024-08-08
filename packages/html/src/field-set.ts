@@ -1,4 +1,4 @@
-import { HTML } from './html';
+import { HTML } from './html.ts';
 
 const LegendInteractor = HTML.extend<HTMLLegendElement>('legend').selector('legend');
 

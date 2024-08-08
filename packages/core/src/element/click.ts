@@ -1,5 +1,6 @@
-import userEvent from '@testing-library/user-event'
+// @ts-ignore 123
+import { userEvent } from '@testing-library/user-event'
 
-export function click(element: Element, init?: MouseEventInit) {
-  return userEvent.click(element, init);
+export function click(...args: Parameters<typeof userEvent.click>) {
+  return userEvent.click(...args);
 }

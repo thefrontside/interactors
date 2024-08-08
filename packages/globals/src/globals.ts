@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Operation } from "@effection/core";
-import { KeyboardLayout } from "./keyboard-layout";
+import { KeyboardLayout } from "./keyboard-layout.ts";
 
 export type InteractionType = "action" | "assertion";
 

@@ -1,7 +1,7 @@
-import { dispatchChange, dispatchInput } from './dispatch';
-import { getSelect } from './get-select';
-import { HTML } from './html';
-import { FormField } from './form-field';
+import { dispatchChange, dispatchInput } from './dispatch.ts';
+import { getSelect } from './get-select.ts';
+import { HTML } from './html.ts';
+import { FormField } from './form-field.ts';
 
 const SelectOption = HTML.extend<HTMLOptionElement>('SelectOption')
   .selector('option')

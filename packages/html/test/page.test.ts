@@ -1,9 +1,7 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
+import { expect, describe, it } from './deps.ts';
+import { Page } from '../mod.ts';
+import { dom } from './helpers.ts';
 
-import { dom } from './helpers';
-
-import { Page } from '../src';
 
 describe('Page', () => {
   describe('filter `title`', () => {

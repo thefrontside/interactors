@@ -1,5 +1,5 @@
 import { fillIn } from '@interactors/keyboard';
-import { FormField } from './form-field';
+import { FormField } from './form-field.ts';
 
 const selector = 'textarea, input' + [
   'button', 'checkbox', 'color', 'date', 'datetime-local', 'file', 'hidden',

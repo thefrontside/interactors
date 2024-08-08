@@ -1,8 +1,7 @@
 {
   "out": "docs/api/v4",
   "name": "@interactors/material-ui",
-  "entryPoints": "src/index.ts",
-  "readme": "README.md",
+  "entryPoints": ["./mod.ts"],
   "includeVersion": true,
   "excludePrivate": true,
   "readme": "none"

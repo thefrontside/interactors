@@ -1,0 +1,18 @@
+{
+  "workspace": [
+    "./packages/core",
+    "./packages/globals",
+    "./packages/html",
+    "./packages/keyboard",
+    "./packages/material-ui"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "deno.ns",
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable"
+    ]
+  }
+}

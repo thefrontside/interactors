@@ -1,5 +1,5 @@
 import { innerText } from "@interactors/html";
-import { getInputLabel, isHTMLElement } from "./helpers";
+import { getInputLabel, isHTMLElement } from "./helpers.ts";
 
 export const createFormFieldFilters = <E extends HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(): {
   valid: (element: E) => boolean;

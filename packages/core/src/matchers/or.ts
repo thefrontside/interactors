@@ -1,4 +1,4 @@
-import { Matcher, MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher';
+import { type Matcher, type MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher.ts';
 
 export function or<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
   return {

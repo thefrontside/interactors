@@ -1,4 +1,4 @@
-import { Matcher, MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher';
+import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher.ts';
 
 export function some<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
   return {

@@ -1,5 +1,5 @@
 import { expectType, expectError } from 'tsd';
-import { createInteractor, ActionInteraction } from '../src/index';
+import { createInteractor, type ActionInteraction } from '../mod.ts';
 
 let Link = createInteractor<HTMLLinkElement>('link')
   .selector('a')

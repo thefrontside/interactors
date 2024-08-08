@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isDisabled, isHTMLElement } from "./helpers";
+import { isDisabled, isHTMLElement } from "./helpers.ts";
 
 const getSummary = (element: HTMLElement) => element.querySelector('[class*="MuiAccordionSummary-root"]');
 const isExpanded = (element: HTMLElement) => getSummary(element)?.getAttribute("aria-expanded") == "true";

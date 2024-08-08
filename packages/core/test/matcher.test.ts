@@ -1,9 +1,8 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { dom } from './helpers';
+import { expect, describe, it } from './deps.ts';
+import { dom } from './helpers.ts';
 
-import { Matcher } from '../src';
-import { Link } from './fixtures';
+import type { Matcher } from '../mod.ts';
+import { Link } from './fixtures.ts';
 
 function shouted(value: string): Matcher<string> {
   return {

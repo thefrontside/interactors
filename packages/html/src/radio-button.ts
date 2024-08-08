@@ -1,6 +1,5 @@
-import { click } from '@interactors/core';
-import { isVisible } from 'element-is-visible';
-import { FormField } from './form-field';
+import { click, isVisible } from '@interactors/core';
+import { FormField } from './form-field.ts';
 
 const RadioButtonInteractor = FormField.extend<HTMLInputElement>('RadioButton')
   .selector('input[type=radio]')

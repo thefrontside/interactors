@@ -1,4 +1,4 @@
-import { HTML } from './html';
+import { HTML } from './html.ts';
 
 const SummaryInteractor = HTML.extend('Summary').selector('summary');
 

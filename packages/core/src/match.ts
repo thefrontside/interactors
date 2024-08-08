@@ -1,8 +1,8 @@
-import { Locator } from './locator';
-import { FilterSet } from './filter-set';
-import { Filters, FilterDefinition } from './specification';
-import { escapeHtml } from './escape-html';
-import { MaybeMatcher, applyMatcher, matcherDescription } from './matcher';
+import type { Locator } from './locator.ts';
+import type { FilterSet } from './filter-set.ts';
+import type { Filters, FilterDefinition } from './specification.ts';
+import { escapeHtml } from './escape-html.ts';
+import { type MaybeMatcher, applyMatcher, matcherDescription } from './matcher.ts';
 
 const check = (value: unknown): string => value ? "✓" : "⨯";
 

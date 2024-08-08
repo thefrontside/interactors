@@ -1,4 +1,4 @@
-import { HTML } from './html';
+import { HTML } from './html.ts';
 
 const LinkInteractor = HTML.extend<HTMLLinkElement>('Link')
   .selector('a[href]')

@@ -1,9 +1,8 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { dom } from './helpers';
+import { expect, describe, it } from './deps.ts';
+import { dom } from './helpers.ts';
 
-import { createInspector, including } from '../src';
-import { Div, Link } from './fixtures';
+import { createInspector, including } from '../mod.ts';
+import { Div, Link } from './fixtures.ts';
 
 describe('inspector', () => {
   it('.find', async () => {

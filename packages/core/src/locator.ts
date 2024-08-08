@@ -1,6 +1,6 @@
-import { FilterDefinition } from './specification';
-import { matcherDescription, MaybeMatcher } from './matcher';
-import { applyFilter } from './match';
+import type { FilterDefinition } from './specification.ts';
+import { matcherDescription, type MaybeMatcher } from './matcher.ts';
+import { applyFilter } from './match.ts';
 
 export class Locator<E extends Element> {
   constructor(private definition: FilterDefinition<string, E>, public value: MaybeMatcher<string>) {}

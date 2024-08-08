@@ -1,5 +1,5 @@
 import { expectError } from 'tsd';
-import { MergeObjects } from '../src/merge-objects';
+import type { MergeObjects } from '../mod.ts';
 
 type Empty = Record<never, never>;
 

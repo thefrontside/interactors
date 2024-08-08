@@ -1,5 +1,5 @@
 import { TextField } from "@interactors/html";
-import { dispatchChange, setValue } from "./helpers";
+import { dispatchChange, setValue } from "./helpers.ts";
 
 const DateFieldInteractor = TextField.extend<HTMLInputElement>("DateField")
   .selector('input[type="date"]')

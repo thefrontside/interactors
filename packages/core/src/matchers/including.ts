@@ -1,4 +1,4 @@
-import { Matcher, matcherCode} from '../matcher';
+import { type Matcher, matcherCode} from '../matcher.ts';
 
 export function including(subString: string): Matcher<string> {
   return {

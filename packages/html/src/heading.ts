@@ -1,4 +1,4 @@
-import { HTML } from './html';
+import { HTML } from './html.ts';
 
 const HeadingInteractor = HTML.extend<HTMLHeadingElement>('Heading')
   .selector('h1,h2,h3,h4,h5,h6')

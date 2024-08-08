@@ -1,5 +1,5 @@
 import { RadioButton, isVisible } from "@interactors/html";
-import { isHTMLElement } from "./helpers";
+import { isHTMLElement } from "./helpers.ts";
 
 const RadioInteractor = RadioButton.extend("Radio")
   .selector('[class*="MuiRadio-root"] input[type=radio]')
