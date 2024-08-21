@@ -1,0 +1,19 @@
+{
+  "name": "@interactors/core",
+  "version": "0.0.0",
+  "description": "Composable page objects for components",
+  "license": "MIT",
+  "homepage": "https://frontside.com/interactors",
+  "author": "Frontside Engineering <engineering@frontside.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thefrontside/interactors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thefrontside/interactors/issues"
+  },
+  "engines": {
+    "node": ">= 16"
+  },
+  "sideEffects": false
+}

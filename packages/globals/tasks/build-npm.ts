@@ -1,50 +1,17 @@
-import {
-  build,
-  emptyDir,
-} from "https://deno.land/x/dnt@0.36.0/mod.ts?pin=v123";
+import { buildNpm } from '../../../tasks/build-npm.ts'
 
-const outDir = "./build/npm";
-
-await emptyDir(outDir);
 
 let [version] = Deno.args;
 if (!version) {
   throw new Error("a version argument is required to build the npm package");
 }
 
-await build({
-  importMap: "./deno.json",
-  entryPoints: ["./mod.ts"],
-  outDir,
-  shims: {
-    deno: false,
-  },
-  test: false,
-  typeCheck: false,
-  compilerOptions: {
-    lib: ["ESNext", "DOM"],
-    target: "ES2020",
-    sourceMap: true,
-  },
-  package: {
-    // package.json properties
-    name: "@interactors/globals",
-    version,
-    description: "Global variable accessors for interactors",
-    license: "MIT",
-    homepage: "https://frontside.com/interactors",
-    author: "Frontside Engineering <engineering@frontside.com>",
-    repository: {
-      type: "git",
-      url: "git+https://github.com/thefrontside/interactors.git",
-    },
-    bugs: {
-      url: "https://github.com/thefrontside/interactors/issues",
-    },
-    engines: {
-      node: ">= 16",
-    },
-  },
-});
+const { default: denoJson } = await import('../deno.json', { with: { type: "json" } })
+const { default: packageJson } = await import('../package.json', { with: { type: "json" } })
 
-await Deno.copyFile("README.md", `${outDir}/README.md`);
+await buildNpm({
+  version,
+  entryPoint: import.meta.resolve('../mod.ts'),
+  imports: denoJson.imports,
+  packageJson
+})

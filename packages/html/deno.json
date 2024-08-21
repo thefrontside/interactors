@@ -4,15 +4,14 @@
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
     "build:npm": "deno run -A tasks/build-npm.ts",
-    "docs": "rm -rf docs && typedoc --options typedoc.json --tsconfig tsconfig.docs.json",
-    "preview": "deno task docs && parcel docs/api/v1/index.html"
+    "docs": "rm -rf docs && deno run -A npm:typedoc@^0.25.13 --options typedoc.json --tsconfig tsconfig.docs.json",
+    "preview": "deno task docs && deno run -A npm:parcel@^2.10.2 docs/api/v1/index.html"
   },
   "exports": "./mod.ts",
   "imports": {
-    "@frontside/tsconfig": "npm:@frontside/tsconfig@^1.2.0",
-    "jsdom": "npm:jsdom@^24.0.0",
-    "parcel": "npm:parcel@^2.10.2",
-    "typedoc": "npm:typedoc@^0.25.13"
+    "@std/expect": "jsr:@std/expect@^1.0.0",
+    "@std/testing": "jsr:@std/testing@^1.0.0",
+    "jsdom": "npm:jsdom@^24.0.0"
   },
   "lint": {
     "rules": {

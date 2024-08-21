@@ -1,5 +1,5 @@
 import { type DOMWindow, JSDOM } from "jsdom";
-import { afterEach, beforeEach } from "./deps.ts";
+import { afterEach, beforeEach } from "@std/testing/bdd";
 import { addInteractionWrapper, globals, setDocumentResolver, setInteractorTimeout } from "@interactors/globals";
 
 let jsdom: JSDOM;

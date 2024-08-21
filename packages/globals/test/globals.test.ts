@@ -1,4 +1,5 @@
-import { expect, beforeEach, describe, it } from "./deps.ts";
+import { beforeEach, describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
 import { JSDOM } from "jsdom";
 import { Symbol } from "@effection/core";
 

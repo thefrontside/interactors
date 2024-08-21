@@ -1,4 +1,5 @@
-import { expect, describe, it } from './deps.ts';
+import { describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
 import { TextField, Heading } from '../mod.ts';
 import { dom } from './helpers.ts';
 

@@ -1,6 +1,5 @@
 {
-  "extends": "@frontside/tsconfig",
-  "exclude": ["types/**/*.ts"],
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "allowImportingTsExtensions": true
   }

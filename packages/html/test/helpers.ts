@@ -1,4 +1,4 @@
-import { afterEach, beforeEach } from "./deps.ts";
+import { afterEach, beforeEach } from "@std/testing/bdd";
 import { type DOMWindow, JSDOM } from "jsdom";
 import { globals, setDocumentResolver, setInteractorTimeout } from "@interactors/globals";
 

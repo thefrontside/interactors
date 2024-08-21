@@ -1,4 +1,5 @@
-import { expect, beforeEach, describe, it } from '../deps.ts';
+import { beforeEach, describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
 import { dom } from '../helpers.ts';
 
 import { createInteractor, matching } from '../../mod.ts';

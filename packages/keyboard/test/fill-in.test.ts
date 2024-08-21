@@ -1,4 +1,4 @@
-import { describe, it } from './deps.ts';
+import { describe, it } from '@std/testing/bdd';
 import { globals } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
 import { fillIn } from '../mod.ts';
