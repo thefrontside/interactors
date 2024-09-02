@@ -1,8 +1,0 @@
-{
-  "out": "docs/api/v1",
-  "name": "@interactors/html",
-  "entryPoints": ["./mod.ts"],
-  "includeVersion": true,
-  "excludePrivate": true,
-  "readme": "none"
-}

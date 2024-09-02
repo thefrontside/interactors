@@ -1,8 +1,0 @@
-{
-  "out": "docs/api/v1",
-  "name": "@interactors/core",
-  "entryPoints": ["./mod.ts"],
-  "readme": "API.md",
-  "includeVersion": true,
-  "excludePrivate": true
-}

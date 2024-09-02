@@ -4,7 +4,6 @@ import { matcherDescription } from './matcher.ts';
 
 export class FilterSet<E extends Element, F extends Filters<E>> {
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public specification: InteractorSpecification<E, F, any>,
     public filters: FilterParams<E, F>,
   ) {};

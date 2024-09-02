@@ -79,7 +79,6 @@ async function goToDay<T extends Record<string, unknown>>(interactor: Interactor
   return dayInteractor.click();
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function createCalendar(utils: DatePickerUtils) {
   return Calendar.filters({
     date: (element) => {

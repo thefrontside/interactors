@@ -15,7 +15,7 @@ export function createKeyboardLayout(map: Iterable<[KeyCode, string]>): Keyboard
   }
 }
 
-export const US_INTERNATIONAL = createKeyboardLayout([
+export const US_INTERNATIONAL: KeyboardLayout = createKeyboardLayout([
   ["Backspace", "Backspace"],
   ["Tab", "Tab"],
   ["Enter", "Enter"],

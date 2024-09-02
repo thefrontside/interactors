@@ -4,7 +4,7 @@
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
     "build:npm": "deno run -A tasks/build-npm.ts",
-    "docs": "rm -rf docs && deno run -A npm:typedoc@^0.25.13 --options typedoc.json --tsconfig tsconfig.docs.json"
+    "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"
   },
   "exports": "./mod.ts",
   "imports": {
@@ -21,7 +21,7 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["prefer-const", "require-yield"]
+      "exclude": ["prefer-const", "require-yield", "no-explicit-any"]
     },
     "exclude": [
       "build",

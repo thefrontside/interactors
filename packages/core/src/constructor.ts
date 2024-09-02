@@ -137,7 +137,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
   };
 
   for (let [actionName, action] of Object.entries(options.specification.actions || {})) {
-    if (!interactor.hasOwnProperty(actionName)) {
+    if (!Object.prototype.hasOwnProperty.call(interactor, actionName)) {
       Object.defineProperty(interactor, actionName, {
         value: function(...args: unknown[]) {
           let actionDescription = actionName;
