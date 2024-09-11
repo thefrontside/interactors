@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
-    "build:npm": "deno run -A tasks/build-npm.ts",
     "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"
   },
   "exports": "./mod.ts",
@@ -16,22 +15,12 @@
     "rules": {
       "exclude": ["prefer-const", "require-yield", "no-slow-types"]
     },
-    "exclude": [
-      "build",
-      "docs"
-    ]
+    "exclude": ["build", "docs"]
   },
   "fmt": {
-    "exclude": [
-      "build",
-      "docs",
-      "README.md"
-    ]
+    "exclude": ["build", "docs", "README.md"]
   },
   "test": {
-    "exclude": [
-      "build",
-      "docs"
-    ]
+    "exclude": ["build", "docs"]
   }
 }

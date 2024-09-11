@@ -1,4 +1,8 @@
 {
+  "tasks": {
+    "build:npm": "deno run -A tasks/build-npm.ts",
+    "context-from-git-tag": "deno run -A tasks/context-from-git-tag.ts"
+  },
   "workspace": [
     "./packages/core",
     "./packages/globals",
@@ -7,13 +11,7 @@
     "./packages/material-ui"
   ],
   "compilerOptions": {
-    "lib": [
-      "deno.ns",
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "dom.asynciterable"
-    ]
+    "lib": ["deno.ns", "esnext", "dom", "dom.iterable", "dom.asynciterable"]
   },
   "imports": {
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3"

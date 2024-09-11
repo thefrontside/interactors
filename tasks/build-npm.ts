@@ -1,49 +1,65 @@
 import { build, emptyDir, PackageJson } from "@deno/dnt";
 
 export interface Options {
-  version: string
-  entryPoint: string
-  imports: Record<string, string>
-  packageJson: PackageJson
+  version: string;
+  entryPoint: string;
+  imports: Record<string, string>;
+  packageJson: PackageJson;
 }
 
-export async function buildNpm({ version, entryPoint, imports, packageJson }: Options) {
-  const outDir = new URL("./build/npm", entryPoint);
+export async function buildNpm(packageDirectory: string) {
+  const { default: denoJson } = await import(
+    `../${packageDirectory}/deno.json`,
+    {
+      with: { type: "json" },
+    }
+  );
+  const { default: packageJson } = await import(
+    `../${packageDirectory}/package.json`,
+    { with: { type: "json" } }
+  );
+  const outDir = new URL(`../${packageDirectory}/build/npm`, import.meta.url);
 
   await emptyDir(outDir);
 
-  const { default: rootDenoJson } = await import('../deno.json', { with: { type: "json" } })
+  const { default: rootDenoJson } = await import("../deno.json", {
+    with: { type: "json" },
+  });
 
   const packages = await Promise.all(
-    rootDenoJson.workspace
-    .map(packagePath => import(`../${packagePath}/deno.json`, { with: { type: 'json' } }))
-  )
+    rootDenoJson.workspace.map(
+      (packagePath) =>
+        import(`../${packagePath}/deno.json`, { with: { type: "json" } })
+    )
+  );
 
   const workspaceImports = Object.fromEntries(
-    packages.map(
-      ({ default: pkgDenoJson }) => [
-        pkgDenoJson.name,
-        `npm:${pkgDenoJson.name}@^${pkgDenoJson.version}`
-      ]
-    )
-  )
+    packages.map(({ default: pkgDenoJson }) => [
+      pkgDenoJson.name,
+      `npm:${pkgDenoJson.name}@^${pkgDenoJson.version}`,
+    ])
+  );
 
-  const tmpImportMapFile = new URL(import.meta.resolve(`../imports-${Date.now()}.json`))
+  const tmpImportMapFile = new URL(
+    import.meta.resolve(`../${packageDirectory}/imports-${Date.now()}.json`)
+  );
+
+  console.log({ ...denoJson.imports, ...workspaceImports });
 
   await Deno.writeTextFile(
     tmpImportMapFile,
     JSON.stringify({
       imports: {
-        ...imports,
-        ...workspaceImports
-      }
+        ...denoJson.imports,
+        ...workspaceImports,
+      },
     })
-  )
+  );
 
   try {
     await build({
       importMap: tmpImportMapFile.toString(),
-      entryPoints: [entryPoint],
+      entryPoints: [`${packageDirectory}/mod.ts`],
       outDir: outDir.toString(),
       shims: {
         deno: false,
@@ -57,12 +73,24 @@ export async function buildNpm({ version, entryPoint, imports, packageJson }: Op
       },
       package: {
         ...packageJson,
-        version,
-      }
+        version: denoJson.version,
+      },
     });
 
-    await Deno.copyFile(new URL("./README.md", entryPoint), new URL(`${outDir}/README.md`));
+    await Deno.copyFile(
+      new URL(`../${packageDirectory}/README.md`, import.meta.url),
+      new URL(`${outDir}/README.md`)
+    );
   } finally {
-    await Deno.remove(tmpImportMapFile)
+    await Deno.remove(tmpImportMapFile);
   }
 }
+
+const [packageDirectory] = Deno.args;
+if (!packageDirectory) {
+  throw new Error(
+    "a packageDirectory argument is required to build the npm package"
+  );
+}
+
+await buildNpm(packageDirectory);

@@ -2,8 +2,7 @@
   "name": "@interactors/globals",
   "version": "1.0.0",
   "tasks": {
-    "test": "deno test --allow-run=deno --allow-env --allow-read",
-    "build:npm": "deno run -A tasks/build-npm.ts"
+    "test": "deno test --allow-run=deno --allow-env --allow-read"
   },
   "exports": "./mod.ts",
   "imports": {
@@ -14,21 +13,19 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["prefer-const", "require-yield", "no-explicit-any", "no-slow-types"]
+      "exclude": [
+        "prefer-const",
+        "require-yield",
+        "no-explicit-any",
+        "no-slow-types"
+      ]
     },
-    "exclude": [
-      "build"
-    ]
+    "exclude": ["build"]
   },
   "fmt": {
-    "exclude": [
-      "build",
-      "README.md"
-    ]
+    "exclude": ["build", "README.md"]
   },
   "test": {
-    "exclude": [
-      "build"
-    ]
+    "exclude": ["build"]
   }
 }
