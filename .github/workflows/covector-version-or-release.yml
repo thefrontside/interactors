@@ -36,6 +36,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         if: steps.covector.outputs.commandRan == 'version'
         with:
+          token: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
           title: "Publish New Versions"
           commit-message: "publish new versions"
           labels: "version updates"
