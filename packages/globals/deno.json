@@ -1,6 +1,6 @@
 {
   "name": "@interactors/globals",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Global variable accessors for interactors",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read"
@@ -21,12 +21,19 @@
         "no-slow-types"
       ]
     },
-    "exclude": ["build"]
+    "exclude": [
+      "build"
+    ]
   },
   "fmt": {
-    "exclude": ["build", "README.md"]
+    "exclude": [
+      "build",
+      "README.md"
+    ]
   },
   "test": {
-    "exclude": ["build"]
+    "exclude": [
+      "build"
+    ]
   }
 }
