@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Operation } from "@effection/core";
-import { KeyboardLayout } from "./keyboard-layout";
+import type { KeyboardLayout } from "./keyboard-layout.ts";
 
 export type InteractionType = "action" | "assertion";
 
@@ -44,9 +44,9 @@ export type InteractionOptions = InteractorOptions & {
 export type InteractionWrapper<T = any> = (perform: () => Promise<T>, interaction: Interaction<T>) => Operation<T>;
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace, @typescript-eslint/prefer-namespace-keyword
+  // deno-lint-ignore prefer-namespace-keyword
   module globalThis {
-    // eslint-disable-next-line prefer-let/prefer-let, no-var
+    // deno-lint-ignore no-var
     var __interactors: Globals;
   }
 }
@@ -106,7 +106,7 @@ if (!globalThis.__interactors) {
 
 const getGlobals = () => globalThis.__interactors as Globals;
 
-export const globals = getGlobals();
+export const globals: Globals = getGlobals();
 
 export function setDocumentResolver(resolver: () => Document): void {
   Object.defineProperty(getGlobals(), "document", {

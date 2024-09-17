@@ -1,7 +1,7 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { dom } from './helpers';
-import { Datepicker, Details, Div, Header, Link, MainNav, TextField } from './fixtures';
+import { describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
+import { dom } from './helpers.ts';
+import { Datepicker, Details, Div, Header, Link, MainNav, TextField } from './fixtures.ts';
 
 describe('createInteractor', () => {
   describe('.exists', () => {

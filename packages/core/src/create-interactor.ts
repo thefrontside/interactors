@@ -1,5 +1,5 @@
-import { EmptyObject, InteractorConstructor } from './specification';
-import { createConstructor } from './constructor';
+import type { EmptyObject, InteractorConstructor } from './specification.ts';
+import { createConstructor } from './constructor.ts';
 
 /**
  * Create a custom interactor with the given name.

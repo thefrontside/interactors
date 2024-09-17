@@ -1,18 +1,15 @@
 {
-  "extends": "@frontside/tsconfig",
   "compilerOptions": {
+    "target": "es2019",
+    "moduleResolution": "node",
+    "strict": true,
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "composite": true,
-    "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "paths": {
-      "@interactors/globals": ["packages/globals/src"],
-      "@interactors/core": ["packages/core/src"],
-      "@interactors/keyboard": ["packages/keyboard/src"],
-      "@interactors/html": ["packages/html/src"],
-      "@interactors/material-ui": ["packages/material-ui/src"],
-      "@interactors/with-cypress": ["packages/with-cypress/src"],
-    }
   }
 }

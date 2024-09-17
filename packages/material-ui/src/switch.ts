@@ -1,4 +1,4 @@
-import { Checkbox } from "./checkbox";
+import { Checkbox } from "./checkbox.ts";
 
 const SwitchInteractor = Checkbox.extend("MUISwitch").selector('[class*="MuiSwitch-input"]');
 

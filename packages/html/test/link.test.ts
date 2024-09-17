@@ -1,7 +1,7 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { Link, Heading } from '../src/index';
-import { dom } from './helpers';
+import { describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
+import { Link, Heading } from '../mod.ts';
+import { dom } from './helpers.ts';
 
 describe('@interactors/html', () => {
   describe('Link', () => {

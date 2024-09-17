@@ -1,8 +1,8 @@
-import { beforeEach, describe, it } from 'node:test';
-import expect from 'expect';
-import { dom } from '../helpers';
+import { beforeEach, describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
+import { dom } from '../helpers.ts';
 
-import { createInteractor, matching } from '../../src/index';
+import { createInteractor, matching } from '../../mod.ts';
 
 const HTML = createInteractor<HTMLElement>('html')
   .filters({

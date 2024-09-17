@@ -1,0 +1,32 @@
+{
+  "name": "@interactors/globals",
+  "version": "1.0.0",
+  "description": "Global variable accessors for interactors",
+  "tasks": {
+    "test": "deno test --allow-run=deno --allow-env --allow-read"
+  },
+  "exports": "./mod.ts",
+  "imports": {
+    "@std/expect": "jsr:@std/expect@^1.0.0",
+    "@std/testing": "jsr:@std/testing@^1.0.0",
+    "@effection/core": "npm:@effection/core@2.2.0",
+    "jsdom": "npm:jsdom@^24.0.0"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "prefer-const",
+        "require-yield",
+        "no-explicit-any",
+        "no-slow-types"
+      ]
+    },
+    "exclude": ["build"]
+  },
+  "fmt": {
+    "exclude": ["build", "README.md"]
+  },
+  "test": {
+    "exclude": ["build"]
+  }
+}

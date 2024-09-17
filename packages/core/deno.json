@@ -1,0 +1,33 @@
+{
+  "name": "@interactors/core",
+  "version": "1.0.0",
+  "tasks": {
+    "test": "deno test --allow-run=deno --allow-env --allow-read",
+    "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"
+  },
+  "exports": "./mod.ts",
+  "imports": {
+    "@effection/core": "npm:@effection/core@2.2.0",
+    "@std/expect": "jsr:@std/expect@^1.0.0",
+    "@std/testing": "jsr:@std/testing@^1.0.0",
+    "@testing-library/dom": "npm:@testing-library/dom@^8.18.1",
+    "@testing-library/user-event": "npm:@testing-library/user-event@^14.5.2",
+    "change-case": "npm:change-case@^4.1.1",
+    "element-is-visible": "npm:element-is-visible@^1.0.0",
+    "jsdom": "npm:jsdom@^24.0.0",
+    "lodash.isequal": "npm:lodash.isequal@^4.5.0",
+    "performance-api": "npm:performance-api@^1.0.0"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["prefer-const", "require-yield", "no-explicit-any"]
+    },
+    "exclude": ["build", "docs"]
+  },
+  "fmt": {
+    "exclude": ["build", "docs", "README.md"]
+  },
+  "test": {
+    "exclude": ["build", "docs"]
+  }
+}

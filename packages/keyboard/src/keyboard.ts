@@ -1,6 +1,6 @@
-import { globals, KeyCode } from '@interactors/globals';
+import { globals, type KeyCode } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
-import { dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch';
+import { dispatchInput, dispatchKeyDown, dispatchKeyUp } from './dispatch.ts';
 
 export type KeyOptions = {
   key?: string;
@@ -35,7 +35,7 @@ const KeyboardInteractor = createInteractor('Keyboard')
       });
     },
 
-    async type(interactor, value: string) {
+    async type(_interactor, value: string) {
       for(let letter of value) {
         await Keyboard.press({ key: letter });
       }

@@ -1,8 +1,8 @@
-import { describe, it } from 'node:test';
+import { describe, it } from '@std/testing/bdd';
 import { globals, setKeyboardLayout } from '@interactors/globals';
 import { createInteractor } from '@interactors/core';
-import { Keyboard, createKeyboardLayout } from '../src';
-import { dom } from './helpers';
+import { Keyboard, createKeyboardLayout } from '../mod.ts';
+import { dom } from './helpers.ts';
 
 const TextField = createInteractor<HTMLInputElement | HTMLTextAreaElement>('text field')
   .selector('input')

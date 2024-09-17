@@ -1,23 +1,35 @@
-name: Release
+name: Publish
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*-v*"
 
 jobs:
-  publish-releases:
-    name: Publish Releases
-    runs-on: ubuntu-20.04
+  publish-to-npm:
+    name: NPM ${{ github.ref }}
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: volta-cli/action@v3
-      with:
-        registry-url: https://registry.npmjs.org
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/checkout@v4
+      - name: setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - uses: volta-cli/action@v4
+        with:
+          registry-url: https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-    - name: Publish Releases
-      uses: thefrontside/actions/synchronize-with-npm@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
+      - name: Determine Package
+        id: pkg
+        run: deno task context-from-git-tag --gitTag ${{ github.ref }}
+
+      - name: Generate NPM Packages
+        run: deno task build:npm ${{ steps.pkg.outputs.working-directory }}
+
+      - name: Publish Releases
+        working-directory: ${{ steps.pkg.outputs.working-directory }}/build/npm
+        run: npm publish --provenance --access public
+        env:
+          GITHUB_TOKEN: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}

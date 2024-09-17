@@ -1,5 +1,5 @@
 import { HTML, innerText } from "@interactors/html";
-import { isDefined } from "./helpers";
+import { isDefined } from "./helpers.ts";
 
 function isDisabled(element: Element) {
   return element.className.includes("Mui-disabled");

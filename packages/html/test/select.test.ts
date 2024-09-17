@@ -1,7 +1,7 @@
-import { beforeEach, describe, it } from 'node:test';
-import expect from 'expect';
-import { Select, Heading } from '../src/index';
-import { dom } from './helpers';
+import { beforeEach, describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
+import { Select, Heading } from '../mod.ts';
+import { dom } from './helpers.ts';
 
 describe('@interactors/html', () => {
   describe('Select', () => {

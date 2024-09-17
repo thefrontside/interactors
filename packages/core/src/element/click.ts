@@ -1,5 +1,5 @@
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
-export function click(element: Element, init?: MouseEventInit) {
-  return userEvent.click(element, init);
+export function click(...args: Parameters<typeof userEvent.click>): ReturnType<typeof userEvent.click> {
+  return userEvent.click(...args);
 }

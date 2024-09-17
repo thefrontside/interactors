@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { converge } from './converge';
-import { MergeObjects } from './merge-objects';
-import {
+import { converge } from './converge.ts';
+import type { MergeObjects } from './merge-objects.ts';
+import type {
   InteractorOptions,
   ActionMethods,
   InteractorConstructor,
@@ -14,16 +14,16 @@ import {
   FilterMethods,
   InteractorSpecification,
   FilterObject,
-} from './specification';
-import { FilterSet } from './filter-set';
-import { Locator } from './locator';
-import { MatchFilter, applyFilter } from './match';
-import { formatDescription } from './format';
-import { FilterNotMatchingError } from './errors';
-import { createInteraction, AssertionInteraction, ActionInteraction } from './interaction';
-import { isMatcher } from './matcher';
-import { matching } from './matchers/matching';
-import { hasMatchMatching, resolveEmpty, resolveFirst, resolveUnique, unsafeSyncResolveParent, unsafeSyncResolveUnique } from './resolvers';
+} from './specification.ts';
+import { FilterSet } from './filter-set.ts';
+import { Locator } from './locator.ts';
+import { MatchFilter, applyFilter } from './match.ts';
+import { formatDescription } from './format.ts';
+import { FilterNotMatchingError } from './errors.ts';
+import { createInteraction, type AssertionInteraction, type ActionInteraction } from './interaction.ts';
+import { isMatcher } from './matcher.ts';
+import { matching } from './matchers/matching.ts';
+import { hasMatchMatching, resolveEmpty, resolveFirst, resolveUnique, unsafeSyncResolveParent, unsafeSyncResolveUnique } from './resolvers.ts';
 
 const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
 
@@ -137,7 +137,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
   };
 
   for (let [actionName, action] of Object.entries(options.specification.actions || {})) {
-    if (!interactor.hasOwnProperty(actionName)) {
+    if (!Object.prototype.hasOwnProperty.call(interactor, actionName)) {
       Object.defineProperty(interactor, actionName, {
         value: function(...args: unknown[]) {
           let actionDescription = actionName;
@@ -160,7 +160,7 @@ export function instantiateInteractor<E extends Element, F extends Filters<E>, A
   }
 
   for (let [filterName, filter] of Object.entries(options.specification.filters || {})) {
-    if (!interactor.hasOwnProperty(filterName)) {
+    if (!Object.prototype.hasOwnProperty.call(interactor, filterName)) {
       Object.defineProperty(interactor, filterName, {
         value: function() {
           return createInteraction('assertion', {

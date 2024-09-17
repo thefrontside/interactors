@@ -57,12 +57,12 @@ export function setValue(element: HTMLInputElement, value: string): void {
 }
 
 export function dispatchChange(element: HTMLElement): boolean {
-  let Event = element.ownerDocument.defaultView?.Event || window.Event;
+  let Event = element.ownerDocument.defaultView?.Event || globalThis.Event;
   return element.dispatchEvent(new Event("change", { bubbles: true, cancelable: false }));
 }
 
 export function dispatchMouseDown(element: HTMLElement, options: MouseEventInit = {}): boolean {
-  let MouseEvent = element.ownerDocument.defaultView?.MouseEvent || window.MouseEvent;
+  let MouseEvent = element.ownerDocument.defaultView?.MouseEvent || globalThis.MouseEvent;
   return element.dispatchEvent(
     new MouseEvent("mousedown", Object.assign({ bubbles: true, cancelable: true }, options))
   );

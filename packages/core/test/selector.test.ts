@@ -1,8 +1,8 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { dom } from './helpers';
+import { describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
+import { dom } from './helpers.ts';
 
-import { createInteractor } from '../src';
+import { createInteractor } from '../mod.ts';
 
 describe('selector', () => {
   it('can use string as selector', async () => {

@@ -1,0 +1,27 @@
+{
+  "name": "@interactors/material-ui",
+  "version": "5.0.0",
+  "tasks": {
+    "docs": "rm -rf docs && deno run -A npm:typedoc@^0.25.13 --options typedoc.json --tsconfig tsconfig.docs.json",
+    "preview": "deno task docs && deno run -A npm:parcel@^2.10.2 docs/api/v4/index.html"
+  },
+  "exports": "./mod.ts",
+  "imports": {},
+  "lint": {
+    "rules": {
+      "exclude": [
+        "prefer-const",
+        "require-yield",
+        "no-explicit-any",
+        "no-slow-types"
+      ]
+    },
+    "exclude": ["build", "docs"]
+  },
+  "fmt": {
+    "exclude": ["build", "docs", "README.md"]
+  },
+  "test": {
+    "exclude": ["build", "docs"]
+  }
+}

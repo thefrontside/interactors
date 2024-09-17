@@ -1,8 +1,8 @@
-import { describe, it } from 'node:test';
-import expect from 'expect';
-import { dom } from '../helpers';
+import { describe, it } from '@std/testing/bdd';
+import { expect } from "@std/expect";
+import { dom } from '../helpers.ts';
 
-import { createInteractor, every, including } from '../../src/index';
+import { createInteractor, every, including } from '../../mod.ts';
 
 const MultiSelect = createInteractor<HTMLSelectElement>('multi select')
   .selector('select[multiple]')

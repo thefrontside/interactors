@@ -8,7 +8,7 @@
   "repository": "https://github.com/thefrontside/interactors.git",
   "homepage": "https://frontside.com/interactors",
   "author": "Frontside Engineering <engineering@frontside.com>",
-  "license": "MIT",
+n  "license": "MIT",
   "files": [
     "dist/**/*",
     "src/**/*",
@@ -22,7 +22,7 @@
     "cypress": ">=6.0.0 <13.0.0"
   },
   "scripts": {
-    "start": "cd ../../sample/ && yarn && yarn start -Y -p 3000",
+    "start": "cd ./cypress/sample/ && yarn && yarn start -Y -p 3000",
     "cypress:run": "npx cypress run",
     "test": "echo 'Tests are skipped for now due to a issue with some scripts' && exit 0",
     "test:skip": "start-server-and-test 'yarn start' http://localhost:3000 cypress:run",
@@ -36,9 +36,18 @@
     "cypress": "^12.0.0",
     "start-server-and-test": "^1.11.7",
     "ts-node": "^10.4.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "@types/node": "^14.17.5",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "@typescript-eslint/utils": "^7.7.1",
+    "eslint": "^8.56.0"
+  },
+  "resolutions": {
+    "chromedriver": "126.0.4"
   },
   "volta": {
-    "extends": "../../package.json"
+    "node": "20.12.2",
+    "yarn": "4.1.1"
   }
 }

@@ -1,6 +1,7 @@
-import { click, HTML, createInteractor, including, Interaction, Interactor, not, innerText } from "@interactors/html";
-import { delay, isHTMLElement } from "./helpers";
-import { DatePickerUtils } from "./types";
+import { click, HTML, createInteractor, including, not, innerText } from "@interactors/html";
+import type { Interaction, Interactor } from '@interactors/html';
+import { delay, isHTMLElement } from "./helpers.ts";
+import type { DatePickerUtils } from "./types.ts";
 
 function getHeaderElement(element: HTMLElement) {
   let header = element.parentElement?.querySelector('[class*="MuiPickersCalendarHeader-switchHeader"]');
@@ -78,7 +79,6 @@ async function goToDay<T extends Record<string, unknown>>(interactor: Interactor
   return dayInteractor.click();
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function createCalendar(utils: DatePickerUtils) {
   return Calendar.filters({
     date: (element) => {
