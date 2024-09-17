@@ -1,6 +1,7 @@
 {
   "name": "@interactors/keyboard",
   "version": "1.0.0",
+  "description": "Interactors for simulating the keyboard",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
     "docs": "rm -rf docs && deno run -A npm:typedoc@^0.25.13 --options typedoc.json --tsconfig tsconfig.docs.json",

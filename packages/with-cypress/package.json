@@ -8,7 +8,7 @@
   "repository": "https://github.com/thefrontside/interactors.git",
   "homepage": "https://frontside.com/interactors",
   "author": "Frontside Engineering <engineering@frontside.com>",
-  "license": "MIT",
+n  "license": "MIT",
   "files": [
     "dist/**/*",
     "src/**/*",
@@ -22,7 +22,7 @@
     "cypress": ">=6.0.0 <13.0.0"
   },
   "scripts": {
-    "start": "cd ./cypres/sample/ && yarn && yarn start -Y -p 3000",
+    "start": "cd ./cypress/sample/ && yarn && yarn start -Y -p 3000",
     "cypress:run": "npx cypress run",
     "test": "echo 'Tests are skipped for now due to a issue with some scripts' && exit 0",
     "test:skip": "start-server-and-test 'yarn start' http://localhost:3000 cypress:run",

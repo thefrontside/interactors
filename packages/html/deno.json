@@ -1,6 +1,7 @@
 {
   "name": "@interactors/html",
   "version": "1.0.0",
+  "description": "Interactors for the DOM",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
     "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"

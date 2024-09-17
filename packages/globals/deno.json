@@ -1,6 +1,7 @@
 {
   "name": "@interactors/globals",
   "version": "1.0.0",
+  "description": "Global variable accessors for interactors",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read"
   },

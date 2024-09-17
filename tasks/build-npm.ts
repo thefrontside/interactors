@@ -14,10 +14,7 @@ export async function buildNpm(packageDirectory: string) {
       with: { type: "json" },
     }
   );
-  const { default: packageJson } = await import(
-    `../${packageDirectory}/package.json`,
-    { with: { type: "json" } }
-  );
+
   const outDir = new URL(`../${packageDirectory}/build/npm`, import.meta.url);
 
   await emptyDir(outDir);
@@ -43,8 +40,6 @@ export async function buildNpm(packageDirectory: string) {
   const tmpImportMapFile = new URL(
     import.meta.resolve(`../${packageDirectory}/imports-${Date.now()}.json`)
   );
-
-  console.log({ ...denoJson.imports, ...workspaceImports });
 
   await Deno.writeTextFile(
     tmpImportMapFile,
@@ -72,8 +67,21 @@ export async function buildNpm(packageDirectory: string) {
         sourceMap: true,
       },
       package: {
-        ...packageJson,
-        version: denoJson.version,
+	name: denoJson.name,
+	version: denoJson.version,
+	description: denoJson.description,
+	license: "MIT",
+	homepage: "https://frontside.com/interactors",
+	author: "Frontside Engineering <engineering@frontside.com>",
+	repository: {
+	  type: "git",
+	  url: "git+https://github.com/thefrontside/interactors.git",
+	  directory: packageDirectory,
+	},
+	bugs: {
+	  url: "https://github.com/thefrontside/interactors/issues",
+	},
+	sideEffects: false
       },
     });
 
