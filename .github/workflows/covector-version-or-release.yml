@@ -39,6 +39,7 @@ jobs:
         with:
           token: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
           title: "Publish New Versions"
+          author: Jack <jack@frontside.com>
           committer: Jack <jack@frontside.com>
           commit-message: "publish new versions"
           labels: "version updates"
