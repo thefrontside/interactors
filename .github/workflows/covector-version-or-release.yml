@@ -32,6 +32,12 @@ jobs:
           token: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
           command: "version-or-publish"
           recognizeContributors: true
+
+        # recommit with the signature setup in the beginning of this action
+      - name: Sign Commits
+        if: steps.covector.outputs.commandRan == 'version'
+        run: git commit --amend --no-edit --reset-author
+
       - name: Create Pull Request With Versions Bumped
         uses: peter-evans/create-pull-request@v6
         if: steps.covector.outputs.commandRan == 'version'
