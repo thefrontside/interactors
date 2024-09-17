@@ -36,7 +36,9 @@ jobs:
         # recommit with the signature setup in the beginning of this action
       - name: Sign Commits
         if: steps.covector.outputs.commandRan == 'version'
-        run: git commit --amend --no-edit --reset-author
+        run: |
+          git commit --amend --no-edit --reset-author
+          git push --force-with-lease origin release
 
       - name: Create Pull Request With Versions Bumped
         uses: peter-evans/create-pull-request@v6
