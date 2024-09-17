@@ -1,5 +1,13 @@
 # @interactors/html
 
+## \[1.0.1]
+
+- [`e9d46c6`](https://github.com/thefrontside/interactors/commit/e9d46c68381bcd7814e85e4eeba4889e0fb6a746) Fix types in distributed NPM packages which were being incorrectly referenced in the package exports.
+
+### Dependencies
+
+- Upgraded to `@interactors/core@1.0.1`
+
 ## 1.0.0
 
 ### Major Changes
@@ -12,19 +20,19 @@
 - 5386ccc: Update TypeScript to v5.4
 - d859e16: Pin versions for internal @interactors/\* dependencies
   Remove `@interactors/html` re-export from `with-cypress` package
-- Updated dependencies [e111228]
-- Updated dependencies [27c4059]
-- Updated dependencies [efecf56]
-- Updated dependencies [596dee1]
-- Updated dependencies [57b2a27]
-- Updated dependencies [5386ccc]
-- Updated dependencies [5936572]
-- Updated dependencies [a3155cf]
-- Updated dependencies [968109e]
-- Updated dependencies [afcf87b]
-- Updated dependencies [85da2e8]
-- Updated dependencies [d859e16]
-- Updated dependencies [4538b92]
+- Updated dependencies \[e111228]
+- Updated dependencies \[27c4059]
+- Updated dependencies \[efecf56]
+- Updated dependencies \[596dee1]
+- Updated dependencies \[57b2a27]
+- Updated dependencies \[5386ccc]
+- Updated dependencies \[5936572]
+- Updated dependencies \[a3155cf]
+- Updated dependencies \[968109e]
+- Updated dependencies \[afcf87b]
+- Updated dependencies \[85da2e8]
+- Updated dependencies \[d859e16]
+- Updated dependencies \[4538b92]
   - @interactors/keyboard@1.0.0
   - @interactors/core@1.0.0
 
@@ -34,7 +42,7 @@
 
 - e156093: Lookup Interactor by ARIA label if it is present
 - 5386ccc: Update TypeScript to v5.4
-- Updated dependencies [5386ccc]
+- Updated dependencies \[5386ccc]
   - @interactors/core@1.0.0-rc1.6
   - @interactors/keyboard@1.0.0-rc1.6
 
@@ -42,7 +50,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [5936572]
+- Updated dependencies \[5936572]
   - @interactors/core@1.0.0-rc1.5
   - @interactors/keyboard@1.0.0-rc1.5
 
@@ -50,7 +58,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [596dee1]
+- Updated dependencies \[596dee1]
   - @interactors/core@1.0.0-rc1.4
   - @interactors/keyboard@1.0.0-rc1.4
 
@@ -58,10 +66,10 @@
 
 ### Patch Changes
 
-- Updated dependencies [efecf56]
-- Updated dependencies [a3155cf]
-- Updated dependencies [968109e]
-- Updated dependencies [afcf87b]
+- Updated dependencies \[efecf56]
+- Updated dependencies \[a3155cf]
+- Updated dependencies \[968109e]
+- Updated dependencies \[afcf87b]
   - @interactors/core@1.0.0-rc1.3
   - @interactors/keyboard@1.0.0-rc1.3
 
@@ -69,7 +77,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [27c4059]
+- Updated dependencies \[27c4059]
   - @interactors/core@1.0.0-rc1.2
   - @interactors/keyboard@1.0.0-rc1.2
 
@@ -79,10 +87,10 @@
 
 - d859e16: Pin versions for internal @interactors/\* dependencies
   Remove `@interactors/html` re-export from `with-cypress` package
-- Updated dependencies [e111228]
-- Updated dependencies [57b2a27]
-- Updated dependencies [d859e16]
-- Updated dependencies [4538b92]
+- Updated dependencies \[e111228]
+- Updated dependencies \[57b2a27]
+- Updated dependencies \[d859e16]
+- Updated dependencies \[4538b92]
   - @interactors/keyboard@1.0.0-rc1.1
   - @interactors/core@1.0.0-rc1.1
 
@@ -94,7 +102,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [dfcbf1a]
+- Updated dependencies \[dfcbf1a]
   - @interactors/core@1.0.0-rc1.0
   - @interactors/keyboard@1.0.0-rc1.0
 
@@ -108,9 +116,9 @@
 ### Patch Changes
 
 - 53f1980: make className filter returns string for svg elements
-- Updated dependencies [76215cc]
-- Updated dependencies [f06c7fe]
-- Updated dependencies [960da4e]
+- Updated dependencies \[76215cc]
+- Updated dependencies \[f06c7fe]
+- Updated dependencies \[960da4e]
   - @interactors/core@0.4.0
   - @interactors/keyboard@0.1.1
 
@@ -122,7 +130,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [53dea63]
+- Updated dependencies \[53dea63]
   - @interactors/core@0.3.0
 
 ## 0.35.0
@@ -137,8 +145,8 @@
 
 ### Patch Changes
 
-- Updated dependencies [0c96dab]
-- Updated dependencies [f4949ac]
+- Updated dependencies \[0c96dab]
+- Updated dependencies \[f4949ac]
   - @interactors/core@0.2.0
 
 ## 0.34.0
@@ -160,8 +168,8 @@
 - e3448b0: Fix copy-pasted ts-docs of html interactors
 - 3c0aa1c: Added API typedocs
 - 2f5aa35: fix missing fallback file for testing library
-- Updated dependencies [cdbc904]
-- Updated dependencies [85ef221]
+- Updated dependencies \[cdbc904]
+- Updated dependencies \[85ef221]
   - @interactors/globals@0.1.0
 
 ## 0.33.0
@@ -228,7 +236,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [4762d0d9]
+- Updated dependencies \[4762d0d9]
   - @bigtest/globals@0.7.6
 
 ## 0.28.2
@@ -236,7 +244,7 @@
 ### Patch Changes
 
 - eae849da: Improved format for filter not matching error
-- Updated dependencies [08b07d78]
+- Updated dependencies \[08b07d78]
   - @bigtest/globals@0.7.5
 
 ## 0.28.1
@@ -286,8 +294,8 @@
 - 4d7c43f9: enable eslint rules from the latest @typescript-eslint/recommended
 - 06f915b0: Refactor internals to remove Interactor class
 - d85e5e95: upgrade eslint, typescript and @frontside packages
-- Updated dependencies [4d7c43f9]
-- Updated dependencies [d85e5e95]
+- Updated dependencies \[4d7c43f9]
+- Updated dependencies \[d85e5e95]
   - @bigtest/globals@0.7.4
 
 ## 0.23.0
@@ -311,7 +319,7 @@
 ### Patch Changes
 
 - c2c4bd11: Upgrade @frontside/typescript to v1.1.0
-- Updated dependencies [c2c4bd11]
+- Updated dependencies \[c2c4bd11]
   - @bigtest/globals@0.7.3
 
 ## 0.21.0
@@ -382,8 +390,8 @@
 
 ### Patch Changes
 
-- Updated dependencies [d97038a8]
-- Updated dependencies [7a727c86]
+- Updated dependencies \[d97038a8]
+- Updated dependencies \[7a727c86]
   - @bigtest/globals@0.7.0
 
 ## 0.16.1
@@ -412,15 +420,14 @@
   ```
 
 - 48fde34e: Add built in interactors `Link` and `Heading`.
+
 - 821991d6: Support nullary interactors for singleton elements:
 
-  ```
-  const MainNav = createInteractor('button')({
-    selector: '#main-nav'
-  });
+      const MainNav = createInteractor('button')({
+        selector: '#main-nav'
+      });
 
-  MainNav().click('Widgets');
-  ```
+      MainNav().click('Widgets');
 
 ### Patch Changes
 
@@ -441,42 +448,36 @@
 - 845cc399: Interactor actions functions now receive the interactor, supporting composition of
   interactors within an action:
 
-  ```
-  const Datepicker = createInteractor<HTMLDivElement>("datepicker")({
-    // ...
-    actions: {
-      toggle: async interactor => {
-        await interactor.find(TextField.byPlaceholder("YYYY-MM-DD")).click();
-      }
-    }
-  });
-  ```
+      const Datepicker = createInteractor<HTMLDivElement>("datepicker")({
+        // ...
+        actions: {
+          toggle: async interactor => {
+            await interactor.find(TextField.byPlaceholder("YYYY-MM-DD")).click();
+          }
+        }
+      });
 
   The `resolve()` method on `Interactor` has been replaced with a `perform()` method:
 
-  ```
-  const Link = createInteractor<HTMLLinkElement>("link")({
-    // ...
-    actions: {
-      click: async interactor => {
-        await interactor.perform(element => element.click());
-      }
-    }
-  });
-  ```
+      const Link = createInteractor<HTMLLinkElement>("link")({
+        // ...
+        actions: {
+          click: async interactor => {
+            await interactor.perform(element => element.click());
+          }
+        }
+      });
 
   Or more simply with the new `perform()` helper function:
 
-  ```
-  import { createInteractor, perform } from "@bigtest/interactor";
+      import { createInteractor, perform } from "@bigtest/interactor";
 
-  const Link = createInteractor<HTMLLinkElement>("link")({
-    // ...
-    actions: {
-      click: perform(element => element.click())
-    }
-  });
-  ```
+      const Link = createInteractor<HTMLLinkElement>("link")({
+        // ...
+        actions: {
+          click: perform(element => element.click())
+        }
+      });
 
 ## 0.14.0
 
@@ -509,8 +510,8 @@
 ### Patch Changes
 
 - d1725678: Interactors did not properly type the defined interactors due to incorrectly applied type transformations.
-- Updated dependencies [d62c4e2b]
-- Updated dependencies [65b0156c]
+- Updated dependencies \[d62c4e2b]
+- Updated dependencies \[65b0156c]
   - @bigtest/globals@0.6.0
 
 ## 0.11.2

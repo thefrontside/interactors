@@ -1,6 +1,6 @@
 {
   "name": "@interactors/keyboard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Interactors for simulating the keyboard",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
@@ -14,14 +14,28 @@
   },
   "lint": {
     "rules": {
-      "exclude": ["prefer-const", "require-yield", "no-slow-types"]
+      "exclude": [
+        "prefer-const",
+        "require-yield",
+        "no-slow-types"
+      ]
     },
-    "exclude": ["build", "docs"]
+    "exclude": [
+      "build",
+      "docs"
+    ]
   },
   "fmt": {
-    "exclude": ["build", "docs", "README.md"]
+    "exclude": [
+      "build",
+      "docs",
+      "README.md"
+    ]
   },
   "test": {
-    "exclude": ["build", "docs"]
+    "exclude": [
+      "build",
+      "docs"
+    ]
   }
 }
