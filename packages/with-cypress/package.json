@@ -8,7 +8,7 @@
   "repository": "https://github.com/thefrontside/interactors.git",
   "homepage": "https://frontside.com/interactors",
   "author": "Frontside Engineering <engineering@frontside.com>",
-n  "license": "MIT",
+  "license": "MIT",
   "files": [
     "dist/**/*",
     "src/**/*",
