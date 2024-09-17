@@ -1,5 +1,13 @@
 # @interactors/core
 
+## \[1.0.1]
+
+- [`e9d46c6`](https://github.com/thefrontside/interactors/commit/e9d46c68381bcd7814e85e4eeba4889e0fb6a746) Fix types in distributed NPM packages which were being incorrectly referenced in the package exports.
+
+### Dependencies
+
+- Upgraded to `@interactors/globals@1.0.1`
+
 ## 1.0.0
 
 ### Major Changes
@@ -23,12 +31,12 @@
 - d859e16: Pin versions for internal @interactors/\* dependencies
   Remove `@interactors/html` re-export from `with-cypress` package
 - 4538b92: Matchers can return their code representation
-- Updated dependencies [5386ccc]
-- Updated dependencies [a3155cf]
-- Updated dependencies [968109e]
-- Updated dependencies [afcf87b]
-- Updated dependencies [85da2e8]
-- Updated dependencies [d859e16]
+- Updated dependencies \[5386ccc]
+- Updated dependencies \[a3155cf]
+- Updated dependencies \[968109e]
+- Updated dependencies \[afcf87b]
+- Updated dependencies \[85da2e8]
+- Updated dependencies \[d859e16]
   - @interactors/globals@1.0.0
 
 ## 1.0.0-rc1.6
@@ -36,7 +44,7 @@
 ### Patch Changes
 
 - 5386ccc: Update TypeScript to v5.4
-- Updated dependencies [5386ccc]
+- Updated dependencies \[5386ccc]
   - @interactors/globals@1.0.0-rc1.3
 
 ## 1.0.0-rc1.5
@@ -62,9 +70,9 @@
 
 - efecf56: Improve filter matching and reduce unnecessary calls
 - afcf87b: Add code representation for interactions
-- Updated dependencies [a3155cf]
-- Updated dependencies [968109e]
-- Updated dependencies [afcf87b]
+- Updated dependencies \[a3155cf]
+- Updated dependencies \[968109e]
+- Updated dependencies \[afcf87b]
   - @interactors/globals@1.0.0-rc1.2
 
 ## 1.0.0-rc1.2
@@ -81,7 +89,7 @@
 - d859e16: Pin versions for internal @interactors/\* dependencies
   Remove `@interactors/html` re-export from `with-cypress` package
 - 4538b92: Matchers can return their code representation
-- Updated dependencies [d859e16]
+- Updated dependencies \[d859e16]
   - @interactors/globals@1.0.0-rc1.1
 
 ## 1.0.0-rc1.0
@@ -92,7 +100,7 @@
 
 ### Patch Changes
 
-- Updated dependencies [dfcbf1a]
+- Updated dependencies \[dfcbf1a]
   - @interactors/globals@1.0.0-rc1.0
 
 ## 0.4.0
@@ -105,7 +113,7 @@
 
 - f06c7fe: simplify interactor instatiate function
 - 960da4e: Remove the ExistsAssertionsImplementation since it is no longer necessary
-- Updated dependencies [891af02]
+- Updated dependencies \[891af02]
   - @interactors/globals@0.2.0
 
 ## 0.3.0
