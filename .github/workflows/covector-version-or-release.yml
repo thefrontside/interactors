@@ -33,19 +33,13 @@ jobs:
           command: "version-or-publish"
           recognizeContributors: true
 
-        # recommit with the signature setup in the beginning of this action
-      - name: Sign Commits
-        if: steps.covector.outputs.commandRan == 'version'
-        run: |
-          git commit --amend --no-edit --reset-author
-          git push --force-with-lease origin release
-
       - name: Create Pull Request With Versions Bumped
         uses: peter-evans/create-pull-request@v6
         if: steps.covector.outputs.commandRan == 'version'
         with:
           token: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}
           title: "Publish New Versions"
+          committer: Jack <jack@frontside.com>
           commit-message: "publish new versions"
           labels: "version updates"
           branch: "release"
