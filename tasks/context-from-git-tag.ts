@@ -14,7 +14,7 @@ export async function deriveFromGitTag([argName, gitTag]: [
   const { default: covectorConfig } = await import("../.changes/config.json", {
     with: { type: "json" },
   });
-  const [pkg, _] = gitTag.replace("refs/tags/", "").split("-v");
+  const [pkg, _] = gitTag.replace("refs/tags/interactors-", "@interactors/").split("-v");
   // @ts-expect-error let's undefined check
   const pkgConfig = covectorConfig.packages[pkg];
   if (!pkgConfig) throw new Error(`${pkg} not defined in .changes/config.json`);
