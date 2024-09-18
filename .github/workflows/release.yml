@@ -5,6 +5,11 @@ on:
     tags:
       - "interactors-*"
 
+permissions:
+  id-token: write
+  contents: read
+
+
 jobs:
   publish-to-npm:
     name: NPM ${{ github.ref }}
