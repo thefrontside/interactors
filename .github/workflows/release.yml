@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     tags:
-      - "interactors-*"
+      - "@interactors/*-v*"
 
 permissions:
   id-token: write
