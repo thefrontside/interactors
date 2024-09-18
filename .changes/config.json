@@ -3,9 +3,9 @@
   "pkgManagers": {
     "javascript": {
       "version": true,
-      "getPublishedVersion": "git tag -l \"${ pkg.pkg.replace(`@interactors/`,`interactors-`) }-v${ pkgFile.version }\" | sed 's/.*-v//'",
+      "getPublishedVersion": "git tag -l \"${ pkg.pkg }-v${ pkgFile.version }\" | sed 's/.*-v//'",
       "publish": [
-        "git tag -a -m '${ pkg.pkg }-v${ pkgFile.version}' ${ pkg.pkg.replace(`@interactors/`,`interactors-`) }-v${ pkgFile.version }"
+        "git tag -a -m \"${ pkg.pkg }-v${ pkgFile.version }\" ${ pkg.pkg }-v${ pkgFile.version }"
       ]
     }
   },
