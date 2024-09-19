@@ -1,0 +1,29 @@
+name: Website
+
+on:
+  push:
+    branches:
+      - main
+      - www # remove this branch once this is merged to main
+    paths:
+      - website/**
+
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: volta-cli/action@v4
+
+      - run: yarn install && yarn build
+        working-directory: website
+
+      - uses: denoland/deployctl@v1
+        with:
+          project: interactors
+          entrypoint: https://deno.land/std@0.224.0/http/file_server.ts
+          root: website/build

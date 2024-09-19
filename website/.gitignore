@@ -11,3 +11,4 @@ build
 docs/**/api
 sidebars
 public
+/node_modules
