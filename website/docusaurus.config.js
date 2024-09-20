@@ -1,7 +1,7 @@
 module.exports = {
   title: "Interactors",
   tagline: "Page Objects for components libraries",
-  url: "https://frontside.com/",
+  url: "https://interactors.deno.dev",
   baseUrl: "/interactors/",
   onBrokenLinks: "throw",
   favicon: "images/favicon-interactors.png",
@@ -119,6 +119,7 @@ module.exports = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
+	sitemap: {}
       },
     ],
   ],

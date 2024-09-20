@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build --out-dir public/interactors",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "serve": "docusaurus serve --dir public/interactors"
+    "build": "docusaurus build --out-dir build/interactors && node sitemap.mjs",
+    "serve": "docusaurus serve"
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-beta.9",
@@ -21,7 +19,8 @@
     "email-validator": "^2.0.4",
     "jsonp": "^0.2.1",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "xml2js": "^0.6.2"
   },
   "browserslist": {
     "production": [
@@ -34,5 +33,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "volta": {
+    "node": "16.20.2",
+    "yarn": "1.22.22"
   }
 }
