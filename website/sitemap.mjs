@@ -1,5 +1,6 @@
 /* Add indexes of all dynamically loaded assets so that they can be staticalized */
 
+import { x } from "tinyexec";
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { Parser, Builder } from "xml2js";
 
@@ -16,6 +17,16 @@ sitemap.urlset.url.push({
 }, {
   loc: 'https://interactors.deno.dev/interactors/images/index.html'
 });
+
+
+// add all of the typedoc files to the sitemap.
+const docfiles = x('find', ['build/interactors/html','build/interactors/mui', '-name', '*.html']);
+for await (const filename of docfiles) {
+  const path = filename.replace(/^build/,'');
+  sitemap.urlset.url.push({
+    loc: `https://interactors.deno.dev${path}`,
+  })
+}
 
 writeFileSync("./build/interactors/sitemap.xml", builder.buildObject(sitemap));
 

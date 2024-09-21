@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build --out-dir build/interactors && node sitemap.mjs",
+    "build": "yarn build:docusaurus && yarn build:typedocs:html && yarn build:typedocs:mui && yarn build:sitemap",
+    "build:docusaurus": "docusaurus build --out-dir build/interactors",
+    "build:sitemap": "node sitemap.mjs",
+    "build:typedocs:html": "cd ../packages/html && npx typedoc --out ../../website/build/interactors/html/api --skipErrorChecking mod.ts",
+    "build:typedocs:mui": "cd ../packages/material-ui && npx typedoc --out ../../website/build/interactors/mui/api --skipErrorChecking mod.ts",
     "serve": "docusaurus serve"
   },
   "dependencies": {
@@ -37,5 +41,8 @@
   "volta": {
     "node": "16.20.2",
     "yarn": "1.22.22"
+  },
+  "devDependencies": {
+    "tinyexec": "^0.3.0"
   }
 }
