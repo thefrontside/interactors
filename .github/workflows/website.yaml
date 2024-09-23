@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - main
-      - www # remove this branch once this is merged to main
     paths:
       - website/**
+      - packages/**/src/**
+  pull_request:
+    branches:
+      - main
 
 jobs:
   website:
