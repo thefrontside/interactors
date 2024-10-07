@@ -38,12 +38,12 @@ writeFileSync("./build/interactors/assets/js/index.html",`
 ${assets.map((asset) => `    <link rel="asset" href="${asset}"/>`).join("\n")}
   </head>
   <body>
-  <h1> JavaScript Index</h1>
-  <ul>
+    <h1> JavaScript Index</h1>
+    <ul>
 
-${assets.map((asset) => `    <li><a href="${asset}">${asset}</a></li>`).join("\n")}
+${assets.map((asset) => `      <li><a href="${asset}">${asset}</a></li>`).join("\n")}
 
-  </ul>
+    </ul>
   <body>
 <html>
 
@@ -57,12 +57,12 @@ writeFileSync("./build/interactors/images/index.html",`
 ${images.map((image) => `    <link rel="asset" href="${image}"/>`).join("\n")}
   </head>
   <body>
-  <h1> JavaScript Index</h1>
-  <ul>
+    <h1> JavaScript Index</h1>
+    <ul>
 
-${images.map((image) => `    <li><a href="${image}">${image}</a></li>`).join("\n")}
+${images.map((image) => `      <li><a href="${image}">${image}</a></li>`).join("\n")}
 
-  </ul>
+    </ul>
   <body>
 <html>
 
