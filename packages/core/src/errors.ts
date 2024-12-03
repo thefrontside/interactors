@@ -1,15 +1,15 @@
 export class NoSuchElementError extends Error {
-  name = "NoSuchElementError";
+  override name = "NoSuchElementError";
 }
 
 export class AmbiguousElementError extends Error {
-  name = "AmbiguousElementError";
+  override name = "AmbiguousElementError";
 }
 
 export class NotAbsentError extends Error {
-  name = "NotAbsentError";
+  override name = "NotAbsentError";
 }
 
 export class FilterNotMatchingError extends Error {
-  name = "FilterNotMatchingError";
+  override name = "FilterNotMatchingError";
 }
