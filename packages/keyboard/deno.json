@@ -1,6 +1,6 @@
 {
   "name": "@interactors/keyboard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Interactors for simulating the keyboard",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
