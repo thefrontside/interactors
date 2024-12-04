@@ -6,6 +6,9 @@ import { generateImports } from "./generate-imports.ts";
 import { importInteractors } from "./import-interactors.ts";
 import { generateConstructors } from "./generate-constructors.ts";
 
+import { denoPlugins } from "jsr:@luca/esbuild-deno-loader@^0.11.0";
+
+
 export interface BuildOptions {
   outDir: string;
   modules?: string[];
@@ -54,6 +57,7 @@ export function* build(options: BuildOptions): Operation<void> {
 
   yield* call(() =>
     esbuild.build({
+      plugins: [...denoPlugins()],
       entryPoints: [`${outDir}/agent.ts`],
       bundle: true,
       outfile: agentScriptPath,
