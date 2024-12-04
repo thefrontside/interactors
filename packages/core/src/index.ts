@@ -1,4 +1,4 @@
-export type { Interactor, InteractorConstructor, InteractorSpecification, EmptyObject, FilterMethods, ActionMethods } from "./specification.ts";
+export type { Interactor, InteractorConstructor, InteractorSpecification, TInteraction, EmptyObject, FilterMethods, ActionMethods } from "./specification.ts";
 export type { Interaction, ActionInteraction, AssertionInteraction } from './interaction.ts';
 export { isInteraction } from './interaction.ts';
 export { createInteractor, InitInteractor } from './create-interactor.ts';

@@ -1,14 +1,14 @@
-import { call, Operation } from "effection";
+import { call, type Operation } from "effection";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import * as esbuild from "esbuild";
-import { generateImports } from "./generate-imports.js";
-import { importInteractors } from "./import-interactors.js";
-import { generateConstructors } from "./generate-constructors.js";
+import { generateImports } from "./generate-imports.ts";
+import { importInteractors } from "./import-interactors.ts";
+import { generateConstructors } from "./generate-constructors.ts";
 
 export interface BuildOptions {
   outDir: string;
-  modules?: [];
+  modules?: string[];
 }
 
 export function* build(options: BuildOptions): Operation<void> {
@@ -37,7 +37,7 @@ export function* build(options: BuildOptions): Operation<void> {
   // TODO use esbuild to agent
 
   let templatePath =
-    require.resolve("../src/templates/agent.ts.template");
+    new URL(import.meta.resolve("./templates/agent.ts.template")).pathname;
 
   let agentTemplate = yield* call(readFile(templatePath, "utf8"));
 

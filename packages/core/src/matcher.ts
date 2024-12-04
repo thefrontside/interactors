@@ -1,5 +1,5 @@
-import isEqual from 'lodash.isequal';
-import { TMatcher } from './specification';
+import {isEqual} from 'npm:lodash';
+import { TMatcher } from './specification.ts';
 
 export interface Matcher<T> {
   match(actual: T): boolean;
@@ -58,7 +58,6 @@ export function matcherCode<T>(value: MaybeMatcher<T>): string {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createMatcher<F extends (...args: any) => Matcher<any>, T extends GetType<ReturnType<F>>>(name: string, fn: F): F & { // eslint-disable-next-line @typescript-eslint/no-misused-new
   builder(transform: (matcher: TMatcher<T>) => TMatcher<T>): (...args: Parameters<F>) => TMatcher<T> } {
   Matchers.add(fn);

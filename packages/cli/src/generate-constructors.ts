@@ -1,4 +1,4 @@
-import { ImportedModules } from "./types";
+import { ImportedModules } from "./types.ts";
 
 export function generateConstructors(imports: string, modules: ImportedModules): string {
   return [

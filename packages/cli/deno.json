@@ -1,13 +1,15 @@
 {
   "name": "@interactors/cli",
   "version": "1.0.0",
-  "tasks": {
-    "test": "deno test --allow-run=deno --allow-env --allow-read",
-    "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"
-  },
   "exports": "./mod.ts",
   "imports": {
-    "effection": "^3.0.3"
+    "chokidar": "npm:chokidar@^4.0.1",
+    "effection": "npm:effection@^3.0.3",
+    "esbuild": "npm:esbuild@^0.24.0",
+    "playwright": "npm:playwright@^1.49.0",
+    "yargs": "npm:yargs@^17.7.2",
+    "zod": "npm:zod@^3.23.8",
+    "zod-opts": "npm:zod-opts@^0.1.8"
   },
   "lint": {
     "rules": {

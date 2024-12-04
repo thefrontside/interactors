@@ -2,14 +2,14 @@ import {
   call,
   createSignal,
   each,
-  Operation,
+  type Operation,
   resource,
   spawn,
 } from "effection";
-import { readFile } from "fs/promises";
-import { existsSync } from "fs";
-import { chromium, Page } from "playwright";
-import { buildAttrs, BuildOptions } from "./build.js";
+import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { chromium, type Page } from "playwright";
+import { buildAttrs, type BuildOptions } from "./build.ts";
 
 interface TestPage {
   update(): Operation<void>;
@@ -78,7 +78,7 @@ import os from "node:os";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { createInterface } from "node:readline";
-import { TInteraction } from "@interactors/core/dist/specification";
+import type { TInteraction } from "@interactors/core";
 
 interface REPL {
   reset(): Operation<void>;

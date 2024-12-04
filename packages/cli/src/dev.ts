@@ -1,7 +1,7 @@
-import { Operation } from "effection";
-import { build, buildAttrs, BuildOptions } from "./build.js";
-import { useWatcher } from "./watcher.js";
-import { useTestPage } from "./test-page.js";
+import type { Operation } from "effection";
+import { build, buildAttrs, type BuildOptions } from "./build.ts";
+import { useWatcher } from "./watcher.ts";
+import { useTestPage } from "./test-page.ts";
 
 export interface DevOptions extends BuildOptions {
   repl?: string;

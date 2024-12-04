@@ -1,46 +1,45 @@
-import { main } from "effection";
-import yargs from "yargs";
+import { main, type Task, useScope } from "effection";
 
-import { build } from "./build.js";
-import { dev } from "./dev.js";
+import { command, parser } from "zod-opts";
+import { z } from "npm:zod";
 
-const commands = { build, dev } as const;
+import { build } from "./build.ts";
+//import { dev } from "./dev.ts";
 
-main(function* (argv) {
-  let args = yargs
-    .scriptName("interactors")
-    .command(
-      "build [modules...]",
-      "build an agent.ts for interactors found in MODULES",
-      (yargs) =>
-        yargs
-          .option(...outDirOption()),
+//const commands = { build, dev } as const;
+
+await main(function* (argv) {
+  let task: Task<void> | undefined = undefined;
+  
+  let scope = yield* useScope();
+  parser()
+    .name("interactors")
+    .description("build and test interactors")
+    .version("0.0.0")
+    .subcommand(
+      command("build").description(
+        "build an agent for interactors found in MODULES",
+      ).args([
+        {
+	  name: "modules",
+	  type: z.array(z.string()).optional(),
+	  description: "paths of modules containing interactors to include in the agent "
+	},
+      ]).options({
+	"outDir": {
+	  type: z.string().default("./build"),
+	  alias: "o",	  
+	  description: "the output directory for generated files",
+	},
+      }).action((options) => {
+        task = scope.run(() => build(options));
+      }),
     )
-    .command(
-      "dev [modules...]",
-      "continuously rebuild and test an agent.ts for interactors ",
-      (yargs) =>
-        yargs
-          .option(...outDirOption())
-	  .option('repl', {
-	    type: 'string',
-	    description: 'develop interactors on page at URL'
-	  }),
-    )
-    .help()
     .parse(argv);
 
-  let [commandName] = args["_"] as [keyof typeof commands];
-
-  let command = commands[commandName];
-
-  yield* command(args as unknown as Parameters<typeof command>[0]);
+  if (typeof task !== 'undefined') {
+    //@ts-expect-error effection is too good.
+    yield* task;
+  }
 });
 
-function outDirOption() {
-  return ["outDir", {
-    alias: "o",
-    default: "./build",
-    desc: "the output directory for generated files",
-  }] as const;
-}

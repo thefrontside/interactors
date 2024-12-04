@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ActionMethods, Actions, EmptyObject, FilterDefinition, FilterMethods, FilterParams, Filters, Interactor, InteractorConstructor, InteractorConstructorFunction, InteractorSpecification, TInteractorConstructor, TMatch, TInteractor, TActionMethods, TFilterMethods, TInteraction } from './specification';
-import { instantiateInteractor } from './constructor';
-import { matching } from './matchers/matching';
-import { isMatcher, matcherDescription } from './matcher';
-import { Locator, defaultLocator } from './locator';
-import { FilterSet, filtersDescription } from './filter-set';
-import { unsafeSyncResolveUnique } from './resolvers';
-import { MergeObjects } from './merge-objects';
+import type { ActionMethods, Actions, EmptyObject, FilterDefinition, FilterMethods, FilterParams, Filters, Interactor, InteractorConstructor, InteractorConstructorFunction, InteractorSpecification, TInteractorConstructor, TMatch, TInteractor, TActionMethods, TFilterMethods, TInteraction } from './specification.ts';
+import { instantiateInteractor } from './constructor.ts';
+import { matching } from './matchers/matching.ts';
+import { isMatcher, matcherDescription } from './matcher.ts';
+import { Locator, defaultLocator } from './locator.ts';
+import { FilterSet, filtersDescription } from './filter-set.ts';
+import { unsafeSyncResolveUnique } from './resolvers.ts';
+import type { MergeObjects } from './merge-objects.ts';
 
 /**
  * Create a custom interactor with the given name.

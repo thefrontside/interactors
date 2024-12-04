@@ -1,6 +1,6 @@
-import { createSignal, resource, Stream } from "effection";
+import { createSignal, resource, type Stream } from "effection";
 import chokidar from "chokidar";
-import { Stats } from "node:fs";
+import type { Stats } from "node:fs";
 
 export interface WatchEvent {
   path: string;
