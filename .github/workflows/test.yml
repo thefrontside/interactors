@@ -14,5 +14,6 @@ jobs:
         with:
           deno-version: v2.x
       - run: |
+            deno run -A npm:playwright install chromium
             deno run -A packages/cli/src/main.ts build
             deno test -A
