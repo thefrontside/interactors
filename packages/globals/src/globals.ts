@@ -1,17 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Operation } from "@effection/core";
 import type { KeyboardLayout } from "./keyboard-layout.ts";
 
 export type InteractionType = "action" | "assertion";
-
-type Interaction<T = any> = Operation<T> & {
-  type: InteractionType;
-  description: string;
-  options: InteractionOptions;
-  interactor: unknown; // we can't type this any better here
-  code: () => string;
-  halt: () => Promise<void>;
-};
 
 interface Globals {
   readonly document: Document;
@@ -34,8 +24,6 @@ export type InteractionOptions = InteractorOptions & {
   args: unknown[];
   ancestors?: InteractorOptions[];
 };
-
-export type InteractionWrapper<T = any> = (perform: () => Promise<T>, interaction: Interaction<T>) => Operation<T>;
 
 declare global {
   // deno-lint-ignore prefer-namespace-keyword

@@ -39,7 +39,6 @@
     "jsr:@std/testing@^1.0.5": "1.0.5",
     "jsr:@ts-morph/bootstrap@0.24": "0.24.0",
     "jsr:@ts-morph/common@0.24": "0.24.0",
-    "npm:@effection/core@2.2.0": "2.2.0",
     "npm:@testing-library/dom@^8.18.1": "8.20.1",
     "npm:@testing-library/user-event@^14.5.2": "14.5.2_@testing-library+dom@8.20.1",
     "npm:@types/node@*": "22.5.4",
@@ -252,12 +251,6 @@
       "integrity": "sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==",
       "dependencies": [
         "regenerator-runtime@0.14.1"
-      ]
-    },
-    "@effection/core@2.2.0": {
-      "integrity": "sha512-1RBMrDS0Ya02NEM0TQQRwzlGDSZmwoHhuD3qmWp9NLjZowhO1gJBZ16fQL2NbKvcpS71xho+oZsDedId+C1q8Q==",
-      "dependencies": [
-        "abort-controller"
       ]
     },
     "@esbuild/aix-ppc64@0.24.0": {
@@ -1416,12 +1409,6 @@
         "undici-types"
       ]
     },
-    "abort-controller@3.0.0": {
-      "integrity": "sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==",
-      "dependencies": [
-        "event-target-shim"
-      ]
-    },
     "abortcontroller-polyfill@1.7.5": {
       "integrity": "sha512-JMJ5soJWP18htbbxJjG7bG6yuI6pRhgJ0scHHTfkUjf6wjP912xZWvM+A4sJK3gqd9E8fcPbDnOefbA9Th/FIQ=="
     },
@@ -1849,9 +1836,6 @@
     },
     "escape-string-regexp@1.0.5": {
       "integrity": "sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg=="
-    },
-    "event-target-shim@5.0.1": {
-      "integrity": "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ=="
     },
     "fill-range@7.1.1": {
       "integrity": "sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==",
@@ -2934,7 +2918,6 @@
         "dependencies": [
           "jsr:@std/expect@^1.0.8",
           "jsr:@std/testing@^1.0.5",
-          "npm:@effection/core@2.2.0",
           "npm:@testing-library/dom@^8.18.1",
           "npm:@testing-library/user-event@^14.5.2",
           "npm:change-case@^4.1.1",
@@ -2947,7 +2930,6 @@
         "dependencies": [
           "jsr:@std/expect@1",
           "jsr:@std/testing@1",
-          "npm:@effection/core@2.2.0",
           "npm:jsdom@24"
         ]
       },

@@ -1,5 +1,3 @@
-
-import type { Operation } from '@effection/core';
 import type { FilterSet } from './filter-set.ts';
 import type { Locator } from './locator.ts';
 import type { ActionInteraction, AssertionInteraction, Interaction } from './interaction.ts';
@@ -128,7 +126,7 @@ export interface Interactor<E extends Element, F extends FilterParams<any, any>>
   apply: FilterFn<string, Element>;
 }
 
-export type ActionFn<E extends Element, I extends Interactor<E, any>> = (interactor: I, ...args: any[]) => Operation<unknown>;
+export type ActionFn<E extends Element, I extends Interactor<E, any>> = (interactor: I, ...args: any[]) => Promise<unknown>;
 
 export type FilterFn<T, E extends Element> = (element: E) => T;
 
@@ -162,7 +160,7 @@ export type InteractorSpecification<E extends Element, F extends Filters<E>, A e
 }
 
 export type ActionMethods<E extends Element, A extends Actions<E, I>, I extends Interactor<E, any>> = {
-  [P in keyof A]: A[P] extends ((interactor: I, ...args: infer TArgs) => Operation<infer TReturn>)
+  [P in keyof A]: A[P] extends ((interactor: I, ...args: infer TArgs) => Promise<infer TReturn>)
     ? ((...args: TArgs) => ActionInteraction<E, TReturn>)
     : never;
 }

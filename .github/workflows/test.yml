@@ -13,4 +13,6 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-      - run: deno test -A
+      - run: |
+            deno run -A packages/cli/src/main.ts build
+            deno test -A

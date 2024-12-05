@@ -7,7 +7,6 @@
   },
   "exports": "./mod.ts",
   "imports": {
-    "@effection/core": "npm:@effection/core@2.2.0",
     "@std/expect": "jsr:@std/expect@^1.0.8",
     "@std/testing": "jsr:@std/testing@^1.0.5",
     "@testing-library/dom": "npm:@testing-library/dom@^8.18.1",

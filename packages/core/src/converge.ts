@@ -1,19 +1,22 @@
-import { type Operation, sleep } from '@effection/core';
-import { performance } from 'performance-api';
-import { globals } from '@interactors/globals'
+import { performance } from "performance-api";
+import { globals } from "@interactors/globals";
 
-export function* converge<T>(fn: () => T): Operation<T> {
+export async function converge<T>(fn: () => T): Promise<T> {
   let startTime = performance.now();
-  while(true) {
+  while (true) {
     try {
       return fn();
-    } catch(e) {
+    } catch (e) {
       let diff = performance.now() - startTime;
-      if(diff > globals.interactorTimeout) {
+      if (diff > globals.interactorTimeout) {
         throw e;
       } else {
-        yield sleep(1);
+        await sleep(1);
       }
     }
   }
+}
+
+async function sleep(durationMS: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, durationMS));
 }

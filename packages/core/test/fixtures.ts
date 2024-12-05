@@ -71,8 +71,8 @@ export const Datepicker = createInteractor<HTMLDivElement>("datepicker")
     month: Calendar().find(Header()).text(),
   })
   .actions({
-    toggle: function* (interactor) {
-      yield interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
+    async toggle(interactor) {
+      await interactor.find(TextField({ placeholder: "YYYY-MM-DD" })).click();
     },
   });
 

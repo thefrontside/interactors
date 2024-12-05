@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, it } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 import { type Browser, chromium } from "playwright";
-import { HTML as $HTML } from "@interactors/html";
+import { HTML as $HTML, Heading as $Heading, matching } from "@interactors/html";
 import { Ok } from "effection";
 
 const HTML = $HTML.builder((i) => i);
+const Heading = $Heading.builder(i => i);
 
 let browser: Browser;
 let agent = {
@@ -52,8 +53,8 @@ describe("Interactor Agent", () => {
   });
 
   it("can call nested interactors", async function () {
-    const interaction = HTML({ title: "greeting" })
-      .find(HTML("Hello world! This is HTML5 Boilerplate."))
+    const interaction = HTML({ id: "facts" })
+      .find(HTML("Interactors == Awesome"))
       .exists();
     const result = await agent.run(interaction);
     expect(result).toEqual({ ok: true });
@@ -69,18 +70,15 @@ describe("Interactor Agent", () => {
       ),
     ).toEqual({ ok: true });
     expect(
-      await agent.run(HTML({ id: "hello" }).has({ text: "Goodbye world!" })),
+      await agent.run(HTML({ id: "hello" }).has({ text: "Hello world! This is HTML Boilerplate." })),
     ).toMatchObject({
       ok: false,
     });
   });
 
-  // it('can make assertions based on matchers', async function () {
-
-  //   expect(await agent.run(HTML({ id: matching(/hel/) }).has({ text: matching(/Hello world!/) }))).toEqual({
-  //     ok: true
-  //   });
-  // });
-
-  it.skip("can validate that a set of interactions can be run ahead of time", () => {});
+  it.skip('can make assertions based on matchers', async function () {
+    expect(await agent.run(HTML({ id: matching(/hel/) }).has({ text: matching(/Hello world!/) }))).toEqual({
+      ok: true
+    });
+  });
 });
