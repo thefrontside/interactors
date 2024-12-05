@@ -1,15 +1,10 @@
-import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher.ts';
+import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode, createMatcher } from "../matcher.ts";
 
-export function some<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
-  return {
-    match(actual: Iterable<T>): boolean {
-      return Array.from(actual).some((value) => applyMatcher(expected, value));
-    },
-    description(): string {
-      return `some item ${matcherDescription(expected)}`;
-    },
-    code(): string {
-      return `some(${matcherCode(expected)})`
-    }
-  }
-}
+export const some = createMatcher(
+  'some',
+  <T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> => ({
+    match: (actual: Iterable<T>): boolean => Array.from(actual).some((value) => applyMatcher(expected, value)),
+    description: (): string => `some item ${matcherDescription(expected)}`,
+    code: (): string => `some(${matcherCode(expected)})`
+  })
+)

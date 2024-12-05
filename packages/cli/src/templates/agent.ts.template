@@ -1,0 +1,137 @@
+/* eslint-disable */
+import type { InteractorConstructor } from '@interactors/core';
+
+export function ok<TError extends { name: string; message: string }>(): Result<void, TError>;
+export function ok<T>(value: T): Result<T>;
+export function ok<T>(value?: T): Result<T> {
+  if (typeof value === 'undefined') {
+    return { ok: true } as Result<T>;
+  } else {
+    return { ok: true, value } as Result<T>;
+  }
+}
+
+export function err<T, TError extends { name: string; message: string } = { name: string; message: string }>(
+  error: TError
+): Result<T, TError> {
+  return { ok: false, error };
+}
+
+export interface Matcher<T> {
+  typename: string;
+  args: unknown[];
+  description: string;
+}
+
+export type Match<T> = Partial<{
+  [K in keyof T]: T[K] | Matcher<T[K]>;
+}>
+
+export type Interactor<T, Filters, Actions, TInteraction = Interaction<T>> = Filters & Actions & InteractorMethods<T, TInteraction>;
+
+export interface InteractorMethods<T, TInteraction> {
+  path: InteractorMatch<T>[];
+  has(attrs: Match<T>): TInteraction;
+  is(attrs: Match<T>): TInteraction;
+  exists(): TInteraction;
+  find<T, A, D>(interactor: Interactor<T, A, D>): Interactor<T, A, D>;
+}
+
+export interface InteractorMatch<T> {
+  typename: string;
+  locator?: string | Matcher<string> | RegExp;
+  filters?: Match<T>;
+  description: string;
+  ancestors: InteractorMatch<any>[];
+}
+
+export interface Interaction<T> {
+  name: string;
+  path: InteractorMatch<T>[];
+  description: string;
+  readonly: boolean,
+  args: unknown[];
+}
+
+declare global {
+  interface Window {
+    interactorAgent: {
+      run<T>(interaction: Interaction<T>): Promise<Result<void, Error>>;
+      interactors: Record<string, InteractorConstructor<any, any, any, any>>;
+      matchers: Record<string, (...args: unknown[]) => unknown>;
+    };
+  }
+}
+
+globalThis.interactorAgent = {
+  interactors: InteractorTable,
+  matchers: MatcherTable,
+  run: async <T>(interaction: Interaction<T>) => {
+    try {
+      const [start, ...rest] = interaction.path.map(lookup);
+      const interactor = rest.reduce((i, curr) => i.find(curr), start);
+      await interactor[interaction.name](...interaction.args.map(handleArg));
+      return ok();
+    } catch (error) {
+      if (typeof error === 'string') {
+        return err({ name: 'InteractionError', message: error });
+      } else {
+        return err(error);
+      }
+    }
+  }
+}
+
+function lookup<T>(segment: InteractorMatch<T>): Implementation {
+  const constructor = InteractorTable[segment.typename];
+  if (!constructor) {
+    const error = new Error(segment.typename);
+    error.name = `NoSuchInteractorError`;
+    throw error;
+  }
+  if (typeof constructor !== 'function') {
+    const error = new Error(
+      `expected ${segment.typename} interactor constructor to be a function, but was ${JSON.stringify(
+        constructor
+      )}`
+    );
+    error.name = `TypeError`;
+    throw error;
+  }
+  const filter = segment.filters ? rematchObject(segment.filters) : undefined;
+  return constructor(segment.locator ?? filter, filter);
+}
+
+function isMatcher(value: unknown) {
+  return value && typeof value.typename === 'string'
+}
+
+function rematch(matcher: Matcher<unknown>) {
+  const matchFn = MatcherTable[matcher.typename];
+  if (!matchFn) {
+    const error = new Error(matcher.typename);
+    error.name = `NoSuchMatcherError`;
+    throw error;
+  }
+  return matchFn(...matcher.args.map(arg => isMatcher(arg) ? rematch(arg as Matcher<unknown>) : arg));
+}
+
+function rematchObject(arg: Record<string, unknown>) {
+  const result = {} as Record<string, unknown>;
+  for (const key in arg) {
+    result[key] = isMatcher(arg[key]) ? rematch(arg[key] as Matcher<unknown>) : arg[key];
+  }
+  return result;
+}
+
+function handleArg(arg: unknown) {
+  if (Array.isArray(arg) || arg === null || typeof arg !== 'object') {
+    // NOTE: It's action's argument
+    return arg;
+  }
+  return rematchObject(arg);
+}
+
+interface Implementation {
+  find(child: Implementation): Implementation;
+}

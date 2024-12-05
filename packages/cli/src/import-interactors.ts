@@ -1,0 +1,39 @@
+import { InitInteractor, MatcherConstructor } from "@interactors/core";
+import { ImportedModules } from "./types.ts";
+
+export function importInteractors(modules: { [moduleName: string]: Record<string, unknown> }): ImportedModules {
+  let uniqueNames = new Map<string, string>();
+
+  let imports: ImportedModules = {}
+
+  for (let moduleName in modules) {
+    imports[moduleName] = {
+      interactors: [],
+      matchers: []
+    }
+
+    let { interactors, matchers } = imports[moduleName];
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    for (let [name, obj] of Object.entries<any>(modules[moduleName])) {
+      if (obj instanceof InitInteractor) {
+        let interactorName = name;
+        if (uniqueNames.has(interactorName)) {
+          throw new Error(`Interactor name ${interactorName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(interactorName)}`);
+        }
+        interactors.push({ name });
+        uniqueNames.set(interactorName, moduleName);
+      }
+      if (obj instanceof MatcherConstructor) {
+        let matcherName = name;
+        if (uniqueNames.has(matcherName)) {
+          throw new Error(`Matcher name ${matcherName} from ${moduleName} is conflicted with named import from ${uniqueNames.get(matcherName)}`);
+        }
+        matchers.push({ name });
+        uniqueNames.set(matcherName, moduleName);
+      }
+    }
+  }
+
+  return imports;
+}

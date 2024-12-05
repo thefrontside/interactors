@@ -8,7 +8,8 @@
     "./packages/globals",
     "./packages/html",
     "./packages/keyboard",
-    "./packages/material-ui"
+    "./packages/material-ui",
+    "./packages/cli"
   ],
   "compilerOptions": {
     "lib": ["deno.ns", "esnext", "dom", "dom.iterable", "dom.asynciterable"]

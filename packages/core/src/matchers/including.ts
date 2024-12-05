@@ -1,15 +1,10 @@
-import { type Matcher, matcherCode} from '../matcher.ts';
+import { type Matcher, createMatcher, matcherCode} from "../matcher.ts";
 
-export function including(subString: string): Matcher<string> {
-  return {
-    match(actual: string): boolean {
-      return actual.includes(subString);
-    },
-    description(): string {
-      return `including ${JSON.stringify(subString)}`;
-    },
-    code(): string {
-      return `including(${matcherCode(subString)})`
-    }
-  }
-}
+export const including = createMatcher(
+  'including',
+  (subString: string): Matcher<string> => ({
+    match: (actual: string): boolean => actual.includes(subString),
+    description: (): string => `including ${JSON.stringify(subString)}`,
+    code: (): string => `including(${matcherCode(subString)})`
+  })
+)

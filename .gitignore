@@ -6,3 +6,4 @@
 .netlify
 
 .vscode
+/build/

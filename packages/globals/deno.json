@@ -9,7 +9,6 @@
   "imports": {
     "@std/expect": "jsr:@std/expect@^1.0.0",
     "@std/testing": "jsr:@std/testing@^1.0.0",
-    "@effection/core": "npm:@effection/core@2.2.0",
     "jsdom": "npm:jsdom@^24.0.0"
   },
   "lint": {

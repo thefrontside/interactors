@@ -1,0 +1,22 @@
+{
+  "name": "@interactors/cli",
+  "version": "1.0.0",
+  "exports": "./mod.ts",
+  "imports": {
+    "chokidar": "npm:chokidar@^4.0.1",
+    "effection": "npm:effection@^3.0.3",
+    "esbuild": "npm:esbuild@^0.24.0",
+    "playwright": "npm:playwright@^1.49.0",
+    "yargs": "npm:yargs@^17.7.2",
+    "zod": "npm:zod@^3.23.8",
+    "zod-opts": "npm:zod-opts@^0.1.8"
+  },
+  "lint": {
+    "rules": {
+      "exclude": [
+        "prefer-const",
+        "require-yield"
+      ]
+    }
+  }
+}

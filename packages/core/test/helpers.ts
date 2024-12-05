@@ -1,15 +1,13 @@
 import { type DOMWindow, JSDOM } from "jsdom";
 import { afterEach, beforeEach } from "@std/testing/bdd";
-import { addInteractionWrapper, globals, setDocumentResolver, setInteractorTimeout } from "@interactors/globals";
+import { globals, setDocumentResolver, setInteractorTimeout } from "@interactors/globals";
 
 let jsdom: JSDOM;
-let removeWrapper: () => void;
 
 export function dom(html: string): DOMWindow {
   jsdom = new JSDOM(`<!doctype html><html><body>${html}</body></html>`, { runScripts: "dangerously" });
 
   setDocumentResolver(() => jsdom.window.document);
-  removeWrapper = addInteractionWrapper(async (perform) => await perform());
 
   return jsdom.window;
 }
@@ -20,6 +18,5 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  removeWrapper?.();
   jsdom?.window?.close();
 });
