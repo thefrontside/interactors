@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@config "./tailwind.config.ts";
+
+@theme {
+  --font-sans: "Proxima Nova", "proxima-nova", sans-serif;
+
+  --color-blue-primary: #14315D;
+  --color-skyblue: #26ABE8;
+  --color-pink-accent: #F74D7B;
+  --color-violet: #44378A;
+  --color-purple: #8C7DB3;
+  --color-green-accent: #36BAA2;
+  --color-dark: #0E151D;
+}
