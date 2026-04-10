@@ -1,4 +1,5 @@
 {
+  "nodeModulesDir": "auto",
   "tasks": {
     "build:npm": "deno run -A tasks/build-npm.ts",
     "context-from-git-tag": "deno run -A tasks/context-from-git-tag.ts"
@@ -8,7 +9,8 @@
     "./packages/globals",
     "./packages/html",
     "./packages/keyboard",
-    "./packages/material-ui"
+    "./packages/material-ui",
+    "./www"
   ],
   "compilerOptions": {
     "lib": ["deno.ns", "esnext", "dom", "dom.iterable", "dom.asynciterable"]

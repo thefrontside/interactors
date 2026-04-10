@@ -1,0 +1,29 @@
+{
+  "Getting Started": [
+    ["quick-start.md", "Quick Start"]
+  ],
+  "Using Interactors": [
+    ["predefined-interactors.md", "Predefined Interactors"],
+    ["locators-filters.md", "Locators & Filters"],
+    ["actions.md", "Actions"],
+    ["assertions.md", "Assertions"],
+    ["matchers.md", "Matchers"],
+    ["composition.md", "Composition"],
+    ["configuration.md", "Configuration"]
+  ],
+  "Creating Interactors": [
+    ["create-first-interactor.md", "Create Your First Interactor"],
+    ["create-selector.md", "Create a Selector"],
+    ["create-locator.md", "Create a Locator"],
+    ["create-filters.md", "Create Filters"],
+    ["create-actions.md", "Create Actions"]
+  ],
+  "Integrations": [
+    ["jest.md", "Jest"],
+    ["cypress.md", "Cypress"],
+    ["storybook.md", "Storybook"]
+  ],
+  "Reference": [
+    ["library.md", "Library"]
+  ]
+}
