@@ -1,0 +1,61 @@
+name: www
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - www/**
+      - packages/**/src/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  www:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Serve Website
+        run: |
+          deno task dev &
+          until curl --output /dev/null --silent --head --fail http://127.0.0.1:8000; do
+            printf '.'
+            sleep 1
+          done
+        timeout-minutes: 5
+        working-directory: ./www
+
+      - name: Download Staticalize
+        run: |
+          wget https://github.com/thefrontside/staticalize/releases/download/v0.2.2/staticalize-linux.tar.gz \
+            -O /tmp/staticalize-linux.tar.gz
+          tar -xzf /tmp/staticalize-linux.tar.gz -C /usr/local/bin
+          chmod +x /usr/local/bin/staticalize-linux
+
+      - name: Staticalize
+        run: |
+          staticalize-linux \
+            --site=http://127.0.0.1:8000 \
+            --output=www/built \
+            --base=https://interactors.deno.dev
+
+      - name: Upload to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: interactors
+          entrypoint: "jsr:@std/http/file-server"
+          root: www/built

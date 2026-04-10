@@ -6,3 +6,6 @@
 .netlify
 
 .vscode
+/node_modules/
+/.agent-shell/
+/node_modules/
