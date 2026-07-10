@@ -62,16 +62,8 @@ jobs:
             --output=www/built \
             --base=https://interactors.netlify.app
 
-      - name: Verify Netlify site
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify-cli sites:list --filter ${{ secrets.NETLIFY_SITE_ID }}
-
       - name: Deploy Preview to Netlify
         id: netlify
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
           PR_NUMBER="${{ github.event.pull_request.number }}"
           COMMIT_SHA="${{ github.event.pull_request.head.sha }}"
@@ -80,6 +72,8 @@ jobs:
             --dir=www/built \
             --alias="pr-$PR_NUMBER" \
             --message="Preview for PR #$PR_NUMBER at commit $COMMIT_SHA" \
+            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site=${{ secrets.NETLIFY_SITE_ID }} \
             --json)
 
           DEPLOY_ID=$(echo "$DEPLOY_OUTPUT" | jq -r '.deploy_id')
@@ -145,13 +139,12 @@ jobs:
             --base=https://interactors.netlify.app
 
       - name: Deploy to Production
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
           npx netlify-cli deploy \
             --dir=www/built \
-            --prod
+            --prod \
+            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site=${{ secrets.NETLIFY_SITE_ID }}
 
   trigger-frontside-rebuild:
     needs: deploy-production
