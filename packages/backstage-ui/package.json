@@ -1,0 +1,57 @@
+{
+  "name": "@interactors/backstage-ui",
+  "version": "0.8.9",
+  "description": "BigTest interactors for backstage core components.",
+  "main": "dist/cjs/index.js",
+  "browser": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "eslint src test",
+    "test": "bigtest ci",
+    "build:cjs": "tsc --outdir dist/cjs --module commonjs --project tsconfig.build.json",
+    "build:esm": "tsc --outdir dist/esm --module es2015 --project tsconfig.build.json",
+    "prepack": "tsc --build tsconfig.build.json && run-p build:*",
+    "docs": "rm -rf docs && yarn typedoc --options typedoc.json",
+    "docs:netlify": "yarn prepack && yarn docs",
+    "docs:preview": "yarn parcel docs/api/backstage/index.html",
+    "start": "parcel serve test/harness.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thefrontside/interactors.git"
+  },
+  "keywords": [
+    "material-ui",
+    "interactors"
+  ],
+  "author": "Frontside Engineering <engineering@frontside.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thefrontside/interactors/issues"
+  },
+  "homepage": "https://frontside.com/interactors",
+  "devDependencies": {
+    "@date-io/date-fns": "^1.3.13",
+    "@testing-library/react": "^12.0.0",
+    "@types/react": "^17.0.19",
+    "bigtest": "^0.16.0",
+    "date-fns": "^2.23.0",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.0.0-beta.2",
+    "parcel-bundler": "^1.12.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "tslib": "^2.3.1",
+    "typedoc": "^0.22.7",
+    "typescript": "~4.4.4",
+    "webpack": "^5.53.0"
+  },
+  "dependencies": {
+    "@interactors/material-ui": "1.0.0-rc1.2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "out": "docs/api/backstage",
+  "name": "@interactors/backstage",
+  "entryPoints": "src/index.ts",
+  "readme": "README.md",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "readme": "none"
+}
