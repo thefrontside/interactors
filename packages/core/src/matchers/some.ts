@@ -1,4 +1,4 @@
-import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher.ts';
+import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode, createMatcher } from '../matcher.ts';
 
 export function some<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
   return {
@@ -13,3 +13,5 @@ export function some<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
     }
   }
 }
+
+createMatcher('some', some);

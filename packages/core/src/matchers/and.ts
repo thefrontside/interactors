@@ -1,4 +1,4 @@
-import { type Matcher, type MaybeMatcher, matcherDescription, applyMatcher, matcherCode } from '../matcher.ts';
+import { type Matcher, type MaybeMatcher, matcherDescription, applyMatcher, matcherCode, createMatcher } from '../matcher.ts';
 
 export function and<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
   return {
@@ -13,3 +13,5 @@ export function and<T>(...args: MaybeMatcher<T>[]): Matcher<T> {
     }
   }
 }
+
+createMatcher('and', and);

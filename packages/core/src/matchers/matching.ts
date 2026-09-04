@@ -1,4 +1,4 @@
-import { type Matcher, matcherCode } from '../matcher.ts';
+import { type Matcher, matcherCode, createMatcher } from '../matcher.ts';
 
 export function matching(regexp: RegExp): Matcher<string> {
   return {
@@ -13,3 +13,5 @@ export function matching(regexp: RegExp): Matcher<string> {
     }
   }
 }
+
+createMatcher('matching', matching);
