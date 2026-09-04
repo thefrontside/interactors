@@ -74,6 +74,7 @@ const reservedInteractorMethods = new Set([
   "is",
   "options",
   "perform",
+  "then",
 ]);
 
 export async function compile(options: CompileOptions): Promise<CompileResult> {
@@ -82,11 +83,7 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
 
   await requireFile(entrypoint);
 
-  let source = await import(
-    `${
-      pathToFileURL(entrypoint).href
-    }?interactors-compile=${crypto.randomUUID()}`
-  ) as Record<string, unknown>;
+  let { source } = await importEntrypoint(entrypoint);
   let interactors = discoverInteractors(source);
   let matchers = discoverMatchers(source);
 
@@ -95,6 +92,8 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
       `No interactor constructors were exported by ${entrypoint}`,
     );
   }
+
+  validateDefinitionIds(interactors, matchers);
 
   let registry = await createRegistry(interactors, matchers);
   let registryText = `${JSON.stringify(registry, null, 2)}\n`;
@@ -185,6 +184,23 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
   return { agentPath, registryPath, declarationsPath, registry };
 }
 
+async function importEntrypoint(
+  entrypoint: string,
+): Promise<{ readonly source: Record<string, unknown> }> {
+  let sourceUrl = new URL(pathToFileURL(entrypoint));
+  sourceUrl.searchParams.set("interactors-compile", crypto.randomUUID());
+  let wrapper = `import * as definitions from ${
+    JSON.stringify(sourceUrl.href)
+  };\nexport default definitions;\n`;
+  let wrapperUrl = `data:text/javascript,${encodeURIComponent(wrapper)}`;
+  let imported = await import(wrapperUrl) as {
+    readonly default: Record<string, unknown>;
+  };
+  // A module namespace may itself export a callable `then`. Keep it boxed so
+  // async-function resolution does not treat that namespace as a thenable.
+  return { source: imported.default };
+}
+
 function wrapBrowserBundle(bundle: string): string {
   return `(function (require) {\n${bundle}\n})(function (specifier) {
   if (specifier !== "events" && specifier !== "node:events") {
@@ -268,6 +284,7 @@ function discoverInteractors(
   for (let [id, value] of sortedEntries(source)) {
     let metadata = getInteractorConstructorMetadata(value);
     if (metadata) {
+      validateDefinitionName("Interactor", id, metadata.name);
       validateInteractorMethods(id, metadata.actions, metadata.filters);
       interactors.push({
         id,
@@ -288,6 +305,11 @@ function validateInteractorMethods(
 ): void {
   let actionNames = new Set(actions);
   for (let name of [...actions, ...filters]) {
+    if (name.length === 0) {
+      throw new Error(
+        `Interactor ${JSON.stringify(id)} declares an empty method name`,
+      );
+    }
     if (reservedInteractorMethods.has(name)) {
       throw new Error(
         `Interactor ${JSON.stringify(id)} declares reserved method ${
@@ -315,6 +337,7 @@ function discoverMatchers(
     if (!metadata) {
       throw new Error(`Built-in matcher ${id} does not expose metadata`);
     }
+    validateDefinitionName("Matcher", id, metadata.name);
     matchers.set(id, {
       id,
       name: metadata.name,
@@ -326,6 +349,7 @@ function discoverMatchers(
   for (let [id, value] of sortedEntries(source)) {
     let metadata = getMatcherConstructorMetadata(value);
     if (metadata) {
+      validateDefinitionName("Matcher", id, metadata.name);
       matchers.set(id, {
         id,
         name: metadata.name,
@@ -335,6 +359,39 @@ function discoverMatchers(
   }
 
   return [...matchers.values()].sort(byId);
+}
+
+function validateDefinitionName(
+  kind: "Interactor" | "Matcher",
+  id: string,
+  name: string,
+): void {
+  if (name.length === 0) {
+    throw new Error(`${kind} ${JSON.stringify(id)} has an empty name`);
+  }
+}
+
+function validateDefinitionIds(
+  interactors: readonly RegistryInteractor[],
+  matchers: readonly RegistryMatcher[],
+): void {
+  let interactorIds = new Set(interactors.map(({ id }) => id));
+
+  for (let definition of [...interactors, ...matchers]) {
+    if (definition.id === "then") {
+      throw new Error('Interactor definitions cannot be exported as "then"');
+    }
+  }
+
+  for (let matcher of matchers) {
+    if (interactorIds.has(matcher.id)) {
+      throw new Error(
+        `Definition ${
+          JSON.stringify(matcher.id)
+        } is exported as both an interactor and a matcher`,
+      );
+    }
+  }
 }
 
 async function createRegistry(

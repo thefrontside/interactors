@@ -342,6 +342,120 @@ export const Unsafe = createInteractor("unsafe")
     }
   });
 
+  it('rejects an action named "then" before creating artifacts', async () => {
+    let temporary = await Deno.makeTempDir({
+      dir: new URL(".", import.meta.url).pathname,
+      prefix: ".compile-then-method-test-",
+    });
+    let entrypoint = `${temporary}/index.ts`;
+
+    try {
+      await Deno.writeTextFile(
+        entrypoint,
+        `import { createInteractor } from "@interactors/core";
+
+export const Unsafe = createInteractor("unsafe")
+  .selector("div")
+  .actions({
+    then: ({ perform }) => perform(() => undefined),
+  });
+`,
+      );
+      await expect(compile({ entrypoint, outdir: `${temporary}/dist` }))
+        .rejects.toThrow(
+          'Interactor "Unsafe" declares reserved method "then"',
+        );
+    } finally {
+      await Deno.remove(temporary, { recursive: true });
+    }
+  });
+
+  it("rejects an export shared by an interactor and matcher", async () => {
+    let temporary = await Deno.makeTempDir({
+      dir: new URL(".", import.meta.url).pathname,
+      prefix: ".compile-collision-test-",
+    });
+    let entrypoint = `${temporary}/index.ts`;
+
+    try {
+      await Deno.writeTextFile(
+        entrypoint,
+        `import { createInteractor } from "@interactors/core";
+
+export const Button = createInteractor("button").selector("button");
+export const matching = createInteractor("matching").selector("div");
+`,
+      );
+      await expect(compile({ entrypoint, outdir: `${temporary}/dist` }))
+        .rejects.toThrow(
+          'Definition "matching" is exported as both an interactor and a matcher',
+        );
+    } finally {
+      await Deno.remove(temporary, { recursive: true });
+    }
+  });
+
+  it('rejects a definition exported as "then" without assimilating it', async () => {
+    let temporary = await Deno.makeTempDir({
+      dir: new URL(".", import.meta.url).pathname,
+      prefix: ".compile-then-export-test-",
+    });
+    let entrypoint = `${temporary}/index.ts`;
+
+    try {
+      await Deno.writeTextFile(
+        entrypoint,
+        `import { createInteractor } from "@interactors/core";
+
+const Button = createInteractor("button").selector("button");
+export { Button, Button as then };
+`,
+      );
+      await expect(compile({ entrypoint, outdir: `${temporary}/dist` }))
+        .rejects.toThrow(
+          'Interactor definitions cannot be exported as "then"',
+        );
+    } finally {
+      await Deno.remove(temporary, { recursive: true });
+    }
+  });
+
+  it("rejects metadata the Playwright registry cannot load", async () => {
+    let temporary = await Deno.makeTempDir({
+      dir: new URL(".", import.meta.url).pathname,
+      prefix: ".compile-empty-metadata-test-",
+    });
+    let cases = [
+      {
+        source:
+          `import { createInteractor } from "@interactors/core";\nexport const Empty = createInteractor("").selector("div");\n`,
+        message: 'Interactor "Empty" has an empty name',
+      },
+      {
+        source:
+          `import { createInteractor, createMatcher } from "@interactors/core";\nexport const Button = createInteractor("button").selector("button");\nexport const emptyMatcher = createMatcher("", () => ({ match: () => true, description: () => "empty" }));\n`,
+        message: 'Matcher "emptyMatcher" has an empty name',
+      },
+      {
+        source:
+          `import { createInteractor } from "@interactors/core";\nexport const Button = createInteractor("button").selector("button").actions({ [""]: ({ perform }) => perform(() => undefined) });\n`,
+        message: 'Interactor "Button" declares an empty method name',
+      },
+    ];
+
+    try {
+      for (let [index, testCase] of cases.entries()) {
+        let entrypoint = `${temporary}/index-${index}.ts`;
+        await Deno.writeTextFile(entrypoint, testCase.source);
+        await expect(
+          compile({ entrypoint, outdir: `${temporary}/dist-${index}` }),
+        ).rejects.toThrow(testCase.message);
+      }
+    } finally {
+      await Deno.remove(temporary, { recursive: true });
+    }
+  });
+
   it("rejects browser bundles with unsupported external modules", async () => {
     let entrypoint = new URL(
       "./fixtures/unsupported-node.ts",
