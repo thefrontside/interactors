@@ -19,6 +19,11 @@
       "manager": "javascript",
       "dependencies": ["@interactors/globals"]
     },
+    "@interactors/cli": {
+      "path": "./packages/cli/deno.json",
+      "manager": "javascript",
+      "dependencies": ["@interactors/core"]
+    },
     "@interactors/keyboard": {
       "path": "./packages/keyboard/deno.json",
       "manager": "javascript",
@@ -42,6 +47,11 @@
       "dependencies": ["@interactors/core", "@interactors/globals"],
       "version": false,
       "publish": false
+    },
+    "@interactors/with-playwright": {
+      "path": "./packages/with-playwright/deno.json",
+      "manager": "javascript",
+      "dependencies": ["@interactors/core"]
     }
   }
 }

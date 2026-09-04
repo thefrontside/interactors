@@ -35,6 +35,6 @@ jobs:
 
       - name: Publish Releases
         working-directory: ${{ steps.pkg.outputs.working-directory }}/build/npm
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag ${{ steps.pkg.outputs.npm-tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}

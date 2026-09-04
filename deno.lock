@@ -54,6 +54,7 @@
     "jsr:@std/path@~0.225.2": "0.225.2",
     "jsr:@std/streams@^1.0.14": "1.0.14",
     "jsr:@std/testing@1": "1.0.2",
+    "jsr:@std/yaml@*": "1.1.2",
     "jsr:@ts-morph/bootstrap@0.24": "0.24.0",
     "jsr:@ts-morph/common@0.24": "0.24.0",
     "npm:@effection/core@2.2.0": "2.2.0",
@@ -79,6 +80,7 @@
     "npm:parcel@^2.10.2": "2.12.0_typescript@5.9.3",
     "npm:path-to-regexp@8.2.0": "8.2.0",
     "npm:performance-api@1": "1.0.0",
+    "npm:playwright@1.62.1": "1.62.1",
     "npm:react@^18.3.0": "18.3.1",
     "npm:rehype-add-classes@1.0.0": "1.0.0",
     "npm:rehype-autolink-headings@7.1.0": "7.1.0",
@@ -309,6 +311,9 @@
         "jsr:@std/internal@^1.0.3",
         "jsr:@std/path@^1.0.4"
       ]
+    },
+    "@std/yaml@1.1.2": {
+      "integrity": "de612653c036749ba2044165e316f52412b0f0698afffb7ee80b5331d6d2abae"
     },
     "@ts-morph/bootstrap@0.24.0": {
       "integrity": "a826a2ef7fa8a7c3f1042df2c034d20744d94da2ee32bf29275bcd4dffd3c060",
@@ -2184,6 +2189,11 @@
         "mime-types"
       ]
     },
+    "fsevents@2.3.2": {
+      "integrity": "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==",
+      "os": ["darwin"],
+      "scripts": true
+    },
     "function-bind@1.1.2": {
       "integrity": "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA=="
     },
@@ -3613,6 +3623,20 @@
     "picomatch@2.3.1": {
       "integrity": "sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA=="
     },
+    "playwright-core@1.62.1": {
+      "integrity": "sha512-wPYSwEBJY9GHraISXqyqtx0na0LpO3XEX7jNDhntbex7tzUS7kLnZsOlFruFJB4Hi/rhDMjXGqHewDZ68nYZVw==",
+      "bin": true
+    },
+    "playwright@1.62.1": {
+      "integrity": "sha512-0M+L3LAD8/nm554LOla9Ayx0j0tmFZ0FBcoQ7F1VuVHpM/XpiC8RcDzBQB8W5+hA8L22THxELzeF+2WcUzvcLg==",
+      "dependencies": [
+        "playwright-core"
+      ],
+      "optionalDependencies": [
+        "fsevents"
+      ],
+      "bin": true
+    },
     "possible-typed-array-names@1.0.0": {
       "integrity": "sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q=="
     },
@@ -4625,6 +4649,13 @@
         "dependencies": [
           "jsr:@std/testing@1",
           "npm:jsdom@24"
+        ]
+      },
+      "packages/with-playwright": {
+        "dependencies": [
+          "jsr:@std/expect@1",
+          "jsr:@std/testing@1",
+          "npm:playwright@1.62.1"
         ]
       },
       "www": {
