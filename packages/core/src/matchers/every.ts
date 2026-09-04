@@ -1,4 +1,4 @@
-import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode } from '../matcher.ts';
+import { type Matcher, type MaybeMatcher, applyMatcher, matcherDescription, matcherCode, createMatcher } from '../matcher.ts';
 
 export function every<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
   return {
@@ -13,3 +13,5 @@ export function every<T>(expected: MaybeMatcher<T>): Matcher<Iterable<T>> {
     }
   }
 }
+
+createMatcher('every', every);

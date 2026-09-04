@@ -1,4 +1,5 @@
 import isEqual from 'lodash.isequal';
+import { defineMatcherConstructorMetadata } from './metadata.ts';
 
 export interface Matcher<T> {
   match(actual: T): boolean;
@@ -7,6 +8,17 @@ export interface Matcher<T> {
 }
 
 export type MaybeMatcher<T> = Matcher<T> | T;
+
+/**
+ * Create a matcher constructor that can be discovered by build tools.
+ */
+export function createMatcher<F extends (...args: any[]) => Matcher<any>>(
+  name: string,
+  constructor: F,
+): F {
+  defineMatcherConstructorMetadata(constructor, { name });
+  return constructor;
+}
 
 export function isMatcher<T>(value: MaybeMatcher<T>): value is Matcher<T> {
   return value && typeof (value as Matcher<T>).match === 'function' && typeof (value as Matcher<T>).description === 'function';

@@ -1,4 +1,4 @@
-import { type Matcher, matcherCode} from '../matcher.ts';
+import { type Matcher, matcherCode, createMatcher } from '../matcher.ts';
 
 export function including(subString: string): Matcher<string> {
   return {
@@ -13,3 +13,5 @@ export function including(subString: string): Matcher<string> {
     }
   }
 }
+
+createMatcher('including', including);

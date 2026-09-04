@@ -24,6 +24,7 @@ import { createInteraction, type AssertionInteraction, type ActionInteraction } 
 import { isMatcher } from './matcher.ts';
 import { matching } from './matchers/matching.ts';
 import { hasMatchMatching, resolveEmpty, resolveFirst, resolveUnique, unsafeSyncResolveParent, unsafeSyncResolveUnique } from './resolvers.ts';
+import { defineInteractorConstructorMetadata } from "./metadata.ts";
 
 const defaultLocator: FilterDefinition<string, Element> = (element) => element.textContent || "";
 
@@ -200,7 +201,7 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
     return instantiateInteractor({ name, specification, filter, locator, ancestors: [] }, unsafeSyncResolveUnique);
   }
 
-  return Object.assign(initInteractor, {
+  let constructor = Object.assign(initInteractor, {
     interactorName: name,
     selector: (value: string): InteractorConstructor<E, FP, FM, AM> => {
       return createConstructor(name, { ...specification, selector: value });
@@ -218,4 +219,12 @@ export function createConstructor<E extends Element, FP extends FilterParams<any
       return createConstructor(newName, specification) as unknown as InteractorConstructor<ER, FP, FM, AM>;
     },
   }) as unknown as InteractorConstructor<E, FP, FM, AM>;
+
+  defineInteractorConstructorMetadata(constructor, {
+    name,
+    actions: Object.keys(specification.actions ?? {}),
+    filters: Object.keys(specification.filters ?? {}),
+  });
+
+  return constructor;
 }
