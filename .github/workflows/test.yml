@@ -26,3 +26,21 @@ jobs:
           node packages/cli/build/npm/esm/main.js compile packages/cli/test/fixtures/basic/index.ts --outdir /tmp/interactors-node
           deno run -A packages/cli/build/npm/esm/main.js compile packages/cli/test/fixtures/basic/index.ts --outdir /tmp/interactors-deno
           diff -rq /tmp/interactors-node /tmp/interactors-deno
+
+  playwright:
+    name: Playwright integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Install Chromium
+        working-directory: packages/playwright
+        run: deno task install:browser
+      - name: Run browser integration
+        working-directory: packages/playwright
+        run: deno task test:browser
