@@ -5,6 +5,7 @@
     "context-from-git-tag": "deno run -A tasks/context-from-git-tag.ts"
   },
   "workspace": [
+    "./packages/cli",
     "./packages/core",
     "./packages/globals",
     "./packages/html",
