@@ -48,6 +48,7 @@
     "jsr:@ts-morph/common@0.24": "0.24.0",
     "npm:@effection/core@2.2.0": "2.2.0",
     "npm:@mdx-js/mdx@3.1.0": "3.1.0_acorn@8.16.0",
+    "npm:@standard-schema/spec@^1.1.0": "1.1.0",
     "npm:@tailwindcss/cli@4": "4.1.12",
     "npm:@tailwindcss/typography@~0.5.16": "0.5.19_tailwindcss@4.1.12",
     "npm:@testing-library/dom@^8.18.1": "8.20.1",
@@ -1087,6 +1088,9 @@
         "@parcel/utils",
         "nullthrows"
       ]
+    },
+    "@standard-schema/spec@1.1.0": {
+      "integrity": "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="
     },
     "@swc/core-darwin-arm64@1.7.22": {
       "integrity": "sha512-B2Bh2W+C7ALdGwDxRWAJ+UtNExfozvwyayGiNkbR3wmDKXXeQfhGM5MK+QYUWKu7UQ6ATq69OyZrxofDobKUug==",
@@ -4296,6 +4300,7 @@
         "dependencies": [
           "jsr:@std/expect@1",
           "jsr:@std/testing@1",
+          "npm:@standard-schema/spec@^1.1.0",
           "npm:jsdom@24"
         ]
       },

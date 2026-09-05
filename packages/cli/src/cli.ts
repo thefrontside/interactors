@@ -1,4 +1,20 @@
 import { relative } from "node:path";
+// @ts-types="../vendor/configliere-types/mod.d.ts"
+import {
+  argument,
+  cli,
+  command,
+  description,
+  name,
+  option,
+  parse as parseConfigliere,
+  printErrors as printConfigliereErrors,
+  printHelp as printConfigliereHelp,
+  route,
+  routes,
+  type Schema,
+  schema,
+} from "../vendor/configliere.js";
 import { compile, type CompileOptions } from "./compile.ts";
 
 export interface CliIO {
@@ -14,13 +30,29 @@ export interface CliDependencies {
   }>;
 }
 
-const usage = `Usage: interactors compile <entrypoint> [--outdir <directory>]
-
-Compile an Interactor entrypoint into a browser agent, registry, and types.
-
-Options:
-  -o, --outdir <directory>  Output directory (default: dist)
-  -h, --help                Show this help`;
+const application = route(
+  name("interactors"),
+  description("Compile Interactors for browser test runners."),
+  routes(
+    command(
+      name("compile"),
+      description(
+        "Compile an Interactor entrypoint into a browser agent, registry, and types.",
+      ),
+      argument(
+        name("entrypoint"),
+        description("Module that exports the Interactors to compile."),
+        schema(path()),
+      ),
+      option(
+        name("outdir"),
+        cli(["-o", "--outdir"]),
+        description("Directory for generated artifacts (default: dist)."),
+        schema(path("dist")),
+      ),
+    ),
+  ),
+);
 
 export async function runCli(
   args: readonly string[],
@@ -30,14 +62,30 @@ export async function runCli(
   },
   dependencies: CliDependencies = { compile },
 ): Promise<number> {
-  if (args.includes("--help") || args.includes("-h")) {
-    io.stdout(usage);
+  if (args.length === 0) {
+    io.stderr("A command is required");
+    return 1;
+  }
+
+  let intent = parseConfigliere(application, { argv: [...args] });
+
+  if (!intent.ok) {
+    io.stderr(printConfigliereErrors(intent));
+    return 1;
+  }
+
+  if (intent.method === "help") {
+    io.stdout(printConfigliereHelp(intent));
     return 0;
   }
 
+  if (intent.method !== "execute" || intent.route !== "/compile") {
+    io.stderr("A command is required");
+    return 1;
+  }
+
   try {
-    let options = parseCompileArgs(args);
-    let result = await dependencies.compile(options);
+    let result = await dependencies.compile(intent.model);
 
     io.stdout(`created ${displayPath(result.agentPath)}`);
     io.stdout(`created ${displayPath(result.registryPath)}`);
@@ -45,51 +93,43 @@ export async function runCli(
     return 0;
   } catch (error) {
     io.stderr(error instanceof Error ? error.message : String(error));
-    io.stderr(usage);
     return 1;
   }
 }
 
 export function parseCompileArgs(args: readonly string[]): CompileOptions {
-  let [command, ...rest] = args;
-  if (command !== "compile") {
-    throw new Error(
-      command ? `Unknown command: ${command}` : "A command is required",
-    );
+  if (args.length === 0) {
+    throw new Error("A command is required");
   }
 
-  let entrypoint: string | undefined;
-  let outdir = "dist";
+  let intent = parseConfigliere(application, { argv: [...args] });
 
-  for (let index = 0; index < rest.length; index++) {
-    let argument = rest[index];
-
-    if (argument === "--outdir" || argument === "-o") {
-      let value = rest[++index];
-      if (!value) {
-        throw new Error(`${argument} requires a directory`);
-      }
-      outdir = value;
-    } else if (argument.startsWith("--outdir=")) {
-      let value = argument.slice("--outdir=".length);
-      if (!value) {
-        throw new Error("--outdir requires a directory");
-      }
-      outdir = value;
-    } else if (argument.startsWith("-")) {
-      throw new Error(`Unknown option: ${argument}`);
-    } else if (entrypoint) {
-      throw new Error(`Unexpected argument: ${argument}`);
-    } else {
-      entrypoint = argument;
-    }
+  if (!intent.ok) {
+    throw new Error(printConfigliereErrors(intent));
+  }
+  if (intent.method !== "execute" || intent.route !== "/compile") {
+    throw new Error("Expected the compile command");
   }
 
-  if (!entrypoint) {
-    throw new Error("An interactor entrypoint is required");
-  }
+  return intent.model;
+}
 
-  return { entrypoint, outdir };
+function path(fallback?: string): Schema<string> {
+  return {
+    "~standard": {
+      version: 1,
+      vendor: "@interactors/cli",
+      validate(value: unknown) {
+        if (value === undefined && fallback !== undefined) {
+          return { value: fallback };
+        }
+        if (typeof value === "string" && value.length > 0) {
+          return { value };
+        }
+        return { issues: [{ message: "must be a non-empty path" }] };
+      },
+    },
+  };
 }
 
 function displayPath(path: string): string {

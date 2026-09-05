@@ -8,10 +8,40 @@ describe("interactors compile", () => {
       .toEqual({ entrypoint: "index.ts", outdir: "build" });
     expect(parseCompileArgs(["compile", "index.ts", "-o", "build"]))
       .toEqual({ entrypoint: "index.ts", outdir: "build" });
+    expect(parseCompileArgs(["compile", "--outdir", "build", "index.ts"]))
+      .toEqual({ entrypoint: "index.ts", outdir: "build" });
     expect(parseCompileArgs(["compile", "index.ts", "--outdir=build"]))
       .toEqual({ entrypoint: "index.ts", outdir: "build" });
     expect(parseCompileArgs(["compile", "index.ts"]))
       .toEqual({ entrypoint: "index.ts", outdir: "dist" });
+  });
+
+  it("renders root and command help from the command definition", async () => {
+    let stdout: string[] = [];
+    let dependencies = {
+      compile: () => Promise.reject(new Error("should not compile")),
+    };
+
+    expect(
+      await runCli(
+        ["--help"],
+        { stdout: (message) => stdout.push(message), stderr: () => undefined },
+        dependencies,
+      ),
+    ).toBe(0);
+    expect(stdout[0]).toContain("Usage:\n  interactors [OPTIONS] <COMMAND>");
+    expect(stdout[0]).toContain("Commands:\n  compile");
+
+    stdout = [];
+    expect(
+      await runCli(
+        ["compile", "--help"],
+        { stdout: (message) => stdout.push(message), stderr: () => undefined },
+        dependencies,
+      ),
+    ).toBe(0);
+    expect(stdout[0]).toContain("Usage:\n  compile [OPTIONS] <ENTRYPOINT>");
+    expect(stdout[0]).toContain("-o, --outdir <VALUE>");
   });
 
   it("reports all three generated artifacts", async () => {
@@ -46,15 +76,51 @@ describe("interactors compile", () => {
     expect(stderr).toEqual([]);
   });
 
-  it("rejects malformed commands without compiling", async () => {
+  it("reports compiler failures without adding parser help", async () => {
     let stderr: string[] = [];
     let exitCode = await runCli(
-      ["compile", "index.ts", "--unknown"],
+      ["compile", "missing.ts"],
       { stdout: () => undefined, stderr: (message) => stderr.push(message) },
-      { compile: () => Promise.reject(new Error("should not run")) },
+      { compile: () => Promise.reject(new Error("entrypoint does not exist")) },
     );
 
     expect(exitCode).toBe(1);
-    expect(stderr[0]).toBe("Unknown option: --unknown");
+    expect(stderr).toEqual(["entrypoint does not exist"]);
+  });
+
+  it("rejects malformed commands without compiling", async () => {
+    for (
+      let [args, message] of [
+        [[], "A command is required"],
+        [["unknown"], "unexpected: `unknown`"],
+        [["compile"], "entrypoint: must be a non-empty path"],
+        [
+          ["compile", "index.ts", "extra.ts"],
+          "unexpected: `extra.ts`",
+        ],
+        [
+          ["compile", "index.ts", "--unknown"],
+          "unexpected: `--unknown`",
+        ],
+        [
+          ["compile", "index.ts", "--outdir"],
+          "--outdir requires a value",
+        ],
+        [
+          ["compile", "index.ts", "--outdir="],
+          "outdir: must be a non-empty path",
+        ],
+      ] as const
+    ) {
+      let stderr: string[] = [];
+      let exitCode = await runCli(
+        args,
+        { stdout: () => undefined, stderr: (value) => stderr.push(value) },
+        { compile: () => Promise.reject(new Error("should not run")) },
+      );
+
+      expect(exitCode).toBe(1);
+      expect(stderr).toEqual([message]);
+    }
   });
 });
