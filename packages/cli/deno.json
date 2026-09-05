@@ -1,0 +1,28 @@
+{
+  "name": "@interactors/cli",
+  "version": "1.0.0",
+  "description": "Compile Interactors for browser test runners",
+  "exports": {
+    ".": "./mod.ts",
+    "./cli": "./main.ts"
+  },
+  "tasks": {
+    "test": "deno test -A"
+  },
+  "imports": {
+    "@standard-schema/spec": "npm:@standard-schema/spec@^1.1.0",
+    "@std/expect": "jsr:@std/expect@^1.0.0",
+    "@std/jsonc": "https://deno.land/std@0.201.0/jsonc/mod.ts",
+    "@std/testing": "jsr:@std/testing@^1.0.0",
+    "jsdom": "npm:jsdom@^24.0.0"
+  },
+  "lint": {
+    "exclude": ["vendor/"],
+    "rules": {
+      "exclude": ["no-explicit-any", "prefer-const"]
+    }
+  },
+  "fmt": {
+    "exclude": ["vendor/"]
+  }
+}
