@@ -91,7 +91,10 @@ describe("interactors compile", () => {
   it("rejects malformed commands without compiling", async () => {
     for (
       let [args, message] of [
-        [[], "A command is required"],
+        [
+          [],
+          "interactors does not support EXECUTE\n\nAvailable methods:\n  HELP",
+        ],
         [["unknown"], "unexpected: `unknown`"],
         [["compile"], "entrypoint: must be a non-empty path"],
         [

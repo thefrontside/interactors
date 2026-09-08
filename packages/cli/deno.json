@@ -14,7 +14,9 @@
     "@std/expect": "jsr:@std/expect@^1.0.0",
     "@std/jsonc": "https://deno.land/std@0.201.0/jsonc/mod.ts",
     "@std/testing": "jsr:@std/testing@^1.0.0",
-    "jsdom": "npm:jsdom@^24.0.0"
+    "esbuild": "npm:esbuild@^0.28.2",
+    "jsdom": "npm:jsdom@^24.0.0",
+    "typescript": "npm:typescript@^5.9.3"
   },
   "lint": {
     "exclude": ["vendor/"],

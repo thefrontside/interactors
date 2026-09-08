@@ -36,7 +36,6 @@ export function installAgent(definitions: AgentDefinitions): Agent {
         "has",
         "is",
         ...interactor.actions,
-        ...interactor.filters,
       ]),
     ]),
   );

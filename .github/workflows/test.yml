@@ -14,3 +14,15 @@ jobs:
         with:
           deno-version: v2.x
       - run: deno test -A
+      - name: Build CLI npm package
+        run: |
+          deno task build:npm packages/core
+          deno task build:npm packages/cli
+      - name: Install local metadata-enabled core
+        run: npm install ../../../core/build/npm
+        working-directory: packages/cli/build/npm
+      - name: Compile with Node and Deno hosts
+        run: |
+          node packages/cli/build/npm/esm/main.js compile packages/cli/test/fixtures/basic/index.ts --outdir /tmp/interactors-node
+          deno run -A packages/cli/build/npm/esm/main.js compile packages/cli/test/fixtures/basic/index.ts --outdir /tmp/interactors-deno
+          diff -rq /tmp/interactors-node /tmp/interactors-deno
