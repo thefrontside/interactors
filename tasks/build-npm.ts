@@ -8,6 +8,8 @@ export interface Options {
 }
 
 export async function buildNpm(packageDirectory: string) {
+  packageDirectory = packageDirectory.replace(/^\.\/+/, "").replace(/\/+$/, "");
+
   const { default: denoJson } = await import(
     `../${packageDirectory}/deno.json`,
     {
@@ -110,6 +112,22 @@ export async function buildNpm(packageDirectory: string) {
       new URL(`../${packageDirectory}/README.md`, import.meta.url),
       new URL(`${outDir}/README.md`),
     );
+
+    if (packageDirectory === "packages/cli") {
+      const vendorDirectory = new URL(`${outDir}/vendor/`);
+      await Deno.mkdir(vendorDirectory, { recursive: true });
+      await Promise.all(
+        ["README.md", "configliere.LICENSE.md"].map((filename) =>
+          Deno.copyFile(
+            new URL(
+              `../${packageDirectory}/vendor/${filename}`,
+              import.meta.url,
+            ),
+            new URL(filename, vendorDirectory),
+          )
+        ),
+      );
+    }
   } finally {
     await Deno.remove(tmpImportMapFile);
   }
