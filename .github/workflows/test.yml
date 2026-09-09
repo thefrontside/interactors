@@ -16,8 +16,8 @@ jobs:
       - run: deno test -A
       - name: Build CLI npm package
         run: |
-          deno task build:npm packages/core
-          deno task build:npm packages/cli
+          deno task build:npm ./packages/core
+          deno task build:npm ./packages/cli
       - name: Install local metadata-enabled core
         run: npm install ../../../core/build/npm
         working-directory: packages/cli/build/npm

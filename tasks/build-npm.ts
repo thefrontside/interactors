@@ -8,6 +8,8 @@ export interface Options {
 }
 
 export async function buildNpm(packageDirectory: string) {
+  packageDirectory = packageDirectory.replace(/^\.\/+/, "").replace(/\/+$/, "");
+
   const { default: denoJson } = await import(
     `../${packageDirectory}/deno.json`,
     {
