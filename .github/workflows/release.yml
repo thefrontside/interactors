@@ -15,16 +15,8 @@ jobs:
     name: NPM ${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: setup deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      - uses: volta-cli/action@v4
-        with:
-          registry-url: https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v2
 
       - name: Determine Package
         id: pkg
@@ -36,5 +28,3 @@ jobs:
       - name: Publish Releases
         working-directory: ${{ steps.pkg.outputs.working-directory }}/build/npm
         run: npm publish --provenance --access public --tag ${{ steps.pkg.outputs.npm-tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.FRONTSIDEJACK_GITHUB_TOKEN }}

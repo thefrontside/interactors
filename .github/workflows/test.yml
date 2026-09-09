@@ -39,8 +39,8 @@ jobs:
         with:
           deno-version: v2.x
       - name: Install Chromium
-        working-directory: packages/with-playwright
+        working-directory: packages/playwright
         run: deno task install:browser
       - name: Run browser integration
-        working-directory: packages/with-playwright
+        working-directory: packages/playwright
         run: deno task test:browser

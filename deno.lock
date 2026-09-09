@@ -4651,7 +4651,7 @@
           "npm:jsdom@24"
         ]
       },
-      "packages/with-playwright": {
+      "packages/playwright": {
         "dependencies": [
           "jsr:@std/expect@1",
           "jsr:@std/testing@1",

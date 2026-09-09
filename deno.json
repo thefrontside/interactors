@@ -11,7 +11,7 @@
     "./packages/html",
     "./packages/keyboard",
     "./packages/material-ui",
-    "./packages/with-playwright",
+    "./packages/playwright",
     "./www"
   ],
   "compilerOptions": {

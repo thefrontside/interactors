@@ -1,6 +1,6 @@
 # @interactors/core
 
-## 1.1.0-alpha.0
+## 1.1.0-alpha.1
 
 - Expose stable metadata and type guards for discovering Interactor and matcher
   constructors.

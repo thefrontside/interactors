@@ -1,4 +1,4 @@
-# `@interactors/with-playwright`
+# `@interactors/playwright`
 
 Load the three files produced by `interactors compile` into a Playwright page.
 The Interactor implementation stays in the browser; tests call small typed
@@ -16,7 +16,7 @@ This writes `dist/agent.js`, `dist/interactors.json`, and
 
 ```ts
 import type * as Definitions from "../dist/interactors.d.ts";
-import { loadInteractors } from "@interactors/with-playwright";
+import { loadInteractors } from "@interactors/playwright";
 
 let { TextField, matching } = await loadInteractors<typeof Definitions>({
   page,
@@ -49,7 +49,7 @@ import type * as Definitions from "../dist/interactors.d.ts";
 import {
   loadInteractors,
   type RemoteDefinitions,
-} from "@interactors/with-playwright";
+} from "@interactors/playwright";
 
 type Fixtures = {
   interactors: RemoteDefinitions<typeof Definitions>;

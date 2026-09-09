@@ -48,8 +48,8 @@
       "version": false,
       "publish": false
     },
-    "@interactors/with-playwright": {
-      "path": "./packages/with-playwright/deno.json",
+    "@interactors/playwright": {
+      "path": "./packages/playwright/deno.json",
       "manager": "javascript",
       "dependencies": ["@interactors/core"]
     }
