@@ -1,0 +1,21 @@
+{
+  "name": "@interactors/playwright",
+  "version": "1.0.0",
+  "description": "Load compiled Interactors into Playwright",
+  "exports": "./mod.ts",
+  "tasks": {
+    "install:browser": "deno run -A npm:playwright@1.62.1 install --with-deps chromium",
+    "test": "deno test -A",
+    "test:browser": "deno task --cwd ../.. build:npm packages/playwright && deno test --no-check -A test/playwright.integration.ts"
+  },
+  "imports": {
+    "@std/expect": "jsr:@std/expect@^1.0.0",
+    "@std/testing": "jsr:@std/testing@^1.0.0",
+    "playwright": "npm:playwright@1.62.1"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any", "prefer-const"]
+    }
+  }
+}
