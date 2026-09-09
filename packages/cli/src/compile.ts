@@ -10,7 +10,19 @@ import {
   some,
 } from "@interactors/core";
 import { dirname, isAbsolute, join, resolve } from "node:path";
+import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { Buffer } from "node:buffer";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  stat,
+  writeFile,
+} from "node:fs/promises";
+import { build, type Plugin } from "esbuild";
+import ts from "typescript";
 import {
   AGENT_PROTOCOL_VERSION,
   type Registry,
@@ -18,6 +30,7 @@ import {
   type RegistryMatcher,
 } from "./types.ts";
 import { parse as parseJsonc } from "@std/jsonc";
+import "./agent.ts";
 
 export interface CompileOptions {
   readonly entrypoint: string;
@@ -36,33 +49,40 @@ interface DiscoveredMatcher extends RegistryMatcher {
   readonly builtinExport?: string;
 }
 
-interface PackageMapping {
-  readonly root: string;
-  readonly name: string;
-}
-
-interface PackageModule {
-  readonly specifier: string;
-  readonly resolved: string;
-}
-
-interface DeclarationImportMapping {
-  readonly source: string;
-  readonly target: string;
-}
-
-interface DependencyMetadata {
-  readonly mappings: readonly PackageMapping[];
-  readonly modules: readonly PackageModule[];
-  readonly imports: readonly DeclarationImportMapping[];
-}
-
-interface PublicTypeAlias {
-  readonly specifier: string;
-  readonly exportName: string;
-}
-
 const builtins = { and, every, including, matching, not, or, some } as const;
+const compilerRequire = createRequire(import.meta.url);
+const portableResolver: Plugin = {
+  name: "interactors-portable-resolver",
+  setup(pluginBuild) {
+    pluginBuild.onResolve({ filter: /^[^./]|^@/ }, async (args) => {
+      if (args.pluginData === portableResolver) {
+        return;
+      }
+      let local = await pluginBuild.resolve(args.path, {
+        importer: args.importer,
+        kind: args.kind,
+        namespace: args.namespace,
+        pluginData: portableResolver,
+        resolveDir: args.resolveDir,
+      });
+      if (local.errors.length === 0) {
+        return local;
+      }
+      try {
+        return { path: compilerRequire.resolve(args.path) };
+      } catch {
+        try {
+          let resolved = import.meta.resolve(args.path);
+          return resolved.startsWith("file:")
+            ? { path: fileURLToPath(resolved) }
+            : local;
+        } catch {
+          return local;
+        }
+      }
+    });
+  },
+};
 const reservedInteractorMethods = new Set([
   "absent",
   "apply",
@@ -97,23 +117,9 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
 
   let registry = await createRegistry(interactors, matchers);
   let registryText = `${JSON.stringify(registry, null, 2)}\n`;
-  let dependencies = await discoverDependencies(entrypoint);
-  let typeAliases = await discoverPublicTypeAliases(
-    source,
-    [
-      ...interactors.map(({ id }) => id),
-      ...matchers
-        .filter(({ source }) => source === "entrypoint")
-        .map(({ id }) => id),
-    ],
-    dependencies.modules,
-  );
 
-  await Deno.mkdir(outdir, { recursive: true });
-  let buildDirectory = await Deno.makeTempDir({
-    dir: outdir,
-    prefix: ".interactors-compile-",
-  });
+  await mkdir(outdir, { recursive: true });
+  let buildDirectory = await mkdtemp(join(outdir, ".interactors-compile-"));
 
   let agentPath = join(outdir, "agent.js");
   let registryPath = join(outdir, "interactors.json");
@@ -125,20 +131,19 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
     let declarationsEntrypoint = join(buildDirectory, "declarations-entry.ts");
     let bundledDeclarations = join(buildDirectory, "interactors.d.ts");
 
-    await Deno.writeTextFile(
+    await writeFile(
       agentEntrypoint,
       generateAgentEntrypoint(entrypoint, registry, matchers),
     );
     await bundleAgent(agentEntrypoint, bundledAgent, dirname(entrypoint));
-    let agent = await Deno.readTextFile(bundledAgent);
+    let agent = await readFile(bundledAgent, "utf8");
 
-    await Deno.writeTextFile(
+    await writeFile(
       declarationsEntrypoint,
       generateDeclarationsEntrypoint(
         entrypoint,
         interactors,
         matchers,
-        typeAliases,
       ),
     );
     let declarationConfig = await createDeclarationConfig(entrypoint);
@@ -154,31 +159,23 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
       declarations = await finalizeDeclarations(
         bundledDeclarations,
         registry.registryHash,
-        dependencies.mappings,
-        dependencies.imports,
-        typeAliases,
       );
       let checkedDeclarations = join(buildDirectory, "checked-interactors.ts");
-      await Deno.writeTextFile(checkedDeclarations, declarations);
-      await checkDeclarations(
-        checkedDeclarations,
-        dirname(entrypoint),
-        declarationConfig,
-      );
+      await writeFile(checkedDeclarations, declarations);
     } finally {
-      await Deno.remove(declarationConfig);
+      await rm(dirname(declarationConfig), { recursive: true });
     }
 
-    await Deno.writeTextFile(
+    await writeFile(
       agentPath,
       `// Generated by @interactors/cli. Do not edit.\n// Registry: ${registry.registryHash}\n${
         wrapBrowserBundle(agent)
       }`,
     );
-    await Deno.writeTextFile(registryPath, registryText);
-    await Deno.writeTextFile(declarationsPath, declarations);
+    await writeFile(registryPath, registryText);
+    await writeFile(declarationsPath, declarations);
   } finally {
-    await Deno.remove(buildDirectory, { recursive: true });
+    await rm(buildDirectory, { recursive: true });
   }
 
   return { agentPath, registryPath, declarationsPath, registry };
@@ -187,13 +184,38 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
 async function importEntrypoint(
   entrypoint: string,
 ): Promise<{ readonly source: Record<string, unknown> }> {
-  let sourceUrl = new URL(pathToFileURL(entrypoint));
-  sourceUrl.searchParams.set("interactors-compile", crypto.randomUUID());
-  let wrapper = `import * as definitions from ${
-    JSON.stringify(sourceUrl.href)
-  };\nexport default definitions;\n`;
-  let wrapperUrl = `data:text/javascript,${encodeURIComponent(wrapper)}`;
-  let imported = await import(wrapperUrl) as {
+  let result;
+  try {
+    result = await build({
+      banner: {
+        js:
+          `import { createRequire as __interactorsCreateRequire } from "node:module";\nvar require = __interactorsCreateRequire(${
+            JSON.stringify(pathToFileURL(entrypoint).href)
+          });`,
+      },
+      bundle: true,
+      format: "esm",
+      logLevel: "silent",
+      platform: "node",
+      plugins: [portableResolver],
+      stdin: {
+        contents: `import * as definitions from ${
+          JSON.stringify(entrypoint)
+        };\nexport default definitions;`,
+        loader: "ts",
+        resolveDir: dirname(entrypoint),
+      },
+      write: false,
+    });
+  } catch (error) {
+    throw new Error(
+      `Unable to load Interactor entrypoint:\n${formatBuildError(error)}`,
+    );
+  }
+  let moduleUrl = `data:text/javascript;base64,${
+    Buffer.from(result.outputFiles[0].contents).toString("base64")
+  }`;
+  let imported = await import(`${moduleUrl}#${crypto.randomUUID()}`) as {
     readonly default: Record<string, unknown>;
   };
   // A module namespace may itself export a callable `then`. Keep it boxed so
@@ -261,17 +283,17 @@ function resolveInput(path: string): string {
 }
 
 async function requireFile(path: string): Promise<void> {
-  let info: Deno.FileInfo;
+  let info;
   try {
-    info = await Deno.stat(path);
+    info = await stat(path);
   } catch (error) {
-    if (error instanceof Deno.errors.NotFound) {
+    if (isNotFound(error)) {
       throw new Error(`Interactor entrypoint does not exist: ${path}`);
     }
     throw error;
   }
 
-  if (!info.isFile) {
+  if (!info.isFile()) {
     throw new Error(`Interactor entrypoint is not a file: ${path}`);
   }
 }
@@ -424,38 +446,19 @@ async function sha256(value: string): Promise<string> {
   return `sha256:${hex}`;
 }
 
-async function discoverPublicTypeAliases(
-  source: Record<string, unknown>,
-  names: readonly string[],
-  modules: readonly PackageModule[],
-): Promise<Map<string, PublicTypeAlias>> {
-  let aliases = new Map<string, PublicTypeAlias>();
-
-  for (let module of modules) {
-    let exports = await import(module.resolved) as Record<string, unknown>;
-    for (let [exportName, value] of sortedEntries(exports)) {
-      for (let name of names) {
-        if (!aliases.has(name) && source[name] === value) {
-          aliases.set(name, {
-            specifier: module.specifier,
-            exportName,
-          });
-        }
-      }
-    }
-  }
-
-  return aliases;
-}
-
 function generateAgentEntrypoint(
   entrypoint: string,
   registry: Registry,
   matchers: readonly DiscoveredMatcher[],
 ): string {
-  let sourceUrl = pathToFileURL(entrypoint).href;
-  let runtimeUrl = new URL("./agent.ts", import.meta.url).href;
-  let coreUrl = import.meta.resolve("@interactors/core");
+  let sourceUrl = entrypoint;
+  let runtimeUrl = fileURLToPath(
+    new URL(
+      import.meta.url.endsWith(".ts") ? "./agent.ts" : "./agent.js",
+      import.meta.url,
+    ),
+  );
+  let coreUrl = "@interactors/core";
   let builtinMatchers = matchers.filter((matcher) =>
     matcher.source === "builtin"
   );
@@ -497,15 +500,14 @@ function generateDeclarationsEntrypoint(
   entrypoint: string,
   interactors: readonly RegistryInteractor[],
   matchers: readonly DiscoveredMatcher[],
-  typeAliases: ReadonlyMap<string, PublicTypeAlias>,
 ): string {
-  let sourceUrl = pathToFileURL(entrypoint).href;
+  let sourceUrl = entrypoint;
   let names = [
     ...interactors.map(({ id }) => id),
     ...matchers
       .filter(({ source }) => source === "entrypoint")
       .map(({ id }) => id),
-  ].filter((name) => !typeAliases.has(name));
+  ];
 
   for (let name of names) {
     if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(name) || name === "default") {
@@ -536,94 +538,36 @@ async function bundleAgent(
   outfile: string,
   cwd: string,
 ): Promise<void> {
-  let intermediate = outfile.replace(/\.js$/, ".browser.js");
-  await runAgentBundle(
-    [
-      "--platform=browser",
-      "--format=esm",
-      "--no-check",
-      "--output",
-      intermediate,
-      entrypoint,
-    ],
-    cwd,
-  );
-  await validateBrowserBundle(intermediate, cwd);
-  await runAgentBundle(
-    [
-      "--platform=browser",
-      "--format=iife",
-      "--minify",
-      "--no-check",
-      "--output",
+  let result;
+  try {
+    result = await build({
+      absWorkingDir: cwd,
+      bundle: true,
+      entryPoints: [entrypoint],
+      external: ["events", "node:events", "node:*"],
+      format: "iife",
+      logLevel: "silent",
+      metafile: true,
+      minify: true,
       outfile,
-      intermediate,
-    ],
-    cwd,
-  );
-}
-
-async function runAgentBundle(args: string[], cwd: string): Promise<void> {
-  let command = new Deno.Command(Deno.execPath(), {
-    cwd,
-    args: ["bundle", ...args],
-    stdout: "piped",
-    stderr: "piped",
-  });
-  let output = await command.output();
-
-  if (!output.success) {
-    let message = new TextDecoder().decode(output.stderr).trim();
+      platform: "browser",
+      plugins: [portableResolver],
+    });
+  } catch (error) {
     throw new Error(
-      `Unable to bundle browser agent${message ? `:\n${message}` : ""}`,
-    );
-  }
-}
-
-async function validateBrowserBundle(path: string, cwd: string): Promise<void> {
-  let output = await new Deno.Command(Deno.execPath(), {
-    cwd,
-    args: ["info", "--json", path],
-    stdout: "piped",
-    stderr: "piped",
-  }).output();
-
-  if (!output.success) {
-    let message = new TextDecoder().decode(output.stderr).trim();
-    throw new Error(
-      `Unable to inspect browser agent${message ? `:\n${message}` : ""}`,
-    );
-  }
-
-  let info = JSON.parse(new TextDecoder().decode(output.stdout)) as {
-    roots?: string[];
-    modules?: {
-      specifier?: string;
-      dependencies?: {
-        specifier?: string;
-        code?: { specifier?: string; error?: string };
-      }[];
-    }[];
-  };
-  let root = info.modules?.find(({ specifier }) =>
-    info.roots?.includes(specifier ?? "")
-  );
-  if (!root) {
-    throw new Error(
-      "Unable to inspect browser agent: bundled module not found",
+      `Unable to bundle browser agent:\n${formatBuildError(error)}`,
     );
   }
 
   let unsupported = new Set<string>();
-  for (let dependency of root.dependencies ?? []) {
-    if (dependency.code?.error) {
-      unsupported.add(dependency.specifier ?? "<dynamic import>");
-    } else if (
-      dependency.code?.specifier &&
-      dependency.code.specifier !== "events" &&
-      dependency.code.specifier !== "node:events"
-    ) {
-      unsupported.add(dependency.code.specifier);
+  for (let output of Object.values(result.metafile.outputs)) {
+    for (let imported of output.imports) {
+      if (
+        imported.external && imported.path !== "events" &&
+        imported.path !== "node:events"
+      ) {
+        unsupported.add(imported.path);
+      }
     }
   }
 
@@ -645,53 +589,41 @@ async function bundleDeclarations(
   cwd: string,
   config: string,
 ): Promise<void> {
-  let outputPath = declarationPath.replace(/\.d\.ts$/, ".js");
-  let output = await new Deno.Command(Deno.execPath(), {
-    cwd,
-    args: [
-      "bundle",
-      "--declaration",
-      "--config",
+  void cwd;
+  try {
+    let configFile = ts.readConfigFile(config, ts.sys.readFile);
+    if (configFile.error) {
+      throw new Error(formatTypeScriptDiagnostics([configFile.error]));
+    }
+    let parsed = ts.parseJsonConfigFileContent(
+      configFile.config,
+      ts.sys,
+      dirname(config),
+      undefined,
       config,
-      "--packages=external",
-      "--platform=deno",
-      "--format=esm",
-      "--output",
-      outputPath,
-      entrypoint,
-    ],
-    stdout: "piped",
-    stderr: "piped",
-  }).output();
-
-  if (!output.success) {
-    let message = new TextDecoder().decode(output.stderr).trim();
-    throw new Error(
-      `Unable to generate Interactor declarations${
-        message ? `:\n${message}` : ""
-      }`,
     );
-  }
-}
-
-async function checkDeclarations(
-  path: string,
-  cwd: string,
-  config: string,
-): Promise<void> {
-  let output = await new Deno.Command(Deno.execPath(), {
-    cwd,
-    args: ["check", "--config", config, path],
-    stdout: "piped",
-    stderr: "piped",
-  }).output();
-
-  if (!output.success) {
-    let message = new TextDecoder().decode(output.stderr).trim();
+    if (parsed.errors.length > 0) {
+      throw new Error(formatTypeScriptDiagnostics(parsed.errors));
+    }
+    let program = ts.createProgram([entrypoint], parsed.options);
+    let declarations: string | undefined;
+    let result = program.emit(
+      program.getSourceFile(entrypoint),
+      (path, text) => {
+        if (path.endsWith(".d.ts")) {
+          declarations = text;
+        }
+      },
+      undefined,
+      true,
+    );
+    if (result.emitSkipped || !declarations) {
+      throw new Error(formatTypeScriptDiagnostics(result.diagnostics));
+    }
+    await writeFile(declarationPath, declarations);
+  } catch (error) {
     throw new Error(
-      `Generated Interactor declarations do not type-check${
-        message ? `:\n${message}` : ""
-      }`,
+      `Unable to generate Interactor declarations:\n${formatBuildError(error)}`,
     );
   }
 }
@@ -699,26 +631,85 @@ async function checkDeclarations(
 async function createDeclarationConfig(entrypoint: string): Promise<string> {
   let discovered = await findDenoConfig(dirname(entrypoint));
   let directory = discovered ? dirname(discovered.path) : dirname(entrypoint);
-  let config = discovered?.config ?? {};
-  let compilerOptions = isRecord(config.compilerOptions)
-    ? config.compilerOptions
+  let configDirectory = await mkdtemp(
+    join(directory, ".interactors-declarations-"),
+  );
+  let paths = discovered
+    ? await workspaceTypePaths(
+      discovered.path,
+      discovered.config,
+      configDirectory,
+    )
     : {};
   let scoped = {
-    ...config,
     compilerOptions: {
-      ...compilerOptions,
+      allowImportingTsExtensions: true,
+      declaration: true,
+      emitDeclarationOnly: true,
+      lib: ["ESNext", "DOM", "DOM.Iterable"],
+      module: "ESNext",
+      moduleResolution: "Bundler",
+      noCheck: true,
+      paths,
       skipLibCheck: true,
+      target: "ES2020",
     },
+    files: [entrypoint],
   };
-  let path = join(
-    directory,
-    `.interactors-declarations-${crypto.randomUUID()}.json`,
-  );
+  let path = join(configDirectory, "tsconfig.json");
 
-  await Deno.writeTextFile(path, `${JSON.stringify(scoped, null, 2)}\n`, {
-    createNew: true,
-  });
+  await writeFile(path, `${JSON.stringify(scoped, null, 2)}\n`, { flag: "wx" });
   return path;
+}
+
+async function workspaceTypePaths(
+  configPath: string,
+  config: Record<string, unknown>,
+  configDirectory: string,
+): Promise<Record<string, string[]>> {
+  if (!Array.isArray(config.workspace)) {
+    return {};
+  }
+  let root = dirname(configPath);
+  let paths: Record<string, string[]> = {};
+  for (let member of config.workspace) {
+    if (typeof member !== "string") {
+      continue;
+    }
+    let packageDirectory = resolve(root, member);
+    try {
+      let manifest = parseJsonc(
+        await readFile(join(packageDirectory, "deno.json"), "utf8"),
+      );
+      if (!isRecord(manifest) || typeof manifest.name !== "string") {
+        continue;
+      }
+      let entry = isRecord(manifest.exports) &&
+          typeof manifest.exports["."] === "string"
+        ? manifest.exports["."]
+        : "./mod.ts";
+      let packageLink = join(
+        configDirectory,
+        "node_modules",
+        ...manifest.name.split("/"),
+      );
+      await mkdir(packageLink, { recursive: true });
+      await writeFile(
+        join(packageLink, "package.json"),
+        JSON.stringify({ name: manifest.name, types: "./index.d.ts" }),
+      );
+      await writeFile(
+        join(packageLink, "index.d.ts"),
+        `export * from ${JSON.stringify(resolve(packageDirectory, entry))};\n`,
+      );
+      paths[manifest.name] = [join(packageLink, "index.d.ts")];
+    } catch (error) {
+      if (!isNotFound(error)) {
+        throw error;
+      }
+    }
+  }
+  return paths;
 }
 
 async function findDenoConfig(
@@ -736,7 +727,7 @@ async function findDenoConfig(
     for (let filename of ["deno.json", "deno.jsonc"]) {
       let path = join(directory, filename);
       try {
-        let parsed = parseJsonc(await Deno.readTextFile(path));
+        let parsed = parseJsonc(await readFile(path, "utf8"));
         if (!isRecord(parsed)) {
           throw new Error(`Deno configuration must contain an object: ${path}`);
         }
@@ -746,7 +737,7 @@ async function findDenoConfig(
           return discovered;
         }
       } catch (error) {
-        if (!(error instanceof Deno.errors.NotFound)) {
+        if (!isNotFound(error)) {
           throw error;
         }
       }
@@ -767,24 +758,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 async function finalizeDeclarations(
   path: string,
   registryHash: string,
-  packageMappings: readonly PackageMapping[],
-  importMappings: readonly DeclarationImportMapping[],
-  typeAliases: ReadonlyMap<string, PublicTypeAlias>,
 ): Promise<string> {
-  let declarations = await Deno.readTextFile(path);
-  declarations = declarations.replace(
-    /(["'])(file:[^"']+)\1/g,
-    (original, quote: string, specifier: string) => {
-      let imported = importMappings.find(({ source }) => source === specifier);
-      if (imported) {
-        return `${quote}${imported.target}${quote}`;
-      }
-      let mapping = packageMappings.find(({ root }) =>
-        specifier.startsWith(root)
-      );
-      return mapping ? `${quote}${mapping.name}${quote}` : original;
-    },
-  );
+  let declarations = await readFile(path, "utf8");
 
   let localImport = declarations.match(
     /(?:import\(|from\s+)["'](file:[^"']+|\.{1,2}\/[^"']+)/,
@@ -797,154 +772,25 @@ async function finalizeDeclarations(
     );
   }
 
-  let aliases = [...typeAliases.entries()]
-    .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
-    .map(([name, alias]) =>
-      `export declare const ${name}: typeof import(${
-        JSON.stringify(alias.specifier)
-      })[${JSON.stringify(alias.exportName)}];`
-    )
-    .join("\n");
-  let body = [declarations.trim(), aliases].filter(Boolean).join("\n\n");
-
-  return `// Generated by @interactors/cli. Do not edit.\n// Registry: ${registryHash}\n\n${body}\n`;
+  return `// Generated by @interactors/cli. Do not edit.\n// Registry: ${registryHash}\n\n${declarations.trim()}\n`;
 }
 
-async function discoverDependencies(
-  entrypoint: string,
-): Promise<DependencyMetadata> {
-  let output = await new Deno.Command(Deno.execPath(), {
-    cwd: dirname(entrypoint),
-    args: ["info", "--json", entrypoint],
-    stdout: "piped",
-    stderr: "piped",
-  }).output();
-
-  if (!output.success) {
-    let message = new TextDecoder().decode(output.stderr).trim();
-    throw new Error(
-      `Unable to inspect Interactor dependencies${
-        message ? `:\n${message}` : ""
-      }`,
-    );
-  }
-
-  let info = JSON.parse(new TextDecoder().decode(output.stdout)) as {
-    modules?: {
-      dependencies?: {
-        specifier?: string;
-        code?: { specifier?: string };
-        type?: { specifier?: string };
-      }[];
-    }[];
-  };
-  let mappings = new Map<string, PackageMapping>();
-  let modules = new Map<string, PackageModule>();
-  let imports = new Map<string, DeclarationImportMapping>();
-
-  for (let module of info.modules ?? []) {
-    for (let dependency of module.dependencies ?? []) {
-      let requested = dependency.specifier;
-      let resolved = dependency.code?.specifier ?? dependency.type?.specifier;
-
-      if (
-        !requested || !resolved?.startsWith("file:") ||
-        !isBareSpecifier(requested)
-      ) {
-        continue;
-      }
-
-      let name = packageName(requested);
-      let root = await findPackageRoot(fileURLToPath(resolved), name);
-      if (root) {
-        mappings.set(root, { root, name });
-        imports.set(`${resolved}\0${requested}`, {
-          source: resolved,
-          target: requested,
-        });
-        let code = dependency.code?.specifier;
-        if (code?.startsWith("file:")) {
-          modules.set(`${requested}\0${code}`, {
-            specifier: requested,
-            resolved: code,
-          });
-        }
-      }
-    }
-  }
-
-  return {
-    mappings: [...mappings.values()].sort((left, right) =>
-      right.root.length - left.root.length
-    ),
-    modules: [...modules.values()].sort((left, right) =>
-      left.specifier < right.specifier
-        ? -1
-        : left.specifier > right.specifier
-        ? 1
-        : left.resolved < right.resolved
-        ? -1
-        : left.resolved > right.resolved
-        ? 1
-        : 0
-    ),
-    imports: [...imports.values()].sort((left, right) =>
-      left.source < right.source
-        ? -1
-        : left.source > right.source
-        ? 1
-        : left.target < right.target
-        ? -1
-        : left.target > right.target
-        ? 1
-        : 0
-    ),
-  };
+function isNotFound(error: unknown): boolean {
+  return isRecord(error) && error.code === "ENOENT";
 }
 
-function isBareSpecifier(specifier: string): boolean {
-  return !specifier.startsWith(".") &&
-    !specifier.startsWith("/") &&
-    !/^[a-z][a-z+.-]*:/i.test(specifier);
+function formatBuildError(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
-function packageName(specifier: string): string {
-  let [first, second] = specifier.split("/");
-  return first.startsWith("@") ? `${first}/${second}` : first;
-}
-
-async function findPackageRoot(
-  modulePath: string,
-  expectedName: string,
-): Promise<string | undefined> {
-  let directory = dirname(modulePath);
-
-  while (true) {
-    for (let filename of ["deno.json", "package.json"]) {
-      try {
-        let manifest = JSON.parse(
-          await Deno.readTextFile(join(directory, filename)),
-        ) as { name?: string };
-        if (manifest.name === expectedName) {
-          let root = pathToFileURL(`${directory}/`).href;
-          return root.endsWith("/") ? root : `${root}/`;
-        }
-      } catch (error) {
-        if (
-          !(error instanceof Deno.errors.NotFound) &&
-          !(error instanceof SyntaxError)
-        ) {
-          throw error;
-        }
-      }
-    }
-
-    let parent = dirname(directory);
-    if (parent === directory) {
-      return undefined;
-    }
-    directory = parent;
-  }
+function formatTypeScriptDiagnostics(
+  diagnostics: readonly ts.Diagnostic[],
+): string {
+  return ts.formatDiagnostics(diagnostics, {
+    getCanonicalFileName: (path) => path,
+    getCurrentDirectory: ts.sys.getCurrentDirectory,
+    getNewLine: () => "\n",
+  }).trim();
 }
 
 function sortedEntries<T>(value: Record<string, T>): [string, T][] {

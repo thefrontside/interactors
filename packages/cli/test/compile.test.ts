@@ -74,7 +74,12 @@ describe("compile", () => {
       expect(declarations).toContain(`// Registry: ${registry.registryHash}`);
       expect(declarations).toContain("export declare const TextField");
       expect(declarations).toContain("value: string");
-      expect(declarations).toContain('import("@interactors/core")');
+      expect(declarations).toContain(
+        'disabled?: import("@interactors/core").MaybeMatcher<boolean>',
+      );
+      expect(declarations).toContain(
+        'value?: import("@interactors/core").MaybeMatcher<string>',
+      );
       expect(declarations).not.toContain("index.ts");
       expect(declarations).not.toContain("file:");
 
@@ -141,9 +146,10 @@ describe("compile", () => {
               args: [{ $type: "regexp", source: "mail", flags: "i" }],
             },
           }],
-          method: "value",
+          method: "has",
+          args: [{ value: "jonas@example.com" }],
         });
-        expect(valueResult).toEqual({ ok: true, value: "jonas@example.com" });
+        expect(valueResult).toEqual({ ok: true });
 
         let customMatcherResult = await agent.run({
           protocolVersion: AGENT_PROTOCOL_VERSION,
@@ -156,12 +162,10 @@ describe("compile", () => {
               args: ["Other"],
             },
           }],
-          method: "value",
+          method: "has",
+          args: [{ value: "jonas@example.com" }],
         });
-        expect(customMatcherResult).toEqual({
-          ok: true,
-          value: "jonas@example.com",
-        });
+        expect(customMatcherResult).toEqual({ ok: true });
 
         let nestedResult = await agent.run({
           protocolVersion: AGENT_PROTOCOL_VERSION,
@@ -170,12 +174,21 @@ describe("compile", () => {
             { interactor: "Form", locator: "profile" },
             { interactor: "TextField", filters: { disabled: false } },
           ],
+          method: "has",
+          args: [{ value: "jonas@example.com" }],
+        });
+        expect(nestedResult).toEqual({ ok: true });
+
+        let unavailableFilter = await agent.run({
+          protocolVersion: AGENT_PROTOCOL_VERSION,
+          registryHash: registry.registryHash,
+          path: [{ interactor: "TextField", locator: "Email" }],
           method: "value",
         });
-        expect(nestedResult).toEqual({
-          ok: true,
-          value: "jonas@example.com",
-        });
+        expect(unavailableFilter.ok).toBe(false);
+        if (!unavailableFilter.ok) {
+          expect(unavailableFilter.error.name).toBe("NoSuchMethodError");
+        }
 
         let unavailableMethod = await agent.run({
           protocolVersion: AGENT_PROTOCOL_VERSION,
@@ -261,11 +274,10 @@ describe("compile", () => {
       ) as Registry;
       let agentSource = await Deno.readTextFile(result.agentPath);
 
+      expect(declarations).toContain("export declare const Button");
+      expect(declarations).toContain("export declare const TextField");
       expect(declarations).toContain(
-        'typeof import("@interactors/html")["Button"]',
-      );
-      expect(declarations).toContain(
-        'typeof import("@interactors/html")["TextField"]',
+        'value?: import("@interactors/core").MaybeMatcher<string>',
       );
       expect(declarations).not.toContain("file:");
 

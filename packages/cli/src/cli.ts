@@ -1,4 +1,5 @@
 import { relative } from "node:path";
+import { cwd } from "node:process";
 // @ts-types="../vendor/configliere-types/mod.d.ts"
 import {
   argument,
@@ -7,9 +8,9 @@ import {
   description,
   name,
   option,
-  parse as parseConfigliere,
-  printErrors as printConfigliereErrors,
-  printHelp as printConfigliereHelp,
+  parse,
+  printErrors,
+  printHelp,
   route,
   routes,
   type Schema,
@@ -62,20 +63,15 @@ export async function runCli(
   },
   dependencies: CliDependencies = { compile },
 ): Promise<number> {
-  if (args.length === 0) {
-    io.stderr("A command is required");
-    return 1;
-  }
-
-  let intent = parseConfigliere(application, { argv: [...args] });
+  let intent = parse(application, { argv: [...args] });
 
   if (!intent.ok) {
-    io.stderr(printConfigliereErrors(intent));
+    io.stderr(printErrors(intent));
     return 1;
   }
 
   if (intent.method === "help") {
-    io.stdout(printConfigliereHelp(intent));
+    io.stdout(printHelp(intent));
     return 0;
   }
 
@@ -102,10 +98,10 @@ export function parseCompileArgs(args: readonly string[]): CompileOptions {
     throw new Error("A command is required");
   }
 
-  let intent = parseConfigliere(application, { argv: [...args] });
+  let intent = parse(application, { argv: [...args] });
 
   if (!intent.ok) {
-    throw new Error(printConfigliereErrors(intent));
+    throw new Error(printErrors(intent));
   }
   if (intent.method !== "execute" || intent.route !== "/compile") {
     throw new Error("Expected the compile command");
@@ -133,6 +129,6 @@ function path(fallback?: string): Schema<string> {
 }
 
 function displayPath(path: string): string {
-  let display = relative(Deno.cwd(), path);
+  let display = relative(cwd(), path);
   return display || ".";
 }

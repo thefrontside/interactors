@@ -4,6 +4,10 @@ Compile an Interactor entrypoint into artifacts that a browser test runner can
 load:
 
 ```console
+$ npm install --save-dev @interactors/cli@alpha
+```
+
+```console
 $ interactors compile index.ts --outdir dist
 created dist/agent.js
 created dist/interactors.json
@@ -47,10 +51,8 @@ await compile({
 });
 ```
 
-The compiler currently runs on Deno and invokes Deno's bundler and type checker.
-It therefore needs read access to the entrypoint and its dependencies, write
-access to the output directory and the directory containing the detected Deno
-configuration, and permission to start Deno subprocesses. The latter write is a
-uniquely named, short-lived configuration used only while generating and
-checking declarations. A separately packaged Node-native executable is outside
-this package's current scope.
+The npm package contains a standard JavaScript module and executable that run
+under either Node or Deno. The compiler uses esbuild to load TypeScript and
+create the browser agent, and the TypeScript compiler API to emit declarations.
+Running it under Node does not require Deno to be installed, and running it
+under Deno does not require Node to be installed.
