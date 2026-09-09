@@ -1,6 +1,6 @@
 {
   "name": "@interactors/with-playwright",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "description": "Load compiled Interactors into Playwright",
   "exports": "./mod.ts",
   "tasks": {

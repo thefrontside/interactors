@@ -1,5 +1,11 @@
 # @interactors/core
 
+## 1.1.0-alpha.0
+
+- Expose stable metadata and type guards for discovering Interactor and matcher
+  constructors.
+- Include `@testing-library/dom` in the generated npm package dependencies.
+
 ## \[1.0.1]
 
 - [`e9d46c6`](https://github.com/thefrontside/interactors/commit/e9d46c68381bcd7814e85e4eeba4889e0fb6a746) Fix types in distributed NPM packages which were being incorrectly referenced in the package exports.
