@@ -1,6 +1,6 @@
 {
   "name": "@interactors/html",
-  "version": "1.0.1",
+  "version": "1.1.0-alpha.0",
   "description": "Interactors for the DOM",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
