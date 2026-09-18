@@ -26,6 +26,21 @@ export const MultiSelect = createInteractor<HTMLSelectElement>("multi select")
       [...element.selectedOptions].map((option) => option.value),
   });
 
+export const Menu = createInteractor<HTMLElement>("menu")
+  .selector("[role=menu]")
+  .filters({
+    open: (element) => !element.hidden,
+    options: (element) =>
+      [...element.querySelectorAll("[role=menuitem]")]
+        .map((option) => option.textContent ?? ""),
+  })
+  .actions({
+    open: ({ perform }) =>
+      perform((element) => {
+        element.hidden = false;
+      }),
+  });
+
 export const sameLength = createMatcher("same length", (expected: string) => ({
   match: (actual: string) => actual.length === expected.length,
   description: () => `same length as ${JSON.stringify(expected)}`,

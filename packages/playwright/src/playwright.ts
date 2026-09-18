@@ -234,16 +234,27 @@ function parseInteractors(value: unknown): RegistryInteractor[] {
       item.filters,
       `Interactor registry entry ${JSON.stringify(id)} filters`,
     );
-    let methodNames = new Set(reservedInteractorMethods);
-    for (let method of [...actions, ...filters]) {
-      if (methodNames.has(method)) {
+    let actionNames = new Set<string>();
+    for (let action of actions) {
+      if (reservedInteractorMethods.has(action) || actionNames.has(action)) {
         throw new Error(
           `Interactor ${JSON.stringify(id)} has duplicate or reserved method ${
-            JSON.stringify(method)
+            JSON.stringify(action)
           }`,
         );
       }
-      methodNames.add(method);
+      actionNames.add(action);
+    }
+    let filterNames = new Set<string>();
+    for (let filter of filters) {
+      if (filterNames.has(filter)) {
+        throw new Error(
+          `Interactor ${JSON.stringify(id)} has duplicate filter ${
+            JSON.stringify(filter)
+          }`,
+        );
+      }
+      filterNames.add(filter);
     }
     return { id, name, actions, filters };
   });

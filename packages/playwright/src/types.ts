@@ -53,18 +53,17 @@ type RemoteMethod<Method> = Method extends (...args: infer Args) => infer Result
   : never
   : never;
 
-type RemoteMethods<Instance, ExcludedKey extends PropertyKey = never> = {
+type RemoteMethods<Instance> = {
   [
-    Key in keyof Instance as Key extends ForbiddenInstanceKey | ExcludedKey
-      ? never
+    Key in keyof Instance as Key extends ForbiddenInstanceKey ? never
       : Instance[Key] extends (...args: any[]) => PromiseLike<any> ? Key
       : never
   ]: RemoteMethod<Instance[Key]>;
 };
 
-type RemoteFilterKey<Constructor extends AnyInteractorConstructor> =
-  Constructor extends InteractorConstructor<any, infer Filters, any, any>
-    ? keyof Filters
+type RemoteActions<Constructor extends AnyInteractorConstructor> =
+  Constructor extends InteractorConstructor<any, any, any, infer Actions>
+    ? RemoteMethods<Actions>
     : never;
 
 interface AnyRemoteInteractor {
@@ -75,7 +74,10 @@ export type RemoteInteractor<
   Constructor extends AnyInteractorConstructor,
 > =
   & AnyRemoteInteractor
-  & RemoteMethods<ReturnType<Constructor>, RemoteFilterKey<Constructor>>
+  & RemoteMethods<
+    Pick<ReturnType<Constructor>, "absent" | "exists" | "has" | "is">
+  >
+  & RemoteActions<Constructor>
   & {
     find<Child extends AnyRemoteInteractor>(interactor: Child): Child;
   };

@@ -82,6 +82,28 @@ describe("remote Interactor client", () => {
     expect(Reflect.has(ui.TextField(), "disabled")).toBe(false);
   });
 
+  it("keeps actions that share names with filters", async () => {
+    let commands: AgentCommand[] = [];
+    let registry = createTestRegistry({
+      interactors: [{
+        id: "Menu",
+        name: "menu",
+        actions: ["open"],
+        filters: ["open", "options"],
+      }],
+    });
+    let ui = createRemoteDefinitions<typeof Definitions>(
+      registry,
+      transport(commands),
+    );
+
+    await ui.Menu().open();
+    await ui.Menu().is({ open: true });
+    await ui.Menu().has({ options: ["Newest", "Oldest"] });
+
+    expect(commands.map(({ method }) => method)).toEqual(["open", "is", "has"]);
+  });
+
   it("encodes filters, custom matchers, arrays, and assertions", async () => {
     let commands: AgentCommand[] = [];
     let ui = createRemoteDefinitions<typeof Definitions>(
