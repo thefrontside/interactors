@@ -114,6 +114,46 @@ describe("Playwright loader", () => {
       expect(page.evaluatedScripts).toEqual([]);
     });
   });
+
+  it("allows filters to overlap actions and reserved methods", async () => {
+    let registry = createTestRegistry({
+      interactors: [{
+        id: "Menu",
+        name: "menu",
+        actions: ["open"],
+        filters: ["open", "options"],
+      }],
+    });
+    let page = new FakePage({
+      protocolVersion: registry.protocolVersion,
+      registryHash: registry.registryHash,
+      canRun: true,
+    });
+
+    await withArtifacts(registry, async (directory) => {
+      await expect(loadInteractors({ page, directory })).resolves.toBeDefined();
+    });
+  });
+
+  it("rejects duplicate actions and filters", async () => {
+    for (
+      let interactor of [
+        { id: "Menu", name: "menu", actions: ["open", "open"], filters: [] },
+        { id: "Menu", name: "menu", actions: [], filters: ["open", "open"] },
+      ]
+    ) {
+      let registry = createTestRegistry({ interactors: [interactor] });
+      let page = new FakePage(null);
+
+      await withArtifacts(registry, async (directory) => {
+        await expect(loadInteractors({ page, directory })).rejects.toThrow(
+          interactor.actions.length > 0
+            ? "duplicate or reserved method"
+            : "duplicate filter",
+        );
+      });
+    }
+  });
 });
 
 class FakePage implements PageLike {

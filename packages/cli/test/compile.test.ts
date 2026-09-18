@@ -354,6 +354,74 @@ export const Unsafe = createInteractor("unsafe")
     }
   });
 
+  it("allows filters to overlap actions and reserved methods", async () => {
+    let temporary = await Deno.makeTempDir({
+      dir: new URL(".", import.meta.url).pathname,
+      prefix: ".compile-overlapping-method-test-",
+    });
+    let entrypoint = `${temporary}/index.ts`;
+
+    try {
+      await Deno.writeTextFile(
+        entrypoint,
+        `import { createInteractor } from "@interactors/core";
+
+export const Menu = createInteractor<HTMLElement>("menu")
+  .selector("[role=menu]")
+  .filters({
+    open: (element) => !element.hidden,
+    options: (element) => [...element.querySelectorAll("[role=menuitem]")].map((item) => item.textContent),
+  })
+  .actions({
+    open: ({ perform }) => perform((element) => { element.hidden = false; }),
+  });
+`,
+      );
+      let result = await compile({
+        entrypoint,
+        outdir: `${temporary}/dist`,
+      });
+
+      expect(result.registry.interactors).toEqual([{
+        id: "Menu",
+        name: "menu",
+        actions: ["open"],
+        filters: ["open", "options"],
+      }]);
+
+      let dom = new JSDOM(
+        `<div role="menu" hidden><span role="menuitem">Newest</span><span role="menuitem">Oldest</span></div>`,
+        { runScripts: "outside-only" },
+      );
+      try {
+        dom.window.eval(await Deno.readTextFile(result.agentPath));
+        let agent = Reflect.get(dom.window, AGENT_GLOBAL) as Agent;
+        let command = {
+          protocolVersion: AGENT_PROTOCOL_VERSION,
+          registryHash: result.registry.registryHash,
+          path: [{ interactor: "Menu" }],
+        } as const;
+
+        await expect(agent.run({ ...command, method: "open" })).resolves
+          .toEqual({ ok: true });
+        await expect(
+          agent.run({ ...command, method: "is", args: [{ open: true }] }),
+        ).resolves.toEqual({ ok: true });
+        await expect(
+          agent.run({
+            ...command,
+            method: "has",
+            args: [{ options: ["Newest", "Oldest"] }],
+          }),
+        ).resolves.toEqual({ ok: true });
+      } finally {
+        dom.window.close();
+      }
+    } finally {
+      await Deno.remove(temporary, { recursive: true });
+    }
+  });
+
   it('rejects an action named "then" before creating artifacts', async () => {
     let temporary = await Deno.makeTempDir({
       dir: new URL(".", import.meta.url).pathname,

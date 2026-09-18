@@ -32,6 +32,9 @@ const field = ui.TextField(ui.matching(/^Email$/), {
 const nested = ui.Form("signup").find(field);
 const action: Promise<void> = nested.fillIn("a@b");
 await nested.has({ value: ui.sameLength("a@b") });
+const openAction: Promise<void> = ui.Menu().open();
+await ui.Menu().is({ open: true });
+await ui.Menu().has({ options: ["Newest", "Oldest"] });
 
 ui.TextField({ value: ui.matching(/ready/i), disabled: false });
 ui.MultiSelect({ values: ui.some(ui.including("Neon")) });
@@ -66,6 +69,7 @@ const reservedWireObject: RemoteInput<{ $type: string; value: string }> = {
 const broadFromNarrow: RemoteMatcher<string | number> = ui.including("ready");
 
 void action;
+void openAction;
 void stringMatcher;
 void reservedWireObject;
 void broadFromNarrow;

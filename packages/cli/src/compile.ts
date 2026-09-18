@@ -325,8 +325,8 @@ function validateInteractorMethods(
   actions: readonly string[],
   filters: readonly string[],
 ): void {
-  let actionNames = new Set(actions);
-  for (let name of [...actions, ...filters]) {
+  let actionNames = new Set<string>();
+  for (let name of actions) {
     if (name.length === 0) {
       throw new Error(
         `Interactor ${JSON.stringify(id)} declares an empty method name`,
@@ -339,13 +339,31 @@ function validateInteractorMethods(
         }`,
       );
     }
-    if (actionNames.has(name) && filters.includes(name)) {
+    if (actionNames.has(name)) {
       throw new Error(
-        `Interactor ${JSON.stringify(id)} declares ${
+        `Interactor ${JSON.stringify(id)} declares duplicate action ${
           JSON.stringify(name)
-        } as both an action and a filter`,
+        }`,
       );
     }
+    actionNames.add(name);
+  }
+
+  let filterNames = new Set<string>();
+  for (let name of filters) {
+    if (name.length === 0) {
+      throw new Error(
+        `Interactor ${JSON.stringify(id)} declares an empty method name`,
+      );
+    }
+    if (filterNames.has(name)) {
+      throw new Error(
+        `Interactor ${JSON.stringify(id)} declares duplicate filter ${
+          JSON.stringify(name)
+        }`,
+      );
+    }
+    filterNames.add(name);
   }
 }
 
