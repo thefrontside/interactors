@@ -61,7 +61,7 @@ jobs:
           staticalize-linux \
             --site=http://127.0.0.1:8000 \
             --output=www/built \
-            --base=https://interactors.netlify.app \
+            --base=https://frontside.com/interactors \
             --retries=3
 
       - name: Deploy Preview to Netlify
@@ -138,7 +138,7 @@ jobs:
           staticalize-linux \
             --site=http://127.0.0.1:8000 \
             --output=www/built \
-            --base=https://interactors.netlify.app \
+            --base=https://frontside.com/interactors \
             --retries=3
 
       - name: Deploy to Production
