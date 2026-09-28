@@ -4325,7 +4325,6 @@
       "www": {
         "dependencies": [
           "jsr:@deno/doc@0.188.0",
-          "jsr:@frontside/staticalize@0.2.2",
           "jsr:@std/crypto@^1.0.5",
           "jsr:@std/encoding@^1.0.10",
           "jsr:@std/fs@1",
