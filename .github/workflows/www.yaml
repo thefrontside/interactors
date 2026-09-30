@@ -51,7 +51,7 @@ jobs:
 
       - name: Download Staticalize
         run: |
-          wget https://github.com/thefrontside/staticalize/releases/download/v0.3.0/staticalize-linux.tar.gz \
+          wget https://github.com/thefrontside/staticalize/releases/download/v0.3.1/staticalize-linux.tar.gz \
             -O /tmp/staticalize-linux.tar.gz
           tar -xzf /tmp/staticalize-linux.tar.gz -C /usr/local/bin
           chmod +x /usr/local/bin/staticalize-linux
@@ -62,7 +62,7 @@ jobs:
             --site=http://127.0.0.1:8000 \
             --output=www/built \
             --base=https://interactors.netlify.app \
-            --retries=3
+            --canonical=https://frontside.com/interactors
 
       - name: Deploy Preview to Netlify
         id: netlify
@@ -128,7 +128,7 @@ jobs:
 
       - name: Download Staticalize
         run: |
-          wget https://github.com/thefrontside/staticalize/releases/download/v0.3.0/staticalize-linux.tar.gz \
+          wget https://github.com/thefrontside/staticalize/releases/download/v0.3.1/staticalize-linux.tar.gz \
             -O /tmp/staticalize-linux.tar.gz
           tar -xzf /tmp/staticalize-linux.tar.gz -C /usr/local/bin
           chmod +x /usr/local/bin/staticalize-linux
@@ -139,7 +139,7 @@ jobs:
             --site=http://127.0.0.1:8000 \
             --output=www/built \
             --base=https://interactors.netlify.app \
-            --retries=3
+            --canonical=https://frontside.com/interactors
 
       - name: Deploy to Production
         run: |
