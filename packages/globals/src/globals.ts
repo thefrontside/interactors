@@ -44,11 +44,7 @@ export type InteractionOptions = InteractorOptions & {
 export type InteractionWrapper<T = any> = (perform: () => Promise<T>, interaction: Interaction<T>) => Operation<T>;
 
 declare global {
-  // deno-lint-ignore prefer-namespace-keyword
-  module globalThis {
-    // deno-lint-ignore no-var
-    var __interactors: Globals;
-  }
+  var __interactors: Globals;
 }
 
 if (!globalThis.__interactors) {
