@@ -1,5 +1,9 @@
 # @interactors/core
 
+## \[1.0.2]
+
+- [`5ff2863`](https://github.com/thefrontside/interactors/commit/5ff286370a56f57ff2e8baab73d13a1a2d54a181) Update to Deno 2.1 which includes new version of typescript
+
 ## \[1.0.1]
 
 - [`e9d46c6`](https://github.com/thefrontside/interactors/commit/e9d46c68381bcd7814e85e4eeba4889e0fb6a746) Fix types in distributed NPM packages which were being incorrectly referenced in the package exports.
