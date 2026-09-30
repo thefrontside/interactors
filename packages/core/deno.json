@@ -1,6 +1,6 @@
 {
   "name": "@interactors/core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "tasks": {
     "test": "deno test --allow-run=deno --allow-env --allow-read",
     "docs": "rm -rf docs && mkdir -p docs/api/v1 && deno doc --html --output=docs/api/v1 mod.ts"
