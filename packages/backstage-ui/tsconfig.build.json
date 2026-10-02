@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "dist/cjs",
+    "rootDir": "./src",
+    "declarationDir": "dist"
+  },
+  "include": [
+    "src/**/*.ts",
+    "types"
+  ],
+  "references": [
+    { "path": "../html/tsconfig.build.json" }
+  ]
+}
